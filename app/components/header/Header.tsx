@@ -5,10 +5,12 @@ import { HiSpeakerphone } from "react-icons/hi";
 import MenuButtonDropdown from "./components/MenuButtonDropdown";
 import Followed from "./components/dropdownlists/Followed";
 import Categories from "./components/dropdownlists/Categories";
-import IconButton from "./components/IconButton";
+import IconButton from "../IconButton";
 import { BsBellFill, BsFillEnvelopeFill } from "react-icons/bs";
 import CoinsBox from "./components/CoinsBox";
 import Search from "./components/search/Search";
+import MessagesButton from "./components/MessagesButton";
+import NotificationsButton from "./components/NotificationsButton";
 
 const Header = () => {
   return (
@@ -34,14 +36,10 @@ const Header = () => {
             Działy
           </MenuButtonDropdown>
         </div>
-        <div className="flex items-center text-right justify-end">
+        <div className="flex items-center text-right justify-end h-full">
           <CoinsBox />
-          <IconButton>
-            <BsFillEnvelopeFill />
-          </IconButton>
-          <IconButton>
-            <BsBellFill />
-          </IconButton>
+          <MessagesButton />
+          <NotificationsButton />
         </div>
       </div>
     </header>

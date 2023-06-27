@@ -22,6 +22,7 @@ const Form: React.FC<FormProps> = ({ closeForm }) => {
       search: "",
       datatype: "wszystko",
     },
+    mode: "onChange",
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {

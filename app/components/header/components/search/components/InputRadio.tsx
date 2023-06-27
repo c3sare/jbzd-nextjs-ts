@@ -26,9 +26,9 @@ const InputRadio: React.FC<InputRadioProps> = ({
         {...register(id)}
         value={value}
         ref={refRadio}
-        className="mr-[5px] w-[15px] h-[15px] bg-transparent border border-[#a4a7aa] rounded-full appearance-none input-radio"
+        className="mr-[5px] w-[15px] h-[15px] bg-transparent border border-[#a4a7aa] rounded-full appearance-none checked:bg-[#a4a7aa] checked:shadow-[inset_0_0_0_3px_#080808] cursor-pointer"
       />
-      <label className="mr-[15px]">{label}</label>
+      <label className="mr-[15px] cursor-pointer">{label}</label>
     </div>
   );
 };
