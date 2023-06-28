@@ -11,7 +11,7 @@ const MessagesButton = () => {
 
   return (
     <div
-      className="inline-flex items-center text-left ml-[15px] h-full relative"
+      className="inline-flex items-center text-left ml-[15px] h-full lg:relative"
       ref={containerRef}
     >
       <IconButton onClick={toggleVisible}>

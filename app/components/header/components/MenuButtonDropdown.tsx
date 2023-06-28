@@ -13,7 +13,7 @@ const MenuButtonDropdown: React.FC<MenuButtonDropdownProps> = ({
   className,
 }) => {
   return (
-    <div className="relative h-full group">
+    <div className="relative h-full group hidden lg:block">
       <span className="pr-[20px] pl-[8px] text-[15px] flex items-center justify-center h-full border-b border-b-transparent hover:border-b-white cursor-pointer">
         {children}
         <IoMdArrowDropdown className="group-hover:rotate-180" size={16} />

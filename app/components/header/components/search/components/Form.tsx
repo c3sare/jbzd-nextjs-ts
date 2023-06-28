@@ -26,8 +26,7 @@ const Form: React.FC<FormProps> = ({ closeForm }) => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    router.push(`/search/${data.datatype}?pharse=${encodeURI(data.search)}`);
-    closeForm();
+    router.push(`/wyszukaj/${data.datatype}?pharse=${encodeURI(data.search)}`);
   };
 
   return (
@@ -51,6 +50,7 @@ const Form: React.FC<FormProps> = ({ closeForm }) => {
           label="Wszystkie"
           id="datatype"
           value="wszystko"
+          defaultChecked
         />
         <InputRadio
           register={register}

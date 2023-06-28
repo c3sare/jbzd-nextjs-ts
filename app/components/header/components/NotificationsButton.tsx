@@ -11,7 +11,7 @@ const NotificationsButton = () => {
 
   return (
     <div
-      className="inline-flex items-center text-left h-full ml-[15px] relative"
+      className="inline-flex items-center text-left h-full ml-[15px] lg:relative"
       ref={containerRef}
     >
       <IconButton onClick={toggleVisible}>

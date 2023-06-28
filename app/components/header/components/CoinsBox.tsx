@@ -9,7 +9,7 @@ const CoinsBox = () => {
 
   return (
     <div
-      className="h-full flex items-center justify-center relative"
+      className="h-full flex items-center justify-center lg:relative"
       ref={containerRef}
     >
       <div
@@ -22,7 +22,7 @@ const CoinsBox = () => {
         </div>
       </div>
       {isVisible && (
-        <div className="absolute top-[100%] right-0 w-[300px] z-10 border border-black bg-[#181818] px-[15px] py-[7px] text-left">
+        <div className="absolute top-[46px] lg:top-[100%] right-0 w-full lg:w-[300px] z-10 border border-black bg-[#181818] px-[15px] py-[7px] text-left">
           <Link
             href="/premium/monetki/tutorial"
             className="px-[10px] py-[5px] text-[16px]"

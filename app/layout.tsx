@@ -1,3 +1,8 @@
+import Aside from "./components/Aside";
+import Main from "./components/Main";
+import Wrapper from "./components/Wrapper";
+import Footer from "./components/footer/Footer";
+import FooterLink from "./components/footer/components/FooterLink";
 import Header from "./components/header/Header";
 import "./globals.css";
 import { Open_Sans } from "next/font/google";
@@ -18,7 +23,17 @@ export default function RootLayout({
     <html lang="pl">
       <body className={openSans.className}>
         <Header />
-        {children}
+        <Wrapper>
+          <Main>{children}</Main>
+          <Aside />
+        </Wrapper>
+        <Footer>
+          <FooterLink href="/">Regulamin</FooterLink>
+          <FooterLink href="/">Kontakt</FooterLink>
+          <FooterLink href="/">Polityka prywatności</FooterLink>
+          <FooterLink href="/">Dziennik zmian</FooterLink>
+          <FooterLink href="/">FAQ</FooterLink>
+        </Footer>
       </body>
     </html>
   );

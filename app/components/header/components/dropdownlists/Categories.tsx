@@ -21,7 +21,7 @@ const Categories = () => {
                 )}
               </div>
               {category?.childrens && (
-                <ul>
+                <ul className="p-0 list-none mt-[5px] mr-[10px] ml-[5px]">
                   {category.childrens.map((subCategory) => (
                     <CategorySubLink
                       key={subCategory.href}

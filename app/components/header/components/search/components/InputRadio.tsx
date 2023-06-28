@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 
 type InputRadioProps = {
@@ -6,6 +5,7 @@ type InputRadioProps = {
   id: string;
   register: UseFormRegister<FieldValues>;
   value: string;
+  defaultChecked?: boolean;
 };
 
 const InputRadio: React.FC<InputRadioProps> = ({
@@ -13,23 +13,19 @@ const InputRadio: React.FC<InputRadioProps> = ({
   id,
   register,
   value,
+  defaultChecked,
 }) => {
-  const refRadio = useRef<HTMLInputElement>(null);
-
   return (
-    <div
-      className="flex flex-row items-center cursor-pointer"
-      onClick={() => refRadio.current?.click()}
-    >
+    <label className="flex flex-row items-center mr-[15px] cursor-pointer">
       <input
         type="radio"
-        {...register(id)}
         value={value}
-        ref={refRadio}
-        className="mr-[5px] w-[15px] h-[15px] bg-transparent border border-[#a4a7aa] rounded-full appearance-none checked:bg-[#a4a7aa] checked:shadow-[inset_0_0_0_3px_#080808] cursor-pointer"
+        defaultChecked={defaultChecked || false}
+        {...register(id)}
+        className="peer mr-[5px] w-[15px] h-[15px] bg-transparent border border-[#a4a7aa] rounded-full appearance-none checked:bg-[#a4a7aa] checked:shadow-[inset_0_0_0_3px_#080808] cursor-pointer"
       />
-      <label className="mr-[15px] cursor-pointer">{label}</label>
-    </div>
+      <span className="text-[#a4a7aa] peer-checked:text-white">{label}</span>
+    </label>
   );
 };
 

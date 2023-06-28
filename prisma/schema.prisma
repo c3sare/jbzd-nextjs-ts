@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  gender         String?
+  country        String?
+  city           String?
+  birthdate      DateTime?
+  email          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  posts       Post[]
+  accounts    Account[]
+  badgedPosts BadgePost[] @relation("BadgedPosts")
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+type MemContainer {
+  data String
+  type String
+}
+
+model Post {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  addTime       DateTime       @default(now())
+  title         String
+  tags          String[]
+  category      String?
+  memContainers MemContainer[]
+  authorId      String         @db.ObjectId
+  author        User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  comments   Comment[]   @relation("PostComments")
+  postBadges BadgePost[] @relation("PostBadges")
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  addTime   DateTime @default(now())
+  postId    String   @db.ObjectId
+  post      Post     @relation("PostComments", fields: [postId], references: [id], onDelete: Cascade)
+  precedent String   @db.ObjectId
+}
+
+model BadgePost {
+  id       String        @id @default(auto()) @map("_id") @db.ObjectId
+  addTime  DateTime      @default(now())
+  postId   String        @db.ObjectId
+  type     PostBadgeType @default(PLUS)
+  post     Post          @relation("PostBadges", fields: [postId], references: [id], onDelete: Cascade)
+  authorId String        @db.ObjectId
+  author   User          @relation("BadgedPosts", fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
+  nsfw   Boolean?
+  slug   String   @unique
+  asPage Boolean?
+  color  String?
+  hide   Boolean?
+}
+
+enum PostBadgeType {
+  PLUS
+  ROCK
+  SILVER
+  GOLD
+}
+
+enum CommentBadgeType {
+  PLUS
+  MINUS
+  ROCK
+  SILVER
+  GOLD
+}

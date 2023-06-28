@@ -2,23 +2,36 @@
 
 import { BiSearch } from "react-icons/bi";
 import MenuButton from "../MenuButton";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Form from "./components/Form";
+import { usePathname } from "next/navigation";
 
 const Search = () => {
+  const pathname = usePathname();
+  const isSearchPage = pathname.indexOf("/wyszukaj/") > -1;
   const [isOpenSearchBar, setIsOpenSearchBar] = useState<boolean>(false);
 
-  const handleToggleSearchBar = useCallback(
-    () => setIsOpenSearchBar(!isOpenSearchBar),
-    [isOpenSearchBar]
-  );
+  const handleToggleSearchBar = useCallback(() => {
+    if (!isSearchPage) {
+      setIsOpenSearchBar(!isOpenSearchBar);
+    }
+  }, [isOpenSearchBar, isSearchPage]);
+
+  useEffect(() => {
+    if (isSearchPage && isOpenSearchBar) setIsOpenSearchBar(false);
+  }, [isSearchPage, isOpenSearchBar]);
 
   return (
     <>
-      <MenuButton icon={<BiSearch size={20} />} onClick={handleToggleSearchBar}>
+      <MenuButton
+        icon={<BiSearch className="mr-[5px]" size={20} />}
+        active={isSearchPage}
+        className="lg:flex"
+        onClick={handleToggleSearchBar}
+      >
         Szukaj
       </MenuButton>
-      {isOpenSearchBar && (
+      {isOpenSearchBar && !isSearchPage && (
         <div className="absolute top-[100%] left-0 w-full h-[120px] bg-[#1f1f1f]">
           <Form closeForm={() => setIsOpenSearchBar(false)} />
         </div>
