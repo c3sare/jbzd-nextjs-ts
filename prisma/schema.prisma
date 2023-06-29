@@ -24,19 +24,30 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  accounts    Account[]
-  posts       Post[]
-  comments    Comment[]
-  badgedPosts BadgePost[]
-  badgedComments BadgeComment[]
-  postVotes PostVote[]
-  commentVotes  CommentVote[]
-  favouritePosts FavouritePost[]
-  favouriteComments FavouriteComment[]
-  actionedUsers UserAction[]
-  actionedByUsers UserAction[] @relation("UserActionedBy")
+  accounts           Account[]
+  posts              Post[]
+  comments           Comment[]
+  badgedPosts        BadgePost[]
+  badgedComments     BadgeComment[]
+  postVotes          PostVote[]
+  commentVotes       CommentVote[]
+  favouritePosts     FavouritePost[]
+  favouriteComments  FavouriteComment[]
+  actionedUsers      UserAction[]
+  actionedByUsers    UserAction[]       @relation("UserActionedBy")
   followedCategories FollowedCategory[]
-  actionedTags  TagAction[]
+  actionedTags       TagAction[]
+  votedUsers         UserVote[]
+  userVotedBy        UserVote[]         @relation("UserVotedBy")
+}
+
+model UserVote {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  addTime  DateTime @default(now())
+  userId   String   @db.ObjectId
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  authorId String   @db.ObjectId
+  author   User     @relation("UserVotedBy", fields: [authorId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -67,153 +78,153 @@ model Post {
   id            String         @id @default(auto()) @map("_id") @db.ObjectId
   addTime       DateTime       @default(now())
   title         String
-  tagIds        String[]      @db.ObjectId
-  tags          Tag[]         @relation(fields: [tagIds], references: [id])
-  categoryId    String        @db.ObjectId
+  tagIds        String[]       @db.ObjectId
+  tags          Tag[]          @relation(fields: [tagIds], references: [id])
+  categoryId    String         @db.ObjectId
   category      Category?      @relation(fields: [categoryId], references: [id])
   memContainers MemContainer[]
   authorId      String         @db.ObjectId
   author        User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
-  comments   Comment[]
-  badges BadgePost[]
-  votes   PostVote[]
+  comments      Comment[]
+  badges        BadgePost[]
+  votes         PostVote[]
   favouriteList FavouritePost[]
 }
 
 model PostVote {
-  id  String @id @default(auto()) @map("_id") @db.ObjectId
-  addTime DateTime @default(now())
-  authorId  String  @db.ObjectId
-  author  User  @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  postId  String  @db.ObjectId
-  post  Post  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  addTime  DateTime @default(now())
+  authorId String   @db.ObjectId
+  author   User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  postId   String   @db.ObjectId
+  post     Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([postId, authorId])
 }
 
 model BadgePost {
-  id       String        @id @default(auto()) @map("_id") @db.ObjectId
-  addTime  DateTime      @default(now())
-  postId   String        @db.ObjectId
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  addTime  DateTime  @default(now())
+  postId   String    @db.ObjectId
   type     BadgeType
-  post     Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
-  authorId String        @db.ObjectId
-  author   User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  post     Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId String    @db.ObjectId
+  author   User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@unique([postId, type, authorId])
 }
 
 model Comment {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  addTime   DateTime @default(now())
-  postId    String   @db.ObjectId
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  authorId  String   @db.ObjectId
-  author  User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id            String             @id @default(auto()) @map("_id") @db.ObjectId
+  addTime       DateTime           @default(now())
+  postId        String             @db.ObjectId
+  post          Post               @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId      String             @db.ObjectId
+  author        User               @relation(fields: [authorId], references: [id], onDelete: Cascade)
   commentBadges BadgeComment[]
   commentVotes  CommentVote[]
   favouriteList FavouriteComment[]
-  precedent Comment? @relation("CommentToComment", fields: [precedentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  subcomments Comment[] @relation("CommentToComment")
-  precedentId String? @db.ObjectId
+  precedent     Comment?           @relation("CommentToComment", fields: [precedentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  subcomments   Comment[]          @relation("CommentToComment")
+  precedentId   String?            @db.ObjectId
 }
 
 model CommentVote {
-  id  String @id @default(auto()) @map("_id") @db.ObjectId
-  addTime DateTime @default(now())
-  type  CommentVoteType
-  commentId  String  @db.ObjectId
-  comment  Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
-  authorId  String  @db.ObjectId
-  author  User  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id        String          @id @default(auto()) @map("_id") @db.ObjectId
+  addTime   DateTime        @default(now())
+  type      CommentVoteType
+  commentId String          @db.ObjectId
+  comment   Comment         @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  authorId  String          @db.ObjectId
+  author    User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@unique([commentId, authorId])
 }
 
 model BadgeComment {
-  id       String        @id @default(auto()) @map("_id") @db.ObjectId
-  addTime  DateTime      @default(now())
-  commentId   String        @db.ObjectId
-  type     BadgeType
-  comment     Comment          @relation(fields: [commentId], references: [id], onDelete: Cascade)
-  authorId String        @db.ObjectId
-  author   User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  addTime   DateTime  @default(now())
+  commentId String    @db.ObjectId
+  type      BadgeType
+  comment   Comment   @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  authorId  String    @db.ObjectId
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@unique([commentId, type, authorId])
 }
 
 model Category {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
-  name   String
-  nsfw   Boolean?
-  slug   String   @unique
-  asPage Boolean?
-  posts   Post[]
-  followedBy  FollowedCategory[]
+  id         String             @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  nsfw       Boolean?
+  slug       String             @unique
+  asPage     Boolean?
+  posts      Post[]
+  followedBy FollowedCategory[]
 }
 
 model Tag {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
-  name  String  @unique
-  postIds String[]  @db.ObjectId
-  posts Post[] @relation(fields: [postIds], references: [id])
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  name       String      @unique
+  postIds    String[]    @db.ObjectId
+  posts      Post[]      @relation(fields: [postIds], references: [id])
   actionedBy TagAction[]
 }
 
 model FavouritePost {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
-  addTime DateTime @default(now())
-  postId  String  @db.ObjectId
-  post  Post  @relation(fields: [postId], references: [id], onDelete: Cascade)
-  authorId  String @db.ObjectId
-  author  User  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  addTime  DateTime @default(now())
+  postId   String   @db.ObjectId
+  post     Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId String   @db.ObjectId
+  author   User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@unique([authorId, postId])
 }
 
 model FavouriteComment {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
-  addTime DateTime @default(now())
-  commentId  String  @db.ObjectId
-  comment  Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
-  authorId  String @db.ObjectId
-  author  User  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  addTime   DateTime @default(now())
+  commentId String   @db.ObjectId
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  authorId  String   @db.ObjectId
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@unique([authorId, commentId])
 }
 
 model UserAction {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
-  addTime DateTime @default(now())
-  method  UserActionType
-  userId  String @db.ObjectId
-  user    User  @relation("UserActionedBy", fields: [userId], references: [id], onDelete: Cascade)
-  authorId  String @db.ObjectId
-  author  User  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id       String         @id @default(auto()) @map("_id") @db.ObjectId
+  addTime  DateTime       @default(now())
+  method   UserActionType
+  userId   String         @db.ObjectId
+  user     User           @relation("UserActionedBy", fields: [userId], references: [id], onDelete: Cascade)
+  authorId String         @db.ObjectId
+  author   User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@unique([authorId, userId])
 }
 
 model FollowedCategory {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
-  addTime DateTime @default(now())
-  categoryId  String @db.ObjectId
-  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  authorId  String @db.ObjectId
-  author  User  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  addTime    DateTime @default(now())
+  categoryId String   @db.ObjectId
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  authorId   String   @db.ObjectId
+  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@unique([authorId, categoryId])
 }
 
 model TagAction {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
-  addTime DateTime @default(now())
-  method  UserActionType
-  tagId  String @db.ObjectId
-  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
-  authorId  String @db.ObjectId
-  author  User  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id       String         @id @default(auto()) @map("_id") @db.ObjectId
+  addTime  DateTime       @default(now())
+  method   UserActionType
+  tagId    String         @db.ObjectId
+  tag      Tag            @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  authorId String         @db.ObjectId
+  author   User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@unique([authorId, tagId])
 }

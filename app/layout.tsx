@@ -1,4 +1,4 @@
-import Aside from "./components/Aside";
+import Sidebar from "./components/sidebar/Sidebar";
 import Main from "./components/Main";
 import Wrapper from "./components/Wrapper";
 import Footer from "./components/footer/Footer";
@@ -25,7 +25,7 @@ export default function RootLayout({
         <Header />
         <Wrapper>
           <Main>{children}</Main>
-          <Aside />
+          <Sidebar />
         </Wrapper>
         <Footer>
           <FooterLink href="/">Regulamin</FooterLink>
