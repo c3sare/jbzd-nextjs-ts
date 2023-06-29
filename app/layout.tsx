@@ -6,6 +6,7 @@ import FooterLink from "./components/footer/components/FooterLink";
 import Header from "./components/header/Header";
 import "./globals.css";
 import { Open_Sans } from "next/font/google";
+import ToasterContext from "./context/ToasterContext";
 
 const openSans = Open_Sans({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="pl">
       <body className={openSans.className}>
+        <ToasterContext />
         <Header />
         <Wrapper>
           <Main>{children}</Main>

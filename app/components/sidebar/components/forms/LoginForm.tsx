@@ -6,6 +6,8 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Input from "./components/Input";
 import Button from "./components/Button";
 import FacebookLoginButton from "./components/FacebookLoginButton";
+import { signIn } from "next-auth/react";
+import { toast } from "react-hot-toast";
 
 const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -22,12 +24,19 @@ const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
-    axios
-      .post("/api/login", data)
-      .then((data) => {
-        if (data.data.ok) console.log("ok");
+    signIn("credentials", {
+      ...data,
+      redirect: false,
+    })
+      .then((callback) => {
+        if (callback?.error) {
+          toast.error("Nieprawidłowe dane!");
+        }
+
+        if (callback?.ok && !callback?.error) {
+          toast.success("Zostałeś zalogowany!");
+        }
       })
-      .catch((err) => console.log(err))
       .finally(() => setIsLoading(false));
   };
 
@@ -56,7 +65,7 @@ const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
         </Button>
       </form>
       {children}
-      <FacebookLoginButton />
+      <FacebookLoginButton setIsLoading={setIsLoading} />
     </>
   );
 };

@@ -7,6 +7,7 @@ import Input from "./components/Input";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
 
 const RegisterForm: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -27,11 +28,14 @@ const RegisterForm: React.FC<React.PropsWithChildren> = ({ children }) => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
     axios
-      .post("/api/user/register", data)
+      .post("/api/registerr", data)
       .then((data) => {
         console.log(data);
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err);
+        toast.error("Wystąpił błąd!");
+      })
       .finally(() => setIsLoading(false));
   };
 
