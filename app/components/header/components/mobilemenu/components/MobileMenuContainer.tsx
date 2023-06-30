@@ -1,7 +1,7 @@
 "use client";
 
 import { HiSpeakerphone } from "react-icons/hi";
-import { FaPowerOff, FaSearch } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { BiSolidUser } from "react-icons/bi";
 import { RiFileListFill } from "react-icons/ri";
@@ -9,12 +9,11 @@ import { GiPerspectiveDiceSixFacesFour } from "react-icons/gi";
 import { BsFillStarFill } from "react-icons/bs";
 import { AiOutlineClockCircle } from "react-icons/ai";
 
-import Link from "next/link";
-
-import Avatar from "@/app/components/Avatar";
-import IconButton from "@/app/components/IconButton";
+import { useSession } from "next-auth/react";
 import MobileMenuLinkButton from "./MobileMenuLinkButton";
-import Categories from "../../dropdownlists/Categories";
+import Categories from "../../leftside/components/dropdownlists/Categories";
+import ProfileInfo from "./ProfileInfo";
+import SidebarForms from "@/app/components/sidebar/components/SidebarForms";
 
 type MobileMenuContainerProps = {
   isVisible: boolean;
@@ -23,46 +22,57 @@ type MobileMenuContainerProps = {
 const MobileMenuContainer: React.FC<MobileMenuContainerProps> = ({
   isVisible,
 }) => {
+  const session = useSession();
+  const isLoggedIn = session?.status === "authenticated";
+
   return (
     isVisible && (
       <div className="lg:hidden fixed top-[46px] left-0 w-full h-[calc(100vh-46px)] bg-[#313131] pt-0 overflow-y-auto">
         <div className="pb-[5px]">
-          <div className="flex flex-wrap m-[0_auto] p-[10px_15px] items-center text-white">
-            <Link
-              href="/uzytkownik/c3sare"
-              className="flex gap-1 items-center mr-[5px]"
-            >
-              <Avatar src="/images/avatars/default.jpg" size={30} />
-              <span className="font-bold ml-[5px] text-[16px]">c3sare</span>
-            </Link>
-            <IconButton className="ml-[5px]">
-              <FaPowerOff color="#888888" />
-            </IconButton>
-          </div>
+          {isLoggedIn ? <ProfileInfo /> : <SidebarForms />}
         </div>
         <div className="flex m-[0_auto] p-[5px] flex-wrap">
-          <MobileMenuLinkButton href="/" icon={HiSpeakerphone}>
+          <MobileMenuLinkButton href="/mikroblog" icon={HiSpeakerphone}>
             Mikroblog
           </MobileMenuLinkButton>
-          <MobileMenuLinkButton href="/" icon={FaSearch}>
+          <MobileMenuLinkButton href="/wyszukaj/wszystko" icon={FaSearch}>
             Szukaj
           </MobileMenuLinkButton>
-          <MobileMenuLinkButton href="/" icon={AiOutlineClockCircle}>
+          <MobileMenuLinkButton href="/oczekujace" icon={AiOutlineClockCircle}>
             Oczekujące
           </MobileMenuLinkButton>
-          <MobileMenuLinkButton href="/" icon={BsFillStarFill}>
+          <MobileMenuLinkButton
+            href="/ulubione"
+            icon={BsFillStarFill}
+            disabled={!isLoggedIn}
+          >
             Ulubione
           </MobileMenuLinkButton>
-          <MobileMenuLinkButton href="/" icon={GiPerspectiveDiceSixFacesFour}>
+          <MobileMenuLinkButton
+            href="/losowe"
+            icon={GiPerspectiveDiceSixFacesFour}
+          >
             Losowe
           </MobileMenuLinkButton>
-          <MobileMenuLinkButton href="/" icon={RiFileListFill}>
+          <MobileMenuLinkButton
+            href="/obserwowane/dzialy"
+            icon={RiFileListFill}
+            disabled={!isLoggedIn}
+          >
             Działy
           </MobileMenuLinkButton>
-          <MobileMenuLinkButton href="/" icon={BiSolidUser}>
+          <MobileMenuLinkButton
+            href="/obserwowane/uzytkownicy"
+            icon={BiSolidUser}
+            disabled={!isLoggedIn}
+          >
             Użytkownicy
           </MobileMenuLinkButton>
-          <MobileMenuLinkButton href="/" icon={IoSettingsSharp}>
+          <MobileMenuLinkButton
+            href="/uzytkownik/ustawienia"
+            icon={IoSettingsSharp}
+            disabled={!isLoggedIn}
+          >
             Ustawienia
           </MobileMenuLinkButton>
         </div>

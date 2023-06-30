@@ -65,7 +65,7 @@ const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
         </Button>
       </form>
       {children}
-      <FacebookLoginButton setIsLoading={setIsLoading} />
+      <FacebookLoginButton disabled={isLoading} setIsLoading={setIsLoading} />
     </>
   );
 };

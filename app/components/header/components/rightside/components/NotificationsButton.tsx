@@ -1,10 +1,10 @@
 "use client";
 
 import { BsBellFill } from "react-icons/bs";
-import IconButton from "../../IconButton";
 import useDropdownContainer from "@/app/hooks/useDropdownContainer";
-import DropdownContainer from "./DropdownContainer";
 import Link from "next/link";
+import IconButton from "@/app/components/IconButton";
+import DropdownContainer from "../../DropdownContainer";
 
 const NotificationsButton = () => {
   const { isVisible, toggleVisible, containerRef } = useDropdownContainer();

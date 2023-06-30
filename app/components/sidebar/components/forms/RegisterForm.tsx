@@ -28,7 +28,7 @@ const RegisterForm: React.FC<React.PropsWithChildren> = ({ children }) => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
     axios
-      .post("/api/registerr", data)
+      .post("/api/register", data)
       .then((data) => {
         console.log(data);
       })

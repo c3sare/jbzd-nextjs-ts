@@ -1,12 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoginForm from "./forms/LoginForm";
 import RegisterForm from "./forms/RegisterForm";
 import PasswordRemindForm from "./forms/PasswordRemindForm";
+import { useSession } from "next-auth/react";
 
 const SidebarForms = () => {
+  const session = useSession();
   const [indexOfCurrentForm, setIndexOfCurrentForm] = useState(0);
+
+  useEffect(() => {
+    if (session?.status === "authenticated") {
+      console.log("Jesteś zalogowany!");
+    }
+  }, [session]);
 
   const forms = [
     {
