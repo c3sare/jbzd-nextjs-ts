@@ -5,6 +5,7 @@ import FacebookProvider from "next-auth/providers/facebook";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import prisma from "@/app/libs/prismadb";
+import { User } from "@prisma/client";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -48,10 +49,16 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, token, user }) {
-      console.log(user);
+    async session(params) {
+      const data = await prisma.user.findFirst({
+        where: {
+          email: params.token.email,
+        },
+      });
+      (params.session.user as Partial<User>).username = data?.username;
+      (params.session.user as Partial<User>).createdAt = data?.createdAt;
 
-      return session;
+      return params.session;
     },
   },
   // debug: process.env.NODE_ENV === "development",

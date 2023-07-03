@@ -2,15 +2,22 @@
 
 import { useSession } from "next-auth/react";
 import SidebarForms from "./components/SidebarForms";
+import ProfileInfo from "./components/ProfileInfo";
 
 const Sidebar = () => {
   const session = useSession();
-
-  console.log(session);
+  const isLoading = session.status === "loading";
+  const isLoggedIn = session.status === "authenticated";
 
   return (
     <aside className="hidden xl:flex flex-col w-[356px] bg-[#313131]">
-      <SidebarForms />
+      {isLoading ? (
+        <span>Loading...</span>
+      ) : isLoggedIn ? (
+        <ProfileInfo />
+      ) : (
+        <SidebarForms />
+      )}
     </aside>
   );
 };

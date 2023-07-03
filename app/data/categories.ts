@@ -6,7 +6,7 @@ export const categories = [
       childrens: [
         {
           title: "Memy",
-          href: "/dowcipy",
+          href: "/humor-memy",
         },
         {
           title: "Dowcipy",

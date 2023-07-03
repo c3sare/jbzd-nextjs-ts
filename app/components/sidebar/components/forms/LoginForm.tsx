@@ -31,13 +31,17 @@ const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
       .then((callback) => {
         if (callback?.error) {
           toast.error("Nieprawidłowe dane!");
+          setIsLoading(false);
         }
 
         if (callback?.ok && !callback?.error) {
           toast.success("Zostałeś zalogowany!");
         }
       })
-      .finally(() => setIsLoading(false));
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   };
 
   return (
