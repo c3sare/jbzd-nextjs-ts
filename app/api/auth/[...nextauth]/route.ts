@@ -60,6 +60,15 @@ export const authOptions: AuthOptions = {
 
       return params.session;
     },
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      console.log(url);
+      console.log(baseUrl);
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
   },
   // debug: process.env.NODE_ENV === "development",
   session: {
