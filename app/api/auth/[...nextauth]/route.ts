@@ -1,10 +1,12 @@
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";
+import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import prisma from "@/app/libs/prismadb";
+import getUniqueId from "@/app/libs/getUniqueId";
 import { User } from "@prisma/client";
 
 export const authOptions: AuthOptions = {
@@ -13,6 +15,10 @@ export const authOptions: AuthOptions = {
     FacebookProvider({
       clientId: process.env.FACEBOOK_APP_ID as string,
       clientSecret: process.env.FACEBOOK_APP_SECRET as string,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
     CredentialsProvider({
       name: "credentials",
@@ -49,15 +55,26 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt(params) {
-      const data = await prisma.user.findFirst({
-        where: {
-          email: params.token.email,
-        },
-      });
-      params.token.username = data?.username;
+    signIn: async ({ user: userSignin, profile }) => {
+      if (!profile?.email) return false;
 
-      return params.token;
+      if (!(userSignin as Partial<User>)?.username) {
+        const userUniqueId = getUniqueId();
+        const username = "guest_" + userUniqueId;
+
+        const update = await prisma.user.update({
+          where: {
+            email: profile.email,
+          },
+          data: {
+            username,
+          },
+        });
+
+        if (!update) return false;
+      }
+
+      return true;
     },
   },
   // debug: process.env.NODE_ENV === "development",

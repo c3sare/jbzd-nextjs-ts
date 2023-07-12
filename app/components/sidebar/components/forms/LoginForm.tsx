@@ -8,6 +8,7 @@ import FacebookLoginButton from "./components/FacebookLoginButton";
 import { signIn } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import GoogleLoginButton from "./components/GoogleLoginButton";
 
 const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
   const router = useRouter();
@@ -72,6 +73,7 @@ const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
       </form>
       {children}
       <FacebookLoginButton disabled={isLoading} setIsLoading={setIsLoading} />
+      <GoogleLoginButton disabled={isLoading} setIsLoading={setIsLoading} />
     </>
   );
 };
