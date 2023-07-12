@@ -86,6 +86,7 @@ model Post {
   memContainers MemContainer[]
   authorId      String         @db.ObjectId
   author        User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  accepted      Boolean        @default(false)
 
   comments      Comment[]
   badges        BadgePost[]

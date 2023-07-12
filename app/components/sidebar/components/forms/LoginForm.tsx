@@ -1,6 +1,5 @@
 "use client";
 
-import axios from "axios";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Input from "./components/Input";
@@ -8,8 +7,10 @@ import Button from "./components/Button";
 import FacebookLoginButton from "./components/FacebookLoginButton";
 import { signIn } from "next-auth/react";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     handleSubmit,
@@ -36,6 +37,7 @@ const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
 
         if (callback?.ok && !callback?.error) {
           toast.success("Zostałeś zalogowany!");
+          router.refresh();
         }
       })
       .catch((err) => {

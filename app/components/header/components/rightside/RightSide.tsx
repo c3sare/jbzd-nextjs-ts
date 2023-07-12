@@ -1,14 +1,12 @@
-"use client";
-
-import { useSession } from "next-auth/react";
 import CoinsBox from "./components/CoinsBox";
 import MessagesButton from "./components/MessagesButton";
 import NotificationsButton from "./components/NotificationsButton";
+import getSession from "@/app/actions/getSession";
 
-const RightSide: React.FC<React.PropsWithChildren> = () => {
-  const session = useSession();
+const RightSide: React.FC<React.PropsWithChildren> = async () => {
+  const session = await getSession();
 
-  const isLoggedIn = session?.status === "authenticated";
+  const isLoggedIn = session?.user?.email;
 
   return (
     <div className="flex items-center text-right justify-end h-full">

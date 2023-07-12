@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";
@@ -49,25 +49,15 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async session(params) {
+    async jwt(params) {
       const data = await prisma.user.findFirst({
         where: {
           email: params.token.email,
         },
       });
-      (params.session.user as Partial<User>).username = data?.username;
-      (params.session.user as Partial<User>).createdAt = data?.createdAt;
+      params.token.username = data?.username;
 
-      return params.session;
-    },
-    async redirect({ url, baseUrl }) {
-      // Allows relative callback URLs
-      console.log(url);
-      console.log(baseUrl);
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url;
-      return baseUrl;
+      return params.token;
     },
   },
   // debug: process.env.NODE_ENV === "development",
