@@ -1,8 +1,12 @@
-import { categories } from "@/app/data/categories";
 import CategoryLink from "./components/categories/CategoryLink";
 import CategorySubLink from "./components/categories/CategorySubLink";
+import { CategoryWithChildren } from "@/app/libs/getIn2DArray";
 
-const Categories = () => {
+type CategoriesProps = {
+  categories: CategoryWithChildren[][];
+};
+
+const Categories: React.FC<CategoriesProps> = ({ categories }) => {
   return (
     <>
       {categories.map((column, i) => (
@@ -12,10 +16,10 @@ const Categories = () => {
         >
           {column.map((category) => {
             return (
-              <div key={category.href} className="mb-[10px] text-[13px]">
+              <div key={category.slug} className="mb-[10px] text-[13px]">
                 <div className="flex items-center">
-                  <CategoryLink href={category.href}>
-                    {category.title}
+                  <CategoryLink href={"/" + category.slug}>
+                    {category.name}
                   </CategoryLink>
                   {category.nsfw && (
                     <sup className="text-[9px] ml-[5px] text-[#c03e3f]">
@@ -23,14 +27,14 @@ const Categories = () => {
                     </sup>
                   )}
                 </div>
-                {category?.childrens && (
+                {category?.children && (
                   <ul className="p-0 list-none mt-[5px] mr-[10px] ml-[5px]">
-                    {category.childrens.map((subCategory) => (
+                    {category.children.map((subCategory) => (
                       <CategorySubLink
-                        key={subCategory.href}
-                        href={subCategory.href}
+                        key={subCategory.slug}
+                        href={"/" + subCategory.slug}
                       >
-                        {subCategory.title}
+                        {subCategory.name}
                       </CategorySubLink>
                     ))}
                   </ul>

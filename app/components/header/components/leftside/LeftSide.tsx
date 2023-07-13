@@ -2,13 +2,14 @@ import MenuButton from "../MenuButton";
 import MenuButtonDropdown from "../MenuButtonDropdown";
 import Categories from "./components/dropdownlists/Categories";
 import Followed from "./components/dropdownlists/Followed";
-import getSession from "@/app/actions/getSession";
+import { CategoryWithChildren } from "@/app/libs/getIn2DArray";
 
-const LeftSide = async () => {
-  const session = await getSession();
+type LeftSideProps = {
+  isLoggedIn: boolean;
+  categories: CategoryWithChildren[][];
+};
 
-  const isLoggedIn = session?.user?.email;
-
+const LeftSide: React.FC<LeftSideProps> = ({ isLoggedIn, categories }) => {
   return (
     <div className="flex items-center relative ml-auto h-full">
       <MenuButton className="lg:flex" href="/oczekujace">
@@ -23,7 +24,7 @@ const LeftSide = async () => {
         Losowe
       </MenuButton>
       <MenuButtonDropdown
-        content={<Categories />}
+        content={<Categories categories={categories} />}
         className="w-[520px] gap-x-[1px]"
       >
         Działy

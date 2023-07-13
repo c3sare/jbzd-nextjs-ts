@@ -162,7 +162,7 @@ model Category {
   nsfw         Boolean?
   slug         String             @unique
   order        Int?
-  columnNumber Int?
+  column       Int?
   parentId     String?            @db.ObjectId
   parent       Category?          @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   children     Category[]         @relation("CategoryToCategory")

@@ -4,7 +4,7 @@ import prisma from "@/app/libs/prismadb";
 export default async function getCategories() {
   const session = await getSession();
 
-  const isLoggedIn = Boolean(!session?.user?.email);
+  const isLoggedIn = Boolean(session?.user?.email);
 
   const categories = await prisma.category.findMany({
     where: {

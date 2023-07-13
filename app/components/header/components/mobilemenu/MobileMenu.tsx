@@ -1,11 +1,10 @@
 "use client";
 
 import IconButton from "@/app/components/IconButton";
-import MobileMenuContainer from "./components/MobileMenuContainer";
-import { useCallback, useEffect, useState } from "react";
+import { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-const MobileMenu = () => {
+const MobileMenu: React.FC<PropsWithChildren> = ({ children }) => {
   const pathname = usePathname();
   const [isShowedMobileMenu, setIsShowedMobileMenu] = useState<boolean>(false);
 
@@ -28,7 +27,7 @@ const MobileMenu = () => {
           <span className="w-full h-[2px] my-[4px] block bg-white" />
         </div>
       </IconButton>
-      <MobileMenuContainer isVisible={isShowedMobileMenu} />
+      {isShowedMobileMenu && children}
     </>
   );
 };
