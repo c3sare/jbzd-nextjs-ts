@@ -157,13 +157,17 @@ model BadgeComment {
 }
 
 model Category {
-  id         String             @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  nsfw       Boolean?
-  slug       String             @unique
-  asPage     Boolean?
-  posts      Post[]
-  followedBy FollowedCategory[]
+  id           String             @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  nsfw         Boolean?
+  slug         String             @unique
+  order        Int?
+  columnNumber Int?
+  parentId     String?            @db.ObjectId
+  parent       Category?          @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children     Category[]         @relation("CategoryToCategory")
+  posts        Post[]
+  followedBy   FollowedCategory[]
 }
 
 model Tag {

@@ -3,6 +3,9 @@ import { withAuth } from "next-auth/middleware";
 export default withAuth({
   pages: {
     signIn: "/logowanie",
+    signOut: "/auth/signout",
+    error: "/logowanie",
+    newUser: "/",
   },
 });
 

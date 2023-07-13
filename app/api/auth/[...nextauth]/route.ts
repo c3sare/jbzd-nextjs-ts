@@ -55,10 +55,13 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    signIn: async ({ user: userSignin, profile }) => {
+    signIn: async ({ user: userSignin, profile, account }) => {
       if (!profile?.email) return false;
 
-      if (!(userSignin as Partial<User>)?.username) {
+      if (
+        !(userSignin as Partial<User>)?.username &&
+        account?.type === "oauth"
+      ) {
         const userUniqueId = getUniqueId();
         const username = "guest_" + userUniqueId;
 

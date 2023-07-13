@@ -7,7 +7,10 @@ const Sidebar = async () => {
   const isLoggedIn = session?.user?.email;
 
   return (
-    <aside className="hidden xl:flex flex-col w-[356px] bg-[#313131]">
+    <aside
+      id="sidebar"
+      className="hidden xl:flex flex-col w-[356px] bg-[#313131]"
+    >
       {isLoggedIn ? <ProfileInfo /> : <SidebarForms />}
     </aside>
   );
