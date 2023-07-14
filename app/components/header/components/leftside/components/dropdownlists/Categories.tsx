@@ -1,15 +1,16 @@
 import CategoryLink from "./components/categories/CategoryLink";
 import CategorySubLink from "./components/categories/CategorySubLink";
-import { CategoryWithChildren } from "@/app/libs/getIn2DArray";
+import getIn2DArray from "@/app/libs/getIn2DArray";
+import getCategories from "@/app/actions/getCategories";
 
-type CategoriesProps = {
-  categories: CategoryWithChildren[][];
-};
+const Categories = async () => {
+  const categories = await getCategories();
 
-const Categories: React.FC<CategoriesProps> = ({ categories }) => {
+  const categoriesInColumns = getIn2DArray(categories);
+
   return (
     <>
-      {categories.map((column, i) => (
+      {categoriesInColumns.map((column, i) => (
         <div
           key={i}
           className="p-[15px] w-[50%] first:border-r last:border-l border-[#313131]"

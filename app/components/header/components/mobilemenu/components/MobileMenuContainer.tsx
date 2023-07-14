@@ -11,17 +11,13 @@ import MobileMenuLinkButton from "./MobileMenuLinkButton";
 import Categories from "../../leftside/components/dropdownlists/Categories";
 import ProfileInfo from "./ProfileInfo";
 import SidebarForms from "@/app/components/sidebar/components/SidebarForms";
-import { CategoryWithChildren } from "@/app/libs/getIn2DArray";
+import getSession from "@/app/actions/getSession";
 
-type MobileMenuContainerProps = {
-  isLoggedIn: boolean;
-  categories: CategoryWithChildren[][];
-};
+const MobileMenuContainer = async () => {
+  const session = await getSession();
 
-const MobileMenuContainer: React.FC<MobileMenuContainerProps> = ({
-  isLoggedIn,
-  categories,
-}) => {
+  const isLoggedIn = Boolean(session?.user?.email);
+
   return (
     <div className="lg:hidden fixed top-[46px] left-0 w-full h-[calc(100vh-46px)] bg-[#313131] pt-0 overflow-y-auto">
       <div className="pb-[5px]">
@@ -73,7 +69,7 @@ const MobileMenuContainer: React.FC<MobileMenuContainerProps> = ({
         </MobileMenuLinkButton>
       </div>
       <div className="bg-[#181818] flex flex-wrap">
-        <Categories categories={categories} />
+        <Categories />
       </div>
     </div>
   );
