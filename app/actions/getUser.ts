@@ -13,73 +13,317 @@ function sumValuesFromArray(arr: number[]) {
 }
 
 export default async function getUser(username: string) {
-  const user = await prisma.user.findUnique({
-    where: {
-      username,
-    },
-    include: {
-      _count: {
-        select: {
-          actionedByUsers: {},
+  const user = await prisma.user.aggregateRaw({
+    pipeline: [
+      {
+        $sort: {
+          createDate: -1,
         },
       },
-      posts: {
-        include: {
-          badges: true,
+      {
+        $lookup: {
+          from: "UserVote",
+          localField: "_id",
+          foreignField: "userId",
+          as: "spears",
         },
       },
-      comments: {
-        include: {
-          commentBadges: true,
+      {
+        $set: {
+          spears: {
+            $cond: {
+              if: {
+                $isArray: "$spears",
+              },
+              then: {
+                $size: "$spears",
+              },
+              else: 0,
+            },
+          },
         },
       },
-    },
+      {
+        $lookup: {
+          from: "Post",
+          localField: "_id",
+          foreignField: "authorId",
+          as: "posts",
+          pipeline: [
+            {
+              $lookup: {
+                from: "BadgePost",
+                localField: "_id",
+                foreignField: "postId",
+                as: "postBadges",
+              },
+            },
+            {
+              $set: {
+                rock: {
+                  $filter: {
+                    input: "$postBadges",
+                    as: "badge",
+                    cond: {
+                      $eq: ["$$badge.type", "ROCK"],
+                    },
+                  },
+                },
+                silver: {
+                  $filter: {
+                    input: "$postBadges",
+                    as: "badge",
+                    cond: {
+                      $eq: ["$$badge.type", "SILVER"],
+                    },
+                  },
+                },
+                gold: {
+                  $filter: {
+                    input: "$postBadges",
+                    as: "badge",
+                    cond: {
+                      $eq: ["$$badge.type", "GOLD"],
+                    },
+                  },
+                },
+              },
+            },
+            {
+              $set: {
+                rock: {
+                  $cond: {
+                    if: {
+                      $isArray: "$rock",
+                    },
+                    then: {
+                      $size: "$rock",
+                    },
+                    else: 0,
+                  },
+                },
+                silver: {
+                  $cond: {
+                    if: {
+                      $isArray: "$silver",
+                    },
+                    then: {
+                      $size: "$silver",
+                    },
+                    else: 0,
+                  },
+                },
+                gold: {
+                  $cond: {
+                    if: {
+                      $isArray: "$gold",
+                    },
+                    then: {
+                      $size: "$gold",
+                    },
+                    else: 0,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: "Comment",
+          localField: "_id",
+          foreignField: "authorId",
+          as: "comments",
+          pipeline: [
+            {
+              $lookup: {
+                from: "BadgeComment",
+                localField: "_id",
+                foreignField: "commentId",
+                as: "commentBadges",
+              },
+            },
+            {
+              $set: {
+                rock: {
+                  $filter: {
+                    input: "$commentBadges",
+                    as: "badge",
+                    cond: {
+                      $eq: ["$$badge.type", "ROCK"],
+                    },
+                  },
+                },
+                silver: {
+                  $filter: {
+                    input: "$commentBadges",
+                    as: "badge",
+                    cond: {
+                      $eq: ["$$badge.type", "SILVER"],
+                    },
+                  },
+                },
+                gold: {
+                  $filter: {
+                    input: "$commentBadges",
+                    as: "badge",
+                    cond: {
+                      $eq: ["$$badge.type", "GOLD"],
+                    },
+                  },
+                },
+              },
+            },
+            {
+              $set: {
+                rock: {
+                  $cond: {
+                    if: {
+                      $isArray: "$rock",
+                    },
+                    then: {
+                      $size: "$rock",
+                    },
+                    else: 0,
+                  },
+                },
+                silver: {
+                  $cond: {
+                    if: {
+                      $isArray: "$silver",
+                    },
+                    then: {
+                      $size: "$silver",
+                    },
+                    else: 0,
+                  },
+                },
+                gold: {
+                  $cond: {
+                    if: {
+                      $isArray: "$gold",
+                    },
+                    then: {
+                      $size: "$gold",
+                    },
+                    else: 0,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      {
+        $set: {
+          rock: {
+            $add: [{ $sum: "$comments.rock" }, { $sum: "$posts.rock" }],
+          },
+          silver: {
+            $add: [{ $sum: "$comments.silver" }, { $sum: "$posts.silver" }],
+          },
+          gold: {
+            $add: [{ $sum: "$comments.gold" }, { $sum: "$posts.gold" }],
+          },
+          comments: {
+            $cond: {
+              if: {
+                $isArray: "$comments",
+              },
+              then: {
+                $size: "$comments",
+              },
+              else: 0,
+            },
+          },
+          posts: {
+            $cond: {
+              if: {
+                $isArray: "$posts",
+              },
+              then: {
+                $size: "$posts",
+              },
+              else: 0,
+            },
+          },
+          acceptedPosts: {
+            $filter: {
+              input: "$posts",
+              as: "post",
+              cond: {
+                $eq: ["$$post.accepted", true],
+              },
+            },
+          },
+        },
+      },
+      {
+        $set: {
+          acceptedPosts: {
+            $cond: {
+              if: {
+                $isArray: "$acceptedPosts",
+              },
+              then: {
+                $size: "$acceptedPosts",
+              },
+              else: 0,
+            },
+          },
+        },
+      },
+      {
+        $setWindowFields: {
+          partitionBy: "$state",
+          sortBy: {
+            spears: -1,
+          },
+          output: {
+            rank: {
+              $documentNumber: {},
+            },
+          },
+        },
+      },
+      {
+        $unset: [
+          "name",
+          "email",
+          "emailVerified",
+          "updatedAt",
+          "hashedPassword",
+          "gender",
+          "country",
+          "city",
+          "birthdate",
+        ],
+      },
+      {
+        $match: {
+          username,
+        },
+      },
+    ],
   });
 
-  type userType = typeof user;
-
-  if (!user) return {};
-
-  function getPostBadgeCount(
-    user: userType,
-    badgeType: "ROCK" | "SILVER" | "GOLD"
-  ) {
-    return sumValuesFromArray(
-      user!.posts.map(
-        (item) => item.badges.filter((badge) => badge.type === badgeType).length
-      )
-    );
-  }
-
-  function getCommentBadgeCount(
-    user: userType,
-    badgeType: "ROCK" | "SILVER" | "GOLD"
-  ) {
-    return sumValuesFromArray(
-      user!.comments.map(
-        (item) =>
-          item.commentBadges.filter((badge) => badge.type === badgeType).length
-      )
-    );
-  }
-
-  const badges = {
-    rock: getPostBadgeCount(user, "ROCK") + getCommentBadgeCount(user, "ROCK"),
-    silver:
-      getPostBadgeCount(user, "SILVER") + getCommentBadgeCount(user, "SILVER"),
-    gold: getPostBadgeCount(user, "GOLD") + getCommentBadgeCount(user, "GOLD"),
+  type User = {
+    _id: string;
+    image: string;
+    createdAt: { $date: string };
+    username: string;
+    spears: number;
+    posts: number;
+    comments: number;
+    rock: number;
+    silver: number;
+    gold: number;
+    acceptedPosts: number;
+    rank: number;
   };
 
-  return {
-    username: user.username,
-    createdAt: user.createdAt,
-    image: user.image,
-    posts: {
-      accepted: user.posts.filter((item) => item.accepted).length,
-      all: user.posts.length,
-    },
-    badges,
-    spears: user._count.actionedByUsers,
-    comments: user.comments.length,
-  };
+  const newUser: User = JSON.parse(JSON.stringify(user[0]));
+
+  return newUser;
 }

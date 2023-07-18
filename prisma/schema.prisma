@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["views"]
 }
 
 datasource db {
@@ -157,17 +158,17 @@ model BadgeComment {
 }
 
 model Category {
-  id           String             @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  nsfw         Boolean?
-  slug         String             @unique
-  order        Int?
-  column       Int?
-  parentId     String?            @db.ObjectId
-  parent       Category?          @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  children     Category[]         @relation("CategoryToCategory")
-  posts        Post[]
-  followedBy   FollowedCategory[]
+  id         String             @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  nsfw       Boolean?
+  slug       String             @unique
+  order      Int?
+  column     Int?
+  parentId   String?            @db.ObjectId
+  parent     Category?          @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children   Category[]         @relation("CategoryToCategory")
+  posts      Post[]
+  followedBy FollowedCategory[]
 }
 
 model Tag {
@@ -249,4 +250,19 @@ enum CommentVoteType {
 enum UserActionType {
   FOLLOW
   BLOCK
+}
+
+view UserProfile {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  username      String
+  image         String
+  createdAt     DateTime
+  spears        BigInt
+  posts         BigInt
+  comments      BigInt
+  rock          BigInt
+  silver        BigInt
+  gold          BigInt
+  acceptedPosts BigInt
+  rank          BigInt
 }

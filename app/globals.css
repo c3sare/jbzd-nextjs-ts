@@ -12,3 +12,8 @@ body {
   font-size: 14px;
   color: white;
 }
+
+img {
+  max-width: 100%;
+  height: auto;
+}
