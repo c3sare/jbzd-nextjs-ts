@@ -28,6 +28,7 @@
     "next-auth": "^4.22.1",
     "postcss": "8.4.24",
     "react": "18.2.0",
+    "react-datepicker": "^4.16.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.0",
     "react-hot-toast": "^2.4.1",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.4.2",
+    "@types/react-datepicker": "^4.11.2",
     "prisma": "^5.0.0"
   }
 }

@@ -14,7 +14,7 @@ model User {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
   username       String?   @unique
   name           String?
-  gender         String?
+  gender         Int?      @default(0)
   country        String?
   city           String?
   birthdate      DateTime?

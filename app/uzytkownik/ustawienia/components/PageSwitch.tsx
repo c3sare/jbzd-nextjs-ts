@@ -26,6 +26,10 @@ const PageSwitch = () => {
     {
       name: "Premium",
       Component: <UserPremiumTab />,
+      style: {
+        color: "#b4d132",
+        fontWeight: "700",
+      },
     },
   ];
 
@@ -39,6 +43,7 @@ const PageSwitch = () => {
             active={currentTab === i}
             key={i}
             onClick={() => setCurrentTab(i)}
+            style={item.style || {}}
           >
             {item.name}
           </SwitchButton>

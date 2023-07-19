@@ -4,6 +4,9 @@ import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/app/components/sidebar/components/forms/components/Input";
 import Select from "@/app/components/forms/Select";
+import InputDate from "@/app/components/sidebar/components/forms/components/InputDate";
+import Button from "@/app/components/sidebar/components/forms/components/Button";
+import { parseISO } from "date-fns";
 
 const AccountDetailsForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -11,14 +14,34 @@ const AccountDetailsForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    setValue,
   } = useForm<FieldValues>({
-    defaultValues: {},
+    defaultValues: async () => {
+      setIsLoading(true);
+      const data = await axios.get("/api/user/settings/data");
+      if (data.status === 200) {
+        setIsLoading(false);
+        return {
+          name: data.data?.name || "",
+          gender: [0, 1, 2, 3].includes(Number(data.data?.gender))
+            ? Number(data.data.gender)
+            : 0,
+          city: data.data?.city || "",
+          country: data.data?.country || "",
+          birthdate: data.data?.birthdate ? parseISO(data.data.birthdate) : "",
+        };
+      } else {
+        toast.error("Wystąpił problem przy pobieraniu danych!");
+        return {};
+      }
+    },
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
     axios
-      .post("/api/")
+      .post("/api/user/settings/data", data)
       .then((data) => {
         toast.success("Dane zostały zaaktualizowane!");
       })
@@ -64,6 +87,7 @@ const AccountDetailsForm = () => {
           options={genderValues}
           register={register}
           disabled={isLoading}
+          valueAsNumber
         />
         <Input
           id="country"
@@ -79,6 +103,16 @@ const AccountDetailsForm = () => {
           placeholder="Miasto"
           disabled={isLoading}
         />
+        <InputDate
+          id="birthdate"
+          register={register}
+          errors={errors}
+          placeholder="Data urodzenia"
+          disabled={isLoading}
+          watch={watch}
+          setValue={setValue}
+        />
+        <Button type="submit">Zapisz</Button>
       </form>
     </>
   );
