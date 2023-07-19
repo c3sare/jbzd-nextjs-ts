@@ -2,41 +2,24 @@ import getSession from "./getSession";
 import prisma from "@/app/libs/prismadb";
 
 export default async function getProfileInfo() {
-  const session = await getSession();
+  try {
+    const session = await getSession();
 
-  if (!session?.user?.email) {
-    return {};
+    if (!session?.user?.email) {
+      return null;
+    }
+
+    const user = await prisma.userProfileInfo.findFirst({
+      where: {
+        email: session?.user?.email,
+      },
+    });
+
+    if (!user) return null;
+
+    return user;
+  } catch (err: any) {
+    console.log(err);
+    return null;
   }
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email: session?.user?.email,
-    },
-    include: {
-      _count: {
-        select: {
-          posts: {},
-          comments: {},
-        },
-      },
-      posts: {
-        where: {
-          accepted: true,
-        },
-      },
-    },
-  });
-
-  if (!user) return {};
-
-  return {
-    username: user.username,
-    createdAt: user.createdAt,
-    image: user.image,
-    posts: {
-      accepted: user._count.posts,
-      all: user.posts.length,
-    },
-    comments: user._count.comments,
-  };
 }

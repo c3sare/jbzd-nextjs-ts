@@ -1,5 +1,7 @@
+import PageSwitch from "./components/PageSwitch";
+
 const UserSettings = () => {
-  return <div>Ustawienia użytkownika</div>;
+  return <PageSwitch />;
 };
 
 export default UserSettings;

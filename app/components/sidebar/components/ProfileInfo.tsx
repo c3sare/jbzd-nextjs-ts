@@ -10,6 +10,8 @@ import SignOutButton from "./SignOutButton";
 const ProfileInfo = async () => {
   const user = await getProfileInfo();
 
+  if (!user) return <div>Wystąpił błąd przy wczytywaniu profilu!</div>;
+
   const linkItemClassNames =
     "flex w-[calc(100%/3)] h-full justify-center items-center hover:bg-[#181818]";
 
@@ -38,12 +40,12 @@ const ProfileInfo = async () => {
             <p className="flex items-center">
               <AiFillPicture size={20} color="#888888" />
               <span className="ml-2">
-                {user.posts?.all || 0} / {user.posts?.accepted || 0}
+                {user.posts} / {user.acceptedPosts}
               </span>
             </p>
             <p className="flex items-center">
               <FaComment size={20} color="#888888" />
-              <span className="ml-2">{user?.comments || 0}</span>
+              <span className="ml-2">{user.comments}</span>
             </p>
             <p className="flex items-center">
               <AiFillFlag size={20} color="#888888" />
