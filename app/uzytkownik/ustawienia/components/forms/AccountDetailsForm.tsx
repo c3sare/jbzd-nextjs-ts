@@ -15,6 +15,9 @@ const AccountDetailsForm = () => {
   const [error, setError] = useState<boolean>(false);
 
   const getDefaultFormValues = async () => {
+    if (!isLoading) setIsLoading(true);
+    if (error) setError(false);
+
     const data = await axios.get("/api/user/settings/data");
     if (data.status === 200) {
       setIsLoading(false);
@@ -56,25 +59,6 @@ const AccountDetailsForm = () => {
       .finally(() => setIsLoading(false));
   };
 
-  const genderValues = [
-    {
-      label: "Mężczyzna",
-      value: 0,
-    },
-    {
-      label: "Kobieta",
-      value: 1,
-    },
-    {
-      label: "Inna",
-      value: 2,
-    },
-    {
-      label: "Śmigłowiec szturmowy apache",
-      value: 3,
-    },
-  ];
-
   return (
     <>
       <h3 className="font-bold text-[16px] my-4">Dane konta</h3>
@@ -88,11 +72,15 @@ const AccountDetailsForm = () => {
         />
         <Select
           id="gender"
-          options={genderValues}
           register={register}
           disabled={isLoading}
           valueAsNumber
-        />
+        >
+          <option value={0}>Mężczyzna</option>
+          <option value={1}>Kobieta</option>
+          <option value={2}>Inna</option>
+          <option value={3}>Śmigłowiec szturmowy apache</option>
+        </Select>
         <Input
           id="country"
           register={register}
