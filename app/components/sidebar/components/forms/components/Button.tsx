@@ -19,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({
         disabled={disabled}
         onClick={onClick}
         type={type || "button"}
-        className="w-full max-w-none bg-[#c03e3e] rounded-[5px] font-normal text-[13px] outline-none h-[30px] disabled:opacity-80"
+        className="w-full px-2 max-w-none bg-[#c03e3e] rounded-[5px] font-normal text-[13px] outline-none h-[30px] disabled:opacity-80"
       >
         {children}
       </button>

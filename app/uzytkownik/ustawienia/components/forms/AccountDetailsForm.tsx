@@ -1,6 +1,6 @@
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/app/components/sidebar/components/forms/components/Input";
 import Select from "@/app/components/forms/Select";
@@ -9,26 +9,30 @@ import Button from "@/app/components/sidebar/components/forms/components/Button"
 import { zodResolver } from "@hookform/resolvers/zod";
 import AccountDetailsSchema from "@/app/formSchemas/AccountDetailsSchema";
 import LoadingBox from "@/app/components/LoadingBox";
+import ErrorBox from "@/app/components/forms/ErrorBox";
 
 const AccountDetailsForm = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
 
-  const getDefaultFormValues = async () => {
+  const getDefaultFormValues = useCallback(async () => {
     if (!isLoading) setIsLoading(true);
     if (error) setError(false);
 
-    const data = await axios.get("/api/user/settings/data");
-    if (data.status === 200) {
-      setIsLoading(false);
-      return data.data;
-    } else {
-      toast.error("Wystąpił problem przy pobieraniu danych!");
-      setIsLoading(false);
-      setError(true);
-      return {};
-    }
-  };
+    axios
+      .get("/api/user/settings/data")
+      .then((data) => {
+        reset(data.data);
+      })
+      .catch((err) => {
+        if (err instanceof Error) {
+          console.log(err as Error);
+          toast.error("Wystąpił problem przy pobieraniu danych!");
+          setError(true);
+        }
+      })
+      .finally(() => setIsLoading(false));
+  }, [error, isLoading]);
 
   const {
     register,
@@ -36,6 +40,7 @@ const AccountDetailsForm = () => {
     formState: { errors },
     watch,
     setValue,
+    reset,
   } = useForm<FieldValues>({
     resolver: zodResolver(AccountDetailsSchema),
     defaultValues: getDefaultFormValues,
@@ -108,6 +113,7 @@ const AccountDetailsForm = () => {
           Zapisz
         </Button>
         {isLoading && <LoadingBox />}
+        {error && <ErrorBox onClick={() => getDefaultFormValues()} />}
       </form>
     </>
   );

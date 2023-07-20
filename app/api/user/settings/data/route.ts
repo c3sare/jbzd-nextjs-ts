@@ -42,8 +42,12 @@ export async function POST(request: Request) {
 
     const body: AccountDetailsType = await request.json();
 
-    const { name, gender, city, country, birthdate } =
-      AccountDetailsSchema.parse(body);
+    const parsedBody = AccountDetailsSchema.safeParse(body);
+
+    if (!parsedBody.success)
+      return new NextResponse("Internal Error", { status: 400 });
+
+    const { name, gender, city, country, birthdate } = parsedBody.data;
 
     const update = await prisma.user.update({
       where: {
