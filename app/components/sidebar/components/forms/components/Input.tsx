@@ -22,7 +22,7 @@ type InputProps = {
     message: string;
   };
   validate?: Validate<FieldValue<FieldValues>, any>;
-  type?: "password" | "text" | "number" | "date";
+  type?: "password" | "text" | "number";
 };
 
 const Input: React.FC<InputProps> = ({

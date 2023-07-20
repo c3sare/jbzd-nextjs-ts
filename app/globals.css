@@ -17,3 +17,36 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+.loader {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  animation: loading-rotating ease 1.5s infinite;
+}
+
+.loader:after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 1);
+  transform: translateX(-50%) translateY(50%);
+}
+
+@keyframes loading-rotating {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(1turn);
+    transform: rotate(1turn);
+  }
+}

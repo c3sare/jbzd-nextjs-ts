@@ -11,6 +11,7 @@ import {
 } from "react-hook-form";
 import DatePicker, { registerLocale } from "react-datepicker";
 import pl from "date-fns/locale/pl";
+import { formatISO, parseISO } from "date-fns";
 registerLocale("pl", pl);
 
 type InputDateProps = {
@@ -38,6 +39,8 @@ const InputDate: React.FC<InputDateProps> = ({
 
   const currentValue = watch(id);
 
+  console.log(currentValue);
+
   return (
     <div
       className={clsx(
@@ -51,9 +54,9 @@ const InputDate: React.FC<InputDateProps> = ({
         name={name}
         placeholderText={placeholder}
         locale="pl"
-        selected={currentValue}
+        selected={currentValue ? parseISO(currentValue) : null}
         onBlur={onBlur}
-        onChange={(date) => setValue(id, date)}
+        onChange={(date) => setValue(id, date ? formatISO(date) : null)}
         wrapperClassName="w-full"
         showPopperArrow={false}
         dateFormat="yyyy-MM-dd"

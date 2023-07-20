@@ -1,3 +1,3 @@
-const namePattern = /[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/;
+const namePattern = /^$|[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/g;
 
 export default namePattern;

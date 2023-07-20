@@ -6,10 +6,27 @@ import Input from "@/app/components/sidebar/components/forms/components/Input";
 import Select from "@/app/components/forms/Select";
 import InputDate from "@/app/components/sidebar/components/forms/components/InputDate";
 import Button from "@/app/components/sidebar/components/forms/components/Button";
-import { parseISO } from "date-fns";
+import { zodResolver } from "@hookform/resolvers/zod";
+import AccountDetailsSchema from "@/app/formSchemas/AccountDetailsSchema";
+import LoadingBox from "@/app/components/LoadingBox";
 
 const AccountDetailsForm = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
+
+  const getDefaultFormValues = async () => {
+    const data = await axios.get("/api/user/settings/data");
+    if (data.status === 200) {
+      setIsLoading(false);
+      return data.data;
+    } else {
+      toast.error("Wystąpił problem przy pobieraniu danych!");
+      setIsLoading(false);
+      setError(true);
+      return {};
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -17,25 +34,8 @@ const AccountDetailsForm = () => {
     watch,
     setValue,
   } = useForm<FieldValues>({
-    defaultValues: async () => {
-      setIsLoading(true);
-      const data = await axios.get("/api/user/settings/data");
-      if (data.status === 200) {
-        setIsLoading(false);
-        return {
-          name: data.data?.name || "",
-          gender: [0, 1, 2, 3].includes(Number(data.data?.gender))
-            ? Number(data.data.gender)
-            : 0,
-          city: data.data?.city || "",
-          country: data.data?.country || "",
-          birthdate: data.data?.birthdate ? parseISO(data.data.birthdate) : "",
-        };
-      } else {
-        toast.error("Wystąpił problem przy pobieraniu danych!");
-        return {};
-      }
-    },
+    resolver: zodResolver(AccountDetailsSchema),
+    defaultValues: getDefaultFormValues,
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -43,7 +43,11 @@ const AccountDetailsForm = () => {
     axios
       .post("/api/user/settings/data", data)
       .then((data) => {
-        toast.success("Dane zostały zaaktualizowane!");
+        if (data.status === 200) {
+          toast.success("Dane zostały zaaktualizowane!");
+        } else {
+          toast.error("Wystąpił nieoczekiwany błąd!");
+        }
       })
       .catch((err) => {
         toast.error("Wystąpił nieoczekiwany błąd!");
@@ -74,7 +78,7 @@ const AccountDetailsForm = () => {
   return (
     <>
       <h3 className="font-bold text-[16px] my-4">Dane konta</h3>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="relative">
         <Input
           id="name"
           register={register}
@@ -112,7 +116,10 @@ const AccountDetailsForm = () => {
           watch={watch}
           setValue={setValue}
         />
-        <Button type="submit">Zapisz</Button>
+        <Button disabled={isLoading} type="submit">
+          Zapisz
+        </Button>
+        {isLoading && <LoadingBox />}
       </form>
     </>
   );
