@@ -1,26 +1,31 @@
 "use client";
 
 import clsx from "clsx";
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
+import {
+  FieldErrors,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from "react-hook-form";
 import ErrorInputBox from "./ErrorInputBox";
 
-type CheckboxProps = {
-  id: string;
+type CheckboxProps<T extends FieldValues> = {
+  id: Path<T>;
   children?: React.ReactNode;
-  register: UseFormRegister<FieldValues>;
-  errors: FieldErrors<FieldValues>;
+  register: UseFormRegister<T>;
+  errors: FieldErrors<T>;
   required?: boolean;
   disabled?: boolean;
 };
 
-const Checkbox: React.FC<CheckboxProps> = ({
+function Checkbox<T extends FieldValues>({
   id,
   children,
   register,
   errors,
   required,
   disabled,
-}) => {
+}: CheckboxProps<T>) {
   return (
     <label
       className={clsx(
@@ -42,6 +47,6 @@ const Checkbox: React.FC<CheckboxProps> = ({
       )}
     </label>
   );
-};
+}
 
 export default Checkbox;

@@ -1,41 +1,64 @@
 "use client";
 
+import "react-datepicker/dist/react-datepicker.css";
 import clsx from "clsx";
 import {
   FieldErrors,
-  FieldValue,
   FieldValues,
+  Path,
+  PathValue,
   UseFormRegister,
-  Validate,
+  UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
 import ErrorInputBox from "./ErrorInputBox";
+import { formatISO, parseISO } from "date-fns";
+import pl from "date-fns/locale/pl";
+import DatePicker, { registerLocale } from "react-datepicker";
+registerLocale("pl", pl);
 
-type InputProps = {
-  register: UseFormRegister<FieldValues>;
-  id: string;
+interface InputProps<T extends FieldValues> {
+  register?: UseFormRegister<T>;
+  id: Path<T>;
   required?: boolean;
-  errors: FieldErrors<FieldValues>;
+  errors?: FieldErrors<T>;
   placeholder?: string;
   disabled?: boolean;
-  pattern?: {
-    value: RegExp;
-    message: string;
-  };
-  validate?: Validate<FieldValue<FieldValues>, any>;
-  type?: "password" | "text" | "number";
-};
+  type?: "password" | "text" | "number" | "date";
+  watch?: UseFormWatch<T>;
+  setValue?: UseFormSetValue<T>;
+}
 
-const Input: React.FC<InputProps> = ({
+function Input<T extends FieldValues>({
   register,
   id,
   errors,
-  required,
   placeholder,
   disabled,
   type,
-  validate,
-  pattern,
-}) => {
+  setValue,
+  watch,
+}: InputProps<T>) {
+  const registerReturn = register!(id);
+
+  const currentValue = watch ? watch(id) : null;
+
+  const inputClassNames = clsx(
+    `
+    block
+    bg-[#1f1f1f]
+    outline-none
+    text-[#777]
+    p-[12px_10px]
+    border
+    w-full
+    placeholder:text-[#777]
+    leading-none
+    border
+  `,
+    errors![id] ? "border-red-600" : "border-transparent"
+  );
+
   return (
     <div
       className={clsx(
@@ -43,33 +66,42 @@ const Input: React.FC<InputProps> = ({
         disabled && "opacity-80"
       )}
     >
-      <input
-        type={type || "text"}
-        {...register(id, { required, pattern, validate })}
-        placeholder={placeholder}
-        disabled={disabled}
-        className={clsx(
-          `
-            block
-            bg-[#1f1f1f]
-            outline-none
-            text-[#777]
-            p-[12px_10px]
-            border
-            ${errors[id] ? "border border-red-600" : "border-transparent"}
-            w-full
-            placeholder:text-[#777]
-            leading-none
-          `
-        )}
-      />
-      {errors[id] && (
+      {type === "date" ? (
+        <DatePicker
+          disabled={disabled}
+          ref={registerReturn.ref}
+          name={registerReturn.name}
+          placeholderText={placeholder}
+          locale="pl"
+          selected={currentValue ? parseISO(currentValue) : null}
+          onBlur={registerReturn.onBlur}
+          onChange={(date) =>
+            setValue!(
+              id,
+              (date ? formatISO(date) : null) as PathValue<T, Path<T>>
+            )
+          }
+          wrapperClassName="w-full"
+          showPopperArrow={false}
+          dateFormat="yyyy-MM-dd"
+          className={inputClassNames}
+        />
+      ) : (
+        <input
+          type={type || "text"}
+          {...registerReturn}
+          placeholder={placeholder}
+          disabled={disabled}
+          className={inputClassNames}
+        />
+      )}
+      {errors![id] && (
         <ErrorInputBox>
-          {(errors[id]?.message as string) || "To pole jest wymagane!"}
+          {(errors![id]?.message as string) || "To pole jest wymagane!"}
         </ErrorInputBox>
       )}
     </div>
   );
-};
+}
 
 export default Input;
