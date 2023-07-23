@@ -21,6 +21,8 @@ type UseZodFormProps<T extends FieldValues> = {
   pushFormDataMethod?: "POST" | "PUT" | "PATCH";
 } & Omit<UseFormProps<T>, "defaultValues" | "resolver">;
 
+const storedData: any = {};
+
 function useZodForm<T extends FieldValues>({
   zodSchema,
   initialFormDataEndpoint,
@@ -29,16 +31,28 @@ function useZodForm<T extends FieldValues>({
   ...rest
 }: UseZodFormProps<T>) {
   const [isLoading, setIsLoading] = useState<boolean>(
-    Boolean(initialFormDataEndpoint)
+    Boolean(
+      storedData[initialFormDataEndpoint as string]
+        ? false
+        : initialFormDataEndpoint
+    )
   );
   const [isError, setIsError] = useState<boolean>(false);
 
   async function getInitialFormData(reset?: UseFormReset<T>) {
+    if (storedData[initialFormDataEndpoint as string]) {
+      if (reset) {
+        return reset(storedData[initialFormDataEndpoint as string]);
+      } else {
+        return storedData[initialFormDataEndpoint as string];
+      }
+    }
+
     if (!isLoading) setIsLoading(true);
     if (isError) setIsError(false);
     try {
       const req = await axios.get(initialFormDataEndpoint || "");
-
+      storedData[initialFormDataEndpoint as string] = req.data;
       if (reset) reset(req.data);
       setIsLoading(false);
       if (!reset) return req.data;
@@ -86,6 +100,9 @@ function useZodForm<T extends FieldValues>({
       .then((data) => {
         if (data.status === 200) {
           toast.success("Dane zostały zaaktualizowane!");
+          if (initialFormDataEndpoint) {
+            storedData[initialFormDataEndpoint as string] = data.data;
+          }
         } else {
           toast.error("Wystąpił nieoczekiwany błąd!");
         }

@@ -64,7 +64,13 @@ export async function POST(request: Request) {
 
     if (!update) return new NextResponse("Internal Error", { status: 500 });
 
-    return NextResponse.json({});
+    return NextResponse.json({
+      name: update?.name || "",
+      gender: update?.gender || 0,
+      country: update?.country || "",
+      city: update?.city || "",
+      birthdate: update?.birthdate || null,
+    });
   } catch (err: any) {
     throw new NextResponse("Internal Error", { status: 500 });
   }
