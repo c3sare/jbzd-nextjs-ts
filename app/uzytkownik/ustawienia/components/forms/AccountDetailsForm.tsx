@@ -5,6 +5,7 @@ import AccountDetailsSchema, {
   AccountDetailsType,
 } from "@/app/formSchemas/AccountDetailsSchema";
 import useZodForm from "@/app/hooks/useZodForm";
+import Heading from "../Heading";
 
 const AccountDetailsForm = () => {
   const { Form } = useZodForm<AccountDetailsType>({
@@ -16,7 +17,7 @@ const AccountDetailsForm = () => {
 
   return (
     <>
-      <h3 className="font-bold text-[16px] my-4">Dane konta</h3>
+      <Heading>Dane konta</Heading>
       <Form>
         <Input id="name" placeholder="Imię" />
         <Select id="gender" valueAsNumber>
