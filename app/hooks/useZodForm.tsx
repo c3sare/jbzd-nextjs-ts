@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { PropsWithChildren, useState } from "react";
+import { useState } from "react";
 import {
   FieldValues,
   SubmitHandler,
@@ -10,12 +10,9 @@ import {
 } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
-import LoadingBox from "../components/LoadingBox";
-import ErrorBox from "../components/forms/ErrorBox";
-import React from "react";
 
 type UseZodFormProps<T extends FieldValues> = {
-  zodSchema: z.AnyZodObject | z.ZodEffects<z.AnyZodObject>;
+  zodSchema: z.ZodType<any, any, any>;
   initialFormDataEndpoint?: string;
   pushFormDataEndpoint: string;
   pushFormDataMethod?: "POST" | "PUT" | "PATCH";
@@ -114,40 +111,17 @@ function useZodForm<T extends FieldValues>({
       .finally(() => setIsLoading(false));
   };
 
-  const Form: React.FC<PropsWithChildren> = ({ children }) => {
-    return (
-      <form onSubmit={handleSubmit(onSubmit)} className="relative">
-        {React.Children.map(children, (child) => {
-          if (React.isValidElement(child)) {
-            const addProps = {
-              register,
-              errors: formState.errors,
-              disabled: isLoading,
-            };
-            if (child.props?.id) {
-              if (child.props?.type === "date") {
-                return React.cloneElement(child, {
-                  ...child.props,
-                  ...addProps,
-                  setValue,
-                  watch,
-                });
-              }
-              return React.cloneElement(child, { ...child.props, ...addProps });
-            } else if (child.props?.type === "submit") {
-              return React.cloneElement(child, {
-                ...child.props,
-                disabled: addProps.disabled,
-              });
-            }
-          }
-
-          return child;
-        })}
-        {isLoading && <LoadingBox />}
-        {isError && <ErrorBox onClick={() => getInitialFormData(reset)} />}
-      </form>
-    );
+  const zodFormComponentProps = {
+    isLoading,
+    isError,
+    getInitialFormData,
+    handleSubmit,
+    onSubmit,
+    register,
+    errors: formState.errors,
+    setValue,
+    watch,
+    reset,
   };
 
   return {
@@ -167,7 +141,7 @@ function useZodForm<T extends FieldValues>({
     register,
     setFocus,
     isLoading,
-    Form,
+    zodFormComponentProps,
   };
 }
 

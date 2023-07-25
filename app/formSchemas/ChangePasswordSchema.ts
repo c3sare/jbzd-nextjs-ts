@@ -26,6 +26,10 @@ const ChangePasswordSchema = z
   .refine((data) => data.newPassword === data.reNewPassword, {
     message: "Hasła muszą być identyczne!",
     path: ["reNewPassword"],
+  })
+  .refine((data) => data.currentPassword !== data.newPassword, {
+    message: "Nowe hasło nie może być takie jak stare!",
+    path: ["newPassword"],
   });
 
 export default ChangePasswordSchema;

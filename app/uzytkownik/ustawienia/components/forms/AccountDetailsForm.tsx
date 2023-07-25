@@ -6,9 +6,10 @@ import AccountDetailsSchema, {
 } from "@/app/formSchemas/AccountDetailsSchema";
 import useZodForm from "@/app/hooks/useZodForm";
 import Heading from "../Heading";
+import ZodForm from "@/app/components/forms/ZodForm";
 
 const AccountDetailsForm = () => {
-  const { Form } = useZodForm<AccountDetailsType>({
+  const { zodFormComponentProps } = useZodForm<AccountDetailsType>({
     initialFormDataEndpoint: "/api/user/settings/data",
     zodSchema: AccountDetailsSchema,
     pushFormDataEndpoint: "/api/user/settings/data",
@@ -18,7 +19,7 @@ const AccountDetailsForm = () => {
   return (
     <>
       <Heading>Dane konta</Heading>
-      <Form>
+      <ZodForm {...zodFormComponentProps}>
         <Input id="name" placeholder="Imię" />
         <Select id="gender" valueAsNumber>
           <option value={0}>Mężczyzna</option>
@@ -30,7 +31,7 @@ const AccountDetailsForm = () => {
         <Input id="city" placeholder="Miasto" />
         <Input type="date" id="birthdate" placeholder="Data urodzenia" />
         <Button type="submit">Zapisz</Button>
-      </Form>
+      </ZodForm>
     </>
   );
 };

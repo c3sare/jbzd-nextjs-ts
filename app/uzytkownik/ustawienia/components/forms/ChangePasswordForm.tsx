@@ -5,19 +5,18 @@ import Button from "@/app/components/sidebar/components/forms/components/Button"
 import ChangePasswordSchema, {
   ChangePasswordType,
 } from "@/app/formSchemas/ChangePasswordSchema";
+import ZodForm from "@/app/components/forms/ZodForm";
 
 const ChangePasswordForm = () => {
-  const { Form } = useZodForm<ChangePasswordType>({
+  const { zodFormComponentProps } = useZodForm<ChangePasswordType>({
     zodSchema: ChangePasswordSchema,
     pushFormDataEndpoint: "/api/user/password",
   });
 
-  console.log("rerender");
-
   return (
     <>
       <Heading>Zmiana hasła</Heading>
-      <Form>
+      <ZodForm {...zodFormComponentProps}>
         <Input
           placeholder="Aktualne hasło"
           type="password"
@@ -30,7 +29,7 @@ const ChangePasswordForm = () => {
           id="reNewPassword"
         />
         <Button type="submit">Zmień hasło</Button>
-      </Form>
+      </ZodForm>
     </>
   );
 };
