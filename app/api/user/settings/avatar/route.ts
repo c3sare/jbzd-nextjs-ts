@@ -42,7 +42,11 @@ export async function POST(request: Request) {
       /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$/;
     const isBase64 = (str: string) => base64RegExp.test(str);
 
-    if (!avatar || !isBase64(avatar.replace("data:image/png;base64,", "")))
+    const isValidBase64 = isBase64(
+      avatar.replace("data:image/png;base64,", "")
+    );
+
+    if (!avatar || !isValidBase64)
       return new NextResponse("Internal Error", { status: 500 });
 
     const user = await prisma.user.findUnique({
@@ -81,7 +85,7 @@ export async function POST(request: Request) {
     if (!update) return new NextResponse("Internal Error", { status: 500 });
 
     return NextResponse.json({
-      avatar,
+      avatar: result.secure_url,
     });
   } catch (err: any) {
     throw new NextResponse("Internal Error", { status: 500 });

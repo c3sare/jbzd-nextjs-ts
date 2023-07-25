@@ -15,7 +15,7 @@ import ErrorBox from "../components/forms/ErrorBox";
 import React from "react";
 
 type UseZodFormProps<T extends FieldValues> = {
-  zodSchema: z.ZodObject<z.ZodRawShape>;
+  zodSchema: z.AnyZodObject | z.ZodEffects<z.AnyZodObject>;
   initialFormDataEndpoint?: string;
   pushFormDataEndpoint: string;
   pushFormDataMethod?: "POST" | "PUT" | "PATCH";

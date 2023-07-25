@@ -15,6 +15,7 @@ import ErrorInputBox from "./ErrorInputBox";
 import { formatISO, parseISO } from "date-fns";
 import pl from "date-fns/locale/pl";
 import DatePicker, { registerLocale } from "react-datepicker";
+import { useMemo } from "react";
 registerLocale("pl", pl);
 
 interface InputProps<T extends FieldValues> {
@@ -59,6 +60,57 @@ function Input<T extends FieldValues>({
     errors![id] ? "border-red-600" : "border-transparent"
   );
 
+  const dataPicker = useMemo(
+    () => (
+      <DatePicker
+        disabled={disabled}
+        ref={registerReturn.ref}
+        name={registerReturn.name}
+        placeholderText={placeholder}
+        locale="pl"
+        selected={currentValue ? parseISO(currentValue) : null}
+        onBlur={registerReturn.onBlur}
+        onChange={(date) =>
+          setValue!(
+            id,
+            (date ? formatISO(date) : null) as PathValue<T, Path<T>>
+          )
+        }
+        wrapperClassName="w-full"
+        showPopperArrow={false}
+        dateFormat="yyyy-MM-dd"
+        className={inputClassNames}
+      />
+    ),
+    [
+      registerReturn,
+      inputClassNames,
+      currentValue,
+      disabled,
+      id,
+      placeholder,
+      setValue,
+    ]
+  );
+
+  const textInput = useMemo(
+    () => (
+      <input
+        type={type || "text"}
+        {...registerReturn}
+        placeholder={placeholder}
+        disabled={disabled}
+        className={inputClassNames}
+      />
+    ),
+    [disabled, inputClassNames, placeholder, registerReturn, type]
+  );
+
+  const input = useMemo(
+    () => (type === "date" ? dataPicker : textInput),
+    [type, dataPicker, textInput]
+  );
+
   return (
     <div
       className={clsx(
@@ -66,35 +118,7 @@ function Input<T extends FieldValues>({
         disabled && "opacity-80"
       )}
     >
-      {type === "date" ? (
-        <DatePicker
-          disabled={disabled}
-          ref={registerReturn.ref}
-          name={registerReturn.name}
-          placeholderText={placeholder}
-          locale="pl"
-          selected={currentValue ? parseISO(currentValue) : null}
-          onBlur={registerReturn.onBlur}
-          onChange={(date) =>
-            setValue!(
-              id,
-              (date ? formatISO(date) : null) as PathValue<T, Path<T>>
-            )
-          }
-          wrapperClassName="w-full"
-          showPopperArrow={false}
-          dateFormat="yyyy-MM-dd"
-          className={inputClassNames}
-        />
-      ) : (
-        <input
-          type={type || "text"}
-          {...registerReturn}
-          placeholder={placeholder}
-          disabled={disabled}
-          className={inputClassNames}
-        />
-      )}
+      {input}
       {errors![id] && (
         <ErrorInputBox>
           {(errors![id]?.message as string) || "To pole jest wymagane!"}

@@ -3,6 +3,7 @@
 import Hr from "@/app/components/Hr";
 import AccountDetailsForm from "../forms/AccountDetailsForm";
 import AvatarForm from "../forms/AvatarForm";
+import ChangePasswordForm from "../forms/ChangePasswordForm";
 
 const UserDataTab = () => {
   return (
@@ -10,6 +11,8 @@ const UserDataTab = () => {
       <AccountDetailsForm />
       <Hr />
       <AvatarForm />
+      <Hr />
+      <ChangePasswordForm />
     </>
   );
 };
