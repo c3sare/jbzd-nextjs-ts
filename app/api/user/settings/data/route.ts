@@ -18,9 +18,6 @@ export async function GET() {
       },
     });
 
-    if (!user)
-      return new NextResponse("User from session not found", { status: 404 });
-
     return NextResponse.json({
       name: user?.name || "",
       gender: user?.gender || 0,
@@ -42,12 +39,9 @@ export async function POST(request: Request) {
 
     const body: AccountDetailsType = await request.json();
 
-    const parsedBody = AccountDetailsSchema.safeParse(body);
+    const parsedBody = AccountDetailsSchema.parse(body);
 
-    if (!parsedBody.success)
-      return new NextResponse("Internal Error", { status: 400 });
-
-    const { name, gender, city, country, birthdate } = parsedBody.data;
+    const { name, gender, city, country, birthdate } = parsedBody;
 
     const update = await prisma.user.update({
       where: {
@@ -61,8 +55,6 @@ export async function POST(request: Request) {
         birthdate,
       },
     });
-
-    if (!update) return new NextResponse("Internal Error", { status: 500 });
 
     return NextResponse.json({
       name: update?.name || "",
