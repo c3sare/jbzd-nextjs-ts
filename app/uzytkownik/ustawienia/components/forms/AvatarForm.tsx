@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import AvatarEditor from "react-avatar-editor";
 import Heading from "../Heading";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 const cache: any = {};
 
@@ -21,6 +22,7 @@ const getImageBlob = (url: string) => {
 };
 
 const AvatarForm = () => {
+  const session = useSession();
   const avatarEndpoint = "/api/user/settings/avatar";
   const defaultAvatarURL = "/images/avatars/default.jpg";
 
@@ -71,6 +73,9 @@ const AvatarForm = () => {
       })
       .then((data) => {
         toast.success("Pomyślnie zmieniono avatar!");
+        session.update({
+          image: data.data.avatar,
+        });
         getImageBlob(data.data.avatar).then((data) => {
           setFile(data);
           cache[avatarEndpoint] = data;

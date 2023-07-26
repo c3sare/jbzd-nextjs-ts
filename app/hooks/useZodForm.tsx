@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import {
   FieldValues,
@@ -16,6 +17,8 @@ type UseZodFormProps<T extends FieldValues> = {
   initialFormDataEndpoint?: string;
   pushFormDataEndpoint: string;
   pushFormDataMethod?: "POST" | "PUT" | "PATCH";
+  updateSession?: boolean;
+  updateSessionProperty?: string;
 } & Omit<UseFormProps<T>, "defaultValues" | "resolver">;
 
 const storedData: any = {};
@@ -25,8 +28,11 @@ function useZodForm<T extends FieldValues>({
   initialFormDataEndpoint,
   pushFormDataEndpoint,
   pushFormDataMethod,
+  updateSession,
+  updateSessionProperty,
   ...rest
 }: UseZodFormProps<T>) {
+  const session = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(
     Boolean(
       storedData[initialFormDataEndpoint as string]
@@ -99,6 +105,11 @@ function useZodForm<T extends FieldValues>({
           toast.success("Dane zostały zaaktualizowane!");
           if (initialFormDataEndpoint) {
             storedData[initialFormDataEndpoint as string] = data.data;
+          }
+          if (updateSession && updateSessionProperty) {
+            session.update({
+              [updateSessionProperty]: data.data[updateSessionProperty],
+            });
           }
         } else {
           toast.error("Wystąpił nieoczekiwany błąd!");

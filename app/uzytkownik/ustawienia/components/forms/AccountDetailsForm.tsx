@@ -14,6 +14,8 @@ const AccountDetailsForm = () => {
     zodSchema: AccountDetailsSchema,
     pushFormDataEndpoint: "/api/user/settings/data",
     pushFormDataMethod: "POST",
+    updateSession: true,
+    updateSessionProperty: "name",
   });
 
   return (

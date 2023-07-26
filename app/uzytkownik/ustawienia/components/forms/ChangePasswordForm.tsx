@@ -6,8 +6,10 @@ import ChangePasswordSchema, {
   ChangePasswordType,
 } from "@/app/formSchemas/ChangePasswordSchema";
 import ZodForm from "@/app/components/forms/ZodForm";
+import { useSession } from "next-auth/react";
 
 const ChangePasswordForm = () => {
+  const session = useSession();
   const { zodFormComponentProps } = useZodForm<ChangePasswordType>({
     zodSchema: ChangePasswordSchema,
     pushFormDataEndpoint: "/api/user/password",
