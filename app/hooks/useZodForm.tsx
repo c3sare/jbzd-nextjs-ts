@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   FieldValues,
@@ -17,8 +17,8 @@ type UseZodFormProps<T extends FieldValues> = {
   initialFormDataEndpoint?: string;
   pushFormDataEndpoint: string;
   pushFormDataMethod?: "POST" | "PUT" | "PATCH";
-  updateSession?: boolean;
-  updateSessionProperty?: string;
+  refreshPageAfterSubmit?: boolean;
+  clearFormAfterChange?: boolean;
 } & Omit<UseFormProps<T>, "defaultValues" | "resolver">;
 
 const storedData: any = {};
@@ -28,11 +28,11 @@ function useZodForm<T extends FieldValues>({
   initialFormDataEndpoint,
   pushFormDataEndpoint,
   pushFormDataMethod,
-  updateSession,
-  updateSessionProperty,
+  refreshPageAfterSubmit,
+  clearFormAfterChange,
   ...rest
 }: UseZodFormProps<T>) {
-  const session = useSession();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(
     Boolean(
       storedData[initialFormDataEndpoint as string]
@@ -54,11 +54,12 @@ function useZodForm<T extends FieldValues>({
     if (!isLoading) setIsLoading(true);
     if (isError) setIsError(false);
     try {
-      const req = await axios.get(initialFormDataEndpoint || "");
-      storedData[initialFormDataEndpoint as string] = req.data;
-      if (reset) reset(req.data);
+      const request = await axios.get(initialFormDataEndpoint || "");
+      const response = request.data;
+      storedData[initialFormDataEndpoint as string] = response;
+      if (reset) reset(response);
       setIsLoading(false);
-      if (!reset) return req.data;
+      if (!reset) return response;
     } catch (err) {
       if (err instanceof Error) {
         console.log(err as Error);
@@ -100,17 +101,11 @@ function useZodForm<T extends FieldValues>({
       url: pushFormDataEndpoint,
       data,
     })
-      .then((data) => {
-        if (data.status === 200) {
+      .then((response) => {
+        if (response.status === 200) {
           toast.success("Dane zostały zaaktualizowane!");
-          if (initialFormDataEndpoint) {
-            storedData[initialFormDataEndpoint as string] = data.data;
-          }
-          if (updateSession && updateSessionProperty) {
-            session.update({
-              [updateSessionProperty]: data.data[updateSessionProperty],
-            });
-          }
+          if (clearFormAfterChange) reset();
+          if (refreshPageAfterSubmit) router.refresh();
         } else {
           toast.error("Wystąpił nieoczekiwany błąd!");
         }

@@ -11,16 +11,16 @@ type UserRankProps = {
   id: string;
   spears: number;
   rank: number;
-  email: string;
+  username: string;
 };
 
-const UserRank: React.FC<UserRankProps> = ({ id, spears, rank, email }) => {
+const UserRank: React.FC<UserRankProps> = ({ id, spears, rank, username }) => {
   const session = useSession();
   const [spearCount, setSpearCount] = useState<number>(spears || 0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const isLoggedIn = session?.status === "authenticated";
-  const loggedEmail = session?.data?.user?.email;
+  const loggedUser = session?.data?.user?.username;
 
   const handleClickPlusButton = (id: string) => {
     setIsLoading(true);
@@ -42,7 +42,7 @@ const UserRank: React.FC<UserRankProps> = ({ id, spears, rank, email }) => {
           className="mr-[25px] sm:mr-0"
         />
         <span className="font-bold text-[22px]">{spearCount}</span>
-        {isLoggedIn && loggedEmail !== email && (
+        {isLoggedIn && loggedUser !== username && (
           <button
             onClick={() => handleClickPlusButton(id)}
             disabled={isLoading}

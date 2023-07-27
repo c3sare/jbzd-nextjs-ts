@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -24,6 +24,7 @@ model User {
   hashedPassword String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+  token          String?
 
   accounts           Account[]
   posts              Post[]
@@ -236,38 +237,36 @@ model TagAction {
 }
 
 model UserProfile {
-  id              String         @id @default(auto()) @map("_id") @db.ObjectId
-  image           String?
-  username        String
-  createdAt       DateTime
-  spears          Int
-  posts           Int
-  comments        Int
-  rock            Int
-  silver          Int
-  gold            Int
-  acceptedPosts   Int
-  rank            Int
-  email           String
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  image         String?
+  username      String
+  createdAt     DateTime
+  spears        Int
+  posts         Int
+  comments      Int
+  rock          Int
+  silver        Int
+  gold          Int
+  acceptedPosts Int
+  rank          Int
 }
 
 model UserProfileInfo {
-  id              String         @id @default(auto()) @map("_id") @db.ObjectId
-  image           String?
-  username        String
-  createdAt       DateTime
-  posts           Int
-  acceptedPosts   Int
-  comments        Int
-  email           String
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  image         String?
+  username      String
+  createdAt     DateTime
+  posts         Int
+  acceptedPosts Int
+  comments      Int
 }
 
 model UserRanking {
-  id              String         @id @default(auto()) @map("_id") @db.ObjectId
-  image           String?
-  username        String
-  spears          Int
-  rank            Int
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  image    String?
+  username String
+  spears   Int
+  rank     Int
 }
 
 enum BadgeType {

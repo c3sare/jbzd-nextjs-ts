@@ -51,9 +51,11 @@ const LoginPage: React.FC<LoginPageType> = async ({
       <div>
         <h1 className="text-3xl font-bold m-6">Logowanie</h1>
         <SidebarForms />
-        <div className="full-w text-red-600 text-sm text-center my-2">
-          {message}
-        </div>
+        {error && (
+          <div className="full-w text-red-600 text-sm text-center my-2">
+            {message}
+          </div>
+        )}
       </div>
       <HideSidebar />
     </>

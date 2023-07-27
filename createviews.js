@@ -294,6 +294,7 @@ connect.then(async (client) => {
         {
           $unset: [
             "name",
+            "email",
             "emailVerified",
             "updatedAt",
             "hashedPassword",
@@ -379,6 +380,7 @@ connect.then(async (client) => {
         {
           $unset: [
             "name",
+            "email",
             "emailVerified",
             "updatedAt",
             "hashedPassword",

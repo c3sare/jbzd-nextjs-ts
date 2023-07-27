@@ -5,9 +5,9 @@ import Button from "@/app/components/sidebar/components/forms/components/Button"
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import AvatarEditor from "react-avatar-editor";
-import Heading from "../Heading";
+import Heading from "../../Heading";
 import axios from "axios";
-import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const cache: any = {};
 
@@ -22,7 +22,7 @@ const getImageBlob = (url: string) => {
 };
 
 const AvatarForm = () => {
-  const session = useSession();
+  const router = useRouter();
   const avatarEndpoint = "/api/user/settings/avatar";
   const defaultAvatarURL = "/images/avatars/default.jpg";
 
@@ -73,13 +73,11 @@ const AvatarForm = () => {
       })
       .then((data) => {
         toast.success("Pomyślnie zmieniono avatar!");
-        session.update({
-          image: data.data.avatar,
-        });
         getImageBlob(data.data.avatar).then((data) => {
           setFile(data);
           cache[avatarEndpoint] = data;
         });
+        router.refresh();
       })
       .catch((err) => {
         toast.error("Wystąpił problem przy zapisie avatara!");
@@ -118,7 +116,18 @@ const AvatarForm = () => {
           className="mx-auto mb-[25px]"
           style={isLoading ? { opacity: "0.8" } : {}}
         >
-          {file ? editor : <div style={{ width: "204px", height: "204px" }} />}
+          {file ? (
+            editor
+          ) : (
+            <div
+              style={{
+                width: "204px",
+                height: "204px",
+                backgroundColor: "black",
+                margin: "0 auto",
+              }}
+            />
+          )}
           <input
             ref={fileInput}
             type="file"

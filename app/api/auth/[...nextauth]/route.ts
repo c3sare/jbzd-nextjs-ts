@@ -47,16 +47,16 @@ export const authOptions: AuthOptions = {
         );
 
         if (!isCorrectPassword) {
+          console.log("error");
           throw new Error("Invalid credentials");
         }
-
         return user;
       },
     }),
   ],
   callbacks: {
     signIn: async ({ user: userSignin, profile, account }) => {
-      if (!profile?.email) return false;
+      if (!profile?.email && !userSignin?.email) return false;
 
       if (
         !(userSignin as Partial<User>)?.username &&
@@ -67,7 +67,7 @@ export const authOptions: AuthOptions = {
 
         const update = await prisma.user.update({
           where: {
-            email: profile.email,
+            email: profile?.email! || userSignin?.email!,
           },
           data: {
             username,
@@ -78,6 +78,30 @@ export const authOptions: AuthOptions = {
       }
 
       return true;
+    },
+    jwt: async ({ token, user, account }) => {
+      if (user && account) {
+        token.provider = account.provider;
+      }
+
+      return token;
+    },
+    session: async ({ session, token }) => {
+      if (!session.user?.email) return session;
+
+      const dbUser = await prisma.user.findUnique({
+        where: {
+          email: session.user?.email,
+        },
+      });
+
+      if (!dbUser) return session;
+
+      session.user.provider = token.provider;
+      session.user.username = dbUser.username!;
+      delete session.user.name;
+
+      return session;
     },
   },
   // debug: process.env.NODE_ENV === "development",

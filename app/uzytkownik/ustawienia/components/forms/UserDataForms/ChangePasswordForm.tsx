@@ -1,18 +1,17 @@
 import useZodForm from "@/app/hooks/useZodForm";
-import Heading from "../Heading";
+import Heading from "../../Heading";
 import Input from "@/app/components/sidebar/components/forms/components/Input";
 import Button from "@/app/components/sidebar/components/forms/components/Button";
 import ChangePasswordSchema, {
   ChangePasswordType,
 } from "@/app/formSchemas/ChangePasswordSchema";
 import ZodForm from "@/app/components/forms/ZodForm";
-import { useSession } from "next-auth/react";
 
 const ChangePasswordForm = () => {
-  const session = useSession();
   const { zodFormComponentProps } = useZodForm<ChangePasswordType>({
     zodSchema: ChangePasswordSchema,
-    pushFormDataEndpoint: "/api/user/password",
+    pushFormDataEndpoint: "/api/user/settings/password",
+    clearFormAfterChange: true,
   });
 
   return (

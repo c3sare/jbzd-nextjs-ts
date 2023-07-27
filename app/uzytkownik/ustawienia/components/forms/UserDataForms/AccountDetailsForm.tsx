@@ -5,7 +5,7 @@ import AccountDetailsSchema, {
   AccountDetailsType,
 } from "@/app/formSchemas/AccountDetailsSchema";
 import useZodForm from "@/app/hooks/useZodForm";
-import Heading from "../Heading";
+import Heading from "../../Heading";
 import ZodForm from "@/app/components/forms/ZodForm";
 
 const AccountDetailsForm = () => {
@@ -14,8 +14,6 @@ const AccountDetailsForm = () => {
     zodSchema: AccountDetailsSchema,
     pushFormDataEndpoint: "/api/user/settings/data",
     pushFormDataMethod: "POST",
-    updateSession: true,
-    updateSessionProperty: "name",
   });
 
   return (

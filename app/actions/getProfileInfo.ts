@@ -5,13 +5,13 @@ export default async function getProfileInfo() {
   try {
     const session = await getSession();
 
-    if (!session?.user?.email) {
+    if (!session?.user?.username) {
       return null;
     }
 
     const user = await prisma.userProfileInfo.findFirst({
       where: {
-        email: session?.user?.email,
+        username: session?.user?.username,
       },
     });
 

@@ -6,7 +6,6 @@ import { format } from "date-fns";
 import Badge from "./components/Badge";
 import { notFound } from "next/navigation";
 import UserRank from "./components/UserRank";
-import getSession from "@/app/actions/getSession";
 
 type UserProfileProps = {
   params: {
@@ -72,7 +71,7 @@ const UserProfilePage: React.FC<UserProfileProps> = async ({
           </div>
         </div>
         <UserRank
-          email={user.email}
+          username={user.username}
           id={user.id}
           rank={user.rank}
           spears={user.spears}
