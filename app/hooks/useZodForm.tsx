@@ -1,8 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
+  DeepPartial,
   FieldValues,
   SubmitHandler,
   UseFormProps,
@@ -19,6 +20,9 @@ type UseZodFormProps<T extends FieldValues> = {
   pushFormDataMethod?: "POST" | "PUT" | "PATCH";
   refreshPageAfterSubmit?: boolean;
   clearFormAfterChange?: boolean;
+  defaultFormValues?: DeepPartial<T>;
+  successDataFetchCallback?: (data?: AxiosResponse<any>) => void;
+  customSuccessMessage?: string;
 } & Omit<UseFormProps<T>, "defaultValues" | "resolver">;
 
 const storedData: any = {};
@@ -30,6 +34,9 @@ function useZodForm<T extends FieldValues>({
   pushFormDataMethod,
   refreshPageAfterSubmit,
   clearFormAfterChange,
+  successDataFetchCallback,
+  customSuccessMessage,
+  defaultFormValues,
   ...rest
 }: UseZodFormProps<T>) {
   const router = useRouter();
@@ -90,7 +97,7 @@ function useZodForm<T extends FieldValues>({
     resolver: zodResolver(zodSchema),
     defaultValues: initialFormDataEndpoint
       ? () => getInitialFormData()
-      : undefined,
+      : defaultFormValues!,
     ...rest,
   });
 
@@ -103,7 +110,10 @@ function useZodForm<T extends FieldValues>({
     })
       .then((response) => {
         if (response.status === 200) {
-          toast.success("Dane zostały zaaktualizowane!");
+          toast.success(
+            customSuccessMessage || "Dane zostały zaaktualizowane!"
+          );
+          if (successDataFetchCallback) successDataFetchCallback(response);
           if (clearFormAfterChange) reset();
           if (refreshPageAfterSubmit) router.refresh();
         } else {

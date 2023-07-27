@@ -56,7 +56,7 @@ const SidebarForms = () => {
   return (
     <div className="p-[15px]">
       <div className="max-w-[290px] mx-auto my-0 text-white text-[14px] block py-[15px]">
-        <CurrentForm>
+        <CurrentForm setIndexOfCurrentForm={setIndexOfCurrentForm}>
           <div className="flex items-center justify-between mt-[10px] mb-[30px]">
             {orderedButtons}
           </div>

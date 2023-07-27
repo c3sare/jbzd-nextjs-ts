@@ -1,137 +1,86 @@
 "use client";
 
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Input from "./components/Input";
 import Button from "./components/Button";
-import { useState } from "react";
-import axios from "axios";
+import { Dispatch, SetStateAction, useState } from "react";
+import useZodForm from "@/app/hooks/useZodForm";
+import GetTokenSchema, {
+  GetTokenType,
+} from "@/app/formSchemas/PasswordRemindForms/GetTokenSchema";
+import ZodForm from "@/app/components/forms/ZodForm";
+import PasswordResetSchema, {
+  PasswordResetType,
+} from "@/app/formSchemas/PasswordRemindForms/PasswordResetSchema";
 
-const EmailVerificationForm: React.FC<{ setNextStep: () => void }> = ({
+type EmailVerificationFormProps = {
+  setNextStep: () => void;
+  setEmail: Dispatch<SetStateAction<string>>;
+};
+
+const EmailVerificationForm: React.FC<EmailVerificationFormProps> = ({
   setNextStep,
+  setEmail,
 }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FieldValues>({
-    defaultValues: {
-      email: "",
+  const { zodFormComponentProps } = useZodForm<GetTokenType>({
+    zodSchema: GetTokenSchema,
+    pushFormDataEndpoint: "/api/user/password/remind",
+    successDataFetchCallback: (data) => {
+      setEmail(data?.data.email || "");
+      setNextStep();
     },
+    customSuccessMessage: "Token został wysłany na wybrany adres e-mail.",
   });
 
-  const emailRegexPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsLoading(true);
-    axios
-      .post("/api/user/remindpassword", data)
-      .then((data) => {
-        if (data.data.isEmailValid) setNextStep();
-        else {
-          console.log("Something get wrong!");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => setIsLoading(false));
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        register={register}
-        errors={errors}
-        placeholder="Adres email"
-        id="email"
-        required
-        disabled={isLoading}
-        pattern={{
-          value: emailRegexPattern,
-          message: "Wprowadzony adres jest nieprawidłowy!",
-        }}
-      />
-      <Button disabled={isLoading} type="submit">
-        Wyślij link resetujący hasło
-      </Button>
-    </form>
+    <ZodForm {...zodFormComponentProps}>
+      <Input placeholder="Adres email" id="email" />
+      <Button type="submit">Wyślij link resetujący hasło</Button>
+    </ZodForm>
   );
 };
 
-const TokenValidationForm = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-    reset,
-  } = useForm<FieldValues>({
-    defaultValues: {
-      token: "",
-      password: "",
-      repassword: "",
+type TokenValidationForm = {
+  setIndexOfCurrentForm: Dispatch<SetStateAction<number>>;
+  email: string;
+};
+
+const TokenValidationForm: React.FC<TokenValidationForm> = ({
+  setIndexOfCurrentForm,
+  email,
+}) => {
+  const { zodFormComponentProps } = useZodForm<PasswordResetType>({
+    zodSchema: PasswordResetSchema,
+    pushFormDataEndpoint: "/api/user/password/change",
+    successDataFetchCallback: () => {
+      setIndexOfCurrentForm(0);
+    },
+    customSuccessMessage: "Hasło zostało pomyślnie zmienione!",
+    defaultFormValues: {
+      email,
     },
   });
 
-  const checkPasswords = (val: string) => {
-    const password = getValues("password");
-    const repassword = val;
-
-    if (password !== repassword) return "Hasła muszą być identyczne!";
-    else return false;
-  };
-
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsLoading(true);
-    axios
-      .post("/api/user/password", data)
-      .then((data) => {
-        if (data.data.ok) {
-          reset();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => setIsLoading(false));
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        register={register}
-        errors={errors}
-        required
-        id="token"
-        placeholder="TOKEN"
-      />
-      <Input
-        type="password"
-        register={register}
-        errors={errors}
-        required
-        id="password"
-        placeholder="Nowe Hasło"
-      />
-      <Input
-        type="password"
-        register={register}
-        errors={errors}
-        required
-        id="repassword"
-        placeholder="Powtórz Nowe Hasło"
-        validate={checkPasswords}
-      />
+    <ZodForm {...zodFormComponentProps}>
+      <Input hidden id="email" />
+      <Input id="token" placeholder="TOKEN" />
+      <Input type="password" id="password" placeholder="Nowe Hasło" />
+      <Input type="password" id="repassword" placeholder="Powtórz Nowe Hasło" />
       <Button type="submit">Zmień hasło</Button>
-    </form>
+    </ZodForm>
   );
 };
 
-const PasswordRemindForm: React.FC<React.PropsWithChildren> = ({
+type PasswordRemindFormProps = {
+  children?: React.ReactNode;
+  setIndexOfCurrentForm: Dispatch<SetStateAction<number>>;
+};
+
+const PasswordRemindForm: React.FC<PasswordRemindFormProps> = ({
   children,
+  setIndexOfCurrentForm,
 }) => {
+  const [email, setEmail] = useState<string>("");
   const [passwordRemindStep, setPasswordRemindStep] = useState<
     "emailVerification" | "tokenValidation"
   >("emailVerification");
@@ -141,9 +90,14 @@ const PasswordRemindForm: React.FC<React.PropsWithChildren> = ({
   return (
     <>
       {passwordRemindStep === "emailVerification" && (
-        <EmailVerificationForm setNextStep={setNextStep} />
+        <EmailVerificationForm setEmail={setEmail} setNextStep={setNextStep} />
       )}
-      {passwordRemindStep === "tokenValidation" && <TokenValidationForm />}
+      {passwordRemindStep === "tokenValidation" && (
+        <TokenValidationForm
+          email={email}
+          setIndexOfCurrentForm={setIndexOfCurrentForm}
+        />
+      )}
       {children}
     </>
   );

@@ -24,6 +24,7 @@ interface InputProps<T extends FieldValues> {
   required?: boolean;
   errors?: FieldErrors<T>;
   placeholder?: string;
+  hidden?: boolean;
   disabled?: boolean;
   type?: "password" | "text" | "number" | "date";
   watch?: UseFormWatch<T>;
@@ -36,6 +37,7 @@ function Input<T extends FieldValues>({
   errors,
   placeholder,
   disabled,
+  hidden,
   type,
   setValue,
   watch,
@@ -57,7 +59,8 @@ function Input<T extends FieldValues>({
     leading-none
     border
   `,
-    errors![id] ? "border-red-600" : "border-transparent"
+    errors![id] ? "border-red-600" : "border-transparent",
+    hidden && "hidden"
   );
 
   const dataPicker = useMemo(

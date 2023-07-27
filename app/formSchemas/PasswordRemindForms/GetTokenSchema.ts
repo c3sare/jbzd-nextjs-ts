@@ -1,11 +1,11 @@
 import { z } from "zod";
 
-const RemindEmailSchema = z.object({
+const GetTokenSchema = z.object({
   email: z
     .string({ required_error: "Uzupełnij adres e-mail!" })
     .email("E-mail jest nieprawidłowy!"),
 });
 
-export default RemindEmailSchema;
+export default GetTokenSchema;
 
-export type RemindEmailType = z.infer<typeof RemindEmailSchema>;
+export type GetTokenType = z.infer<typeof GetTokenSchema>;
