@@ -9,22 +9,28 @@ import { signIn } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import GoogleLoginButton from "./components/GoogleLoginButton";
+import ZodForm from "@/app/components/forms/ZodForm";
+import useZodForm from "@/app/hooks/useZodForm";
+import LoginSchema, { LoginType } from "@/app/formSchemas/LoginSchema";
 
 const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
-    handleSubmit,
     register,
+    isLoading,
+    setIsLoading,
+    handleSubmit,
+    isError,
     formState: { errors },
-  } = useForm<FieldValues>({
-    defaultValues: {
-      login: "",
-      password: "",
-    },
+    setValue,
+    watch,
+    reset,
+  } = useZodForm<LoginType>({
+    zodSchema: LoginSchema,
+    pushFormDataEndpoint: "",
   });
+  const router = useRouter();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<LoginType> = (data) => {
     setIsLoading(true);
     signIn("credentials", {
       ...data,
@@ -43,34 +49,30 @@ const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
       })
       .catch((err) => {
         console.log(err);
+        toast.error("Wystąpił nieoczekiwany błąd!");
         setIsLoading(false);
       });
   };
 
+  const newZodFormComponentProps = {
+    isLoading,
+    isError,
+    handleSubmit,
+    onSubmit,
+    register,
+    errors,
+    setValue,
+    watch,
+    reset,
+  };
+
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          id="login"
-          required
-          disabled={isLoading}
-          errors={errors}
-          register={register}
-          placeholder="Podaj nick lub email"
-        />
-        <Input
-          type="password"
-          id="password"
-          required
-          disabled={isLoading}
-          errors={errors}
-          register={register}
-          placeholder="Hasło"
-        />
-        <Button disabled={isLoading} type="submit">
-          Zaloguj się
-        </Button>
-      </form>
+      <ZodForm {...newZodFormComponentProps}>
+        <Input id="login" placeholder="Podaj nick lub email" />
+        <Input type="password" id="password" placeholder="Hasło" />
+        <Button type="submit">Zaloguj się</Button>
+      </ZodForm>
       {children}
       <FacebookLoginButton disabled={isLoading} setIsLoading={setIsLoading} />
       <GoogleLoginButton disabled={isLoading} setIsLoading={setIsLoading} />

@@ -12,8 +12,8 @@ import ErrorInputBox from "./ErrorInputBox";
 type CheckboxProps<T extends FieldValues> = {
   id: Path<T>;
   children?: React.ReactNode;
-  register: UseFormRegister<T>;
-  errors: FieldErrors<T>;
+  register?: UseFormRegister<T>;
+  errors?: FieldErrors<T>;
   required?: boolean;
   disabled?: boolean;
 };
@@ -30,19 +30,19 @@ function Checkbox<T extends FieldValues>({
     <label
       className={clsx(
         "group relative w-full flex gap-[10px] items-center border",
-        errors[id] ? "border-red-600" : "border-transparent",
+        errors![id] ? "border-red-600" : "border-transparent",
         disabled && "opacity-80"
       )}
     >
       <input
         type="checkbox"
         disabled={disabled}
-        {...register(id, { required })}
+        {...register!(id, { required })}
       />
       <span className="text-[#777] w-full text-right">{children}</span>
-      {errors[id] && (
+      {errors![id] && (
         <ErrorInputBox>
-          {(errors[id]?.message as string) || "Musisz zaakceptować!"}
+          {(errors![id]?.message as string) || "Musisz zaakceptować!"}
         </ErrorInputBox>
       )}
     </label>

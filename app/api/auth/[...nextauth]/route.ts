@@ -97,9 +97,12 @@ export const authOptions: AuthOptions = {
 
       if (!dbUser) return session;
 
-      session.user.provider = token.provider;
+      session.user.provider = token.provider as
+        | "credentials"
+        | "google"
+        | "facebook";
       session.user.username = dbUser.username!;
-      delete session.user.name;
+      delete (session.user as any).name;
 
       return session;
     },

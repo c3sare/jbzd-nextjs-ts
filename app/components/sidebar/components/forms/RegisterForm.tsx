@@ -1,85 +1,42 @@
 "use client";
 
-import axios from "axios";
-import { useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Input from "./components/Input";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
 import Link from "next/link";
-import { toast } from "react-hot-toast";
+import ZodForm from "@/app/components/forms/ZodForm";
+import useZodForm from "@/app/hooks/useZodForm";
+import RegisterSchema, { RegisterType } from "@/app/formSchemas/RegisterSchema";
+import { Dispatch, SetStateAction } from "react";
 
-const RegisterForm: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<FieldValues>({
-    defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-      repassword: "",
-      rules: false,
-    },
+type RegisterFormProps = {
+  children?: React.ReactNode;
+  setIndexOfCurrentForm: Dispatch<SetStateAction<number>>;
+};
+
+const RegisterForm: React.FC<RegisterFormProps> = ({
+  children,
+  setIndexOfCurrentForm,
+}) => {
+  const { zodFormComponentProps } = useZodForm<RegisterType>({
+    pushFormDataEndpoint: "/api/register",
+    zodSchema: RegisterSchema,
+    customSuccessMessage: "Konto zostało założone prawidłowo!",
+    successDataFetchCallback: () => setIndexOfCurrentForm(0),
   });
-
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsLoading(true);
-    axios
-      .post("/api/register", data)
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Wystąpił błąd!");
-      })
-      .finally(() => setIsLoading(false));
-  };
-
-  const inputDefaultProps = {
-    register,
-    errors,
-    disabled: isLoading,
-    required: true,
-  };
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          {...inputDefaultProps}
-          id="username"
-          placeholder="Nazwa użytkownika"
-        />
-        <Input {...inputDefaultProps} id="email" placeholder="Email" />
-        <Input
-          {...inputDefaultProps}
-          id="password"
-          type="password"
-          placeholder="Hasło"
-        />
-        <Input
-          {...inputDefaultProps}
-          id="repassword"
-          type="password"
-          placeholder="Powtórz hasło"
-        />
-        <Checkbox
-          id="rules"
-          register={register}
-          errors={errors}
-          disabled={isLoading}
-          required
-        >
+      <ZodForm {...zodFormComponentProps}>
+        <Input id="username" placeholder="Nazwa użytkownika" />
+        <Input id="email" placeholder="Email" />
+        <Input id="password" type="password" placeholder="Hasło" />
+        <Input id="repassword" type="password" placeholder="Powtórz hasło" />
+        <Checkbox id="rules" required>
           Akceptuję <Link href="/regulamin">regulamin</Link>
         </Checkbox>
-        <Button disabled={isLoading} type="submit">
-          Zarejestruj
-        </Button>
-      </form>
+        <Button type="submit">Zarejestruj</Button>
+      </ZodForm>
       {children}
     </>
   );

@@ -113,6 +113,8 @@ function useZodForm<T extends FieldValues>({
           toast.success(
             customSuccessMessage || "Dane zostały zaaktualizowane!"
           );
+          if (initialFormDataEndpoint)
+            storedData[initialFormDataEndpoint as string] = response.data;
           if (successDataFetchCallback) successDataFetchCallback(response);
           if (clearFormAfterChange) reset();
           if (refreshPageAfterSubmit) router.refresh();
@@ -156,7 +158,9 @@ function useZodForm<T extends FieldValues>({
     control,
     register,
     setFocus,
+    isError,
     isLoading,
+    setIsLoading,
     zodFormComponentProps,
   };
 }

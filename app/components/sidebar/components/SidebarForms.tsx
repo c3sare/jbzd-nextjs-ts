@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import LoginForm from "./forms/LoginForm";
 import RegisterForm from "./forms/RegisterForm";
-import PasswordRemindForm from "./forms/PasswordRemindForm";
+import PasswordRemindForms from "./forms/PasswordRemindForms";
 import { useSession } from "next-auth/react";
 
 const SidebarForms = () => {
@@ -27,7 +27,7 @@ const SidebarForms = () => {
     },
     {
       name: "Przypomnij hasło",
-      component: PasswordRemindForm,
+      component: PasswordRemindForms,
     },
   ];
 

@@ -2,15 +2,12 @@ import bcrypt from "bcryptjs";
 
 import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
+import RegisterSchema from "@/app/formSchemas/RegisterSchema";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { username, email, password, repassword, rules } = body;
-
-    if (!email || !username || !password || !repassword || !rules) {
-      return new NextResponse("Missing info", { status: 400 });
-    }
+    const { username, email, password } = RegisterSchema.parse(body);
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
