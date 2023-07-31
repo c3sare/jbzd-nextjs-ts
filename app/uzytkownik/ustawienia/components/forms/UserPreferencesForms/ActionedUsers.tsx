@@ -1,12 +1,13 @@
-import ActionItem from "./components/ActionItem";
 import type { PreferencesType } from "../../tabs/UserPreferencesTab";
 import Header from "./components/Header";
-import SubHeader from "./components/SubHeader";
+import ActionBox from "./components/ActionBox";
 
 type ActionedUsersProp = {
   actionedUsers: PreferencesType["actionedByUsers"];
   handleDeleteUserAction: (id: string) => void;
 };
+
+type ActionedUsersType = ActionedUsersProp["actionedUsers"][number];
 
 const ActionedUsers: React.FC<ActionedUsersProp> = ({
   actionedUsers,
@@ -24,38 +25,22 @@ const ActionedUsers: React.FC<ActionedUsersProp> = ({
   return (
     <>
       <Header>Zarządzanie użytkownikami</Header>
-      {followedUsers.length > 0 && (
-        <>
-          <SubHeader>Obserwowane</SubHeader>
-          <div>
-            {followedUsers.map((follow) => (
-              <ActionItem
-                key={follow.id}
-                endpoint={deleteEndpoint}
-                id={follow.id}
-                title={follow.user.username!}
-                deleteFunction={handleDeleteUserAction}
-              />
-            ))}
-          </div>
-        </>
-      )}
-      {blockedUsers.length > 0 && (
-        <>
-          <SubHeader>Blokowane</SubHeader>
-          <div>
-            {blockedUsers.map((block) => (
-              <ActionItem
-                key={block.id}
-                endpoint={deleteEndpoint}
-                id={block.id}
-                title={block.user.username!}
-                deleteFunction={handleDeleteUserAction}
-              />
-            ))}
-          </div>
-        </>
-      )}
+      <ActionBox<ActionedUsersType>
+        items={followedUsers}
+        title="Obserwowane"
+        deleteEndpoint={deleteEndpoint}
+        handleDelete={handleDeleteUserAction}
+        objectKey="user"
+        nameKey="username"
+      />
+      <ActionBox<ActionedUsersType>
+        items={blockedUsers}
+        title="Blokowane"
+        deleteEndpoint={deleteEndpoint}
+        handleDelete={handleDeleteUserAction}
+        objectKey="user"
+        nameKey="username"
+      />
     </>
   );
 };

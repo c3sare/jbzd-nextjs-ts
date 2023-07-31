@@ -28,6 +28,7 @@ const ActionedTags: React.FC<ActionedTagsProps> = ({
         handleDelete={handleDeleteTagAction}
         objectKey="tag"
         nameKey="name"
+        hashBeforeName
       />
       <ActionBox<ActionedTagsType>
         items={blockedTags}
@@ -36,6 +37,7 @@ const ActionedTags: React.FC<ActionedTagsProps> = ({
         handleDelete={handleDeleteTagAction}
         objectKey="tag"
         nameKey="name"
+        hashBeforeName
       />
     </>
   );

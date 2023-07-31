@@ -1,12 +1,14 @@
 import { PreferencesType } from "../../tabs/UserPreferencesTab";
-import ActionItem from "./components/ActionItem";
+import ActionBox from "./components/ActionBox";
 import Header from "./components/Header";
-import SubHeader from "./components/SubHeader";
 
 type FollowedCategoriesProps = {
   followedCategories: PreferencesType["followedCategories"];
   handleDeleteFollowedCategory: (id: string) => void;
 };
+
+type FollowedCategoriesType =
+  FollowedCategoriesProps["followedCategories"][number];
 
 const FollowedCategories: React.FC<FollowedCategoriesProps> = ({
   followedCategories,
@@ -17,22 +19,14 @@ const FollowedCategories: React.FC<FollowedCategoriesProps> = ({
   return (
     <>
       <Header>Zarządzanie działami</Header>
-      {followedCategories.length > 0 && (
-        <>
-          <SubHeader>Obserwowane</SubHeader>
-          <div>
-            {followedCategories.map((follow) => (
-              <ActionItem
-                key={follow.id}
-                endpoint={deleteEndpoint}
-                id={follow.id}
-                title={follow.category.name}
-                deleteFunction={handleDeleteFollowedCategory}
-              />
-            ))}
-          </div>
-        </>
-      )}
+      <ActionBox<FollowedCategoriesType>
+        items={followedCategories}
+        title="Obserwowane"
+        deleteEndpoint={deleteEndpoint}
+        handleDelete={handleDeleteFollowedCategory}
+        objectKey="category"
+        nameKey="name"
+      />
     </>
   );
 };

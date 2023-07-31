@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler } from "react-hook-form";
 import Input from "./components/Input";
 import Button from "./components/Button";
 import FacebookLoginButton from "./components/FacebookLoginButton";
