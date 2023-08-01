@@ -2,14 +2,12 @@
 
 import LoadingBox from "@/app/components/LoadingBox";
 import Button from "@/app/components/sidebar/components/forms/components/Button";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import AvatarEditor from "react-avatar-editor";
 import Heading from "../../Heading";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-
-const cache: any = {};
 
 const getImageBlob = (url: string) => {
   return axios
@@ -21,14 +19,11 @@ const getImageBlob = (url: string) => {
     );
 };
 
-const AvatarForm = () => {
+const AvatarForm = ({ avatar }: { avatar: string }) => {
   const router = useRouter();
   const avatarEndpoint = "/api/user/settings/avatar";
-  const defaultAvatarURL = "/images/avatars/default.jpg";
 
-  const [isLoading, setIsLoading] = useState<boolean>(
-    !Boolean(cache[avatarEndpoint])
-  );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [zoom, setZoom] = useState(1);
   const [file, setFile] = useState<string | File | null>(null);
   const canvasRef = useRef<AvatarEditor | null>(null);
@@ -39,30 +34,11 @@ const AvatarForm = () => {
     setZoom(1);
   }, [file]);
 
-  const getAvatar = useCallback(() => {
-    if (cache[avatarEndpoint]) {
-      setFile(cache[avatarEndpoint]);
-    } else {
-      axios
-        .get(avatarEndpoint)
-        .then((data) => {
-          if (data.data.avatar) {
-            getImageBlob(data.data.avatar).then((data) => {
-              setFile(data);
-              cache[avatarEndpoint] = data;
-            });
-          } else {
-            setFile(defaultAvatarURL);
-            cache[avatarEndpoint] = defaultAvatarURL;
-          }
-        })
-        .finally(() => setIsLoading(false));
-    }
-  }, []);
-
   useEffect(() => {
-    getAvatar();
-  }, [getAvatar]);
+    getImageBlob(avatar).then((data) => {
+      setFile(data);
+    });
+  }, []);
 
   const handleSendAvatar = () => {
     if (file === "") return;
@@ -71,12 +47,8 @@ const AvatarForm = () => {
       .post(avatarEndpoint, {
         avatar: canvasRef.current!.getImageScaledToCanvas().toDataURL(),
       })
-      .then((data) => {
+      .then(() => {
         toast.success("Pomyślnie zmieniono avatar!");
-        getImageBlob(data.data.avatar).then((data) => {
-          setFile(data);
-          cache[avatarEndpoint] = data;
-        });
         router.refresh();
       })
       .catch((err) => {

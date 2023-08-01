@@ -1,3 +1,5 @@
+"use client";
+
 import ZodForm from "@/app/components/forms/ZodForm";
 import UserPremiumSchema, {
   UserPremiumType,

@@ -1,17 +1,23 @@
+"use client";
+
 import ZodForm from "@/app/components/forms/ZodForm";
-import Heading from "../Heading";
 import useZodForm from "@/app/hooks/useZodForm";
 import UserNotificationsSchema, {
   UserNotificationsType,
 } from "@/app/formSchemas/UserNotificationsSchema";
-import LabelCheckbox from "../forms/UserNotifycationsForms/components/LabelCheckbox";
 import Button from "@/app/components/sidebar/components/forms/components/Button";
+import LabelCheckbox from "./components/LabelCheckbox";
+import Heading from "../../Heading";
 
-const UserNotyficationsTab = () => {
+type NotifySettingsProps = {
+  data: UserNotificationsType;
+};
+
+const NotifySettings: React.FC<NotifySettingsProps> = ({ data }) => {
   const { zodFormComponentProps, watch } = useZodForm<UserNotificationsType>({
     zodSchema: UserNotificationsSchema,
     pushFormDataEndpoint: "/api/user/settings/notifications",
-    initialFormDataEndpoint: "/api/user/settings/notifications",
+    defaultFormValues: data,
   });
 
   return (
@@ -42,4 +48,4 @@ const UserNotyficationsTab = () => {
   );
 };
 
-export default UserNotyficationsTab;
+export default NotifySettings;

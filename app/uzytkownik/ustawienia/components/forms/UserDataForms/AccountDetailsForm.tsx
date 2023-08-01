@@ -1,3 +1,5 @@
+"use client";
+
 import Input from "@/app/components/sidebar/components/forms/components/Input";
 import Select from "@/app/components/forms/Select";
 import Button from "@/app/components/sidebar/components/forms/components/Button";
@@ -8,12 +10,19 @@ import useZodForm from "@/app/hooks/useZodForm";
 import Heading from "../../Heading";
 import ZodForm from "@/app/components/forms/ZodForm";
 
-const AccountDetailsForm = () => {
+type AccountDetailsFormProps = {
+  userData: AccountDetailsType;
+};
+
+const AccountDetailsForm: React.FC<AccountDetailsFormProps> = ({
+  userData,
+}) => {
   const { zodFormComponentProps } = useZodForm<AccountDetailsType>({
-    initialFormDataEndpoint: "/api/user/settings/data",
+    // initialFormDataEndpoint: "/api/user/settings/data",
     zodSchema: AccountDetailsSchema,
     pushFormDataEndpoint: "/api/user/settings/data",
     pushFormDataMethod: "POST",
+    defaultFormValues: userData,
   });
 
   return (

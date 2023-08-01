@@ -1,3 +1,5 @@
+"use client";
+
 import useZodForm from "@/app/hooks/useZodForm";
 import Heading from "../../Heading";
 import Input from "@/app/components/sidebar/components/forms/components/Input";
