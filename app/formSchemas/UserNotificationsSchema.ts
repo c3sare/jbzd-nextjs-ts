@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 const UserNotificationsSchema = z.object({
-  newOrders: z.boolean(),
-  newMarks: z.boolean(),
-  commentsOnHomePage: z.boolean(),
-  newComments: z.boolean(),
+  newOrders: z.boolean().refine((data) => typeof data === "boolean"),
+  newMarks: z.boolean().refine((data) => typeof data === "boolean"),
+  commentsOnHomePage: z.boolean().refine((data) => typeof data === "boolean"),
+  newComments: z.boolean().refine((data) => typeof data === "boolean"),
 });
 
 export default UserNotificationsSchema;

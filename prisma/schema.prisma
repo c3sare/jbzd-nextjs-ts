@@ -10,22 +10,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+type Notifications {
+  newOrders          Boolean @default(true)
+  newMarks           Boolean @default(true)
+  commentsOnHomePage Boolean @default(true)
+  newComments        Boolean @default(true)
+}
+
+type Premium {
+  picsCountOnPage           Int     @default(8)
+  adminPostsOff             Boolean @default(false)
+  commentsPicsGifsOff       Boolean @default(false)
+  hideNegativeComments      Boolean @default(false)
+  hideAds                   Boolean @default(true)
+  hideProfile               Boolean @default(false)
+  hidePremiumIcon           Boolean @default(false)
+  hideLowReputationComments Boolean @default(false)
+}
+
 model User {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  username       String?   @unique
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  username       String?       @unique
   name           String?
-  gender         Int?      @default(0)
+  gender         Int?          @default(0)
   country        String?
   city           String?
   birthdate      DateTime?
-  email          String?   @unique
+  email          String?       @unique
   emailVerified  DateTime?
   image          String?
   hashedPassword String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
   token          String?
-  tokenExpires   DateTime?  
+  tokenExpires   DateTime?
+  notifications  Notifications
+  premiumExpires DateTime?
+  premium        Premium
 
   accounts           Account[]
   posts              Post[]

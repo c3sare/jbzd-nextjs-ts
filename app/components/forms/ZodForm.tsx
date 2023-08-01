@@ -1,4 +1,4 @@
-import React from "react";
+import React, { HTMLAttributes } from "react";
 import LoadingBox from "../LoadingBox";
 import ErrorBox from "./ErrorBox";
 import {
@@ -11,6 +11,7 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
+import clsx from "clsx";
 
 type FormProps<T extends FieldValues> = {
   handleSubmit: UseFormHandleSubmit<T>;
@@ -24,6 +25,7 @@ type FormProps<T extends FieldValues> = {
   errors: FieldErrors<T>;
   setValue: UseFormSetValue<T>;
   watch: UseFormWatch<T>;
+  className?: HTMLAttributes<HTMLFormElement>["className"];
 };
 
 function Form<T extends FieldValues>({
@@ -38,9 +40,13 @@ function Form<T extends FieldValues>({
   setValue,
   watch,
   reset,
+  className,
 }: FormProps<T>) {
   return (
-    <form onSubmit={handleSubmit!(onSubmit!)} className="relative">
+    <form
+      onSubmit={handleSubmit!(onSubmit!)}
+      className={clsx("relative", className)}
+    >
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
           const addProps = {
