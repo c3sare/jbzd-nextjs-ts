@@ -6,8 +6,6 @@ import AvatarForm from "./components/forms/UserDataForms/AvatarForm";
 import ChangePasswordForm from "./components/forms/UserDataForms/ChangePasswordForm";
 import { getAvatar } from "@/app/actions/getAvatar";
 
-export const dynamic = "force-dynamic";
-
 const UserSettings = async () => {
   const session = await getSession();
   const userData = await getUserData();

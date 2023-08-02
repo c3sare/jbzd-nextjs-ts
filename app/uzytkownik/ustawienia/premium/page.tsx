@@ -1,8 +1,6 @@
 import getPremium from "@/app/actions/getPremium";
 import UserPremiumForm from "../components/forms/UserPremiumForm";
 
-export const dynamic = "force-dynamic";
-
 const PremiumPage = async () => {
   const data = await getPremium();
 

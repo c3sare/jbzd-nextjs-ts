@@ -3,8 +3,6 @@ import ActionedTags from "../components/forms/UserPreferencesForms/ActionedTags"
 import ActionedUsers from "../components/forms/UserPreferencesForms/ActionedUsers";
 import FollowedCategories from "../components/forms/UserPreferencesForms/FollowedCategories";
 
-export const dynamic = "force-dynamic";
-
 const PreferencesPage = async () => {
   const data = await getUserPreferences();
 
