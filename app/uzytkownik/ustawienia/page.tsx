@@ -6,6 +6,8 @@ import AvatarForm from "./components/forms/UserDataForms/AvatarForm";
 import ChangePasswordForm from "./components/forms/UserDataForms/ChangePasswordForm";
 import { getAvatar } from "@/app/actions/getAvatar";
 
+export const revalidate = 0;
+
 const UserSettings = async () => {
   const session = await getSession();
   const userData = await getUserData();
