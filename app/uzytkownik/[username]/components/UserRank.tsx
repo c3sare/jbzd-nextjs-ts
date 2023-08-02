@@ -5,22 +5,24 @@ import Link from "next/link";
 import { TfiCup } from "react-icons/tfi";
 import Image from "next/image";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 
 type UserRankProps = {
   id: string;
   spears: number;
   rank: number;
-  username: string;
+  isLoggedIn: boolean;
+  isOwnProfile: boolean;
 };
 
-const UserRank: React.FC<UserRankProps> = ({ id, spears, rank, username }) => {
-  const session = useSession();
+const UserRank: React.FC<UserRankProps> = ({
+  id,
+  spears,
+  rank,
+  isLoggedIn,
+  isOwnProfile,
+}) => {
   const [spearCount, setSpearCount] = useState<number>(spears || 0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const isLoggedIn = session?.status === "authenticated";
-  const loggedUser = session?.data?.user?.username;
 
   const handleClickPlusButton = (id: string) => {
     setIsLoading(true);
@@ -42,7 +44,7 @@ const UserRank: React.FC<UserRankProps> = ({ id, spears, rank, username }) => {
           className="mr-[25px] sm:mr-0"
         />
         <span className="font-bold text-[22px]">{spearCount}</span>
-        {isLoggedIn && loggedUser !== username && (
+        {isLoggedIn && !isOwnProfile && (
           <button
             onClick={() => handleClickPlusButton(id)}
             disabled={isLoading}

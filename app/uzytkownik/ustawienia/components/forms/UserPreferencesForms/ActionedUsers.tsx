@@ -1,18 +1,16 @@
-import type { PreferencesType } from "../../tabs/UserPreferencesTab";
+"use client";
+
 import Header from "./components/Header";
 import ActionBox from "./components/ActionBox";
+import { User, UserAction } from "@prisma/client";
+
+type ActionBoxType = UserAction & { user: Pick<User, "username" | "id"> };
 
 type ActionedUsersProp = {
-  actionedUsers: PreferencesType["actionedByUsers"];
-  handleDeleteUserAction: (id: string) => void;
+  actionedUsers: ActionBoxType[];
 };
 
-type ActionedUsersType = ActionedUsersProp["actionedUsers"][number];
-
-const ActionedUsers: React.FC<ActionedUsersProp> = ({
-  actionedUsers,
-  handleDeleteUserAction,
-}) => {
+const ActionedUsers: React.FC<ActionedUsersProp> = ({ actionedUsers }) => {
   const followedUsers = actionedUsers.filter(
     (action) => action.method === "FOLLOW"
   );
@@ -25,19 +23,17 @@ const ActionedUsers: React.FC<ActionedUsersProp> = ({
   return (
     <>
       <Header>Zarządzanie użytkownikami</Header>
-      <ActionBox<ActionedUsersType>
+      <ActionBox<ActionBoxType>
         items={followedUsers}
         title="Obserwowane"
         deleteEndpoint={deleteEndpoint}
-        handleDelete={handleDeleteUserAction}
         objectKey="user"
         nameKey="username"
       />
-      <ActionBox<ActionedUsersType>
+      <ActionBox<ActionBoxType>
         items={blockedUsers}
         title="Blokowane"
         deleteEndpoint={deleteEndpoint}
-        handleDelete={handleDeleteUserAction}
         objectKey="user"
         nameKey="username"
       />

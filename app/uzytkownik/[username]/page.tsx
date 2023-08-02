@@ -6,6 +6,8 @@ import { format } from "date-fns";
 import Badge from "./components/Badge";
 import { notFound } from "next/navigation";
 import UserRank from "./components/UserRank";
+import UserActions from "./components/UserActions";
+import getSession from "@/app/actions/getSession";
 
 type UserProfileProps = {
   params: {
@@ -16,7 +18,11 @@ type UserProfileProps = {
 const UserProfilePage: React.FC<UserProfileProps> = async ({
   params: { username },
 }) => {
+  const session = await getSession();
   const user = await getUser(username);
+
+  const isLoggedIn = Boolean(session);
+  const isOwnProfile = session?.user?.username === username;
 
   if (!user) {
     return notFound();
@@ -69,9 +75,11 @@ const UserProfilePage: React.FC<UserProfileProps> = async ({
               />
             </div>
           </div>
+          {isLoggedIn && !isOwnProfile && <UserActions id={user.id} />}
         </div>
         <UserRank
-          username={user.username}
+          isLoggedIn={isLoggedIn}
+          isOwnProfile={isOwnProfile}
           id={user.id}
           rank={user.rank}
           spears={user.spears}

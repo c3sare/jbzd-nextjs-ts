@@ -1,19 +1,17 @@
 import getSession from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
-import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function getUserPreferences() {
   const session = await getSession();
 
-  if (!session?.user?.email)
-    return new NextResponse("No authorization", { status: 403 });
+  if (!session?.user?.email) return null;
 
   try {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
         email: session.user.email,
       },
-      select: {
+      include: {
         followedCategories: {
           include: {
             category: true,
@@ -37,8 +35,12 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json(user);
+    return {
+      followedCategories: user.followedCategories,
+      actionedUsers: user.actionedUsers,
+      actionedTags: user.actionedTags,
+    };
   } catch (err: any) {
-    throw new NextResponse("Internal Error " + err, { status: 500 });
+    return null;
   }
 }

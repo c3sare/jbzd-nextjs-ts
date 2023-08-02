@@ -2,16 +2,23 @@ import getSession from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 
-export async function DELETE(request: Request) {
+type RequestParams = {
+  params: {
+    id: string;
+  };
+};
+
+export async function DELETE(
+  _request: Request,
+  { params: { id } }: RequestParams
+) {
   try {
     const session = await getSession();
 
     if (!session?.user?.email)
       return new NextResponse("No authorization", { status: 403 });
 
-    const { id } = await request.json();
-
-    const categoryAction = prisma.followedCategory.delete({
+    const categoryAction = await prisma.followedCategory.delete({
       where: {
         id,
         author: {

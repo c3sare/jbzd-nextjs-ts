@@ -2,16 +2,23 @@ import getSession from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 
-export async function DELETE(request: Request) {
+type RequestParams = {
+  params: {
+    id: string;
+  };
+};
+
+export async function DELETE(
+  _request: Request,
+  { params: { id } }: RequestParams
+) {
   try {
     const session = await getSession();
 
     if (!session?.user?.email)
       return new NextResponse("No authorization", { status: 403 });
 
-    const { id } = await request.json();
-
-    const tagAction = prisma.tagAction.delete({
+    const userAction = await prisma.userAction.delete({
       where: {
         id,
         author: {
@@ -20,7 +27,7 @@ export async function DELETE(request: Request) {
       },
     });
 
-    return NextResponse.json(tagAction);
+    return NextResponse.json(userAction);
   } catch (err: any) {
     throw new NextResponse("Internal Error", { status: 500 });
   }

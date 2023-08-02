@@ -5,7 +5,6 @@ type ActionBoxProps<T> = {
   title: string;
   items: T[];
   deleteEndpoint: string;
-  handleDelete: (id: string) => void;
   objectKey: keyof T;
   nameKey: string;
   hashBeforeName?: boolean;
@@ -15,7 +14,6 @@ function ActionBox<T>({
   items,
   title,
   deleteEndpoint,
-  handleDelete,
   objectKey,
   nameKey,
   hashBeforeName,
@@ -31,7 +29,6 @@ function ActionBox<T>({
               endpoint={deleteEndpoint}
               id={item.id}
               title={(hashBeforeName ? "#" : "") + item[objectKey][nameKey]}
-              deleteFunction={handleDelete}
             />
           ))}
         </div>

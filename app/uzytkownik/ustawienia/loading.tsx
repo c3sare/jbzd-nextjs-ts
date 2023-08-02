@@ -1,9 +1,9 @@
-import { LoaderIcon } from "react-hot-toast";
+import LoadingBox from "@/app/components/LoadingBox";
 
 const SettingsLoading = () => {
   return (
     <div className="mx-auto">
-      <LoaderIcon />
+      <LoadingBox />
     </div>
   );
 };

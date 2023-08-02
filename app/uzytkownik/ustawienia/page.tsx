@@ -6,7 +6,7 @@ import AvatarForm from "./components/forms/UserDataForms/AvatarForm";
 import ChangePasswordForm from "./components/forms/UserDataForms/ChangePasswordForm";
 import { getAvatar } from "@/app/actions/getAvatar";
 
-export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 const UserSettings = async () => {
   const session = await getSession();
@@ -14,7 +14,7 @@ const UserSettings = async () => {
   const avatar = await getAvatar();
 
   if (!session || !userData) {
-    return null;
+    return new Error("Nie jesteś zalogowany!");
   }
 
   const isCredentialProvider = session.user?.provider === "credentials";
@@ -23,7 +23,7 @@ const UserSettings = async () => {
     <>
       <AccountDetailsForm userData={userData} />
       <Hr />
-      <AvatarForm avatar={avatar} />
+      <AvatarForm avatar={avatar || "/images/avatars/default.jpg"} />
       {isCredentialProvider && (
         <>
           <Hr />

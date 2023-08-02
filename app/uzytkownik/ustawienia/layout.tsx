@@ -15,7 +15,9 @@ const SettingsLayout: React.FC<PropsWithChildren> = ({ children }) => {
         </LinkButton>
         <LinkButton href="/uzytkownik/ustawienia/premium">Premium</LinkButton>
       </div>
-      <div className="bg-[#313131] z-10 p-[35px_15px]">{children}</div>
+      <div className="bg-[#313131] z-10 p-[35px_15px] w-full relative">
+        {children}
+      </div>
     </div>
   );
 };

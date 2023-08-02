@@ -30,7 +30,7 @@ type Premium {
 
 model User {
   id             String        @id @default(auto()) @map("_id") @db.ObjectId
-  username       String?       @unique
+  username       String        @unique
   name           String?
   gender         Int?          @default(0)
   country        String?
@@ -49,6 +49,8 @@ model User {
   premium        Premium
 
   accounts           Account[]
+  actionedByUsers    UserAction[]       @relation("UserActionedBy")
+  actionedUsers      UserAction[]       @relation("ActionedUsers")
   posts              Post[]
   comments           Comment[]
   badgedPosts        BadgePost[]
@@ -57,8 +59,6 @@ model User {
   commentVotes       CommentVote[]
   favouritePosts     FavouritePost[]
   favouriteComments  FavouriteComment[]
-  actionedUsers      UserAction[]
-  actionedByUsers    UserAction[]       @relation("UserActionedBy")
   followedCategories FollowedCategory[]
   actionedTags       TagAction[]
   votedUsers         UserVote[]
@@ -228,9 +228,9 @@ model UserAction {
   addTime  DateTime       @default(now())
   method   UserActionType
   userId   String         @db.ObjectId
-  user     User           @relation("UserActionedBy", fields: [userId], references: [id], onDelete: Cascade)
   authorId String         @db.ObjectId
-  author   User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  user     User           @relation("UserActionedBy", fields: [userId], references: [id], onDelete: Cascade)
+  author   User           @relation("ActionedUsers", fields: [authorId], references: [id], onDelete: Cascade)
 
   @@unique([authorId, userId])
 }

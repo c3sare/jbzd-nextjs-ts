@@ -1,18 +1,20 @@
-import { PreferencesType } from "../../tabs/UserPreferencesTab";
+"use client";
+
+import { TagAction } from "@prisma/client";
 import ActionBox from "./components/ActionBox";
 import Header from "./components/Header";
 
-type ActionedTagsProps = {
-  actionedTags: PreferencesType["actionedTags"];
-  handleDeleteTagAction: (id: string) => void;
+type ActionBoxType = TagAction & {
+  tag: {
+    name: string;
+  };
 };
 
-type ActionedTagsType = ActionedTagsProps["actionedTags"][number];
+type ActionedTagsProps = {
+  actionedTags: (TagAction & ActionBoxType)[];
+};
 
-const ActionedTags: React.FC<ActionedTagsProps> = ({
-  actionedTags,
-  handleDeleteTagAction,
-}) => {
+const ActionedTags: React.FC<ActionedTagsProps> = ({ actionedTags }) => {
   const deleteEndpoint = "/api/user/settings/preferences/tags";
 
   const followedTags = actionedTags.filter((tag) => tag.method === "FOLLOW");
@@ -21,20 +23,18 @@ const ActionedTags: React.FC<ActionedTagsProps> = ({
   return (
     <>
       <Header>Zarzadzanie tagami</Header>
-      <ActionBox<ActionedTagsType>
+      <ActionBox<ActionBoxType>
         items={followedTags}
         title="Obserwowane"
         deleteEndpoint={deleteEndpoint}
-        handleDelete={handleDeleteTagAction}
         objectKey="tag"
         nameKey="name"
         hashBeforeName
       />
-      <ActionBox<ActionedTagsType>
+      <ActionBox<ActionBoxType>
         items={blockedTags}
         title="Blokowane"
         deleteEndpoint={deleteEndpoint}
-        handleDelete={handleDeleteTagAction}
         objectKey="tag"
         nameKey="name"
         hashBeforeName

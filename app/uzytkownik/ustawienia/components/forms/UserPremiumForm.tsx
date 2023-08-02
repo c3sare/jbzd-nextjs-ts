@@ -8,61 +8,25 @@ import useZodForm from "@/app/hooks/useZodForm";
 import LabelCheckbox from "../forms/UserNotifycationsForms/components/LabelCheckbox";
 import Button from "@/app/components/sidebar/components/forms/components/Button";
 import RadioSelect from "@/app/components/forms/RadioSelect";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { toast } from "react-hot-toast";
 import clsx from "clsx";
 import BigButton from "../forms/BigButton";
 
-const cache: {
-  [key: string]: any;
-} = {};
+type UserPremiumFormProps = {
+  data: {
+    isPremium: boolean;
+    premium: UserPremiumType | {};
+  };
+};
 
-const UserPremiumTab = () => {
-  const endpointPremiumData = "/api/user/settings/premium";
-  const [isPremium, setIsPremium] = useState<boolean>(
-    Boolean(cache[endpointPremiumData]?.isPremium || false)
-  );
-  const {
-    zodFormComponentProps,
-    watch,
-    register,
-    setIsLoading,
-    reset,
-    setValue,
-  } = useZodForm<UserPremiumType>({
-    zodSchema: UserPremiumSchema,
-    pushFormDataEndpoint: "/api/user/settings/premium",
-    successDataFetchCallback: (data) => {
-      if (data?.data.premium)
-        cache[endpointPremiumData].premium = data.data.premium;
-    },
-    defaultFormValues: cache[endpointPremiumData]?.premium || {
-      hideAds: true,
-      picsCountOnPage: 8,
-    },
-  });
-
-  useEffect(() => {
-    if (!cache[endpointPremiumData]) {
-      setIsLoading(true);
-      axios
-        .get(endpointPremiumData)
-        .then((res) => {
-          cache[endpointPremiumData] = res.data;
-          if (res.data.isPremium) {
-            setIsPremium(true);
-            reset(res.data.premium);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.error("Wystąpił problem przy pobieraniu danych!");
-        })
-        .finally(() => setIsLoading(false));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+const UserPremiumForm: React.FC<UserPremiumFormProps> = ({
+  data: { isPremium, premium },
+}) => {
+  const { zodFormComponentProps, watch, register, setValue } =
+    useZodForm<UserPremiumType>({
+      zodSchema: UserPremiumSchema,
+      pushFormDataEndpoint: "/api/user/settings/premium",
+      defaultFormValues: premium,
+    });
 
   return (
     <div className="max-w-[540px] mx-auto">
@@ -144,4 +108,4 @@ const UserPremiumTab = () => {
   );
 };
 
-export default UserPremiumTab;
+export default UserPremiumForm;
