@@ -16,6 +16,22 @@ export async function POST(request: Request) {
         username,
         email,
         hashedPassword,
+        premium: {
+          picsCountOnPage: 8,
+          adminPostsOff: false,
+          commentsPicsGifsOff: false,
+          hideNegativeComments: false,
+          hideAds: true,
+          hideProfile: false,
+          hidePremiumIcon: false,
+          hideLowReputationComments: false,
+        },
+        notifications: {
+          newOrders: true,
+          newMarks: true,
+          commentsOnHomePage: true,
+          newComments: true,
+        },
       },
     });
 

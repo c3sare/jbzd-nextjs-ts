@@ -1,4 +1,4 @@
-const Page: React.FC<React.PropsWithChildren> = ({ children }) => {
+const Page = () => {
   return <div>Wyszukaj</div>;
 };
 
