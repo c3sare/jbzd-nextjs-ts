@@ -4,7 +4,7 @@ import { AiFillPicture, AiFillFlag } from "react-icons/ai";
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
-import getProfileInfo from "@/app/actions/getProfileInfo";
+import { getProfileInfo } from "@/app/actions/getProfileInfo";
 import SignOutButton from "./SignOutButton";
 
 const ProfileInfo = async () => {

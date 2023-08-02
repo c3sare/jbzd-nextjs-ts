@@ -1,4 +1,4 @@
-import getSession from "@/app/actions/getSession";
+import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
 
 export async function getUserPreferences() {

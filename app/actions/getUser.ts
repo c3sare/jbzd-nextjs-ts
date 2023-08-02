@@ -1,6 +1,6 @@
 import prisma from "../libs/prismadb";
 
-export default async function getUser(username: string) {
+export async function getUser(username: string) {
   try {
     const user = await prisma.userProfile.findFirst({
       where: {

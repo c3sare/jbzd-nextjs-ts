@@ -1,5 +1,5 @@
 import Link from "next/link";
-import getRankingUsers from "../actions/getRankingUsers";
+import { getRankingUsers } from "../actions/getRankingUsers";
 import Breadcrumb from "../components/Breadcrumb";
 import RankingListItem from "./components/RankingListItem";
 

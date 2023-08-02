@@ -1,6 +1,7 @@
-import Link from "next/link";
 import { PropsWithChildren } from "react";
 import LinkButton from "./components/LinkButton";
+
+export const revalidate = 0;
 
 const SettingsLayout: React.FC<PropsWithChildren> = ({ children }) => {
   return (

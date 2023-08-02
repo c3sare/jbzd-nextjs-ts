@@ -1,7 +1,7 @@
-import getSession from "./getSession";
+import { getSession } from "./getSession";
 import prisma from "@/app/libs/prismadb";
 
-export default async function getProfileInfo() {
+export async function getProfileInfo() {
   try {
     const session = await getSession();
 

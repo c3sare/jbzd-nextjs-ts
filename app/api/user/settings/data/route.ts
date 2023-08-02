@@ -1,8 +1,9 @@
-import getSession from "@/app/actions/getSession";
+import { getSession } from "@/app/actions/getSession";
 import AccountDetailsSchema, {
   AccountDetailsType,
 } from "@/app/formSchemas/AccountDetailsSchema";
 import prisma from "@/app/libs/prismadb";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -55,7 +56,7 @@ export async function POST(request: Request) {
         birthdate,
       },
     });
-
+    revalidatePath("/uzytkownik/ustawienia");
     return NextResponse.json({
       name: update?.name || "",
       gender: update?.gender || 0,

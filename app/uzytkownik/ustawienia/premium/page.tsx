@@ -1,7 +1,7 @@
-import getPremium from "@/app/actions/getPremium";
+import { getPremium } from "@/app/actions/getPremium";
 import UserPremiumForm from "../components/forms/UserPremiumForm";
 
-export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 const PremiumPage = async () => {
   const data = await getPremium();

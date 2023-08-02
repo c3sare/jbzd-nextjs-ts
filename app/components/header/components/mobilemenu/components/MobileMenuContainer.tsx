@@ -11,7 +11,7 @@ import MobileMenuLinkButton from "./MobileMenuLinkButton";
 import Categories from "../../leftside/components/dropdownlists/Categories";
 import ProfileInfo from "./ProfileInfo";
 import SidebarForms from "@/app/components/sidebar/components/SidebarForms";
-import getSession from "@/app/actions/getSession";
+import { getSession } from "@/app/actions/getSession";
 
 const MobileMenuContainer = async () => {
   const session = await getSession();

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import getSession from "../actions/getSession";
+import { getSession } from "../actions/getSession";
 import HideSidebar from "../components/HideSidebar";
 import SidebarForms from "../components/sidebar/components/SidebarForms";
 

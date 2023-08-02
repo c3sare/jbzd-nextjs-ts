@@ -1,5 +1,5 @@
 import prisma from "../libs/prismadb";
-import getSession from "./getSession";
+import { getSession } from "./getSession";
 
 const defaultAvatar = "/images/avatars/default.jpg";
 

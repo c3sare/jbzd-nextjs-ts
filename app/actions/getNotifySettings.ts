@@ -1,7 +1,7 @@
 import prisma from "../libs/prismadb";
-import getSession from "./getSession";
+import { getSession } from "./getSession";
 
-export default async function getNotifySettings() {
+export async function getNotifySettings() {
   const session = await getSession();
 
   if (!session?.user?.email) return null;

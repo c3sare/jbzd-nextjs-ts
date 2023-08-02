@@ -1,7 +1,7 @@
 import CoinsBox from "./components/CoinsBox";
 import MessagesButton from "./components/MessagesButton";
 import NotificationsButton from "./components/NotificationsButton";
-import getSession from "@/app/actions/getSession";
+import { getSession } from "@/app/actions/getSession";
 
 const RightSide: React.FC<React.PropsWithChildren> = async () => {
   const session = await getSession();

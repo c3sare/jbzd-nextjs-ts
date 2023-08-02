@@ -1,6 +1,6 @@
 import SidebarForms from "./components/SidebarForms";
 import ProfileInfo from "./components/ProfileInfo";
-import getSession from "@/app/actions/getSession";
+import { getSession } from "@/app/actions/getSession";
 
 const Sidebar = async () => {
   const session = await getSession();

@@ -1,12 +1,12 @@
-import getSession from "@/app/actions/getSession";
-import getUserData from "@/app/actions/getUserData";
+import { getSession } from "@/app/actions/getSession";
+import { getUserData } from "@/app/actions/getUserData";
 import AccountDetailsForm from "./components/forms/UserDataForms/AccountDetailsForm";
 import Hr from "@/app/components/Hr";
 import AvatarForm from "./components/forms/UserDataForms/AvatarForm";
 import ChangePasswordForm from "./components/forms/UserDataForms/ChangePasswordForm";
 import { getAvatar } from "@/app/actions/getAvatar";
 
-export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 const UserSettings = async () => {
   const session = await getSession();

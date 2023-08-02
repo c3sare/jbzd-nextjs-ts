@@ -1,6 +1,7 @@
-import getSession from "@/app/actions/getSession";
+import { getSession } from "@/app/actions/getSession";
 import UserPremiumSchema from "@/app/formSchemas/UserPremiumSchema";
 import prisma from "@/app/libs/prismadb";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -55,6 +56,8 @@ export async function POST(request: Request) {
         premium,
       },
     });
+
+    revalidatePath("/uzytkownik/ustawienia/premium");
 
     return NextResponse.json({ premium: user.premium });
   } catch (err: any) {

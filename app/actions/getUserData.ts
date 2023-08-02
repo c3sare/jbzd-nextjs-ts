@@ -1,7 +1,7 @@
 import prisma from "../libs/prismadb";
-import getSession from "./getSession";
+import { getSession } from "./getSession";
 
-export default async function getUserData() {
+export async function getUserData() {
   try {
     const session = await getSession();
 

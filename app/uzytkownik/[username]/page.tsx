@@ -1,4 +1,4 @@
-import getUser from "@/app/actions/getUser";
+import { getUser } from "@/app/actions/getUser";
 import Avatar from "./components/Avatar";
 import { AiFillFlag, AiFillPicture } from "react-icons/ai";
 import { FaComment } from "react-icons/fa";
@@ -7,7 +7,7 @@ import Badge from "./components/Badge";
 import { notFound } from "next/navigation";
 import UserRank from "./components/UserRank";
 import UserActions from "./components/UserActions";
-import getSession from "@/app/actions/getSession";
+import { getSession } from "@/app/actions/getSession";
 
 type UserProfileProps = {
   params: {

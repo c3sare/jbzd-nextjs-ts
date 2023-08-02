@@ -19,6 +19,7 @@ const LinkButton: React.FC<LinkButtonProps> = ({ href, children }) => {
 
   return (
     <Link
+      prefetch={false}
       className={clsx(
         "relative py-2 flex w-1/4 items-center justify-center text-[11px] sm:text-[13px] transition-transform duration-500 hover:bg-[#313131]",
         isActive ? activeClassName : className

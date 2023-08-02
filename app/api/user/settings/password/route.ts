@@ -1,4 +1,4 @@
-import getSession from "@/app/actions/getSession";
+import { getSession } from "@/app/actions/getSession";
 import ChangePasswordSchema, {
   ChangePasswordType,
 } from "@/app/formSchemas/ChangePasswordSchema";
