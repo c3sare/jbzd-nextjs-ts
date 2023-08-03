@@ -22,6 +22,7 @@ type UseZodFormProps<T extends FieldValues> = {
   defaultFormValues?: DeepPartial<T>;
   successDataFetchCallback?: (data?: AxiosResponse<any>) => void;
   customSuccessMessage?: string;
+  refreshPageAfterSuccessSubmit?: boolean;
 } & Omit<UseFormProps<T>, "defaultValues" | "resolver">;
 
 const storedData: any = {};
@@ -35,6 +36,7 @@ function useZodForm<T extends FieldValues>({
   successDataFetchCallback,
   customSuccessMessage,
   defaultFormValues,
+  refreshPageAfterSuccessSubmit = true,
   ...rest
 }: UseZodFormProps<T>) {
   const router = useRouter();
@@ -115,7 +117,7 @@ function useZodForm<T extends FieldValues>({
             storedData[initialFormDataEndpoint as string] = response.data;
           if (successDataFetchCallback) successDataFetchCallback(response);
           if (clearFormAfterChange) reset();
-          router.refresh();
+          if (refreshPageAfterSuccessSubmit) router.refresh();
         } else {
           toast.error("Wystąpił nieoczekiwany błąd!");
         }

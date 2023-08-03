@@ -5,6 +5,7 @@ import Link from "next/link";
 import { TfiCup } from "react-icons/tfi";
 import Image from "next/image";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type UserRankProps = {
   id: string;
@@ -21,6 +22,7 @@ const UserRank: React.FC<UserRankProps> = ({
   isLoggedIn,
   isOwnProfile,
 }) => {
+  const router = useRouter();
   const [spearCount, setSpearCount] = useState<number>(spears || 0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -28,7 +30,10 @@ const UserRank: React.FC<UserRankProps> = ({
     setIsLoading(true);
     axios
       .post("/api/user/vote/" + id)
-      .then((data) => setSpearCount(data.data.count))
+      .then((data) => {
+        setSpearCount(data.data.count);
+        router.refresh();
+      })
       .catch((err) => console.error(err))
       .finally(() => setIsLoading(false));
   };

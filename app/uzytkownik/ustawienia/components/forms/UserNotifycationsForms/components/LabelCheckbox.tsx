@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import {
   FieldValues,
   Path,
@@ -11,6 +12,7 @@ type LabelCheckboxProps<T extends FieldValues> = {
   register?: UseFormRegister<T>;
   label: string;
   watch?: UseFormWatch<T>;
+  disabled?: boolean;
 };
 
 function LabelCheckbox<T extends FieldValues>({
@@ -18,15 +20,25 @@ function LabelCheckbox<T extends FieldValues>({
   register,
   label,
   watch,
+  disabled,
 }: LabelCheckboxProps<T>) {
   const isChecked = watch!(id);
 
   return (
     <label
       htmlFor={id}
-      className="flex items-center cursor-pointer select-none mb-[25px] text-[14px]"
+      className={clsx(
+        "flex items-center cursor-pointer select-none mb-[25px] text-[14px]",
+        disabled && "opacity-60"
+      )}
     >
-      <input id={id} className="hidden" type="checkbox" {...register!(id)} />
+      <input
+        id={id}
+        className="hidden"
+        disabled={disabled}
+        type="checkbox"
+        {...register!(id)}
+      />
       <span className="text-[#b4d132] mr-[5px] text-[20px]">
         {isChecked ? <IoMdCheckboxOutline /> : <IoMdSquareOutline />}
       </span>

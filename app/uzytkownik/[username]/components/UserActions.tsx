@@ -6,13 +6,16 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import ActionButton from "./ActionButton";
 import { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type UserActions = {
   id: string;
+  isBlocked: boolean;
 };
 
-const UserActions: React.FC<UserActions> = ({ id }) => {
-  const [isBlocked, setIsBlocked] = useState<boolean>(false);
+const UserActions: React.FC<UserActions> = ({ id, isBlocked: blockStatus }) => {
+  const router = useRouter();
+  const [isBlocked, setIsBlocked] = useState<boolean>(blockStatus);
 
   const handleToggleBlockUser = () => {
     axios
@@ -20,8 +23,12 @@ const UserActions: React.FC<UserActions> = ({ id }) => {
         method: "BLOCK",
         id,
       })
-      .then(() => {
-        setIsBlocked(!isBlocked);
+      .then((res) => {
+        if (res.data.method === "BLOCK") setIsBlocked(true);
+        else if (res.data.method === "") {
+          setIsBlocked(false);
+        }
+        router.refresh();
       })
       .catch((err) => console.log(err));
   };

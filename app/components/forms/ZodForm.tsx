@@ -70,6 +70,7 @@ function Form<T extends FieldValues>({
           } else if (child.props?.type === "submit") {
             return React.cloneElement(child, {
               ...child.props,
+              isLoading,
               disabled: addProps.disabled,
             });
           }
@@ -77,7 +78,6 @@ function Form<T extends FieldValues>({
 
         return child;
       })}
-      {isLoading && <LoadingBox />}
       {isError && (
         <ErrorBox
           onClick={

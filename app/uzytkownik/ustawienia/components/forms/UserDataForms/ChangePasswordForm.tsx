@@ -10,10 +10,11 @@ import ChangePasswordSchema, {
 import ZodForm from "@/app/components/forms/ZodForm";
 
 const ChangePasswordForm = () => {
-  const { zodFormComponentProps } = useZodForm<ChangePasswordType>({
+  const { zodFormComponentProps, isLoading } = useZodForm<ChangePasswordType>({
     zodSchema: ChangePasswordSchema,
     pushFormDataEndpoint: "/api/user/settings/password",
     clearFormAfterChange: true,
+    refreshPageAfterSuccessSubmit: false,
   });
 
   return (

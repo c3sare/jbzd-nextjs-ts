@@ -14,11 +14,12 @@ type NotifySettingsProps = {
 };
 
 const NotifySettings: React.FC<NotifySettingsProps> = ({ data }) => {
-  const { zodFormComponentProps, watch } = useZodForm<UserNotificationsType>({
-    zodSchema: UserNotificationsSchema,
-    pushFormDataEndpoint: "/api/user/settings/notifications",
-    defaultFormValues: data,
-  });
+  const { zodFormComponentProps, watch, isLoading } =
+    useZodForm<UserNotificationsType>({
+      zodSchema: UserNotificationsSchema,
+      pushFormDataEndpoint: "/api/user/settings/notifications",
+      defaultFormValues: data,
+    });
 
   return (
     <ZodForm {...zodFormComponentProps} className="mx-auto max-w-[360px]">

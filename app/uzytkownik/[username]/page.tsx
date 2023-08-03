@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import UserRank from "./components/UserRank";
 import UserActions from "./components/UserActions";
 import { getSession } from "@/app/actions/getSession";
+import prisma from "@/app/libs/prismadb";
 
 type UserProfileProps = {
   params: {
@@ -18,19 +19,35 @@ type UserProfileProps = {
 const UserProfilePage: React.FC<UserProfileProps> = async ({
   params: { username },
 }) => {
-  const session = await getSession();
   const user = await getUser(username);
-
-  const isLoggedIn = Boolean(session);
-  const isOwnProfile = session?.user?.username === username;
 
   if (!user) {
     return notFound();
   }
 
-  const accountCreateDate = user.createdAt
-    ? format(user.createdAt, "dd.MM.yyyy")
-    : "????.??.??";
+  const session = await getSession();
+  const isLoggedIn = Boolean(session);
+  const isOwnProfile = session?.user?.username === user.username;
+  const isPremiumUser = user?.premiumExpires
+    ? user.premiumExpires > new Date()
+    : false;
+
+  if (isPremiumUser && user.premium.hideProfile && !isOwnProfile)
+    return (
+      <h1 className="text-2xl text-white font-bold">Profil jest ukryty!</h1>
+    );
+
+  const isBlocked = Boolean(
+    await prisma.userAction.count({
+      where: {
+        method: "BLOCK",
+        authorId: session?.user?.id,
+        userId: user.id,
+      },
+    })
+  );
+
+  const accountCreateDate = format(user.createdAt, "dd.MM.yyyy");
 
   return (
     <>
@@ -38,13 +55,13 @@ const UserProfilePage: React.FC<UserProfileProps> = async ({
         <Avatar src={user.image} />
         <div className="sm:pl-[15px] flex-[1]">
           <header className="font-semibold text-[28px] mb-[10px] text-center sm:text-left">
-            {user?.username}
+            {user.username}
           </header>
           <section className="flex gap-4 mb-[10px] justify-center sm:justify-normal">
             <div className="flex items-center">
               <AiFillPicture size={20} color="#888888" />
               <span className="ml-2">
-                {user?.posts} / {user?.acceptedPosts}
+                {user.posts} / {user.acceptedPosts}
               </span>
             </div>
             <div className="flex items-center">
@@ -75,7 +92,9 @@ const UserProfilePage: React.FC<UserProfileProps> = async ({
               />
             </div>
           </div>
-          {isLoggedIn && !isOwnProfile && <UserActions id={user.id} />}
+          {isLoggedIn && !isOwnProfile && (
+            <UserActions isBlocked={isBlocked} id={user.id} />
+          )}
         </div>
         <UserRank
           isLoggedIn={isLoggedIn}

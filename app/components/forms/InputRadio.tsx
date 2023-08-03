@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import {
   FieldValues,
   Path,
@@ -17,6 +18,7 @@ type InputRadioProps<T extends FieldValues> = {
   currentValue: string | number;
   value: string | number;
   setValue: UseFormSetValue<T>;
+  disabled?: boolean;
   valueAsNumber?: boolean;
 };
 
@@ -28,9 +30,16 @@ function InputRadio<T extends FieldValues>({
   value,
   valueAsNumber,
   setValue,
+  disabled,
 }: InputRadioProps<T>) {
   return (
-    <label htmlFor={id + value} className="flex items-center cursor-pointer">
+    <label
+      htmlFor={id + value}
+      className={clsx(
+        "flex items-center cursor-pointer",
+        disabled && "opacity-60"
+      )}
+    >
       <input
         className="hidden"
         id={id + value}
@@ -42,6 +51,7 @@ function InputRadio<T extends FieldValues>({
               valueAsNumber ? (Number(e.target.value) as any) : e.target.value
             ),
         })}
+        disabled={disabled}
         value={value}
       />
       <span className="text-[20px] text-[#b4d132]">

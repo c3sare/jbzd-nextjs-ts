@@ -15,41 +15,41 @@ export async function POST(request: Request) {
     if (!["BLOCK", "FOLLOW"].includes(method))
       return new NextResponse("Invalid method type", { status: 400 });
 
-    const user = await prisma.user.findUnique({
-      where: {
-        email: session?.user?.email,
-      },
-    });
-
-    if (!user)
-      return new NextResponse("User from session not found", { status: 404 });
-
-    if (id === user.id)
+    if (id === session.user.id)
       return new NextResponse("Can't observe you own profile!", {
         status: 500,
       });
 
-    const userAction = await prisma.userAction.create({
-      data: {
-        method,
-        user: {
-          connect: {
-            id,
-          },
-        },
-        author: { connect: { id: user.id } },
-      },
-      include: {
-        user: {
-          select: {
-            actionedUsers: true,
-            actionedByUsers: true,
-          },
-        },
+    const isActioned = await prisma.userAction.findFirst({
+      where: {
+        userId: id,
+        authorId: session.user.id,
       },
     });
 
-    return NextResponse.json({ ...userAction });
+    if (isActioned && method === isActioned.method) {
+      await prisma.userAction.delete({
+        where: {
+          id: isActioned.id,
+        },
+      });
+
+      return NextResponse.json({ method: "" });
+    } else {
+      const userAction = await prisma.userAction.create({
+        data: {
+          method,
+          user: {
+            connect: {
+              id,
+            },
+          },
+          author: { connect: { id: session.user.id } },
+        },
+      });
+
+      return NextResponse.json({ method: userAction.method });
+    }
   } catch (err: any) {
     throw new NextResponse("Internal Error", { status: 500 });
   }

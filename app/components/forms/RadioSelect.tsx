@@ -6,6 +6,7 @@ import {
   UseFormWatch,
 } from "react-hook-form";
 import InputRadio from "./InputRadio";
+import clsx from "clsx";
 
 type RadioSelectProps<T extends FieldValues> = {
   watch: UseFormWatch<T>;
@@ -18,6 +19,7 @@ type RadioSelectProps<T extends FieldValues> = {
   }[];
   setValue: UseFormSetValue<T>;
   valueAsNumber?: boolean;
+  disabled?: boolean;
 };
 
 function RadioSelect<T extends FieldValues>({
@@ -28,13 +30,13 @@ function RadioSelect<T extends FieldValues>({
   setValue,
   watch,
   valueAsNumber,
+  disabled,
 }: RadioSelectProps<T>) {
   const currentValue = watch(id);
-  console.log(currentValue);
 
   return (
     <div className="mb-[25px]">
-      <span>{label}</span>
+      <span className={clsx(disabled && "opacity-60")}>{label}</span>
       <div className="flex gap-4 my-1">
         {options.map((option) => (
           <InputRadio<T>
@@ -45,7 +47,8 @@ function RadioSelect<T extends FieldValues>({
             label={option.label}
             value={option.value}
             setValue={setValue}
-            valueAsNumber
+            disabled={disabled}
+            valueAsNumber={valueAsNumber}
           />
         ))}
       </div>

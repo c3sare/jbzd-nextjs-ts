@@ -5,6 +5,7 @@ import Hr from "@/app/components/Hr";
 import AvatarForm from "./components/forms/UserDataForms/AvatarForm";
 import ChangePasswordForm from "./components/forms/UserDataForms/ChangePasswordForm";
 import { getAvatar } from "@/app/actions/getAvatar";
+import DeleteAccountForm from "./components/forms/UserDataForms/DeleteAccountForm";
 
 const UserSettings = async () => {
   const session = await getSession();
@@ -28,6 +29,8 @@ const UserSettings = async () => {
           <ChangePasswordForm />
         </>
       )}
+      <Hr />
+      <DeleteAccountForm />
     </>
   );
 };

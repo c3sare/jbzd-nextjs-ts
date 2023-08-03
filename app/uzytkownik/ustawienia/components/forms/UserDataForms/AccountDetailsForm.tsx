@@ -17,7 +17,7 @@ type AccountDetailsFormProps = {
 const AccountDetailsForm: React.FC<AccountDetailsFormProps> = ({
   userData,
 }) => {
-  const { zodFormComponentProps } = useZodForm<AccountDetailsType>({
+  const { zodFormComponentProps, isLoading } = useZodForm<AccountDetailsType>({
     // initialFormDataEndpoint: "/api/user/settings/data",
     zodSchema: AccountDetailsSchema,
     pushFormDataEndpoint: "/api/user/settings/data",

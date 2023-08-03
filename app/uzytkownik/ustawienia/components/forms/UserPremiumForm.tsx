@@ -21,7 +21,7 @@ type UserPremiumFormProps = {
 const UserPremiumForm: React.FC<UserPremiumFormProps> = ({
   data: { isPremium, premium },
 }) => {
-  const { zodFormComponentProps, watch, register, setValue } =
+  const { zodFormComponentProps, watch, register, setValue, isLoading } =
     useZodForm<UserPremiumType>({
       zodSchema: UserPremiumSchema,
       pushFormDataEndpoint: "/api/user/settings/premium",

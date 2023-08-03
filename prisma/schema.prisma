@@ -271,6 +271,8 @@ model UserProfile {
   gold          Int
   acceptedPosts Int
   rank          Int
+  premium       Premium
+  premiumExpires  DateTime?
 }
 
 model UserProfileInfo {

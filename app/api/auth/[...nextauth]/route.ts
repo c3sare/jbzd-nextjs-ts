@@ -82,6 +82,7 @@ export const authOptions: AuthOptions = {
     jwt: async ({ token, user, account }) => {
       if (user && account) {
         token.provider = account.provider;
+        token.userId = account.userId || user.id;
       }
 
       return token;
@@ -101,6 +102,7 @@ export const authOptions: AuthOptions = {
         | "credentials"
         | "google"
         | "facebook";
+      session.user.id = token.userId;
       session.user.username = dbUser.username!;
       delete (session.user as any).name;
 

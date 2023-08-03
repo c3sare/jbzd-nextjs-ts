@@ -1,6 +1,5 @@
 "use client";
 
-import LoadingBox from "@/app/components/LoadingBox";
 import Button from "@/app/components/sidebar/components/forms/components/Button";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -8,6 +7,7 @@ import AvatarEditor from "react-avatar-editor";
 import Heading from "../../Heading";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import clsx from "clsx";
 
 const getImageBlob = (url: string) => {
   return axios
@@ -85,8 +85,10 @@ const AvatarForm = ({ avatar }: { avatar: string }) => {
       <Heading>Avatar</Heading>
       <form className="relative">
         <div
-          className="mx-auto mb-[25px]"
-          style={isLoading ? { opacity: "0.8" } : {}}
+          className={clsx(
+            "mx-auto mb-[25px] relative",
+            isLoading && "opacity-60"
+          )}
         >
           {file ? (
             editor
@@ -111,11 +113,9 @@ const AvatarForm = ({ avatar }: { avatar: string }) => {
                 setFile(URL.createObjectURL(e.target?.files?.[0]));
             }}
           />
+          {isLoading && <div className="h-full w-full absolute top-0 left-0" />}
         </div>
-        <p
-          className="text-center py-4"
-          style={isLoading ? { opacity: "0.8" } : {}}
-        >
+        <p className="text-center py-4">
           <small>
             <i>
               Avatar nie może zawierać treści +18, ustawienie ich będzie
@@ -123,14 +123,11 @@ const AvatarForm = ({ avatar }: { avatar: string }) => {
             </i>
           </small>
         </p>
-        <p
-          className="text-center pb-4"
-          style={isLoading ? { opacity: "0.8" } : {}}
-        >
+        <p className="text-center pb-4">
           <small>Kliknij obrazek aby go zmienić.</small>
         </p>
         <input
-          className="block mx-auto mb-4 disabled:opacity-80"
+          className="block mx-auto mb-4 disabled:opacity-60"
           type="range"
           min="1"
           max="3"
@@ -139,10 +136,13 @@ const AvatarForm = ({ avatar }: { avatar: string }) => {
           value={String(zoom)}
           onChange={(e) => setZoom(Number(e.target.value))}
         />
-        <Button disabled={isLoading} onClick={handleSendAvatar}>
+        <Button
+          disabled={isLoading}
+          isLoading={isLoading}
+          onClick={handleSendAvatar}
+        >
           Zapisz
         </Button>
-        {isLoading && <LoadingBox />}
       </form>
     </>
   );
