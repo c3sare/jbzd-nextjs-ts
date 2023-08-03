@@ -18,7 +18,6 @@ type UseZodFormProps<T extends FieldValues> = {
   initialFormDataEndpoint?: string;
   pushFormDataEndpoint: string;
   pushFormDataMethod?: "POST" | "PUT" | "PATCH";
-  refreshPageAfterSubmit?: boolean;
   clearFormAfterChange?: boolean;
   defaultFormValues?: DeepPartial<T>;
   successDataFetchCallback?: (data?: AxiosResponse<any>) => void;
@@ -32,7 +31,6 @@ function useZodForm<T extends FieldValues>({
   initialFormDataEndpoint,
   pushFormDataEndpoint,
   pushFormDataMethod,
-  refreshPageAfterSubmit,
   clearFormAfterChange,
   successDataFetchCallback,
   customSuccessMessage,
@@ -117,7 +115,7 @@ function useZodForm<T extends FieldValues>({
             storedData[initialFormDataEndpoint as string] = response.data;
           if (successDataFetchCallback) successDataFetchCallback(response);
           if (clearFormAfterChange) reset();
-          if (refreshPageAfterSubmit) router.refresh();
+          router.refresh();
         } else {
           toast.error("Wystąpił nieoczekiwany błąd!");
         }

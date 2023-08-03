@@ -1,7 +1,6 @@
 import { getSession } from "@/app/actions/getSession";
 import UserNotificationsSchema from "@/app/formSchemas/UserNotificationsSchema";
 import prisma from "@/app/libs/prismadb";
-import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -19,7 +18,7 @@ export async function GET() {
         notifications: true,
       },
     });
-    revalidatePath("/uzytkownik/ustawienia/notyfikacje");
+
     return NextResponse.json(user.notifications);
   } catch (err: any) {
     throw new NextResponse("Internal Error " + err, { status: 500 });

@@ -2,7 +2,6 @@ import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 import { UploadApiOptions, v2 as cloudinary } from "cloudinary";
-import { revalidatePath } from "next/cache";
 
 export async function GET() {
   const session = await getSession();
@@ -85,7 +84,6 @@ export async function POST(request: Request) {
 
     if (!update) return new NextResponse("Internal Error", { status: 500 });
 
-    revalidatePath("/uzytkownik/ustawienia");
     return NextResponse.json({
       avatar: result.secure_url,
     });

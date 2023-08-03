@@ -1,13 +1,14 @@
 import prisma from "../libs/prismadb";
 import { getSession } from "./getSession";
 
-const defaultAvatar = "/images/avatars/default.jpg";
+export const revalidate = 0;
 
 export async function getAvatar() {
   const session = await getSession();
 
-  if (!session?.user?.email) return defaultAvatar;
+  const defaultAvatar = "/images/avatars/default.jpg";
 
+  if (!session?.user?.email) return defaultAvatar;
   try {
     const user = await prisma.user.findUnique({
       where: {

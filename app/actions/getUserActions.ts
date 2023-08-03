@@ -1,6 +1,8 @@
 import { getSession } from "./getSession";
 import prisma from "@/app/libs/prismadb";
 
+export const revalidate = 0;
+
 export async function getUserActions() {
   try {
     const session = await getSession();
@@ -22,7 +24,7 @@ export async function getUserActions() {
             category: true,
           },
         },
-        actionedByUsers: {
+        actionedUsers: {
           include: {
             user: {
               select: {

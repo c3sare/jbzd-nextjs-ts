@@ -1,7 +1,7 @@
 import prisma from "../libs/prismadb";
 import { getSession } from "./getSession";
 
-export async function getUserData() {
+export const getUserData = async () => {
   try {
     const session = await getSession();
 
@@ -26,4 +26,4 @@ export async function getUserData() {
     console.log(err);
     return null;
   }
-}
+};

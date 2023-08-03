@@ -1,6 +1,8 @@
 import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
 
+export const revalidate = 0;
+
 export async function getUserPreferences() {
   const session = await getSession();
 

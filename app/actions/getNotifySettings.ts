@@ -1,6 +1,8 @@
 import prisma from "../libs/prismadb";
 import { getSession } from "./getSession";
 
+export const revalidate = 0;
+
 export async function getNotifySettings() {
   const session = await getSession();
 

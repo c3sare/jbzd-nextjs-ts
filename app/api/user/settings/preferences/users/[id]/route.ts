@@ -1,6 +1,5 @@
 import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
-import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 type RequestParams = {
@@ -27,8 +26,6 @@ export async function DELETE(
         },
       },
     });
-
-    revalidatePath("/uzytkownik/ustawienia/preferencje");
 
     return NextResponse.json(userAction);
   } catch (err: any) {

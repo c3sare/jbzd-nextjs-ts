@@ -1,8 +1,6 @@
 import { getPremium } from "@/app/actions/getPremium";
 import UserPremiumForm from "../components/forms/UserPremiumForm";
 
-export const fetchCache = "force-no-store";
-
 const PremiumPage = async () => {
   const data = await getPremium();
 
