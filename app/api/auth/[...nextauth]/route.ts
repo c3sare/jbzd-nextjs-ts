@@ -71,6 +71,16 @@ export const authOptions: AuthOptions = {
           },
           data: {
             username,
+            premium: {
+              picsCountOnPage: 8,
+              adminPostsOff: false,
+              commentsPicsGifsOff: false,
+              hideNegativeComments: false,
+              hideAds: true,
+              hideProfile: false,
+              hidePremiumIcon: false,
+              hideLowReputationComments: false,
+            },
           },
         });
 
