@@ -6,7 +6,7 @@ export const revalidate = 0;
 export async function getPremium() {
   const session = await getSession();
 
-  if (!session?.user?.email) return null;
+  if (!session?.user?.email) return { isPremium: false, premium: {} };
 
   try {
     const user = await prisma.user.findUniqueOrThrow({
@@ -33,6 +33,6 @@ export async function getPremium() {
       premium: isPremium ? user.premium : {},
     };
   } catch (err: any) {
-    return null;
+    return { isPremium: false, premium: {} };
   }
 }

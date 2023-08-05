@@ -14,7 +14,7 @@ import BigButton from "../forms/BigButton";
 type UserPremiumFormProps = {
   data: {
     isPremium: boolean;
-    premium: UserPremiumType | {};
+    premium: UserPremiumType | {} | null;
   };
 };
 
@@ -25,7 +25,7 @@ const UserPremiumForm: React.FC<UserPremiumFormProps> = ({
     useZodForm<UserPremiumType>({
       zodSchema: UserPremiumSchema,
       pushFormDataEndpoint: "/api/user/settings/premium",
-      defaultFormValues: premium,
+      defaultFormValues: premium!,
     });
 
   return (

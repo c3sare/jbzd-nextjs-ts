@@ -4,7 +4,7 @@ import UserPremiumForm from "../components/forms/UserPremiumForm";
 const PremiumPage = async () => {
   const data = await getPremium();
 
-  if (!data) return Error("Nie jesteś zalogowany!");
+  if (!data || !data.premium) return Error("Nie jesteś zalogowany!");
 
   return <UserPremiumForm data={data} />;
 };
