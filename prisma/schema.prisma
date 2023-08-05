@@ -30,7 +30,7 @@ type Premium {
 
 model User {
   id             String        @id @default(auto()) @map("_id") @db.ObjectId
-  username       String        @unique
+  username       String?        @unique
   name           String?
   gender         Int?          @default(0)
   country        String?
@@ -44,9 +44,9 @@ model User {
   updatedAt      DateTime      @updatedAt
   token          String?
   tokenExpires   DateTime?
-  notifications  Notifications
+  notifications  Notifications?
   premiumExpires DateTime?
-  premium        Premium
+  premium        Premium?
 
   accounts           Account[]
   actionedByUsers    UserAction[]       @relation("UserActionedBy")

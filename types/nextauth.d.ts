@@ -8,6 +8,7 @@ declare module "next-auth" {
       image: string | null;
       username: string;
       provider: "google" | "facebook" | "credentials";
+      isDeleted?: boolean;
     };
   }
 }

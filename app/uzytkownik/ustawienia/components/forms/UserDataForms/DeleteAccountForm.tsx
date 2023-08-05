@@ -4,7 +4,7 @@ import { useContext } from "react";
 import Heading from "../../Heading";
 import { MonitProvider } from "@/app/context/MonitContext";
 import axios from "axios";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const DeleteAccountForm = () => {
   const session = useSession();
@@ -13,7 +13,9 @@ const DeleteAccountForm = () => {
   const deleteAccount = () => {
     axios
       .delete("/api/user/delete/" + session.data!.user!.id)
-      .then(() => signOut())
+      .then(() => {
+        session.update();
+      })
       .catch((err) => {
         console.log(err);
       })

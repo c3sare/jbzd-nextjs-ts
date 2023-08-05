@@ -55,40 +55,6 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    signIn: async ({ user: userSignin, profile, account }) => {
-      if (!profile?.email && !userSignin?.email) return false;
-
-      if (
-        !(userSignin as Partial<User>)?.username &&
-        account?.type === "oauth"
-      ) {
-        const userUniqueId = getUniqueId();
-        const username = "guest_" + userUniqueId;
-
-        const update = await prisma.user.update({
-          where: {
-            email: profile?.email! || userSignin?.email!,
-          },
-          data: {
-            username,
-            premium: {
-              picsCountOnPage: 8,
-              adminPostsOff: false,
-              commentsPicsGifsOff: false,
-              hideNegativeComments: false,
-              hideAds: true,
-              hideProfile: false,
-              hidePremiumIcon: false,
-              hideLowReputationComments: false,
-            },
-          },
-        });
-
-        if (!update) return false;
-      }
-
-      return true;
-    },
     jwt: async ({ token, user, account }) => {
       if (user && account) {
         token.provider = account.provider;
@@ -106,7 +72,10 @@ export const authOptions: AuthOptions = {
         },
       });
 
-      if (!dbUser) return session;
+      if (!dbUser) {
+        session.user.isDeleted = true;
+        return session;
+      }
 
       session.user.provider = token.provider as
         | "credentials"
@@ -115,6 +84,38 @@ export const authOptions: AuthOptions = {
       session.user.id = token.userId;
       session.user.username = dbUser.username!;
       delete (session.user as any).name;
+
+      if (!session.user.username) {
+        const userUniqueId = getUniqueId();
+        const username = "guest_" + userUniqueId;
+
+        const update = await prisma.user.update({
+          where: {
+            email: session.user.email,
+          },
+          data: {
+            username,
+            premium: {
+              picsCountOnPage: 8,
+              adminPostsOff: false,
+              commentsPicsGifsOff: false,
+              hideNegativeComments: false,
+              hideAds: true,
+              hideProfile: false,
+              hidePremiumIcon: false,
+              hideLowReputationComments: false,
+            },
+            notifications: {
+              newOrders: true,
+              newMarks: true,
+              commentsOnHomePage: true,
+              newComments: true,
+            },
+          },
+        });
+
+        if (!update) return session;
+      }
 
       return session;
     },
