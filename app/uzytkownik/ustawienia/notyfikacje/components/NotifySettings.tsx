@@ -6,8 +6,8 @@ import UserNotificationsSchema, {
   UserNotificationsType,
 } from "@/app/formSchemas/UserNotificationsSchema";
 import Button from "@/app/components/sidebar/components/forms/components/Button";
-import LabelCheckbox from "./components/LabelCheckbox";
-import Heading from "../../Heading";
+import LabelCheckbox from "@/app/components/LabelCheckbox";
+import Heading from "../../components/Heading";
 
 type NotifySettingsProps = {
   data: UserNotificationsType;

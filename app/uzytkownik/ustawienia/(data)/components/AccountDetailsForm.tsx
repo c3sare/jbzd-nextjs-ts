@@ -7,7 +7,7 @@ import AccountDetailsSchema, {
   AccountDetailsType,
 } from "@/app/formSchemas/AccountDetailsSchema";
 import useZodForm from "@/app/hooks/useZodForm";
-import Heading from "../../Heading";
+import Heading from "../../components/Heading";
 import ZodForm from "@/app/components/forms/ZodForm";
 
 type AccountDetailsFormProps = {

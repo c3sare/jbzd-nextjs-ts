@@ -5,11 +5,11 @@ import UserPremiumSchema, {
   UserPremiumType,
 } from "@/app/formSchemas/UserPremiumSchema";
 import useZodForm from "@/app/hooks/useZodForm";
-import LabelCheckbox from "../forms/UserNotifycationsForms/components/LabelCheckbox";
+import LabelCheckbox from "@/app/components/LabelCheckbox";
 import Button from "@/app/components/sidebar/components/forms/components/Button";
 import RadioSelect from "@/app/components/forms/RadioSelect";
 import clsx from "clsx";
-import BigButton from "../forms/BigButton";
+import BigButton from "./BigButton";
 
 type UserPremiumFormProps = {
   data: {

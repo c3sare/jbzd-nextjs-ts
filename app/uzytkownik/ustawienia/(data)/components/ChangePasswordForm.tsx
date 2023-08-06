@@ -1,7 +1,7 @@
 "use client";
 
 import useZodForm from "@/app/hooks/useZodForm";
-import Heading from "../../Heading";
+import Heading from "../../components/Heading";
 import Input from "@/app/components/sidebar/components/forms/components/Input";
 import Button from "@/app/components/sidebar/components/forms/components/Button";
 import ChangePasswordSchema, {

@@ -4,7 +4,7 @@ import Button from "@/app/components/sidebar/components/forms/components/Button"
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import AvatarEditor from "react-avatar-editor";
-import Heading from "../../Heading";
+import Heading from "../../components/Heading";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";

@@ -9,14 +9,17 @@ import UserRank from "./components/UserRank";
 import UserActions from "./components/UserActions";
 import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
+import ButtonSwitchTab from "./components/ButtonSwitchTab";
 
-type UserProfileProps = {
+type UserProfileLayoutProps = {
+  children: React.ReactNode;
   params: {
     username: string;
   };
 };
 
-const UserProfilePage: React.FC<UserProfileProps> = async ({
+const UserProfileLayout: React.FC<UserProfileLayoutProps> = async ({
+  children,
   params: { username },
 }) => {
   const user = await getUser(username);
@@ -51,7 +54,7 @@ const UserProfilePage: React.FC<UserProfileProps> = async ({
 
   return (
     <>
-      <div className="flex pt-[30px] flex-wrap flex-col justify-center sm:flex-row">
+      <div className="flex pt-[30px] flex-wrap flex-col justify-center sm:flex-row mb-5 p-[15px_15px_0]">
         <Avatar src={user.image} />
         <div className="sm:pl-[15px] flex-[1]">
           <header className="font-semibold text-[28px] mb-[10px] text-center sm:text-left">
@@ -104,8 +107,17 @@ const UserProfilePage: React.FC<UserProfileProps> = async ({
           spears={user.spears}
         />
       </div>
+      <div className="w-full flex justify-center items-center gap-1 mb-[25px]">
+        <ButtonSwitchTab href={`/uzytkownik/${username}`}>
+          Dzidy użytkownika
+        </ButtonSwitchTab>
+        <ButtonSwitchTab href={`/uzytkownik/${username}/komentarze`}>
+          Komentarze użytkownika
+        </ButtonSwitchTab>
+      </div>
+      <div>{children}</div>
     </>
   );
 };
 
-export default UserProfilePage;
+export default UserProfileLayout;

@@ -1,5 +1,5 @@
 import { getNotifySettings } from "@/app/actions/getNotifySettings";
-import NotifySettings from "../components/forms/UserNotifycationsForms/NotifySettings";
+import NotifySettings from "./components/NotifySettings";
 
 const NotificationsPage = async () => {
   const data = await getNotifySettings();

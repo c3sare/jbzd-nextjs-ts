@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { ImCross } from "react-icons/im";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { toast } from "react-hot-toast";
@@ -9,14 +9,23 @@ type ActionItemProps = {
   endpoint: string;
   id: string;
   title: string;
+  lockBoxes: boolean;
+  setLockBoxes: Dispatch<SetStateAction<boolean>>;
 };
 
-const ActionItem: React.FC<ActionItemProps> = ({ endpoint, id, title }) => {
+const ActionItem: React.FC<ActionItemProps> = ({
+  endpoint,
+  id,
+  title,
+  setLockBoxes,
+  lockBoxes,
+}) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleDeleteFromList = () => {
     setIsLoading(true);
+    setLockBoxes(true);
     axios
       .delete(endpoint + `/${id}`)
       .then(() => {
@@ -26,7 +35,8 @@ const ActionItem: React.FC<ActionItemProps> = ({ endpoint, id, title }) => {
         console.log(err);
         toast.error("Wystąpił problem przy usuwaniu!");
         setIsLoading(false);
-      });
+      })
+      .finally(() => setLockBoxes(false));
   };
 
   return (
@@ -36,8 +46,8 @@ const ActionItem: React.FC<ActionItemProps> = ({ endpoint, id, title }) => {
       </span>
       <button
         onClick={handleDeleteFromList}
-        disabled={isLoading}
-        className="text-[12px]"
+        disabled={lockBoxes}
+        className="text-[12px] disabled:opacity-60"
       >
         {isLoading ? (
           <AiOutlineLoading3Quarters className="animate-spin" />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext } from "react";
-import Heading from "../../Heading";
+import Heading from "../../components/Heading";
 import { MonitProvider } from "@/app/context/MonitContext";
 import axios from "axios";
 import { useSession } from "next-auth/react";

@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { HTMLAttributes } from "react";
 import {
   FieldValues,
   Path,
@@ -13,6 +14,8 @@ type LabelCheckboxProps<T extends FieldValues> = {
   label: string;
   watch?: UseFormWatch<T>;
   disabled?: boolean;
+  className?: HTMLAttributes<HTMLLabelElement>["className"];
+  variant?: "primary" | "secondary";
 };
 
 function LabelCheckbox<T extends FieldValues>({
@@ -21,14 +24,22 @@ function LabelCheckbox<T extends FieldValues>({
   label,
   watch,
   disabled,
+  className = "mb-[25px]",
+  variant = "primary",
 }: LabelCheckboxProps<T>) {
   const isChecked = watch!(id);
+
+  const color = {
+    primary: "text-[#b4d132]",
+    secondary: "text-[#a4a7aa]",
+  };
 
   return (
     <label
       htmlFor={id}
       className={clsx(
-        "flex items-center cursor-pointer select-none mb-[25px] text-[14px]",
+        "flex items-center cursor-pointer select-none text-[14px]",
+        className,
         disabled && "opacity-60"
       )}
     >
@@ -39,7 +50,7 @@ function LabelCheckbox<T extends FieldValues>({
         type="checkbox"
         {...register!(id)}
       />
-      <span className="text-[#b4d132] mr-[5px] text-[20px]">
+      <span className={clsx("mr-[5px] text-[20px]", color[variant])}>
         {isChecked ? <IoMdCheckboxOutline /> : <IoMdSquareOutline />}
       </span>
       <span>{label}</span>

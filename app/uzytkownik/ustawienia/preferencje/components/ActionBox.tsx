@@ -1,13 +1,16 @@
+import { Dispatch, SetStateAction } from "react";
 import ActionItem from "./ActionItem";
 import SubHeader from "./SubHeader";
 
-type ActionBoxProps<T> = {
+export type ActionBoxProps<T> = {
   title: string;
   items: T[];
   deleteEndpoint: string;
   objectKey: keyof T;
   nameKey: string;
   hashBeforeName?: boolean;
+  lockBoxes: boolean;
+  setLockBoxes: Dispatch<SetStateAction<boolean>>;
 };
 
 function ActionBox<T>({
@@ -17,6 +20,8 @@ function ActionBox<T>({
   objectKey,
   nameKey,
   hashBeforeName,
+  lockBoxes,
+  setLockBoxes,
 }: ActionBoxProps<T>) {
   return (
     items.length > 0 && (
@@ -29,6 +34,8 @@ function ActionBox<T>({
               endpoint={deleteEndpoint}
               id={item.id}
               title={(hashBeforeName ? "#" : "") + item[objectKey][nameKey]}
+              lockBoxes={lockBoxes}
+              setLockBoxes={setLockBoxes}
             />
           ))}
         </div>

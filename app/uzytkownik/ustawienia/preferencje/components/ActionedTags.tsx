@@ -1,20 +1,27 @@
 "use client";
 
 import { TagAction } from "@prisma/client";
-import ActionBox from "./components/ActionBox";
-import Header from "./components/Header";
+import ActionBox from "./ActionBox";
+import Header from "./Header";
+import { Dispatch, SetStateAction } from "react";
 
-type ActionBoxType = TagAction & {
+export type ActionTagsBoxType = TagAction & {
   tag: {
     name: string;
   };
 };
 
 type ActionedTagsProps = {
-  actionedTags: (TagAction & ActionBoxType)[];
+  actionedTags: (TagAction & ActionTagsBoxType)[];
+  lockBoxes: boolean;
+  setLockBoxes: Dispatch<SetStateAction<boolean>>;
 };
 
-const ActionedTags: React.FC<ActionedTagsProps> = ({ actionedTags }) => {
+const ActionedTags: React.FC<ActionedTagsProps> = ({
+  actionedTags,
+  lockBoxes,
+  setLockBoxes,
+}) => {
   const deleteEndpoint = "/api/user/settings/preferences/tags";
 
   const followedTags = actionedTags.filter((tag) => tag.method === "FOLLOW");
@@ -23,20 +30,24 @@ const ActionedTags: React.FC<ActionedTagsProps> = ({ actionedTags }) => {
   return (
     <>
       <Header>Zarzadzanie tagami</Header>
-      <ActionBox<ActionBoxType>
+      <ActionBox<ActionTagsBoxType>
         items={followedTags}
         title="Obserwowane"
         deleteEndpoint={deleteEndpoint}
         objectKey="tag"
         nameKey="name"
+        lockBoxes={lockBoxes}
+        setLockBoxes={setLockBoxes}
         hashBeforeName
       />
-      <ActionBox<ActionBoxType>
+      <ActionBox<ActionTagsBoxType>
         items={blockedTags}
         title="Blokowane"
         deleteEndpoint={deleteEndpoint}
         objectKey="tag"
         nameKey="name"
+        lockBoxes={lockBoxes}
+        setLockBoxes={setLockBoxes}
         hashBeforeName
       />
     </>
