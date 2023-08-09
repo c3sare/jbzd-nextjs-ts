@@ -7,16 +7,27 @@ import IconButton from "./IconButton";
 import CreatePostForm from "./forms/CreatePostForm";
 import PostsDateFilterForm from "./forms/PostsDateFilterForm";
 import PostsTypeFilterForm from "./forms/PostsTypeFilterForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 
-const Header = () => {
+type PostsPageHeaderProps = {
+  isPremium: boolean;
+};
+
+const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({ isPremium }) => {
+  const pathname = usePathname();
+  const params = useSearchParams();
   const [currentForm, setCurrentForm] = useState<number>(0);
+
+  useEffect(() => {
+    setCurrentForm(0);
+  }, [params, pathname]);
 
   const componentsToSwitch = [
     null,
     <CreatePostForm key={1} />,
     <PostsDateFilterForm key={2} />,
-    <PostsTypeFilterForm key={3} />,
+    <PostsTypeFilterForm isPremium={isPremium} key={3} />,
   ];
 
   const handleSetForm = (index: number) => {
@@ -53,4 +64,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default PostsPageHeader;

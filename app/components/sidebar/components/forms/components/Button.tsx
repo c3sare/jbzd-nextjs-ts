@@ -1,5 +1,7 @@
 "use client";
 
+import clsx from "clsx";
+import { HTMLAttributes } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 
 type ButtonProps = {
@@ -8,6 +10,9 @@ type ButtonProps = {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   isLoading?: boolean;
+  bgColorClassName?: string;
+  className?: HTMLAttributes<HTMLButtonElement>["className"];
+  buttonClassName?: HTMLAttributes<HTMLButtonElement>["className"];
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -16,14 +21,21 @@ const Button: React.FC<ButtonProps> = ({
   type,
   disabled,
   isLoading,
+  bgColorClassName,
+  className,
+  buttonClassName,
 }) => {
   return (
-    <div className="flex justify-end my-2">
+    <div className={clsx(className ? className : "flex justify-end my-2")}>
       <button
         disabled={disabled}
         onClick={onClick}
         type={type || "button"}
-        className="w-full px-2 max-w-none bg-[#c03e3e] rounded-[5px] font-normal text-[13px] outline-none h-[30px] disabled:opacity-80"
+        className={clsx(
+          "w-full px-2 max-w-none rounded-[5px] font-normal text-[13px] outline-none h-[30px] disabled:opacity-80 disabled:bg-[#2d2d2d]",
+          bgColorClassName ? bgColorClassName : "bg-[#c03e3e]",
+          buttonClassName
+        )}
       >
         <span className="relative">
           {children}
