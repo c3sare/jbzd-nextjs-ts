@@ -1,4 +1,4 @@
-import Button from "../sidebar/components/forms/components/Button";
+import Button from "../Button";
 
 type ErrorBoxProps = {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;

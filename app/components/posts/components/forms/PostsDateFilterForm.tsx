@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/app/components/sidebar/components/forms/components/Button";
+import Button from "@/app/components/Button";
 import PresetButton from "../PresetButton";
 import DayPicker from "@/app/components/forms/DayPicker";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

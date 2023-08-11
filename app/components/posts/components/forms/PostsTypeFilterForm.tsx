@@ -1,8 +1,7 @@
 import LabelCheckbox from "@/app/components/LabelCheckbox";
-import Button from "@/app/components/sidebar/components/forms/components/Button";
-import Input from "@/app/components/sidebar/components/forms/components/Input";
+import Button from "@/app/components/Button";
+import Input from "@/app/components/Input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 type PostsTypeFilterFormProps = {

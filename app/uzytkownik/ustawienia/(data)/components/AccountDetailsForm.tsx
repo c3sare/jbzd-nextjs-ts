@@ -1,8 +1,8 @@
 "use client";
 
-import Input from "@/app/components/sidebar/components/forms/components/Input";
+import Input from "@/app/components/Input";
 import Select from "@/app/components/forms/Select";
-import Button from "@/app/components/sidebar/components/forms/components/Button";
+import Button from "@/app/components/Button";
 import AccountDetailsSchema, {
   AccountDetailsType,
 } from "@/app/formSchemas/AccountDetailsSchema";

@@ -4,8 +4,8 @@ import PasswordResetSchema, {
 } from "@/app/formSchemas/PasswordRemindForms/PasswordResetSchema";
 import useZodForm from "@/app/hooks/useZodForm";
 import { Dispatch, SetStateAction } from "react";
-import Input from "../components/Input";
-import Button from "../components/Button";
+import Input from "@/app/components/Input";
+import Button from "../../../../Button";
 
 type PasswordResetForm = {
   setIndexOfCurrentForm: Dispatch<SetStateAction<number>>;

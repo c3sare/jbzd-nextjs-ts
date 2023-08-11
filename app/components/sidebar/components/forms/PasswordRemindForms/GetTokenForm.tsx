@@ -4,8 +4,8 @@ import GetTokenSchema, {
 } from "@/app/formSchemas/PasswordRemindForms/GetTokenSchema";
 import useZodForm from "@/app/hooks/useZodForm";
 import { Dispatch, SetStateAction } from "react";
-import Input from "../components/Input";
-import Button from "../components/Button";
+import Input from "@/app/components/Input";
+import Button from "../../../../Button";
 
 type GetTokenFormProps = {
   setNextStep: () => void;

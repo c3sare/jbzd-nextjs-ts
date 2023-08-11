@@ -5,7 +5,7 @@ import useZodForm from "@/app/hooks/useZodForm";
 import UserNotificationsSchema, {
   UserNotificationsType,
 } from "@/app/formSchemas/UserNotificationsSchema";
-import Button from "@/app/components/sidebar/components/forms/components/Button";
+import Button from "@/app/components/Button";
 import LabelCheckbox from "@/app/components/LabelCheckbox";
 import Heading from "../../components/Heading";
 

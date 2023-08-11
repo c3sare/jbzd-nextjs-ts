@@ -1,5 +1,4 @@
 import React, { HTMLAttributes } from "react";
-import LoadingBox from "../LoadingBox";
 import ErrorBox from "./ErrorBox";
 import {
   FieldErrors,

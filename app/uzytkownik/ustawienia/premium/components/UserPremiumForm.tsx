@@ -6,7 +6,7 @@ import UserPremiumSchema, {
 } from "@/app/formSchemas/UserPremiumSchema";
 import useZodForm from "@/app/hooks/useZodForm";
 import LabelCheckbox from "@/app/components/LabelCheckbox";
-import Button from "@/app/components/sidebar/components/forms/components/Button";
+import Button from "@/app/components/Button";
 import RadioSelect from "@/app/components/forms/RadioSelect";
 import clsx from "clsx";
 import BigButton from "./BigButton";

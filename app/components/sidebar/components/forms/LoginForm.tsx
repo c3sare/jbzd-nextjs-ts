@@ -1,8 +1,8 @@
 "use client";
 
 import { SubmitHandler } from "react-hook-form";
-import Input from "./components/Input";
-import Button from "./components/Button";
+import Input from "@/app/components/Input";
+import Button from "../../../Button";
 import FacebookLoginButton from "./components/FacebookLoginButton";
 import { signIn } from "next-auth/react";
 import { toast } from "react-hot-toast";
