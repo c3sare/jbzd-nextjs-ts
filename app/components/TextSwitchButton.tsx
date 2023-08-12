@@ -5,21 +5,21 @@ import {
   UseFormWatch,
 } from "react-hook-form";
 
-type TextSwitchButtonProps = {
+type TextSwitchButtonProps<T extends FieldValues> = {
   text: string;
   activeText: string;
-  watch: UseFormWatch<FieldValues>;
-  id: Path<FieldValues>;
-  register: UseFormRegister<FieldValues>;
+  watch: UseFormWatch<T>;
+  id: Path<T>;
+  register: UseFormRegister<T>;
 };
 
-const TextSwitchButton: React.FC<TextSwitchButtonProps> = ({
+function TextSwitchButton<T extends FieldValues>({
   text,
   activeText,
   watch,
   id,
   register,
-}) => {
+}: TextSwitchButtonProps<T>) {
   const isActive = watch(id);
 
   return (
@@ -31,6 +31,6 @@ const TextSwitchButton: React.FC<TextSwitchButtonProps> = ({
       <input id={id} className="hidden" type="checkbox" {...register(id)} />
     </label>
   );
-};
+}
 
 export default TextSwitchButton;

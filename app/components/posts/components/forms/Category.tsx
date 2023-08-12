@@ -1,21 +1,26 @@
 import clsx from "clsx";
-import { FieldValues, UseFormRegister, UseFormWatch } from "react-hook-form";
+import {
+  FieldValues,
+  Path,
+  UseFormRegister,
+  UseFormWatch,
+} from "react-hook-form";
 
-type CategoryProps = {
+type CategoryProps<T extends FieldValues> = {
   name: string;
   slug: string;
-  fieldName: string;
-  register: UseFormRegister<FieldValues>;
-  watch: UseFormWatch<FieldValues>;
+  fieldName: Path<T>;
+  register: UseFormRegister<T>;
+  watch: UseFormWatch<T>;
 };
 
-const Category: React.FC<CategoryProps> = ({
+function Category<T extends FieldValues>({
   name,
   slug,
   fieldName,
   register,
   watch,
-}) => {
+}: CategoryProps<T>) {
   const currentValue = watch(fieldName);
 
   const isCurrentCategory = slug === currentValue;
@@ -38,6 +43,6 @@ const Category: React.FC<CategoryProps> = ({
       />
     </label>
   );
-};
+}
 
 export default Category;

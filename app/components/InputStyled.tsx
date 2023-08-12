@@ -17,4 +17,6 @@ const InputStyled = React.forwardRef<HTMLInputElement, InputStyledProps>(
   }
 );
 
+InputStyled.displayName = "InputStyled";
+
 export default InputStyled;

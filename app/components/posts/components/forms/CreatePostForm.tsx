@@ -1,6 +1,6 @@
 import BigIconButton from "@/app/components/BigIconButton";
 import Input from "@/app/components/Input";
-import { FieldValues, useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { BiImage } from "react-icons/bi";
 import { AiFillFileText, AiFillYoutube } from "react-icons/ai";
 import { FaVideo } from "react-icons/fa";
@@ -17,6 +17,19 @@ import Category from "./Category";
 import { Category as CategoryType } from "@prisma/client";
 
 const cache: { [key: string]: any } = {};
+
+type PostFormType = {
+  title: string;
+  tags: { value: string }[];
+  category: string;
+  memContainers: {
+    type: "IMAGE-GIF" | "VIDEO" | "TEXT" | "YOUTUBE";
+    data: any;
+    setData: (data: any) => void;
+  }[];
+  isActiveLinking: boolean;
+  link?: string;
+};
 
 const CreatePostForm = () => {
   const getCategoriesURL = "/api/categories";
@@ -43,13 +56,13 @@ const CreatePostForm = () => {
     formState: { errors },
     watch,
     control,
-  } = useForm();
+  } = useForm<PostFormType>();
   const {
     fields: memContainers,
     append: appendMem,
     remove: removeMem,
     move: moveMem,
-  } = useFieldArray<FieldValues, "memContainers", "data">({
+  } = useFieldArray({
     name: "memContainers",
     control,
   });
@@ -57,7 +70,7 @@ const CreatePostForm = () => {
     fields: tags,
     append: appendTag,
     remove: removeTag,
-  } = useFieldArray<FieldValues, "tags", "value">({
+  } = useFieldArray({
     name: "tags",
     control,
   });
@@ -70,11 +83,48 @@ const CreatePostForm = () => {
     if (["Tab", ","].includes(e.key)) {
       e.preventDefault();
       if (
-        !tags.filter((tag) => tag.value === e.currentTarget.value).length &&
-        tags.length < 10
+        !tags.filter((tag: any) => tag.value === e.currentTarget.value)
+          .length &&
+        tags.length < 10 &&
+        e.currentTarget.value
       ) {
         appendTag({ value: e.currentTarget.value });
         e.currentTarget.value = "";
+      }
+    }
+  };
+
+  const handleAddMemContainer = (
+    type: "IMAGE-GIF" | "VIDEO" | "TEXT" | "YOUTUBE"
+  ) => {
+    switch (type) {
+      case "IMAGE-GIF": {
+        appendMem({
+          type,
+          data: {},
+          setData: () => {},
+        });
+      }
+      case "VIDEO": {
+        appendMem({
+          type,
+          data: {},
+          setData: () => {},
+        });
+      }
+      case "TEXT": {
+        appendMem({
+          type,
+          data: "",
+          setData: () => {},
+        });
+      }
+      case "YOUTUBE": {
+        appendMem({
+          type,
+          data: "",
+          setData: () => {},
+        });
       }
     }
   };
@@ -111,6 +161,7 @@ const CreatePostForm = () => {
           <div className="flex gap-[5px] flex-wrap items-center">
             {categories.map((category) => (
               <Category
+                key={category.id}
                 name={category.name}
                 fieldName="category"
                 slug={category.slug}
@@ -135,9 +186,18 @@ const CreatePostForm = () => {
         </div>
         {tags.length > 0 && (
           <ul className="flex items-center flex-wrap w-full leading-[1em] m-0 p-0 list-none pt-[8px]">
-            {tags.map((tag, i) => (
-              <Tag name={tag.value} onDelete={() => removeTag(i)} />
-            ))}
+            {tags.map((tag, i) => {
+              const { name: fieldName } = register(`tags.${i}.value`);
+
+              return (
+                <Tag
+                  key={tag.id}
+                  name={tag.value}
+                  onDelete={() => removeTag(i)}
+                  fieldName={fieldName}
+                />
+              );
+            })}
           </ul>
         )}
       </div>
