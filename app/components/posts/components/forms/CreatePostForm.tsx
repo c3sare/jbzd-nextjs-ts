@@ -15,26 +15,25 @@ import axios from "axios";
 import LoadingBox from "@/app/components/LoadingBox";
 import Category from "./Category";
 import { Category as CategoryType } from "@prisma/client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import CreatePostSchema, {
+  CreatePostType,
+} from "@/app/formSchemas/CreatePostSchema";
+import MemImage from "./FormPostElements/MemImage";
+import MemVideo from "./FormPostElements/MemVideo";
+import MemText from "./FormPostElements/MemText";
+import MemYoutube from "./FormPostElements/MemYoutube";
+
+type CategoryWithChildrenType = CategoryType & {
+  children: CategoryType[];
+};
 
 const cache: { [key: string]: any } = {};
-
-type PostFormType = {
-  title: string;
-  tags: { value: string }[];
-  category: string;
-  memContainers: {
-    type: "IMAGE-GIF" | "VIDEO" | "TEXT" | "YOUTUBE";
-    data: any;
-    setData: (data: any) => void;
-  }[];
-  isActiveLinking: boolean;
-  link?: string;
-};
 
 const CreatePostForm = () => {
   const getCategoriesURL = "/api/categories";
   const [isLoading, setIsLoading] = useState<boolean>(!cache[getCategoriesURL]);
-  const [categories, setCategories] = useState<CategoryType[]>(
+  const [categories, setCategories] = useState<CategoryWithChildrenType[]>(
     cache[getCategoriesURL] || []
   );
 
@@ -55,13 +54,17 @@ const CreatePostForm = () => {
     register,
     formState: { errors },
     watch,
+    setValue,
     control,
-  } = useForm<PostFormType>();
+  } = useForm<CreatePostType>({
+    resolver: zodResolver(CreatePostSchema),
+  });
   const {
     fields: memContainers,
     append: appendMem,
     remove: removeMem,
     move: moveMem,
+    update: updateMem,
   } = useFieldArray({
     name: "memContainers",
     control,
@@ -74,6 +77,13 @@ const CreatePostForm = () => {
     name: "tags",
     control,
   });
+
+  const memElements = {
+    "IMAGE-GIF": MemImage,
+    VIDEO: MemVideo,
+    TEXT: MemText,
+    YOUTUBE: MemYoutube,
+  };
 
   const onChangeTagInput = (e: FormEvent<HTMLInputElement>) => {
     e.currentTarget.value = e.currentTarget.value.replaceAll(",", "");
@@ -95,41 +105,50 @@ const CreatePostForm = () => {
   };
 
   const handleAddMemContainer = (
-    type: "IMAGE-GIF" | "VIDEO" | "TEXT" | "YOUTUBE"
+    e: React.MouseEvent<HTMLButtonElement>,
+    type: CreatePostType["memContainers"][0]["type"]
   ) => {
+    e.preventDefault();
     switch (type) {
       case "IMAGE-GIF": {
         appendMem({
           type,
           data: {},
-          setData: () => {},
         });
+        break;
       }
       case "VIDEO": {
         appendMem({
           type,
           data: {},
-          setData: () => {},
         });
+        break;
       }
       case "TEXT": {
         appendMem({
           type,
           data: "",
-          setData: () => {},
         });
+        break;
       }
       case "YOUTUBE": {
         appendMem({
           type,
           data: "",
-          setData: () => {},
         });
       }
     }
   };
 
   const isActiveLinking = watch("isActiveLinking");
+  const currentCategory = watch("category");
+
+  const category = categories.find(
+    (item) =>
+      item.slug === currentCategory ||
+      (item.children &&
+        item.children.filter((subitem) => subitem.slug === currentCategory))
+  );
 
   return (
     <form className="my-[20px] bg-[#313131] p-[10px] relative text-left">
@@ -145,31 +164,98 @@ const CreatePostForm = () => {
       <div className="w-full mb-[20px]">
         <Header>Co chcesz dodać?</Header>
         <div className="flex w-full gap-[5px] justify-between">
-          <BigIconButton icon={<BiImage />}>Obrazek/Gif</BigIconButton>
-          <BigIconButton icon={<AiFillFileText />}>Tekst</BigIconButton>
-          <BigIconButton icon={<FaVideo />}>Video MP4</BigIconButton>
-          <BigIconButton icon={<AiFillYoutube />}>Youtube</BigIconButton>
+          <BigIconButton
+            onClick={(e) => handleAddMemContainer(e, "IMAGE-GIF")}
+            icon={<BiImage />}
+          >
+            Obrazek/Gif
+          </BigIconButton>
+          <BigIconButton
+            onClick={(e) => handleAddMemContainer(e, "TEXT")}
+            icon={<AiFillFileText />}
+          >
+            Tekst
+          </BigIconButton>
+          <BigIconButton
+            onClick={(e) => handleAddMemContainer(e, "VIDEO")}
+            icon={<FaVideo />}
+          >
+            Video MP4
+          </BigIconButton>
+          <BigIconButton
+            onClick={(e) => handleAddMemContainer(e, "YOUTUBE")}
+            icon={<AiFillYoutube />}
+          >
+            Youtube
+          </BigIconButton>
         </div>
+        {memContainers.map(({ id, type, data }, index) => {
+          const MemElement = memElements[type];
+
+          return (
+            <MemElement
+              key={id}
+              data={data}
+              setData={(data: any) => updateMem(index, data)}
+            />
+          );
+        })}
       </div>
       {categories.length > 0 && (
         <div className="w-full mb-[20px]">
-          <Header>Dział:</Header>
-          <Information>
-            Wybór działu jest obowiązkowy, subdział wybieramy tylko jeśli jest
-            taka możliwość.
-          </Information>
-          <div className="flex gap-[5px] flex-wrap items-center">
-            {categories.map((category) => (
-              <Category
-                key={category.id}
-                name={category.name}
-                fieldName="category"
-                slug={category.slug}
-                register={register}
-                watch={watch}
-              />
-            ))}
-          </div>
+          <Header>
+            <span>Dział:</span>
+            {currentCategory && (
+              <>
+                <span className="text-white p-[3px_9px] rounded-[3px] inline-block text-[12px] cursor-pointer bg-[#c03e3e] font-bold">
+                  {category?.name}
+                </span>
+                <button
+                  className="text-[#6e7578] text-[11px] cursor-pointer"
+                  onClick={() => setValue("category", "")}
+                >
+                  wyczyść
+                </button>
+              </>
+            )}
+          </Header>
+          {!currentCategory && (
+            <>
+              <Information>
+                Wybór działu jest obowiązkowy, subdział wybieramy tylko jeśli
+                jest taka możliwość.
+              </Information>
+              <div className="flex gap-[5px] flex-wrap items-center">
+                {categories.map((category) => (
+                  <Category
+                    key={category.id}
+                    name={category.name}
+                    fieldName="category"
+                    slug={category.slug}
+                    register={register}
+                    watch={watch}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+          {currentCategory &&
+            category?.children &&
+            category.children.length > 0 && (
+              <div className="flex gap-[5px] flex-wrap items-center">
+                <span>Poddział: </span>
+                {category.children.map((category) => (
+                  <Category
+                    key={category.id}
+                    name={category.name}
+                    fieldName="category"
+                    slug={category.slug}
+                    register={register}
+                    watch={watch}
+                  />
+                ))}
+              </div>
+            )}
           <Information>Poddział dodajemy jeśli jest taka możliwość</Information>
         </div>
       )}
