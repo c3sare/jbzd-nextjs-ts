@@ -147,7 +147,8 @@ const CreatePostForm = () => {
     (item) =>
       item.slug === currentCategory ||
       (item.children &&
-        item.children.filter((subitem) => subitem.slug === currentCategory))
+        item.children.filter((subitem) => subitem.slug === currentCategory)
+          .length > 0)
   );
 
   return (
