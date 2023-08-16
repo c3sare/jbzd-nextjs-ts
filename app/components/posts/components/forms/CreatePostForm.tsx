@@ -28,9 +28,13 @@ type CategoryWithChildrenType = CategoryType & {
   children: CategoryType[];
 };
 
+type CreatePostFormProps = {
+  onClose: () => void;
+};
+
 const cache: { [key: string]: any } = {};
 
-const CreatePostForm = () => {
+const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
   const getCategoriesURL = "/api/categories";
   const [isLoading, setIsLoading] = useState<boolean>(!cache[getCategoriesURL]);
   const [categories, setCategories] = useState<CategoryWithChildrenType[]>(
@@ -202,64 +206,70 @@ const CreatePostForm = () => {
           );
         })}
       </div>
-      {categories.length > 0 && (
-        <div className="w-full mb-[20px]">
-          <Header>
-            <span>Dział:</span>
-            {currentCategory && (
+      <div className="w-full mb-[20px] relative">
+        {categories.length > 0 && (
+          <>
+            <Header>
+              <span>Dział:</span>
+              {isLoading && <LoadingBox />}
+              {currentCategory && (
+                <>
+                  <span className="text-white p-[3px_9px] rounded-[3px] inline-block text-[12px] cursor-pointer bg-[#c03e3e] font-bold">
+                    {category?.name}
+                  </span>
+                  <button
+                    className="text-[#6e7578] text-[11px] cursor-pointer"
+                    onClick={() => setValue("category", "")}
+                  >
+                    wyczyść
+                  </button>
+                </>
+              )}
+            </Header>
+            {!currentCategory && (
               <>
-                <span className="text-white p-[3px_9px] rounded-[3px] inline-block text-[12px] cursor-pointer bg-[#c03e3e] font-bold">
-                  {category?.name}
-                </span>
-                <button
-                  className="text-[#6e7578] text-[11px] cursor-pointer"
-                  onClick={() => setValue("category", "")}
-                >
-                  wyczyść
-                </button>
+                <Information>
+                  Wybór działu jest obowiązkowy, subdział wybieramy tylko jeśli
+                  jest taka możliwość.
+                </Information>
+                <div className="flex gap-[5px] flex-wrap items-center">
+                  {categories.map((category) => (
+                    <Category
+                      key={category.id}
+                      name={category.name}
+                      fieldName="category"
+                      slug={category.slug}
+                      register={register}
+                      watch={watch}
+                    />
+                  ))}
+                </div>
               </>
             )}
-          </Header>
-          {!currentCategory && (
-            <>
-              <Information>
-                Wybór działu jest obowiązkowy, subdział wybieramy tylko jeśli
-                jest taka możliwość.
-              </Information>
-              <div className="flex gap-[5px] flex-wrap items-center">
-                {categories.map((category) => (
-                  <Category
-                    key={category.id}
-                    name={category.name}
-                    fieldName="category"
-                    slug={category.slug}
-                    register={register}
-                    watch={watch}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-          {currentCategory &&
-            category?.children &&
-            category.children.length > 0 && (
-              <div className="flex gap-[5px] flex-wrap items-center">
-                <span>Poddział: </span>
-                {category.children.map((category) => (
-                  <Category
-                    key={category.id}
-                    name={category.name}
-                    fieldName="category"
-                    slug={category.slug}
-                    register={register}
-                    watch={watch}
-                  />
-                ))}
-              </div>
-            )}
-          <Information>Poddział dodajemy jeśli jest taka możliwość</Information>
-        </div>
-      )}
+            {currentCategory &&
+              category?.children &&
+              category.children.length > 0 && (
+                <div className="flex gap-[5px] flex-wrap items-center">
+                  <span>Poddział: </span>
+                  {category.children.map((category) => (
+                    <Category
+                      key={category.id}
+                      name={category.name}
+                      fieldName="category"
+                      slug={category.slug}
+                      register={register}
+                      watch={watch}
+                    />
+                  ))}
+                </div>
+              )}
+            <Information>
+              Poddział dodajemy jeśli jest taka możliwość
+            </Information>
+          </>
+        )}
+        {isLoading && <LoadingBox />}
+      </div>
       <div className="w-full mb-[20px]">
         <Header>Dodaj tagi</Header>
         <Information>Aby dodać kolejny tag należy dodać przecinek.</Information>
@@ -306,7 +316,11 @@ const CreatePostForm = () => {
         <Button className="w-[160px]" type="submit">
           Dodaj
         </Button>
-        <Button className="w-[160px]" bgColorClassName="bg-[#616161]">
+        <Button
+          className="w-[160px]"
+          bgColorClassName="bg-[#616161]"
+          onClick={onClose}
+        >
           Anuluj
         </Button>
       </div>

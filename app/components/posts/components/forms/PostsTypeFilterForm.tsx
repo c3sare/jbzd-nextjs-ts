@@ -6,6 +6,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 type PostsTypeFilterFormProps = {
   isPremium: boolean;
+  onClose: () => void;
 };
 
 const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({

@@ -12,7 +12,13 @@ type PostsDateFilterFormData = {
   end?: Date;
 };
 
-const PostsDateFilterForm = () => {
+type PostsDateFilterFormProps = {
+  onClose: () => void;
+};
+
+const PostsDateFilterForm: React.FC<PostsDateFilterFormProps> = ({
+  onClose,
+}) => {
   const pathname = usePathname();
   const router = useRouter();
   const params = useSearchParams();

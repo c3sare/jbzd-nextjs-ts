@@ -23,11 +23,13 @@ const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({ isPremium }) => {
     setCurrentForm(0);
   }, [params, pathname]);
 
+  const closeForms = () => setCurrentForm(0);
+
   const componentsToSwitch = [
     null,
-    <CreatePostForm key={1} />,
-    <PostsDateFilterForm key={2} />,
-    <PostsTypeFilterForm isPremium={isPremium} key={3} />,
+    <CreatePostForm key={1} onClose={closeForms} />,
+    <PostsDateFilterForm key={2} onClose={closeForms} />,
+    <PostsTypeFilterForm isPremium={isPremium} key={3} onClose={closeForms} />,
   ];
 
   const handleSetForm = (index: number) => {
