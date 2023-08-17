@@ -1,6 +1,7 @@
+"use client";
+
 import BigIconButton from "@/app/components/BigIconButton";
-import Input from "@/app/components/Input";
-import { useFieldArray, useForm } from "react-hook-form";
+import { FieldValues, useFieldArray, useForm } from "react-hook-form";
 import { BiImage } from "react-icons/bi";
 import { AiFillFileText, AiFillYoutube } from "react-icons/ai";
 import { FaVideo } from "react-icons/fa";
@@ -23,6 +24,9 @@ import MemImage from "./FormPostElements/MemImage";
 import MemVideo from "./FormPostElements/MemVideo";
 import MemText from "./FormPostElements/MemText";
 import MemYoutube from "./FormPostElements/MemYoutube";
+import InputLinkPreview from "./CreatePostFormComponents/InputLinkPreview";
+import ErrorMessageBox from "./CreatePostFormComponents/ErrorMessageBox";
+import MoveButton from "./components/MoveButton";
 
 type CategoryWithChildrenType = CategoryType & {
   children: CategoryType[];
@@ -60,8 +64,19 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
     watch,
     setValue,
     control,
+    handleSubmit,
+    getValues,
   } = useForm<CreatePostType>({
     resolver: zodResolver(CreatePostSchema),
+    mode: "all",
+    shouldUnregister: true,
+    defaultValues: {
+      title: "",
+      category: "",
+      memContainers: [],
+      tags: [],
+      isActiveLinking: false,
+    },
   });
   const {
     fields: memContainers,
@@ -155,19 +170,46 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
           .length > 0)
   );
 
+  const onSubmit = (data: FieldValues) => {
+    console.log(data);
+  };
+
   return (
-    <form className="my-[20px] bg-[#313131] p-[10px] relative text-left">
+    <form
+      className="my-[20px] bg-[#313131] p-[10px] relative text-left"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className="w-full mb-[20px]">
         <Header>Wpisz tytuł</Header>
-        <Input
+        <InputStyled
           placeholder="Wpisz tytuł"
-          register={register}
-          errors={errors}
+          {...register("title")}
           id="title"
         />
+        {errors.title && (
+          <ErrorMessageBox>{errors.title.message}</ErrorMessageBox>
+        )}
       </div>
+      {memContainers.map(({ id, type, data }, index) => {
+        const MemElement = memElements[type];
+
+        return (
+          <div className="relative my-[15px]">
+            <MemElement
+              key={id}
+              data={data}
+              setData={(data: any) => updateMem(index, data)}
+            />
+            <MoveButton />
+          </div>
+        );
+      })}
       <div className="w-full mb-[20px]">
-        <Header>Co chcesz dodać?</Header>
+        <Header>
+          {memContainers.length > 0
+            ? "Czy chcesz dodać coś jeszcze?"
+            : "Co chcesz dodać?"}
+        </Header>
         <div className="flex w-full gap-[5px] justify-between">
           <BigIconButton
             onClick={(e) => handleAddMemContainer(e, "IMAGE-GIF")}
@@ -194,17 +236,9 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
             Youtube
           </BigIconButton>
         </div>
-        {memContainers.map(({ id, type, data }, index) => {
-          const MemElement = memElements[type];
-
-          return (
-            <MemElement
-              key={id}
-              data={data}
-              setData={(data: any) => updateMem(index, data)}
-            />
-          );
-        })}
+        {errors.memContainers && (
+          <ErrorMessageBox>{errors.memContainers.message}</ErrorMessageBox>
+        )}
       </div>
       <div className="w-full mb-[20px] relative">
         {categories.length > 0 && (
@@ -269,6 +303,9 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
           </>
         )}
         {isLoading && <LoadingBox />}
+        {errors.category && (
+          <ErrorMessageBox>{errors.category.message}</ErrorMessageBox>
+        )}
       </div>
       <div className="w-full mb-[20px]">
         <Header>Dodaj tagi</Header>
@@ -298,7 +335,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
           </ul>
         )}
       </div>
-      <div className="mb-[20px]">
+      <div className="mb-[20px] relative">
         <TextSwitchButton
           text="Pokaż linkowanie"
           activeText="Schowaj linkowanie"
@@ -306,12 +343,19 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
           register={register}
           id="isActiveLinking"
         />
+        {isActiveLinking && (
+          <>
+            <InputLinkPreview
+              customImagePreviewProps={register("customPreviewImage")}
+              {...register("link")}
+              linkValue={() => getValues("link")}
+            />
+            {errors.link && (
+              <ErrorMessageBox>{errors.link.message}</ErrorMessageBox>
+            )}
+          </>
+        )}
       </div>
-      {isActiveLinking && (
-        <div className="w-full mb-[20px]">
-          <InputStyled placeholder="Wpisz link" {...register("link")} />
-        </div>
-      )}
       <div className="mb-[20px] flex justify-center gap-2">
         <Button className="w-[160px]" type="submit">
           Dodaj
