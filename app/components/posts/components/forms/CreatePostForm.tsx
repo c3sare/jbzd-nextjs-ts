@@ -2,18 +2,16 @@
 
 import BigIconButton from "@/app/components/BigIconButton";
 import { FieldValues, useFieldArray, useForm } from "react-hook-form";
-import { BiImage } from "react-icons/bi";
+import { BiImage, BiTrash } from "react-icons/bi";
 import { AiFillFileText, AiFillYoutube } from "react-icons/ai";
 import { FaVideo } from "react-icons/fa";
 import Header from "./Header";
 import Information from "./Information";
 import InputStyled from "@/app/components/InputStyled";
-import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import React, { FormEvent, KeyboardEvent, useMemo, useRef } from "react";
 import TextSwitchButton from "@/app/components/TextSwitchButton";
 import Button from "@/app/components/Button";
 import Tag from "./Tag";
-import axios from "axios";
-import LoadingBox from "@/app/components/LoadingBox";
 import Category from "./Category";
 import { Category as CategoryType } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,6 +25,10 @@ import MemYoutube from "./FormPostElements/MemYoutube";
 import InputLinkPreview from "./CreatePostFormComponents/InputLinkPreview";
 import ErrorMessageBox from "./CreatePostFormComponents/ErrorMessageBox";
 import MoveButton from "./components/MoveButton";
+import clsx from "clsx";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import MemContainer from "./CreatePostFormComponents/MemContainer";
 
 type CategoryWithChildrenType = CategoryType & {
   children: CategoryType[];
@@ -34,29 +36,20 @@ type CategoryWithChildrenType = CategoryType & {
 
 type CreatePostFormProps = {
   onClose: () => void;
+  categories: CategoryWithChildrenType[];
 };
 
-const cache: { [key: string]: any } = {};
+const memElements = {
+  IMAGE: MemImage,
+  VIDEO: MemVideo,
+  TEXT: MemText,
+  YOUTUBE: MemYoutube,
+};
 
-const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
-  const getCategoriesURL = "/api/categories";
-  const [isLoading, setIsLoading] = useState<boolean>(!cache[getCategoriesURL]);
-  const [categories, setCategories] = useState<CategoryWithChildrenType[]>(
-    cache[getCategoriesURL] || []
-  );
-
-  useEffect(() => {
-    if (!cache[getCategoriesURL]) {
-      axios
-        .get(getCategoriesURL)
-        .then((res) => {
-          setCategories(res.data);
-        })
-        .catch((err) => console.log(err))
-        .finally(() => setIsLoading(false));
-    }
-  }, []);
-
+const CreatePostForm: React.FC<CreatePostFormProps> = ({
+  onClose,
+  categories,
+}) => {
   const tagInput = useRef<HTMLInputElement>(null);
   const {
     register,
@@ -97,13 +90,6 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
     control,
   });
 
-  const memElements = {
-    "IMAGE-GIF": MemImage,
-    VIDEO: MemVideo,
-    TEXT: MemText,
-    YOUTUBE: MemYoutube,
-  };
-
   const onChangeTagInput = (e: FormEvent<HTMLInputElement>) => {
     e.currentTarget.value = e.currentTarget.value.replaceAll(",", "");
   };
@@ -129,17 +115,17 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
   ) => {
     e.preventDefault();
     switch (type) {
-      case "IMAGE-GIF": {
+      case "IMAGE": {
         appendMem({
           type,
-          data: {},
+          data: null,
         });
         break;
       }
       case "VIDEO": {
         appendMem({
           type,
-          data: {},
+          data: null,
         });
         break;
       }
@@ -162,12 +148,15 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
   const isActiveLinking = watch("isActiveLinking");
   const currentCategory = watch("category");
 
-  const category = categories.find(
-    (item) =>
-      item.slug === currentCategory ||
-      (item.children &&
-        item.children.filter((subitem) => subitem.slug === currentCategory)
-          .length > 0)
+  const category = useMemo(
+    () =>
+      categories.find(
+        (item) =>
+          item.slug === currentCategory ||
+          item.children.filter((subitem) => subitem.slug === currentCategory)
+            .length > 0
+      ),
+    [currentCategory]
   );
 
   const onSubmit = (data: FieldValues) => {
@@ -190,20 +179,28 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
           <ErrorMessageBox>{errors.title.message}</ErrorMessageBox>
         )}
       </div>
-      {memContainers.map(({ id, type, data }, index) => {
-        const MemElement = memElements[type];
+      <DndProvider backend={HTML5Backend}>
+        {memContainers.map((mem, index) => {
+          const MemElement = memElements[mem.type] as React.FC<any>;
 
-        return (
-          <div className="relative my-[15px]">
-            <MemElement
-              key={id}
-              data={data}
-              setData={(data: any) => updateMem(index, data)}
-            />
-            <MoveButton />
-          </div>
-        );
-      })}
+          return (
+            <MemContainer
+              handleRemoveMem={() => removeMem(index)}
+              move={moveMem}
+              index={index}
+              id={mem.id}
+            >
+              <MemElement
+                control={control}
+                fieldName={`memContainers.${index}.data`}
+                setData={(data: any) =>
+                  setValue(`memContainers.${index}.data`, data)
+                }
+              />
+            </MemContainer>
+          );
+        })}
+      </DndProvider>
       <div className="w-full mb-[20px]">
         <Header>
           {memContainers.length > 0
@@ -212,7 +209,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
         </Header>
         <div className="flex w-full gap-[5px] justify-between">
           <BigIconButton
-            onClick={(e) => handleAddMemContainer(e, "IMAGE-GIF")}
+            onClick={(e) => handleAddMemContainer(e, "IMAGE")}
             icon={<BiImage />}
           >
             Obrazek/Gif
@@ -245,13 +242,13 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
           <>
             <Header>
               <span>Dział:</span>
-              {isLoading && <LoadingBox />}
               {currentCategory && (
                 <>
                   <span className="text-white p-[3px_9px] rounded-[3px] inline-block text-[12px] cursor-pointer bg-[#c03e3e] font-bold">
                     {category?.name}
                   </span>
                   <button
+                    type="button"
                     className="text-[#6e7578] text-[11px] cursor-pointer"
                     onClick={() => setValue("category", "")}
                   >
@@ -260,26 +257,24 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
                 </>
               )}
             </Header>
-            {!currentCategory && (
-              <>
-                <Information>
-                  Wybór działu jest obowiązkowy, subdział wybieramy tylko jeśli
-                  jest taka możliwość.
-                </Information>
-                <div className="flex gap-[5px] flex-wrap items-center">
-                  {categories.map((category) => (
-                    <Category
-                      key={category.id}
-                      name={category.name}
-                      fieldName="category"
-                      slug={category.slug}
-                      register={register}
-                      watch={watch}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
+            <div className={clsx(currentCategory && "hidden")}>
+              <Information>
+                Wybór działu jest obowiązkowy, subdział wybieramy tylko jeśli
+                jest taka możliwość.
+              </Information>
+              <div className="flex gap-[5px] flex-wrap items-center">
+                {categories.map((category) => (
+                  <Category
+                    key={category.id}
+                    name={category.name}
+                    fieldName="category"
+                    slug={category.slug}
+                    register={register}
+                    watch={watch}
+                  />
+                ))}
+              </div>
+            </div>
             {currentCategory &&
               category?.children &&
               category.children.length > 0 && (
@@ -302,7 +297,6 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onClose }) => {
             </Information>
           </>
         )}
-        {isLoading && <LoadingBox />}
         {errors.category && (
           <ErrorMessageBox>{errors.category.message}</ErrorMessageBox>
         )}

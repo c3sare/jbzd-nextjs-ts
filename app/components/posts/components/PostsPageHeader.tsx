@@ -9,12 +9,19 @@ import PostsDateFilterForm from "./forms/PostsDateFilterForm";
 import PostsTypeFilterForm from "./forms/PostsTypeFilterForm";
 import { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { Category } from "@prisma/client";
 
 type PostsPageHeaderProps = {
   isPremium: boolean;
+  categories: (Category & {
+    children: Category[];
+  })[];
 };
 
-const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({ isPremium }) => {
+const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({
+  isPremium,
+  categories,
+}) => {
   const pathname = usePathname();
   const params = useSearchParams();
   const [currentForm, setCurrentForm] = useState<number>(0);
@@ -27,7 +34,7 @@ const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({ isPremium }) => {
 
   const componentsToSwitch = [
     null,
-    <CreatePostForm key={1} onClose={closeForms} />,
+    <CreatePostForm key={1} onClose={closeForms} categories={categories} />,
     <PostsDateFilterForm key={2} onClose={closeForms} />,
     <PostsTypeFilterForm isPremium={isPremium} key={3} onClose={closeForms} />,
   ];

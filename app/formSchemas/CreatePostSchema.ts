@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const memTypes = ["IMAGE-GIF", "VIDEO", "TEXT", "YOUTUBE"] as const;
+const memTypes = ["IMAGE", "VIDEO", "TEXT", "YOUTUBE"] as const;
 
 const CreatePostSchema = z
   .object({

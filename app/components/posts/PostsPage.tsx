@@ -3,6 +3,7 @@ import Breadcrumb from "../Breadcrumb";
 import Link from "next/link";
 import PostsPageHeader from "./components/PostsPageHeader";
 import { getPremium } from "@/app/actions/getPremium";
+import { getCategories } from "@/app/actions/getCategories";
 
 type PostsPageProps = {
   posts: Post[];
@@ -18,13 +19,17 @@ const PostsPage: React.FC<PostsPageProps> = async ({
   pageSlug,
 }) => {
   const premium = await getPremium();
+  const categories = await getCategories();
 
   return (
     <>
       <Breadcrumb currentNode={page === 1 ? currentNode : "Strona " + page}>
         {page > 1 && <Link href={`/${pageSlug}`}>{currentNode}</Link>}
       </Breadcrumb>
-      <PostsPageHeader isPremium={premium.isPremium || false} />
+      <PostsPageHeader
+        categories={categories}
+        isPremium={premium.isPremium || false}
+      />
     </>
   );
 };
