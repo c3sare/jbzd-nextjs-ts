@@ -92,7 +92,7 @@ const MemContainer: React.FC<MemContainerProps> = ({
     },
   });
 
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging }, drag, preview] = useDrag({
     type: ItemTypes.CARD,
     item: () => {
       return { id, index };
@@ -102,14 +102,13 @@ const MemContainer: React.FC<MemContainerProps> = ({
     }),
   });
 
-  const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
 
   return (
-    <div className="w-full" ref={ref}>
+    <div className="w-full" ref={preview}>
       <div className="relative w-full my-[15px]">
         {children}
-        <MoveButton />
+        <MoveButton ref={ref} />
       </div>
       <div className="flex justify-end">
         <button

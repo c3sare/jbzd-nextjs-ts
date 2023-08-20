@@ -111,7 +111,7 @@ function MemImage<T extends FieldValues>({
   );
 }
 
-export default function <T extends FieldValues>({
+export default function MemImageWithDnd<T extends FieldValues>({
   setData,
   fieldName,
   control,

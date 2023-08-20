@@ -185,6 +185,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
 
           return (
             <MemContainer
+              key={mem.id}
               handleRemoveMem={() => removeMem(index)}
               move={moveMem}
               index={index}

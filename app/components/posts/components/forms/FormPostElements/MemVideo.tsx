@@ -107,7 +107,7 @@ function MemVideo<T extends FieldValues>({
   );
 }
 
-export default function <T extends FieldValues>({
+export default function MemVideoWithDnd<T extends FieldValues>({
   setData,
   fieldName,
   control,

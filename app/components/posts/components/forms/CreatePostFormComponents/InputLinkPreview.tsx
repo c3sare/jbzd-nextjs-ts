@@ -2,12 +2,8 @@ import InputStyled from "@/app/components/InputStyled";
 import LoadingBox from "@/app/components/LoadingBox";
 import axios from "axios";
 import { forwardRef, useState } from "react";
-import {
-  FieldValues,
-  Path,
-  UseFormGetValues,
-  UseFormRegisterReturn,
-} from "react-hook-form";
+import { FieldValues, Path, UseFormRegisterReturn } from "react-hook-form";
+import Image from "next/image";
 
 type LinkPreviewType = {
   description: string;
@@ -94,11 +90,11 @@ function InputLinkPreview<T extends FieldValues>(
           className="flex max-w-full h-[130px] overflow-hidden"
         >
           <div className="flex-[0_0_240px] h-[130px] overflow-hidden relative">
-            <img
+            <Image
               alt={linkPreview.title}
               src={linkPreview.img}
-              width="40px"
-              height="40px"
+              width={40}
+              height={40}
               className="w-full block h-[130px] max-w-full"
             />
             <input
