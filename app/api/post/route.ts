@@ -1,6 +1,6 @@
 import { getSession } from "@/app/actions/getSession";
+import formDataToObject from "@/utils/formDataToObject";
 import { NextResponse } from "next/server";
-import getLinkPreview from "monu-linkpreview";
 
 export async function POST(request: Request) {
   const session = await getSession();
@@ -9,10 +9,11 @@ export async function POST(request: Request) {
     return new NextResponse("No authorization", { status: 403 });
 
   try {
-    const obj: any = {};
-    const data = await request.formData();
-    data.forEach((item) => console.log(item));
-    return NextResponse.json({});
+    let obj: any = {};
+    const formData = await request.formData();
+    const data = formDataToObject(formData);
+    console.log(data);
+    return NextResponse.json(data);
   } catch (err: any) {
     throw new NextResponse("Internal Error", { status: 500 });
   }

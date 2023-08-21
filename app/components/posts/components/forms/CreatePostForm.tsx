@@ -34,6 +34,7 @@ import Information from "./Information";
 import Category from "./Category";
 import Tag from "./Tag";
 import axios from "axios";
+import objectToFormData from "@/utils/objectToFormData";
 
 type CategoryWithChildrenType = CategoryType & {
   children: CategoryType[];
@@ -164,33 +165,8 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
   );
 
   const onSubmit = (data: CreatePostType) => {
-    const fd = new FormData();
-    const {
-      title,
-      memContainers,
-      category,
-      tags,
-      isActiveLinking,
-      link,
-      customPreviewImage,
-    } = data;
-
-    fd.append("title", title);
-    fd.append("category", category);
-    fd.append("tags", JSON.stringify(tags));
-    fd.append("isActiveLinking", JSON.stringify(isActiveLinking));
-
-    if (isActiveLinking && link) fd.append("link", link);
-    if (customPreviewImage)
-      fd.append("customPreviewImage", customPreviewImage[0]);
-
-    memContainers.forEach((item, i) => {
-      fd.append(`memContainers.${i}.type`, item.type);
-      fd.append(`memContainers.${i}.data`, item.data);
-    });
-
     axios
-      .post("/api/post", fd)
+      .post("/api/post", objectToFormData(data))
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
