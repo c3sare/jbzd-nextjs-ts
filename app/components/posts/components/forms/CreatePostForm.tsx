@@ -1,34 +1,39 @@
 "use client";
 
-import BigIconButton from "@/app/components/BigIconButton";
-import { FieldValues, useFieldArray, useForm } from "react-hook-form";
-import { BiImage, BiTrash } from "react-icons/bi";
-import { AiFillFileText, AiFillYoutube } from "react-icons/ai";
+import type { Category as CategoryType } from "@prisma/client";
+import type { FieldValues } from "react-hook-form";
+import type { FormEvent, KeyboardEvent } from "react";
+import type { CreatePostType } from "@/app/formSchemas/CreatePostSchema";
+
+import clsx from "clsx";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { useFieldArray, useForm } from "react-hook-form";
+import React, { useMemo, useRef } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { BiImage } from "react-icons/bi";
 import { FaVideo } from "react-icons/fa";
-import Header from "./Header";
-import Information from "./Information";
+import { AiFillFileText, AiFillYoutube } from "react-icons/ai";
+
+import BigIconButton from "@/app/components/BigIconButton";
 import InputStyled from "@/app/components/InputStyled";
-import React, { FormEvent, KeyboardEvent, useMemo, useRef } from "react";
 import TextSwitchButton from "@/app/components/TextSwitchButton";
 import Button from "@/app/components/Button";
-import Tag from "./Tag";
-import Category from "./Category";
-import { Category as CategoryType } from "@prisma/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import CreatePostSchema, {
-  CreatePostType,
-} from "@/app/formSchemas/CreatePostSchema";
 import MemImage from "./FormPostElements/MemImage";
 import MemVideo from "./FormPostElements/MemVideo";
 import MemText from "./FormPostElements/MemText";
 import MemYoutube from "./FormPostElements/MemYoutube";
 import InputLinkPreview from "./CreatePostFormComponents/InputLinkPreview";
 import ErrorMessageBox from "./CreatePostFormComponents/ErrorMessageBox";
-import MoveButton from "./components/MoveButton";
-import clsx from "clsx";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import MemContainer from "./CreatePostFormComponents/MemContainer";
+import CreatePostSchema from "@/app/formSchemas/CreatePostSchema";
+
+import Header from "./Header";
+import Information from "./Information";
+import Category from "./Category";
+import Tag from "./Tag";
+import axios from "axios";
 
 type CategoryWithChildrenType = CategoryType & {
   children: CategoryType[];
@@ -76,7 +81,6 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
     append: appendMem,
     remove: removeMem,
     move: moveMem,
-    update: updateMem,
   } = useFieldArray({
     name: "memContainers",
     control,
@@ -156,11 +160,39 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
           item.children.filter((subitem) => subitem.slug === currentCategory)
             .length > 0
       ),
-    [currentCategory]
+    [currentCategory, categories]
   );
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
+  const onSubmit = (data: CreatePostType) => {
+    const fd = new FormData();
+    const {
+      title,
+      memContainers,
+      category,
+      tags,
+      isActiveLinking,
+      link,
+      customPreviewImage,
+    } = data;
+
+    fd.append("title", title);
+    fd.append("category", category);
+    fd.append("tags", JSON.stringify(tags));
+    fd.append("isActiveLinking", JSON.stringify(isActiveLinking));
+
+    if (isActiveLinking && link) fd.append("link", link);
+    if (customPreviewImage)
+      fd.append("customPreviewImage", customPreviewImage[0]);
+
+    memContainers.forEach((item, i) => {
+      fd.append(`memContainers.${i}.type`, item.type);
+      fd.append(`memContainers.${i}.data`, item.data);
+    });
+
+    axios
+      .post("/api/post", fd)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   return (

@@ -17,10 +17,29 @@ const CreatePostSchema = z
       .nonempty("Pole dział jest wymagane."),
     memContainers: z
       .array(
-        z.object({
-          type: z.enum(memTypes),
-          data: z.any(),
-        })
+        z
+          .object({
+            type: z.enum(memTypes),
+            data: z.any(),
+          })
+          .refine(
+            (val) => {
+              if (["IMAGE", "VIDEO"].includes(val.type)) {
+                if (val.data instanceof File) {
+                  return true;
+                } else return false;
+              } else if (["TEXT", "YOUTUBE"].includes(val.type)) {
+                if (typeof val.data === "string") {
+                  return true;
+                } else {
+                  return false;
+                }
+              } else return false;
+            },
+            {
+              message: "Kontener nie może być pusty!",
+            }
+          )
       )
       .min(1, "Pole typ jest wymagane."),
     isActiveLinking: z.boolean().refine((val) => typeof val === "boolean"),
