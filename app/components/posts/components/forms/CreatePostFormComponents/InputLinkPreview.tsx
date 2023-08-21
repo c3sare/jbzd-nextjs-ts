@@ -2,8 +2,14 @@ import InputStyled from "@/app/components/InputStyled";
 import LoadingBox from "@/app/components/LoadingBox";
 import axios from "axios";
 import { forwardRef, useState } from "react";
-import { FieldValues, Path, UseFormRegisterReturn } from "react-hook-form";
-import Image from "next/image";
+import {
+  Control,
+  FieldValues,
+  Path,
+  UseFormRegisterReturn,
+  UseFormSetValue,
+  useWatch,
+} from "react-hook-form";
 
 type LinkPreviewType = {
   description: string;
@@ -17,8 +23,10 @@ type InputLinkPreviewProps<T extends FieldValues> = {
   name: Path<T>;
   onBlur: any;
   onChange: any;
-  customImagePreviewProps: UseFormRegisterReturn;
+  customImagePreviewProps: UseFormRegisterReturn<Path<T>>;
   linkValue: () => string | undefined;
+  control: Control<any>;
+  setValue: UseFormSetValue<any>;
 };
 
 const isValidUrl = (urlString: string) => {
@@ -34,13 +42,19 @@ function InputLinkPreview<T extends FieldValues>(
     onBlur,
     onChange,
     name,
+    control,
     customImagePreviewProps,
     linkValue,
+    setValue,
   }: InputLinkPreviewProps<T>,
   ref: React.ForwardedRef<HTMLInputElement>
 ) {
   const [isLoadingPreview, setIsLoadingPreview] = useState<boolean>(false);
   const [linkPreview, setLinkPreview] = useState<LinkPreviewType | null>(null);
+  const customLinkPreview = useWatch({
+    control,
+    name: "customPreviewImage" as Path<T>,
+  });
 
   const getLinkInformation = async (url: string) => {
     try {
@@ -90,18 +104,29 @@ function InputLinkPreview<T extends FieldValues>(
           className="flex max-w-full h-[130px] overflow-hidden"
         >
           <div className="flex-[0_0_240px] h-[130px] overflow-hidden relative">
-            <Image
+            <img
               alt={linkPreview.title}
-              src={linkPreview.img}
-              width={40}
-              height={40}
+              src={
+                customLinkPreview
+                  ? URL.createObjectURL(customLinkPreview)
+                  : linkPreview.img
+              }
+              width="40px"
+              height="40px"
               className="w-full block h-[130px] max-w-full"
             />
             <input
               type="file"
               accept="image/jpeg,image/png,image/gif"
               className="absolute bottom-0 left-0 bg-[#1d1d1d] text-white p-[5px]"
-              {...customImagePreviewProps}
+              ref={customImagePreviewProps.ref}
+              onBlur={customImagePreviewProps.onBlur}
+              name={customImagePreviewProps.name}
+              onChange={(e) => {
+                if (e.currentTarget.files?.[0]) {
+                  setValue("customPreviewImage", e.currentTarget.files[0]);
+                }
+              }}
             />
           </div>
           <div className="w-full p-[8px] bg-[#1f1f1f] pl-[18px] overflow-hidden">

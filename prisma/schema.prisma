@@ -98,6 +98,14 @@ type MemContainer {
   type String
 }
 
+type LinkInformation {
+  description     String
+  domain          String
+  img             String
+  origin          String
+  title           String
+}
+
 model Post {
   id            String         @id @default(auto()) @map("_id") @db.ObjectId
   addTime       DateTime       @default(now())
@@ -110,6 +118,8 @@ model Post {
   authorId      String         @db.ObjectId
   author        User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
   accepted      Boolean        @default(false)
+  link          LinkInformation?        
+  linkImage     String?
 
   comments      Comment[]
   badges        BadgePost[]

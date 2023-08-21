@@ -40,10 +40,21 @@ const CreatePostSchema = z
               message: "Kontener nie może być pusty!",
             }
           )
+          .refine(
+            (val) => {
+              if (["TEXT", "YOUTUBE"].includes(val.type)) {
+                if (!val.data) return false;
+                else return true;
+              } else return true;
+            },
+            {
+              message: "Wszystkie wartości muszą być uzupełnione!",
+            }
+          )
       )
       .min(1, "Pole typ jest wymagane."),
     isActiveLinking: z.boolean().refine((val) => typeof val === "boolean"),
-    customPreviewImage: z.custom<FileList>().optional(),
+    customPreviewImage: z.custom<File>().optional(),
     link: z
       .string({ required_error: "Pole link jest wymagane!" })
       .refine((val) => {

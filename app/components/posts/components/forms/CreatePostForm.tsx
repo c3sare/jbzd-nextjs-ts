@@ -1,7 +1,7 @@
 "use client";
 
 import type { Category as CategoryType } from "@prisma/client";
-import type { FieldValues } from "react-hook-form";
+import type { Control, FieldValues, Path } from "react-hook-form";
 import type { FormEvent, KeyboardEvent } from "react";
 import type { CreatePostType } from "@/app/formSchemas/CreatePostSchema";
 
@@ -206,6 +206,11 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
                   setValue(`memContainers.${index}.data`, data)
                 }
               />
+              {errors.memContainers?.[index]?.message && (
+                <ErrorMessageBox>
+                  {errors.memContainers?.[index]?.message}
+                </ErrorMessageBox>
+              )}
             </MemContainer>
           );
         })}
@@ -351,7 +356,9 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
             <InputLinkPreview
               customImagePreviewProps={register("customPreviewImage")}
               {...register("link")}
+              control={control}
               linkValue={() => getValues("link")}
+              setValue={setValue}
             />
             {errors.link && (
               <ErrorMessageBox>{errors.link.message}</ErrorMessageBox>
