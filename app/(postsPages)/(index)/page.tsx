@@ -1,4 +1,4 @@
-import PostsPage from "./components/posts/PostsPage";
+import PostsPage from "../components/PostsPage";
 
 export default function Home() {
   return (

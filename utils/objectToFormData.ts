@@ -9,6 +9,5 @@ export default function objectToFormData(data: any) {
     fd.append(item, obj[item]);
   });
 
-  console.log(fd);
   return fd;
 }

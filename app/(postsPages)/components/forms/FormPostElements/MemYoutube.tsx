@@ -1,6 +1,9 @@
+import type { Control, FieldValues, Path } from "react-hook-form";
+import type { FocusEventHandler } from "react";
+
 import axios from "axios";
-import { FocusEventHandler, useState } from "react";
-import { Control, FieldValues, Path, useWatch } from "react-hook-form";
+import { useState } from "react";
+import { useWatch } from "react-hook-form";
 import YouTube from "react-youtube";
 
 type MemYoutubeProps<T extends FieldValues> = {

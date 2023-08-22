@@ -1,10 +1,12 @@
 "use client";
 
+import type { SubmitHandler } from "react-hook-form";
+
 import Button from "@/app/components/Button";
 import PresetButton from "../PresetButton";
 import DayPicker from "@/app/components/forms/DayPicker";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 
 type PostsDateFilterFormData = {

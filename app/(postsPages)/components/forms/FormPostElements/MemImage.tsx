@@ -1,24 +1,27 @@
 import type { DropTargetMonitor } from "react-dnd";
+import type { Control, FieldValues, Path } from "react-hook-form";
+
+import { useCallback, useRef } from "react";
+import { useWatch } from "react-hook-form";
+import toast from "react-hot-toast";
 import { DndProvider, useDrop } from "react-dnd";
 import { HTML5Backend, NativeTypes } from "react-dnd-html5-backend";
-import { useCallback, useRef } from "react";
-import { GoUpload } from "react-icons/go";
-import toast from "react-hot-toast";
-import { Control, FieldValues, Path, useWatch } from "react-hook-form";
 
-type MemVideoProps<T extends FieldValues> = {
+import { GoUpload } from "react-icons/go";
+
+type MemImageProps<T extends FieldValues> = {
   setData: (val: File | null) => void;
   fieldName: Path<T>;
   control: Control<T>;
 };
 
-const allowedFileTypes = ["video/mp4"];
+const allowedFileTypes = ["image/png", "image/jpeg", "image/gif"];
 
-function MemVideo<T extends FieldValues>({
+function MemImage<T extends FieldValues>({
   setData,
   fieldName,
   control,
-}: MemVideoProps<T>) {
+}: MemImageProps<T>) {
   const data = useWatch({ control, name: fieldName });
 
   const ref = useRef<HTMLInputElement>(null);
@@ -39,19 +42,10 @@ function MemVideo<T extends FieldValues>({
           onDrop(item.files[0]);
         }
       },
-      canDrop(item: any) {
-        console.log("canDrop", item.files, item.items);
+      canDrop() {
         return true;
       },
-      hover(item: any) {
-        console.log("hover", item.files, item.items);
-      },
       collect: (monitor: DropTargetMonitor) => {
-        const item = monitor.getItem() as any;
-        if (item) {
-          console.log("collect", item.files, item.items);
-        }
-
         return {
           isOver: monitor.isOver(),
           canDrop: monitor.canDrop(),
@@ -93,7 +87,11 @@ function MemVideo<T extends FieldValues>({
         </div>
       ) : (
         <>
-          <video src={data ? URL.createObjectURL(data) : undefined} controls />
+          <img
+            src={data ? URL.createObjectURL(data) : undefined}
+            className="w-full"
+            alt="Podgląd"
+          />
           <button
             type="button"
             className="absolute bottom-[15px] right-[15px] bg-[#505050] text-white text-[13px] rounded-[3px] leading-[34px] px-[15px] cursor-pointer z-[3] shadow-md"
@@ -107,14 +105,14 @@ function MemVideo<T extends FieldValues>({
   );
 }
 
-export default function MemVideoWithDnd<T extends FieldValues>({
+export default function MemImageWithDnd<T extends FieldValues>({
   setData,
   fieldName,
   control,
-}: MemVideoProps<T>) {
+}: MemImageProps<T>) {
   return (
     <DndProvider backend={HTML5Backend}>
-      <MemVideo setData={setData} fieldName={fieldName} control={control} />
+      <MemImage setData={setData} fieldName={fieldName} control={control} />
     </DndProvider>
   );
 }

@@ -113,7 +113,7 @@ model Post {
   tagIds        String[]         @db.ObjectId
   tags          Tag[]            @relation(fields: [tagIds], references: [id])
   categoryId    String           @db.ObjectId
-  category      Category?        @relation(fields: [categoryId], references: [id])
+  category      Category         @relation(fields: [categoryId], references: [id])
   memContainers MemContainer[]
   authorId      String           @db.ObjectId
   author        User             @relation(fields: [authorId], references: [id], onDelete: Cascade)
@@ -199,6 +199,7 @@ model Category {
   parentId   String?            @db.ObjectId
   parent     Category?          @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   children   Category[]         @relation("CategoryToCategory")
+  postIds    String[]           @db.ObjectId
   posts      Post[]
   followedBy FollowedCategory[]
 }

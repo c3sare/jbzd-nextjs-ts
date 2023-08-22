@@ -1,5 +1,20 @@
 import { z } from "zod";
 
+const MAX_FILE_SIZE = 500000;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
+
+const imageType = z
+  .any()
+  .refine((file) => file, "Pole nie może być puste!")
+  .refine(
+    (file) => file?.size <= MAX_FILE_SIZE,
+    `Maksymalny rozmiar pliku to 5MB.`
+  )
+  .refine(
+    (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+    "Obsługiwane rozszerzenia to .jpg, .jpeg, .png"
+  );
+
 const memTypes = ["IMAGE", "VIDEO", "TEXT", "YOUTUBE"] as const;
 
 const CreatePostSchema = z
@@ -17,22 +32,13 @@ const CreatePostSchema = z
       .nonempty("Pole dział jest wymagane."),
     memContainers: z
       .array(
-        z
-          .object({
-            type: z.enum(memTypes),
-            data: z.any(),
-          })
-          .refine(
-            (val) => {
-              if (["TEXT", "YOUTUBE"].includes(val.type)) {
-                if (!val.data) return false;
-                else return true;
-              } else return true;
-            },
-            {
-              message: "Wszystkie wartości muszą być uzupełnione!",
-            }
-          )
+        z.object({
+          type: z.enum(memTypes),
+          data: z
+            .string({ required_error: "Pole nie może być puste" })
+            .nonempty("Pole nie może być puste!")
+            .or(imageType),
+        })
       )
       .min(1, "Pole typ jest wymagane."),
     linking: z.object({

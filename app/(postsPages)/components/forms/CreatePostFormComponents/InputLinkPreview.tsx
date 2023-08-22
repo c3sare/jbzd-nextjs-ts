@@ -1,9 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import InputStyled from "@/app/components/InputStyled";
-import LoadingBox from "@/app/components/LoadingBox";
-import axios from "axios";
-import { useState } from "react";
-import {
+import type {
   Control,
   FieldValues,
   Path,
@@ -12,6 +8,11 @@ import {
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
+
+import axios from "axios";
+import { useState } from "react";
+
+import InputStyled from "@/app/components/InputStyled";
 import LinkPreviewContainer from "./LinkPreviewContainer";
 
 type LinkPreviewType = {
@@ -27,6 +28,8 @@ type InputLinkPreviewProps<T extends FieldValues> = {
   getValues: UseFormGetValues<T>;
   setValue: UseFormSetValue<T>;
   control: Control<any>;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const isValidUrl = (urlString: string) => {
@@ -42,22 +45,23 @@ function InputLinkPreview<T extends FieldValues>({
   getValues,
   setValue,
   control,
+  isLoading,
+  setIsLoading,
 }: InputLinkPreviewProps<T>) {
   const acceptedImageType = ["image/jpeg", "image/png", "image/gif"];
-  const [isLoadingPreview, setIsLoadingPreview] = useState<boolean>(false);
   const [linkPreview, setLinkPreview] = useState<LinkPreviewType | null>(null);
 
   const getLinkInformation = async (url: string) => {
     try {
-      setIsLoadingPreview(true);
+      setIsLoading(true);
       const req = await axios.post("/api/sitepreview", { url });
       setLinkPreview(req.data);
-      setIsLoadingPreview(false);
+      setIsLoading(false);
       if (req.status === 200) return true;
       else return false;
     } catch (error: any) {
       console.log(error);
-      setIsLoadingPreview(false);
+      setIsLoading(false);
       return false;
     }
   };
@@ -93,7 +97,6 @@ function InputLinkPreview<T extends FieldValues>({
           name={inputLinkRegister.name}
         />
       </div>
-      {isLoadingPreview && <LoadingBox />}
       {linkPreview !== null && (
         <LinkPreviewContainer control={control} linkPreview={linkPreview}>
           <input

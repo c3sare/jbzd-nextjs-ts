@@ -1,15 +1,15 @@
 "use client";
 
 import type { Category as CategoryType } from "@prisma/client";
-import type { Control, FieldValues, Path } from "react-hook-form";
 import type { FormEvent, KeyboardEvent } from "react";
 import type { CreatePostType } from "@/app/formSchemas/CreatePostSchema";
 
 import clsx from "clsx";
+import axios from "axios";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useFieldArray, useForm } from "react-hook-form";
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { BiImage } from "react-icons/bi";
@@ -33,8 +33,10 @@ import Header from "./Header";
 import Information from "./Information";
 import Category from "./Category";
 import Tag from "./Tag";
-import axios from "axios";
+
 import objectToFormData from "@/utils/objectToFormData";
+import toast from "react-hot-toast";
+import LoadingForm from "./LoadingForm";
 
 type CategoryWithChildrenType = CategoryType & {
   children: CategoryType[];
@@ -56,6 +58,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
   onClose,
   categories,
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const tagInput = useRef<HTMLInputElement>(null);
   const {
     register,
@@ -165,14 +168,21 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
   );
 
   const onSubmit = (data: CreatePostType) => {
+    setIsLoading(true);
     axios
       .post("/api/post", objectToFormData(data), {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .then(() => {
+        toast.success("Pomyślnie dodano dzidę!");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Wystąpił problem przy dodawaniu dzidy!");
+      })
+      .finally(onClose);
   };
 
   return (
@@ -210,9 +220,9 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
                   setValue(`memContainers.${index}.data`, data)
                 }
               />
-              {errors.memContainers?.[index]?.message && (
+              {errors.memContainers?.[index] && (
                 <ErrorMessageBox>
-                  {errors.memContainers?.[index]?.message}
+                  {errors.memContainers?.[index]?.data?.message as string}
                 </ErrorMessageBox>
               )}
             </MemContainer>
@@ -362,6 +372,8 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
               getValues={getValues}
               setValue={setValue}
               control={control}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
             />
             {errors.linking && (
               <ErrorMessageBox>{errors.linking.message}</ErrorMessageBox>
@@ -381,6 +393,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
           Anuluj
         </Button>
       </div>
+      {isLoading && <LoadingForm />}
     </form>
   );
 };

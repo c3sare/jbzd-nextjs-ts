@@ -1,15 +1,18 @@
 "use client";
 
-import { AiOutlinePlus } from "react-icons/ai";
-import { TbCalendarEvent } from "react-icons/tb";
-import { BiFilter } from "react-icons/bi";
-import IconButton from "./IconButton";
+import type { Category } from "@prisma/client";
+
+import { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+
 import CreatePostForm from "./forms/CreatePostForm";
 import PostsDateFilterForm from "./forms/PostsDateFilterForm";
 import PostsTypeFilterForm from "./forms/PostsTypeFilterForm";
-import { useEffect, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { Category } from "@prisma/client";
+import IconButton from "./IconButton";
+
+import { AiOutlinePlus } from "react-icons/ai";
+import { TbCalendarEvent } from "react-icons/tb";
+import { BiFilter } from "react-icons/bi";
 
 type PostsPageHeaderProps = {
   isPremium: boolean;

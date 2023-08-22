@@ -1,10 +1,11 @@
-import clsx from "clsx";
-import {
+import type {
   FieldValues,
   Path,
   UseFormRegister,
   UseFormWatch,
 } from "react-hook-form";
+
+import clsx from "clsx";
 
 type CategoryProps<T extends FieldValues> = {
   name: string;

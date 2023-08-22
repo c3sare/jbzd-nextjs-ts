@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 
 const Header: React.FC<PropsWithChildren> = ({ children }) => {
   return (

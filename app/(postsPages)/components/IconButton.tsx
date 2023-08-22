@@ -1,7 +1,8 @@
 "use client";
 
+import type { DOMAttributes } from "react";
+
 import clsx from "clsx";
-import { DOMAttributes } from "react";
 
 type IconButtonProps = {
   children?: React.ReactNode;

@@ -1,7 +1,8 @@
-import { Post } from "@prisma/client";
-import Breadcrumb from "../Breadcrumb";
+import type { Post } from "@prisma/client";
+
+import Breadcrumb from "../../components/Breadcrumb";
 import Link from "next/link";
-import PostsPageHeader from "./components/PostsPageHeader";
+import PostsPageHeader from "./PostsPageHeader";
 import { getPremium } from "@/app/actions/getPremium";
 import { getCategories } from "@/app/actions/getCategories";
 

@@ -1,5 +1,7 @@
+import type { FieldValues, Path } from "react-hook-form";
+
 import { DOMAttributes } from "react";
-import { FieldValues, Path } from "react-hook-form";
+
 import { ImCross } from "react-icons/im";
 
 type TagProps<T extends FieldValues> = {

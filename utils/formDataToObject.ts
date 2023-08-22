@@ -2,7 +2,7 @@ import dot from "dot-object";
 
 export default function formDataToObject(formData: FormData) {
   const data: any = {};
-  console.log(formData);
+
   formData.forEach((val, key) => {
     const isEmpty = val === "";
     const isNumber = !isNaN(Number(val)) && val !== "";

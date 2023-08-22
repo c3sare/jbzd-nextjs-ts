@@ -1,22 +1,16 @@
-import dynamic from "next/dynamic";
-import React from "react";
-import { Control, FieldValues, Path } from "react-hook-form";
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
 
-type MemTextProps<T extends FieldValues> = {
+import React from "react";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+
+type MemTextProps = {
   data: string;
   setData: (val: string) => void;
-  fieldName: Path<T>;
-  control: Control<T>;
 };
 
-function MemText<T extends FieldValues>({
-  data,
-  setData,
-  fieldName,
-  control,
-}: MemTextProps<T>) {
+function MemText({ data, setData }: MemTextProps) {
   const modules = {
     toolbar: [
       [

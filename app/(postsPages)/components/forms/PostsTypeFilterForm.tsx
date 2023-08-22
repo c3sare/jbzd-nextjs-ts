@@ -1,8 +1,10 @@
+import type { FieldValues, SubmitHandler } from "react-hook-form";
+
 import LabelCheckbox from "@/app/components/LabelCheckbox";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 type PostsTypeFilterFormProps = {
   isPremium: boolean;
