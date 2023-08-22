@@ -1,15 +1,18 @@
+/* eslint-disable @next/next/no-img-element */
 import InputStyled from "@/app/components/InputStyled";
 import LoadingBox from "@/app/components/LoadingBox";
 import axios from "axios";
-import { forwardRef, useState } from "react";
+import { useState } from "react";
 import {
   Control,
   FieldValues,
   Path,
-  UseFormRegisterReturn,
+  PathValue,
+  UseFormGetValues,
+  UseFormRegister,
   UseFormSetValue,
-  useWatch,
 } from "react-hook-form";
+import LinkPreviewContainer from "./LinkPreviewContainer";
 
 type LinkPreviewType = {
   description: string;
@@ -20,13 +23,10 @@ type LinkPreviewType = {
 };
 
 type InputLinkPreviewProps<T extends FieldValues> = {
-  name: Path<T>;
-  onBlur: any;
-  onChange: any;
-  customImagePreviewProps: UseFormRegisterReturn<Path<T>>;
-  linkValue: () => string | undefined;
+  register: UseFormRegister<T>;
+  getValues: UseFormGetValues<T>;
+  setValue: UseFormSetValue<T>;
   control: Control<any>;
-  setValue: UseFormSetValue<any>;
 };
 
 const isValidUrl = (urlString: string) => {
@@ -37,24 +37,15 @@ const isValidUrl = (urlString: string) => {
   }
 };
 
-function InputLinkPreview<T extends FieldValues>(
-  {
-    onBlur,
-    onChange,
-    name,
-    control,
-    customImagePreviewProps,
-    linkValue,
-    setValue,
-  }: InputLinkPreviewProps<T>,
-  ref: React.ForwardedRef<HTMLInputElement>
-) {
+function InputLinkPreview<T extends FieldValues>({
+  register,
+  getValues,
+  setValue,
+  control,
+}: InputLinkPreviewProps<T>) {
+  const acceptedImageType = ["image/jpeg", "image/png", "image/gif"];
   const [isLoadingPreview, setIsLoadingPreview] = useState<boolean>(false);
   const [linkPreview, setLinkPreview] = useState<LinkPreviewType | null>(null);
-  const customLinkPreview = useWatch({
-    control,
-    name: "customPreviewImage" as Path<T>,
-  });
 
   const getLinkInformation = async (url: string) => {
     try {
@@ -71,79 +62,62 @@ function InputLinkPreview<T extends FieldValues>(
     }
   };
 
+  const inputLinkRegister = register("linking.url" as Path<T>);
+  const inputCustomImageRegister = register("linking.image" as Path<T>);
+
   return (
     <>
       <div className="w-full mb-[20px]">
         <InputStyled
           placeholder="Wpisz link"
-          ref={ref}
+          ref={inputLinkRegister.ref}
           onBlur={async (e) => {
-            onBlur(e);
             if (
-              e.currentTarget.value === "" &&
-              e.currentTarget.value !== linkValue()
+              e.target.value === "" &&
+              e.target.value !== getValues("link" as Path<T>)
             ) {
               setLinkPreview(null);
-              onChange(e);
-            } else if (isValidUrl(e.currentTarget.value)) {
-              const isValidPreview = await getLinkInformation(
-                e.currentTarget.value
+              setValue(
+                "linking.url" as Path<T>,
+                e.target.value as PathValue<T, Path<T>>
               );
-              if (isValidPreview) onChange(e);
+            } else if (isValidUrl(e.target.value)) {
+              const isValidPreview = await getLinkInformation(e.target.value);
+              if (isValidPreview)
+                setValue(
+                  "linking.url" as Path<T>,
+                  e.target.value as PathValue<T, Path<T>>
+                );
             }
           }}
-          name={name}
+          name={inputLinkRegister.name}
         />
       </div>
       {isLoadingPreview && <LoadingBox />}
       {linkPreview !== null && (
-        <a
-          href={linkPreview.domain}
-          rel="nofollow"
-          target="_blank"
-          className="flex max-w-full h-[130px] overflow-hidden"
-        >
-          <div className="flex-[0_0_240px] h-[130px] overflow-hidden relative">
-            <img
-              alt={linkPreview.title}
-              src={
-                customLinkPreview
-                  ? URL.createObjectURL(customLinkPreview)
-                  : linkPreview.img
+        <LinkPreviewContainer control={control} linkPreview={linkPreview}>
+          <input
+            type="file"
+            accept={acceptedImageType.join(", ")}
+            className="absolute bottom-0 left-0 bg-[#1d1d1d] text-white p-[5px]"
+            ref={inputCustomImageRegister.ref}
+            name={inputCustomImageRegister.name}
+            onBlur={inputCustomImageRegister.onBlur}
+            onChange={(e) => {
+              if (e.target.files && e.target.files?.[0]) {
+                const val = e.target.files[0];
+                if (acceptedImageType.includes(val.type))
+                  setValue(
+                    "linking.image" as Path<T>,
+                    val as PathValue<T, Path<T>>
+                  );
               }
-              width="40px"
-              height="40px"
-              className="w-full block h-[130px] max-w-full"
-            />
-            <input
-              type="file"
-              accept="image/jpeg,image/png,image/gif"
-              className="absolute bottom-0 left-0 bg-[#1d1d1d] text-white p-[5px]"
-              ref={customImagePreviewProps.ref}
-              onBlur={customImagePreviewProps.onBlur}
-              name={customImagePreviewProps.name}
-              onChange={(e) => {
-                if (e.currentTarget.files?.[0]) {
-                  setValue("customPreviewImage", e.currentTarget.files[0]);
-                }
-              }}
-            />
-          </div>
-          <div className="w-full p-[8px] bg-[#1f1f1f] pl-[18px] overflow-hidden">
-            <header className="text-white font-bold text-[14px] mb-[5px] max-h-[40px] overflow-hidden">
-              {linkPreview.title}
-            </header>
-            <p className="text-white m-0 mb-[5px] text-[12px] max-h-[52px] overflow-hidden">
-              {linkPreview.description}
-            </p>
-            <footer className="text-[#68a2bb] text-right text-[11px] overflow-hidden max-h-[18px] font-bold">
-              {linkPreview.origin}
-            </footer>
-          </div>
-        </a>
+            }}
+          />
+        </LinkPreviewContainer>
       )}
     </>
   );
 }
 
-export default forwardRef(InputLinkPreview);
+export default InputLinkPreview;

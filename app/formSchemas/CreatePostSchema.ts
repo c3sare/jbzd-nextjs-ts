@@ -24,24 +24,6 @@ const CreatePostSchema = z
           })
           .refine(
             (val) => {
-              if (["IMAGE", "VIDEO"].includes(val.type)) {
-                if (val.data instanceof File) {
-                  return true;
-                } else return false;
-              } else if (["TEXT", "YOUTUBE"].includes(val.type)) {
-                if (typeof val.data === "string") {
-                  return true;
-                } else {
-                  return false;
-                }
-              } else return false;
-            },
-            {
-              message: "Kontener nie może być pusty!",
-            }
-          )
-          .refine(
-            (val) => {
               if (["TEXT", "YOUTUBE"].includes(val.type)) {
                 if (!val.data) return false;
                 else return true;
@@ -53,23 +35,25 @@ const CreatePostSchema = z
           )
       )
       .min(1, "Pole typ jest wymagane."),
-    isActiveLinking: z.boolean().refine((val) => typeof val === "boolean"),
-    customPreviewImage: z.custom<File>().optional(),
-    link: z
-      .string({ required_error: "Pole link jest wymagane!" })
-      .refine((val) => {
-        try {
-          return Boolean(new URL(val));
-        } catch {
-          return "Pole link jest wymagane!";
-        }
-      })
-      .optional(),
+    linking: z.object({
+      isActive: z.boolean().refine((val) => typeof val === "boolean"),
+      url: z
+        .string({ required_error: "Pole link jest wymagane!" })
+        .refine((val) => {
+          try {
+            return Boolean(new URL(val));
+          } catch {
+            return "Pole link jest wymagane!";
+          }
+        })
+        .optional(),
+      image: z.any().optional(),
+    }),
   })
   .refine(
     (obj) => {
-      if (obj.isActiveLinking) {
-        const link = obj.link;
+      if (obj.linking.isActive) {
+        const link = obj.linking.url;
         if (link) {
           return true;
         } else {
@@ -81,7 +65,7 @@ const CreatePostSchema = z
     },
     {
       message: "Pole link jest wymagane!",
-      path: ["link"],
+      path: ["linking"],
     }
   );
 

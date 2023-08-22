@@ -74,7 +74,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
       category: "",
       memContainers: [],
       tags: [],
-      isActiveLinking: false,
+      linking: { isActive: false },
     },
   });
   const {
@@ -150,7 +150,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
     }
   };
 
-  const isActiveLinking = watch("isActiveLinking");
+  const isActiveLinking = watch("linking.isActive");
   const currentCategory = watch("category");
 
   const category = useMemo(
@@ -166,7 +166,11 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
 
   const onSubmit = (data: CreatePostType) => {
     axios
-      .post("/api/post", objectToFormData(data))
+      .post("/api/post", objectToFormData(data), {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
@@ -349,19 +353,18 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
           activeText="Schowaj linkowanie"
           watch={watch}
           register={register}
-          id="isActiveLinking"
+          id="linking.isActive"
         />
         {isActiveLinking && (
           <>
             <InputLinkPreview
-              customImagePreviewProps={register("customPreviewImage")}
-              {...register("link")}
-              control={control}
-              linkValue={() => getValues("link")}
+              register={register}
+              getValues={getValues}
               setValue={setValue}
+              control={control}
             />
-            {errors.link && (
-              <ErrorMessageBox>{errors.link.message}</ErrorMessageBox>
+            {errors.linking && (
+              <ErrorMessageBox>{errors.linking.message}</ErrorMessageBox>
             )}
           </>
         )}
