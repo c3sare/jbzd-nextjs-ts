@@ -7,10 +7,10 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import prisma from "@/app/libs/prismadb";
 import getUniqueId from "@/app/libs/getUniqueId";
-import { User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 export const authOptions: AuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma as unknown as PrismaClient),
   providers: [
     FacebookProvider({
       clientId: process.env.FACEBOOK_APP_ID as string,
