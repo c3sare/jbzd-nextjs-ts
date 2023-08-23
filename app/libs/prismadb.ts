@@ -1,10 +1,13 @@
 import { PrismaClient } from "@prisma/client";
+import { withAccelerate } from "@prisma/extension-accelerate";
+
+const prisma = new PrismaClient().$extends(withAccelerate());
+
+type PrismaType = typeof prisma;
 
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
+  prisma: PrismaType | undefined;
 };
-
-const prisma = globalForPrisma.prisma ?? new PrismaClient();
 
 export default prisma;
 
