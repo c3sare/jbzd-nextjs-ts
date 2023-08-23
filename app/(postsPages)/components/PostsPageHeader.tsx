@@ -13,17 +13,20 @@ import IconButton from "./IconButton";
 import { AiOutlinePlus } from "react-icons/ai";
 import { TbCalendarEvent } from "react-icons/tb";
 import { BiFilter } from "react-icons/bi";
+import { toast } from "react-hot-toast";
 
 type PostsPageHeaderProps = {
   isPremium: boolean;
   categories: (Category & {
     children: Category[];
   })[];
+  isLoggedIn: boolean;
 };
 
 const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({
   isPremium,
   categories,
+  isLoggedIn,
 }) => {
   const pathname = usePathname();
   const params = useSearchParams();
@@ -52,7 +55,10 @@ const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({
         <IconButton
           startIcon={<AiOutlinePlus />}
           variant="secondary"
-          onClick={() => handleSetForm(1)}
+          onClick={() => {
+            if (isLoggedIn) handleSetForm(1);
+            else toast.error("Musisz się zalogować!");
+          }}
         >
           Dodaj dzidę
         </IconButton>

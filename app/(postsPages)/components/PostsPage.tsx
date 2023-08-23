@@ -5,6 +5,7 @@ import Link from "next/link";
 import PostsPageHeader from "./PostsPageHeader";
 import { getPremium } from "@/app/actions/getPremium";
 import { getCategories } from "@/app/actions/getCategories";
+import { getSession } from "@/app/actions/getSession";
 
 type PostsPageProps = {
   posts: Post[];
@@ -19,8 +20,11 @@ const PostsPage: React.FC<PostsPageProps> = async ({
   page,
   pageSlug,
 }) => {
+  const session = await getSession();
   const premium = await getPremium();
   const categories = await getCategories();
+
+  const isLoggedIn = Boolean(session?.user?.username);
 
   return (
     <>
@@ -30,6 +34,7 @@ const PostsPage: React.FC<PostsPageProps> = async ({
       <PostsPageHeader
         categories={categories}
         isPremium={premium.isPremium || false}
+        isLoggedIn={isLoggedIn}
       />
     </>
   );
