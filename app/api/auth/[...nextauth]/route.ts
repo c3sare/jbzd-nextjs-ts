@@ -7,10 +7,9 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import prisma from "@/app/libs/prismadb";
 import getUniqueId from "@/app/libs/getUniqueId";
-import { PrismaClient } from "@prisma/client";
 
 export const authOptions: AuthOptions = {
-  adapter: PrismaAdapter(prisma as unknown as PrismaClient),
+  adapter: PrismaAdapter(prisma),
   providers: [
     FacebookProvider({
       clientId: process.env.FACEBOOK_APP_ID as string,
@@ -120,7 +119,12 @@ export const authOptions: AuthOptions = {
       return session;
     },
   },
-  // debug: process.env.NODE_ENV === "development",
+  pages: {
+    signIn: "/logowanie",
+    signOut: "/api/auth/signout",
+    error: "/logowanie",
+    newUser: "/",
+  },
   session: {
     strategy: "jwt",
   },

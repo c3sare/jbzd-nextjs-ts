@@ -38,7 +38,7 @@ const AvatarForm = ({ avatar }: { avatar: string }) => {
     getImageBlob(avatar).then((data) => {
       setFile(data);
     });
-  }, []);
+  }, [avatar]);
 
   const handleSendAvatar = () => {
     if (file === "") return;

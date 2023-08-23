@@ -1,23 +1,26 @@
-import { parseISO, differenceInMinutes } from "date-fns";
+import { differenceInMinutes } from "date-fns";
+import { useMemo } from "react";
 
 type ArticleTimeProps = {
-  addTime: string;
+  addTime: Date;
 };
 
 const ArticleTime: React.FC<ArticleTimeProps> = ({ addTime }) => {
-  const postTime = parseISO(addTime);
   const currentTime = new Date();
 
-  const value = differenceInMinutes(postTime, currentTime);
+  const value = useMemo(
+    () => differenceInMinutes(currentTime, addTime),
+    [addTime]
+  );
 
-  if (value > 60 * 24 * 7 * 30) {
-    return `${value} mies.`;
-  } else if (value > 60 * 24 * 7) {
-    return `${value} tyg.`;
-  } else if (value > 60 * 24) {
-    return `${value} dni.`;
-  } else if (value > 60) {
-    return `${value} godz.`;
+  if (value > 60 * 24 * 7 * 4) {
+    return `${Math.round(value / (60 * 24 * 7 * 4))} mies.`;
+  } else if (value > 60 * 24 * 7 && value <= 60 * 24 * 7 * 4) {
+    return `${Math.round(value / (60 * 24 * 7))} tyg.`;
+  } else if (value > 60 * 24 && value < 60 * 24 * 7) {
+    return `${Math.round(value / (60 * 24))} dni.`;
+  } else if (value >= 60) {
+    return `${Math.round(value / 60)} godz.`;
   } else {
     return `${value} min.`;
   }

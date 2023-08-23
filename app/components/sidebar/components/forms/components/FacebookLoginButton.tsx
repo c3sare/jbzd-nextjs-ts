@@ -10,7 +10,8 @@ const FacebookLoginButton: React.FC<{
     <div className="w-full">
       <button
         disabled={disabled}
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
           setIsLoading(true);
           signIn("facebook", { redirect: false }).then((callback) => {
             if (callback?.error) {

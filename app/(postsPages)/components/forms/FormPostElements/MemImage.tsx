@@ -6,6 +6,7 @@ import { useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
 import { DndProvider, useDrop } from "react-dnd";
 import { HTML5Backend, NativeTypes } from "react-dnd-html5-backend";
+import Image from "next/image";
 
 import { GoUpload } from "react-icons/go";
 
@@ -87,11 +88,15 @@ function MemImage<T extends FieldValues>({
         </div>
       ) : (
         <>
-          <img
-            src={data ? URL.createObjectURL(data) : undefined}
-            className="w-full"
-            alt="Podgląd"
-          />
+          {data && (
+            <Image
+              src={URL.createObjectURL(data)}
+              className="w-full h-auto"
+              width={700}
+              height={300}
+              alt="Podgląd"
+            />
+          )}
           <button
             type="button"
             className="absolute bottom-[15px] right-[15px] bg-[#505050] text-white text-[13px] rounded-[3px] leading-[34px] px-[15px] cursor-pointer z-[3] shadow-md"

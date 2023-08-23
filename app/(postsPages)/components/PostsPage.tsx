@@ -1,4 +1,4 @@
-import type { Post } from "@prisma/client";
+import type { Category, Post, Tag, User } from "@prisma/client";
 
 import Breadcrumb from "../../components/Breadcrumb";
 import Link from "next/link";
@@ -6,9 +6,17 @@ import PostsPageHeader from "./PostsPageHeader";
 import { getPremium } from "@/app/actions/getPremium";
 import { getCategories } from "@/app/actions/getCategories";
 import { getSession } from "@/app/actions/getSession";
+import PostComponent from "./Post/Post";
 
 type PostsPageProps = {
-  posts: Post[];
+  posts: (Post & {
+    author: User;
+    category: Category;
+    tags: Tag[];
+    _count: {
+      comments: number;
+    };
+  })[];
   currentNode: string;
   page: number;
   pageSlug: string;
@@ -36,6 +44,9 @@ const PostsPage: React.FC<PostsPageProps> = async ({
         isPremium={premium.isPremium || false}
         isLoggedIn={isLoggedIn}
       />
+      {posts.map((post) => (
+        <PostComponent key={post.id} post={post} />
+      ))}
     </>
   );
 };

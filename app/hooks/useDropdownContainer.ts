@@ -12,7 +12,7 @@ const useDropdownContainer = () => {
   );
 
   useEffect(() => {
-    if (isVisible) setIsVisible(false);
+    setIsVisible(false);
   }, [router]);
 
   useEffect(() => {

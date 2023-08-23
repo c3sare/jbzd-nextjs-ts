@@ -10,7 +10,8 @@ const GoogleLoginButton: React.FC<{
     <div className="w-full pt-2">
       <button
         disabled={disabled}
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
           setIsLoading(true);
           signIn("google", { redirect: false }).then((callback) => {
             if (callback?.error) {
