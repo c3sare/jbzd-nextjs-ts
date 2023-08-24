@@ -2,18 +2,7 @@ import prisma from "@/app/libs/prismadb";
 import PostsPage from "../components/PostsPage";
 
 export default async function Home() {
-  const posts = await prisma.post.findMany({
-    include: {
-      category: true,
-      tags: true,
-      author: true,
-      _count: {
-        select: {
-          comments: true,
-        },
-      },
-    },
-  });
+  const posts = await prisma.postStats.findMany({});
 
   if (!posts) return new Error("Internal error");
 

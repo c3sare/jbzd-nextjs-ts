@@ -1,13 +1,18 @@
+import Link from "next/link";
+
 type MemTextProps = {
   html: string;
+  postLink: string;
 };
 
-const MemText: React.FC<MemTextProps> = ({ html }) => {
+const MemText: React.FC<MemTextProps> = ({ html, postLink }) => {
   return (
-    <div
-      className="w-full bg-[#000] text-[18px] leading-[30px] text-white overflow-hidden p-[10px_15px]"
-      dangerouslySetInnerHTML={{ __html: html }}
-    ></div>
+    <Link href={postLink}>
+      <div
+        className="w-full p-[10px_15px] leading-[30px] text-[18px] text-white bg-[#000] overflow-hidden"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    </Link>
   );
 };
 

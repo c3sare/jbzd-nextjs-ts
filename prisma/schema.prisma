@@ -110,6 +110,7 @@ model Post {
   id            String           @id @default(auto()) @map("_id") @db.ObjectId
   addTime       DateTime         @default(now())
   title         String
+  slug          String
   tagIds        String[]         @db.ObjectId
   tags          Tag[]            @relation(fields: [tagIds], references: [id])
   categoryId    String           @db.ObjectId
@@ -125,6 +126,49 @@ model Post {
   badges        BadgePost[]
   votes         PostVote[]
   favouriteList FavouritePost[]
+}
+
+type TagType {
+  id   String @map("_id") @db.ObjectId
+  name String
+  slug String
+}
+
+type CategoryType {
+  id   String   @map("_id") @db.ObjectId
+  name String
+  nsfw Boolean?
+  slug String
+}
+
+type AuthorType {
+  id       String  @map("_id") @db.ObjectId
+  username String
+  image    String?
+  spears   Int
+  rank     Int
+}
+
+model PostStats {
+  id            String           @id @default(auto()) @map("_id") @db.ObjectId
+  addTime       DateTime         @default(now())
+  title         String
+  slug          String
+  tagIds        String[]         @db.ObjectId
+  tags          TagType[]
+  categoryId    String           @db.ObjectId
+  category      CategoryType
+  memContainers MemContainer[]
+  authorId      String           @db.ObjectId
+  author        AuthorType
+  accepted      Boolean
+  link          LinkInformation?
+  linkImage     String?
+  comments      Int
+  pluses        Int
+  rock          Int
+  silver        Int
+  gold          Int
 }
 
 model PostVote {
@@ -206,7 +250,8 @@ model Category {
 
 model Tag {
   id         String      @id @default(auto()) @map("_id") @db.ObjectId
-  name       String      @unique
+  name       String
+  slug       String      @unique
   postIds    String[]    @db.ObjectId
   posts      Post[]      @relation(fields: [postIds], references: [id])
   actionedBy TagAction[]

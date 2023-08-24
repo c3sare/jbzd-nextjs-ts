@@ -51,7 +51,7 @@ const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({
 
   return (
     <>
-      <div className="max-w-[600px] flex gap-[10px_5px] flex-wrap sm:flex-nowrap">
+      <div className="max-w-[600px] flex gap-[10px_5px] flex-wrap sm:flex-nowrap mb-4">
         <IconButton
           startIcon={<AiOutlinePlus />}
           variant="secondary"

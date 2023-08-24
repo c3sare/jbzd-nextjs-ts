@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 import { LinkInformation, Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 import uploadMemFile from "@/utils/uploadMemFile";
+import createSlugFromTitle from "@/utils/createSlugFromTitle";
 
 export async function POST(request: Request) {
   const session = await getSession();
@@ -45,15 +46,21 @@ export async function POST(request: Request) {
     const categoryId = selectedCategory.id;
 
     ////  TAGS /////////////////////////////////////////////////////
+
     const tags: Prisma.PostCreateArgs<DefaultArgs>["data"]["tags"] = {
-      connectOrCreate: form.tags.map((tag) => ({
-        create: {
-          name: tag.value,
-        },
-        where: {
-          name: tag.value,
-        },
-      })),
+      connectOrCreate: form.tags.map((tag) => {
+        const tagSlug = createSlugFromTitle(tag.value);
+
+        return {
+          create: {
+            name: tag.value,
+            slug: tagSlug,
+          },
+          where: {
+            slug: tagSlug,
+          },
+        };
+      }),
     };
 
     ////  UPLOAD MEM CONTAINERS ////////////////////////////////////
@@ -86,10 +93,14 @@ export async function POST(request: Request) {
       };
     }
 
+    ////  SLUG  ////////////////////////////////////////////////////
+    const slug = createSlugFromTitle(form.title);
+
     ////  CREATE POST IN DB ////////////////////////////////////////
     const post = await prisma.post.create({
       data: {
         title,
+        slug,
         categoryId,
         authorId: session.user.id,
         memContainers,

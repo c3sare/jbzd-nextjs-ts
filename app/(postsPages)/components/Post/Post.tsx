@@ -1,7 +1,7 @@
 "use client";
 
 import Badge from "./components/Badge";
-import { Category, Post, Tag, User } from "@prisma/client";
+import { PostStats } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -9,26 +9,26 @@ import ArticleTime from "./components/ArticleTime";
 import { FaComment } from "react-icons/fa";
 import MemImage from "./components/memContainers/MemImage";
 import MemText from "./components/memContainers/MemText";
+import MemYoutube from "./components/memContainers/MemYoutube";
+import MemVideo from "./components/memContainers/MemVideo";
+import PostActions from "./components/PostActions";
 
 type PostProps = {
-  post: Post & {
-    author: User;
-    category: Category;
-    tags: Tag[];
-    _count: { comments: number };
-  };
+  post: PostStats;
 };
 
 const Post: React.FC<PostProps> = ({ post }) => {
   const [badge, setBadge] = useState({
-    rock: 0,
-    silver: 0,
-    gold: 0,
-    comments: post._count.comments,
+    rock: post.rock,
+    silver: post.silver,
+    gold: post.gold,
+    comments: post.comments,
   });
 
+  const postLink = `/obr/${post.id}/${post.slug}`;
+
   return (
-    <article className="flex items-start relative mb-[40px] w-full">
+    <article className="flex items-start relative mb-[40px] max-w-[655px]">
       <Link
         className="max-w-[40px] block"
         href={`/uzytkownik/${post.author.username!}`}
@@ -40,11 +40,11 @@ const Post: React.FC<PostProps> = ({ post }) => {
           height={40}
         />
       </Link>
-      <div className="flex-1 ml-[5px] relative">
-        <h3 className="bg-[#1f1f1f] p-[4px_8px] m-[0_0_4px] break-words relative flex flex-col">
+      <div className="flex-1 ml-[5px] relative max-w-[600px]">
+        <h3 className="bg-[#1f1f1f] p-[4px_8px] m-[0_0_4px] break-words relative flex items-center justify-between">
           <Link
-            className="text-white text-[17px] overflow-hidden block mb-[5px]"
-            href="/"
+            className="text-white text-[17px] overflow-hidden block mb-[5px] font-bold"
+            href={postLink}
           >
             {post.title}
           </Link>
@@ -69,16 +69,33 @@ const Post: React.FC<PostProps> = ({ post }) => {
           </div>
         </div>
         <div className="flex flex-col gap-1">
-          {post.memContainers.map((mem) => {
+          {post.memContainers.map((mem, index) => {
             switch (mem.type) {
               case "IMAGE":
-                return <MemImage src={mem.data} title={post.title} />;
+                if (mem.data.endsWith(".mp4"))
+                  return <MemVideo key={index} src={mem.data} gif />;
+                else
+                  return (
+                    <MemImage
+                      postLink={postLink}
+                      key={index}
+                      src={mem.data}
+                      title={post.title}
+                    />
+                  );
               case "TEXT":
-                return <MemText html={mem.data} />;
+                return (
+                  <MemText postLink={postLink} key={index} html={mem.data} />
+                );
+              case "VIDEO":
+                return <MemVideo key={index} src={mem.data} />;
+              case "YOUTUBE":
+                return <MemYoutube key={index} videoId={mem.data} />;
             }
           })}
         </div>
       </div>
+      <PostActions postLink={postLink} pluses={post.pluses} />
     </article>
   );
 };

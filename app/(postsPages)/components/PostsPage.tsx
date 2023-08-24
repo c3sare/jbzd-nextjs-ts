@@ -1,4 +1,4 @@
-import type { Category, Post, Tag, User } from "@prisma/client";
+import type { Category, Post, PostStats, Tag, User } from "@prisma/client";
 
 import Breadcrumb from "../../components/Breadcrumb";
 import Link from "next/link";
@@ -9,14 +9,7 @@ import { getSession } from "@/app/actions/getSession";
 import PostComponent from "./Post/Post";
 
 type PostsPageProps = {
-  posts: (Post & {
-    author: User;
-    category: Category;
-    tags: Tag[];
-    _count: {
-      comments: number;
-    };
-  })[];
+  posts: PostStats[];
   currentNode: string;
   page: number;
   pageSlug: string;
