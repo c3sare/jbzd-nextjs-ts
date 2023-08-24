@@ -1,24 +1,61 @@
-import Link from "next/link";
 import BadgeActionButton from "./postActions/BadgeActionButton";
 import { FaComment } from "react-icons/fa";
 import PlusCounterButton from "./postActions/PlusCounterButton";
+import PostActionLinkButton from "./postActions/PostActionLinkButton";
+import { useSession } from "next-auth/react";
+import { PostType } from "../../types/PostType";
+import FavouriteButton from "./postActions/FavouriteButton";
+import DeletePostButton from "./postActions/DeletePostButton";
+import ReportPostButton from "./postActions/ReportPostButton";
 
 type PostActionsProps = {
   postLink: string;
   pluses: number;
+  post: PostType;
 };
 
-const PostActions: React.FC<PostActionsProps> = ({ postLink, pluses }) => {
+const PostActions: React.FC<PostActionsProps> = ({
+  postLink,
+  pluses,
+  post,
+}) => {
+  const { data, status } = useSession();
+
+  const isLoggedIn = status === "authenticated";
+
+  const isOwnPost = data?.user?.username === post?.author?.username;
+
   return (
-    <div className="w-[82px] absolute left-[calc(100%_+_2px)] bottom-0 text-center">
-      <BadgeActionButton />
-      <Link
-        href={postLink + "#komentarze"}
-        className="bg-[#181818] rounded-[2px] cursor-pointer flex w-[51px] h-[45px] mb-[3px] items-center justify-center"
-      >
-        <FaComment className="text-[22px] text-[#777]" />
-      </Link>
-      <PlusCounterButton pluses={pluses} />
+    <div className="flex gap-1 mt-1 md:mt-0 md:block flex-1 mx-auto w-full max-w-[600px] md:w-[82px] relative md:absolute md:left-[calc(100%_+_2px)] md:bottom-0 text-center flex-nowrap">
+      <BadgeActionButton
+        postId={post.id}
+        isOwnPost={isOwnPost}
+        isLoggedIn={isLoggedIn}
+      />
+      <ReportPostButton
+        isLoggedIn={isLoggedIn}
+        isOwnPost={isOwnPost}
+        accepted={post.accepted}
+        postId={post.id}
+      />
+      <DeletePostButton
+        isLoggedIn={isLoggedIn}
+        isOwnPost={isOwnPost}
+        postId={post.id}
+      />
+      <PostActionLinkButton href={postLink + "#komentarze"}>
+        <FaComment />
+      </PostActionLinkButton>
+      <FavouriteButton
+        isFavourite={post.isFavourite || false}
+        isLoggedIn={isLoggedIn}
+        postId={post.id}
+      />
+      <PlusCounterButton
+        postId={post.id}
+        isPlused={post.isPlused || false}
+        pluses={pluses}
+      />
     </div>
   );
 };

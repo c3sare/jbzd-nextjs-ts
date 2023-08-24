@@ -15,11 +15,22 @@ const cost = {
 type AddBadgeButtonProps = {
   name: "rock" | "silver" | "gold";
   title: string;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
 };
 
-const AddBadgeButton: React.FC<AddBadgeButtonProps> = ({ title, name }) => {
+const AddBadgeButton: React.FC<AddBadgeButtonProps> = ({
+  title,
+  name,
+  onClick,
+  disabled,
+}) => {
   return (
-    <button className="flex flex-col items-center justify-center gap-1 w-full h-[51px] text-center text-white cursor-pointer opacity-50 hover:opacity-100">
+    <button
+      disabled={disabled}
+      onClick={onClick}
+      className="flex flex-col items-center justify-center gap-1 w-full h-[51px] text-center text-white cursor-pointer opacity-50 hover:opacity-100"
+    >
       <Image
         src={badgeImageSrc[name]}
         alt={title}

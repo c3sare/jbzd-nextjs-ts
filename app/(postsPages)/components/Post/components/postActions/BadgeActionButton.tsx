@@ -1,24 +1,66 @@
 import clsx from "clsx";
 import Image from "next/image";
-import { useState } from "react";
+import toast from "react-hot-toast";
 
 import { IoMdArrowDropup } from "react-icons/io";
 
 import AddBadgeButton from "./AddBadgeButton";
+import useDropdownContainer from "@/app/hooks/useDropdownContainer";
+import axios from "axios";
+import { useState } from "react";
 
-const BadgeActionButton = () => {
-  const [isExpanded, setIsExpaned] = useState<boolean>(false);
+type BadgeActionButtonProps = {
+  isOwnPost: boolean;
+  isLoggedIn: boolean;
+  postId: string;
+};
+
+type BadgeType = "ROCK" | "SILVER" | "GOLD";
+
+const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
+  isOwnPost,
+  isLoggedIn,
+  postId,
+}) => {
+  if (isOwnPost) return null;
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { isVisible, toggleVisible, containerRef } = useDropdownContainer();
+
+  const handleAddBadge = (type: BadgeType) => {
+    if (!isLoggedIn) return toast.error("Dostęp tylko dla zalogowanych!");
+    setIsLoading(true);
+    axios
+      .post(`/api/post/badge/${postId}/${type.toLowerCase()}`)
+      .then((res) => {
+        const result = res.data.result;
+        if (result === "NOT_ENOUGHT_COINS") {
+          toast.error("Nie wystarczająca ilość monet!");
+        } else if (result === "ALREADY_EXIST") {
+          toast.error("Już przyznałeś taką odznakę!");
+        } else {
+          toast.success("Przyznano odznakę!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Wystąpił problem przy dodawaniu odznaki!");
+      })
+      .finally(() => {
+        toggleVisible();
+        setIsLoading(true);
+      });
+  };
 
   return (
-    <div className="w-[51px]">
+    <div className="w-[51px]" ref={containerRef}>
       <div
         className="w-full h-[51px] bg-[#313131] rounded-[3px] flex justify-center items-center relative cursor-pointer"
-        onClick={() => setIsExpaned(!isExpanded)}
+        onClick={toggleVisible}
       >
         <IoMdArrowDropup
           className={clsx(
             "text-[20px] text-white absolute top-[-4px]",
-            isExpanded && "rotate-180"
+            isVisible && "rotate-180"
           )}
         />
         <Image
@@ -29,11 +71,26 @@ const BadgeActionButton = () => {
           height={25}
         />
       </div>
-      {isExpanded && (
+      {isVisible && (
         <div className="min-w-[51px] flex flex-col bottom-full left-0 absolute bg-[#313131] py-[5px] gap-[10px] z-10 shadow-[5px_-5px_5px_#252525]">
-          <AddBadgeButton name="gold" title="Złota dzida" />
-          <AddBadgeButton name="silver" title="Srebrna dzida" />
-          <AddBadgeButton name="rock" title="Kamienna dzida" />
+          <AddBadgeButton
+            disabled={isLoading}
+            name="gold"
+            title="Złota dzida"
+            onClick={() => handleAddBadge("GOLD")}
+          />
+          <AddBadgeButton
+            disabled={isLoading}
+            name="silver"
+            title="Srebrna dzida"
+            onClick={() => handleAddBadge("SILVER")}
+          />
+          <AddBadgeButton
+            disabled={isLoading}
+            name="rock"
+            title="Kamienna dzida"
+            onClick={() => handleAddBadge("ROCK")}
+          />
         </div>
       )}
     </div>

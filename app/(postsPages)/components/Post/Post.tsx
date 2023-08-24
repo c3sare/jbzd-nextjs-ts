@@ -12,9 +12,10 @@ import MemText from "./components/memContainers/MemText";
 import MemYoutube from "./components/memContainers/MemYoutube";
 import MemVideo from "./components/memContainers/MemVideo";
 import PostActions from "./components/PostActions";
+import { PostType } from "../types/PostType";
 
 type PostProps = {
-  post: PostStats;
+  post: PostType;
 };
 
 const Post: React.FC<PostProps> = ({ post }) => {
@@ -28,19 +29,19 @@ const Post: React.FC<PostProps> = ({ post }) => {
   const postLink = `/obr/${post.id}/${post.slug}`;
 
   return (
-    <article className="flex items-start relative mb-[40px] max-w-[655px]">
+    <article className="flex items-start flex-col md:flex-row relative mx-auto md:mx-0 mb-[40px] max-w-[655px]">
       <Link
-        className="max-w-[40px] block"
-        href={`/uzytkownik/${post.author.username!}`}
+        className="max-w-[40px] hidden md:block"
+        href={post.author ? `/uzytkownik/${post.author.username}` : "#"}
       >
         <Image
-          src={post.author.image || "/images/avatar/default.jpg"}
-          alt={post.author.username!}
+          src={post.author?.image || "/images/avatar/default.jpg"}
+          alt={post.author?.username || "Avatar"}
           width={40}
           height={40}
         />
       </Link>
-      <div className="flex-1 ml-[5px] relative max-w-[600px]">
+      <div className="flex-1 mx-auto md:ml-[5px] relative max-w-[600px]">
         <h3 className="bg-[#1f1f1f] p-[4px_8px] m-[0_0_4px] break-words relative flex items-center justify-between">
           <Link
             className="text-white text-[17px] overflow-hidden block mb-[5px] font-bold"
@@ -95,7 +96,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
           })}
         </div>
       </div>
-      <PostActions postLink={postLink} pluses={post.pluses} />
+      <PostActions post={post} postLink={postLink} pluses={post.pluses} />
     </article>
   );
 };
