@@ -52,8 +52,8 @@ const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
   };
 
   return (
-    <div className="absolute max-w-full flex justify-center items-center gap-[10px] top-[calc(100%_+_5px)] z-10 bg-[#3c3c3c] left-1/2 translate-x-[-50%] flex-col p-[20px]">
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div className="relative md:absolute max-w-full flex justify-center items-center gap-[10px] top-[5px] md:top-[calc(100%_+_5px)] z-10 bg-[#3c3c3c] md:left-1/2 md:translate-x-[-50%] flex-col p-[20px]">
+      <form onSubmit={handleSubmit(onSubmit)} className="max-w-full">
         <Input
           id="pharse"
           register={register}
@@ -61,7 +61,7 @@ const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
           disabled={!isPremium}
           placeholder={isPremium ? "Wyszukaj..." : "Opcja dostępna dla Premium"}
         />
-        <div className="flex gap-4 items-center justify-center my-2">
+        <div className="flex gap-4 items-center justify-center my-2 flex-wrap">
           <LabelCheckbox
             register={register}
             watch={watch}

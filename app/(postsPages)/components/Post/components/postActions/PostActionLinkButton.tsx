@@ -18,7 +18,7 @@ const PostActionLinkButton: React.FC<PostActionLinkButtonProps> = ({
   disabled,
 }) => {
   const className = clsx(
-    "bg-[#181818] rounded-[2px] cursor-pointer flex w-[51px] h-[45px] mb-[3px] items-center justify-center text-[28px]",
+    "bg-[#181818] rounded-[2px] cursor-pointer flex w-[51px] min-w-[51px] h-[45px] mb-[3px] items-center justify-center text-[28px]",
     active ? "text-[#f0cc00]" : "text-[#777]"
   );
 

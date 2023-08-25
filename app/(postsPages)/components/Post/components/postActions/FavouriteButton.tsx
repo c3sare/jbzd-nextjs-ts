@@ -30,7 +30,8 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
       .catch((err) => {
         console.log(err);
         toast.error("Wystąpił problem przy dodwaniu do listy ulubionych!");
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (

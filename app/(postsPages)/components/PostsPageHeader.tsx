@@ -51,7 +51,7 @@ const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({
 
   return (
     <>
-      <div className="max-w-[600px] flex gap-[10px_5px] flex-wrap sm:flex-nowrap mb-4">
+      <div className="max-w-[600px] md:ml-[45px] flex gap-[10px_5px] flex-wrap sm:flex-nowrap">
         <IconButton
           startIcon={<AiOutlinePlus />}
           variant="secondary"
@@ -60,7 +60,7 @@ const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({
             else toast.error("Musisz się zalogować!");
           }}
         >
-          Dodaj dzidę
+          Dodaj
         </IconButton>
         <IconButton
           startIcon={<TbCalendarEvent />}
@@ -77,7 +77,9 @@ const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({
           Filtruj
         </IconButton>
       </div>
-      <div className="full-w relative">{componentsToSwitch[currentForm]}</div>
+      <div className="full-w relative mb-4 md:ml-[45px]">
+        {componentsToSwitch[currentForm]}
+      </div>
     </>
   );
 };

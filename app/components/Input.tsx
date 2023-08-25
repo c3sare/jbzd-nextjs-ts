@@ -117,7 +117,7 @@ function Input<T extends FieldValues>({
   return (
     <div
       className={clsx(
-        "group flex justify-between my-[5px] items-center flex-wrap text-[13px] relative",
+        "group flex justify-between my-[5px] items-center flex-wrap text-[13px] relative max-w-full",
         disabled && "opacity-80"
       )}
     >

@@ -13,6 +13,7 @@ type BadgeActionButtonProps = {
   isOwnPost: boolean;
   isLoggedIn: boolean;
   postId: string;
+  setBadgeCount: (type: "rock" | "silver" | "gold", count: number) => void;
 };
 
 type BadgeType = "ROCK" | "SILVER" | "GOLD";
@@ -21,6 +22,7 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
   isOwnPost,
   isLoggedIn,
   postId,
+  setBadgeCount,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { isVisible, toggleVisible, containerRef } = useDropdownContainer();
@@ -33,12 +35,13 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
     axios
       .post(`/api/post/badge/${postId}/${type.toLowerCase()}`)
       .then((res) => {
-        const result = res.data.result;
+        const { result, count, type } = res.data;
         if (result === "NOT_ENOUGHT_COINS") {
           toast.error("Nie wystarczająca ilość monet!");
         } else if (result === "ALREADY_EXIST") {
           toast.error("Już przyznałeś taką odznakę!");
         } else {
+          setBadgeCount(type, count);
           toast.success("Przyznano odznakę!");
         }
       })
@@ -47,13 +50,13 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
         toast.error("Wystąpił problem przy dodawaniu odznaki!");
       })
       .finally(() => {
-        toggleVisible();
-        setIsLoading(true);
+        if (isVisible) toggleVisible();
+        setIsLoading(false);
       });
   };
 
   return (
-    <div className="w-[51px]" ref={containerRef}>
+    <div className="w-[51px] min-w-[51px]" ref={containerRef}>
       <div
         className="w-full h-[51px] bg-[#313131] rounded-[3px] flex justify-center items-center relative cursor-pointer"
         onClick={toggleVisible}

@@ -12,12 +12,14 @@ type PostActionsProps = {
   postLink: string;
   pluses: number;
   post: PostType;
+  setBadgeCount: (type: "rock" | "silver" | "gold", count: number) => void;
 };
 
 const PostActions: React.FC<PostActionsProps> = ({
   postLink,
   pluses,
   post,
+  setBadgeCount,
 }) => {
   const { data, status } = useSession();
 
@@ -26,11 +28,12 @@ const PostActions: React.FC<PostActionsProps> = ({
   const isOwnPost = data?.user?.username === post?.author?.username;
 
   return (
-    <div className="flex gap-1 mt-1 md:mt-0 md:block flex-1 mx-auto w-full max-w-[600px] md:w-[82px] relative md:absolute md:left-[calc(100%_+_2px)] md:bottom-0 text-center flex-nowrap">
+    <div className="flex md:flex-col gap-1 mt-1 md:mt-0 flex-1 mx-auto w-full max-w-[600px] md:w-[82px] relative md:absolute md:left-[calc(100%_+_2px)] md:bottom-0 text-center flex-nowrap">
       <BadgeActionButton
         postId={post.id}
         isOwnPost={isOwnPost}
         isLoggedIn={isLoggedIn}
+        setBadgeCount={setBadgeCount}
       />
       <ReportPostButton
         isLoggedIn={isLoggedIn}

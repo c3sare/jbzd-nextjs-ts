@@ -17,7 +17,10 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
   const solo = children instanceof Array;
 
   return (
-    <div className="mb-[15px] text-[14px]" style={styles ? styles : {}}>
+    <div
+      className="mb-[15px] text-[14px] md:ml-[45px]"
+      style={styles ? styles : {}}
+    >
       {children &&
         (solo ? (
           children

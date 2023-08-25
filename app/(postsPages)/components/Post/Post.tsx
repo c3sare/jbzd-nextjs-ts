@@ -1,7 +1,6 @@
 "use client";
 
 import Badge from "./components/Badge";
-import { PostStats } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -13,6 +12,7 @@ import MemYoutube from "./components/memContainers/MemYoutube";
 import MemVideo from "./components/memContainers/MemVideo";
 import PostActions from "./components/PostActions";
 import { PostType } from "../types/PostType";
+import PostAuthorInfo from "./components/PostAuthorInfo";
 
 type PostProps = {
   post: PostType;
@@ -23,10 +23,17 @@ const Post: React.FC<PostProps> = ({ post }) => {
     rock: post.rock,
     silver: post.silver,
     gold: post.gold,
-    comments: post.comments,
   });
 
   const postLink = `/obr/${post.id}/${post.slug}`;
+
+  const setBadgeCount = (type: "rock" | "silver" | "gold", count: number) => {
+    setBadge((prev) => {
+      const newState = { ...prev };
+      newState[type] = count;
+      return newState;
+    });
+  };
 
   return (
     <article className="flex items-start flex-col md:flex-row relative mx-auto md:mx-0 mb-[40px] max-w-[655px]">
@@ -58,14 +65,15 @@ const Post: React.FC<PostProps> = ({ post }) => {
         <div className="p-[4px_8px] bg-[#1f1f1f] text-[12px] text-[#777] flex justify-between items-center">
           <div className="flex gap-[5px] text-white overflow-hidden max-w-full ml-1 text-[12px]">
             <Link href={`/${post.category.slug}`}>{post.category.name}</Link>
-            <span className="text-[#777]">
+            {post.author && <PostAuthorInfo author={post.author} />}
+            <span className="text-[#777] pl-[2px]">
               <ArticleTime addTime={post.addTime} />
             </span>
           </div>
           <div>
             <div className="text-white text-[12px] relative flex items-center gap-1">
               <FaComment className="text-[#777] text-[16px]" />
-              <span>{badge.comments}</span>
+              <span>{post.comments}</span>
             </div>
           </div>
         </div>
@@ -96,7 +104,12 @@ const Post: React.FC<PostProps> = ({ post }) => {
           })}
         </div>
       </div>
-      <PostActions post={post} postLink={postLink} pluses={post.pluses} />
+      <PostActions
+        post={post}
+        postLink={postLink}
+        pluses={post.pluses}
+        setBadgeCount={setBadgeCount}
+      />
     </article>
   );
 };
