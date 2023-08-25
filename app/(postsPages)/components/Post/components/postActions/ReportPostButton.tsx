@@ -17,8 +17,9 @@ const ReportPostButton: React.FC<ReportPostButtonProps> = ({
   isOwnPost,
   postId,
 }) => {
-  if (accepted || !isLoggedIn || isOwnPost) return null;
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  if (accepted || !isLoggedIn || isOwnPost) return null;
 
   const handleReportPost = () => {
     setIsLoading(true);

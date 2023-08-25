@@ -1,6 +1,6 @@
 import { FaStar } from "react-icons/fa";
 import PostActionLinkButton from "./PostActionLinkButton";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -15,11 +15,12 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
   isLoggedIn,
   isFavourite,
 }) => {
-  if (!isLoggedIn) return null;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(isFavourite);
 
-  const handleToggleFavourite = useCallback(() => {
+  if (!isLoggedIn) return null;
+
+  const handleToggleFavourite = () => {
     setIsLoading(true);
     axios
       .post(`/api/post/favourite/${postId}`)
@@ -30,7 +31,7 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
         console.log(err);
         toast.error("Wystąpił problem przy dodwaniu do listy ulubionych!");
       });
-  }, [postId, isActive]);
+  };
 
   return (
     <PostActionLinkButton

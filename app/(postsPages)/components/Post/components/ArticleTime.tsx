@@ -6,10 +6,8 @@ type ArticleTimeProps = {
 };
 
 const ArticleTime: React.FC<ArticleTimeProps> = ({ addTime }) => {
-  const currentTime = new Date();
-
   const value = useMemo(
-    () => differenceInMinutes(currentTime, addTime),
+    () => differenceInMinutes(new Date(), addTime),
     [addTime]
   );
 

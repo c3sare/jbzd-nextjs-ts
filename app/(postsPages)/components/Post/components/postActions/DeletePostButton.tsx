@@ -16,8 +16,9 @@ const DeletePostButton: React.FC<DeletePostButtonProps> = ({
   postId,
   isOwnPost,
 }) => {
-  if (!isLoggedIn || !isOwnPost) return null;
   const monit = useContext(MonitProvider);
+
+  if (!isLoggedIn || !isOwnPost) return null;
 
   const deletePost = () => {
     axios

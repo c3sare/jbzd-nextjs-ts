@@ -22,9 +22,10 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
   isLoggedIn,
   postId,
 }) => {
-  if (isOwnPost) return null;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { isVisible, toggleVisible, containerRef } = useDropdownContainer();
+
+  if (isOwnPost) return null;
 
   const handleAddBadge = (type: BadgeType) => {
     if (!isLoggedIn) return toast.error("Dostęp tylko dla zalogowanych!");
