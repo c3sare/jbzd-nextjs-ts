@@ -1,6 +1,7 @@
 import prisma from "@/app/libs/prismadb";
 import { getSession } from "../getSession";
 import { PostStats, TagAction, UserAction } from "@prisma/client";
+import { PostType } from "@/app/(postsPages)/components/types/PostType";
 
 type PageParams = {
   page: number;
@@ -91,6 +92,7 @@ export async function getHomePagePosts(params: PageParams) {
               ?.method || "",
         },
         tags: post.tags.map((tag) => ({
+          ...tag,
           action:
             tagListActioned.find((action) => action.tagId === tag.id)?.method ||
             "",
@@ -98,8 +100,14 @@ export async function getHomePagePosts(params: PageParams) {
         isFavourite: favouritePostsIds.includes(post.id),
         isPlused: votedPostsIds.includes(post.id),
       }));
+    else
+      posts = posts.map((post: any) => {
+        delete post.author;
+        delete post.authorId;
+        return post;
+      });
 
-    return posts;
+    return posts as PostType[];
   } catch (error: any) {
     console.log(error);
     return null;

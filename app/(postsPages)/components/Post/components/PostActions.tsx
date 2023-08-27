@@ -13,6 +13,7 @@ type PostActionsProps = {
   pluses: number;
   post: PostType;
   setBadgeCount: (type: "rock" | "silver" | "gold", count: number) => void;
+  isPostPage: boolean;
 };
 
 const PostActions: React.FC<PostActionsProps> = ({
@@ -20,6 +21,7 @@ const PostActions: React.FC<PostActionsProps> = ({
   pluses,
   post,
   setBadgeCount,
+  isPostPage,
 }) => {
   const { data, status } = useSession();
 
@@ -46,9 +48,11 @@ const PostActions: React.FC<PostActionsProps> = ({
         isOwnPost={isOwnPost}
         postId={post.id}
       />
-      <PostActionLinkButton href={postLink + "#komentarze"}>
-        <FaComment />
-      </PostActionLinkButton>
+      {!isPostPage && (
+        <PostActionLinkButton href={postLink + "#komentarze"}>
+          <FaComment />
+        </PostActionLinkButton>
+      )}
       <FavouriteButton
         isFavourite={post.isFavourite || false}
         isLoggedIn={isLoggedIn}

@@ -13,12 +13,18 @@ import MemVideo from "./components/memContainers/MemVideo";
 import PostActions from "./components/PostActions";
 import { PostType } from "../types/PostType";
 import PostAuthorInfo from "./components/PostAuthorInfo";
+import { useParams } from "next/navigation";
+import TagList from "./components/TagList";
 
 type PostProps = {
   post: PostType;
 };
 
 const Post: React.FC<PostProps> = ({ post }) => {
+  const params = useParams();
+
+  const isPostPage = Boolean(params?.postId && params?.slug);
+
   const [badge, setBadge] = useState({
     rock: post.rock,
     silver: post.silver,
@@ -42,7 +48,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
         href={post.author ? `/uzytkownik/${post.author.username}` : "#"}
       >
         <Image
-          src={post.author?.image || "/images/avatar/default.jpg"}
+          src={post.author?.image || "/images/avatars/default.jpg"}
           alt={post.author?.username || "Avatar"}
           width={40}
           height={40}
@@ -63,7 +69,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
           </div>
         </h3>
         <div className="p-[4px_8px] bg-[#1f1f1f] text-[12px] text-[#777] flex justify-between items-center">
-          <div className="flex gap-[5px] text-white overflow-hidden max-w-full ml-1 text-[12px]">
+          <div className="flex gap-[5px] text-white max-w-full ml-1 text-[12px]">
             <Link href={`/${post.category.slug}`}>{post.category.name}</Link>
             {post.author && <PostAuthorInfo author={post.author} />}
             <span className="text-[#777] pl-[2px]">
@@ -77,6 +83,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
             </div>
           </div>
         </div>
+        {isPostPage && <TagList tags={post.tags} />}
         <div className="flex flex-col gap-1">
           {post.memContainers.map((mem, index) => {
             switch (mem.type) {
@@ -109,6 +116,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
         postLink={postLink}
         pluses={post.pluses}
         setBadgeCount={setBadgeCount}
+        isPostPage={isPostPage}
       />
     </article>
   );

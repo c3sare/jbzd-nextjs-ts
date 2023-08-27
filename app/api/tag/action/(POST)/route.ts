@@ -1,6 +1,6 @@
 import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
-import { UserAction } from "@prisma/client";
+import { TagAction } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -16,31 +16,26 @@ export async function POST(request: Request) {
     if (!["BLOCK", "FOLLOW"].includes(method))
       return new NextResponse("Invalid method type", { status: 400 });
 
-    if (id === session.user.id)
-      return new NextResponse("Can't observe you own profile!", {
-        status: 500,
-      });
-
-    const isActioned = await prisma.userAction.findFirst({
+    const isActioned = await prisma.tagAction.findFirst({
       where: {
-        userId: id,
+        tagId: id,
         authorId: session.user.id,
       },
     });
 
     if (isActioned) {
-      await prisma.userAction.delete({
+      await prisma.tagAction.delete({
         where: {
           id: isActioned.id,
         },
       });
     }
 
-    if ((isActioned as unknown as UserAction)?.method !== method) {
-      const userAction = await prisma.userAction.create({
+    if ((isActioned as unknown as TagAction)?.method !== method) {
+      const tagAction = await prisma.tagAction.create({
         data: {
           method,
-          user: {
+          tag: {
             connect: {
               id,
             },
@@ -48,7 +43,7 @@ export async function POST(request: Request) {
           author: { connect: { id: session.user.id } },
         },
       });
-      return NextResponse.json({ method: userAction.method });
+      return NextResponse.json({ method: tagAction.method });
     }
 
     return NextResponse.json({ method: "" });
