@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   DeepPartial,
+  DefaultValues,
   FieldValues,
   SubmitHandler,
   UseFormProps,
@@ -19,7 +20,7 @@ type UseZodFormProps<T extends FieldValues> = {
   pushFormDataEndpoint: string;
   pushFormDataMethod?: "POST" | "PUT" | "PATCH";
   clearFormAfterChange?: boolean;
-  defaultFormValues?: DeepPartial<T>;
+  defaultFormValues?: DefaultValues<T>;
   successDataFetchCallback?: (data?: AxiosResponse<any>) => void;
   customSuccessMessage?: string;
   refreshPageAfterSuccessSubmit?: boolean;
@@ -95,9 +96,9 @@ function useZodForm<T extends FieldValues>({
     setFocus,
   } = useForm<T>({
     resolver: zodResolver(zodSchema),
-    defaultValues: initialFormDataEndpoint
-      ? () => getInitialFormData()
-      : defaultFormValues!,
+    defaultValues: (initialFormDataEndpoint
+      ? getInitialFormData
+      : defaultFormValues!) as unknown as UseFormProps<T>["defaultValues"],
     ...rest,
   });
 
