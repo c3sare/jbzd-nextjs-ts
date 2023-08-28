@@ -1,5 +1,6 @@
+import useArraySearchParams from "@/app/hooks/useArraySearchParams";
 import clsx from "clsx";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 type PresetButtonProps = {
   children?: React.ReactNode;
@@ -9,19 +10,27 @@ type PresetButtonProps = {
 const PresetButton: React.FC<PresetButtonProps> = ({ children, preset }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const params = useSearchParams();
+  const params = useArraySearchParams();
 
   const onClick = () => {
     if (preset === "") {
       router.push(pathname);
     } else {
-      router.push("?date-preset=" + preset);
+      const filteredParams = params.filter(
+        (param) => !["from", "to", "date-preset"].includes(param.param)
+      );
+      const paramsString = filteredParams.map(
+        (param) => `${param.param}=${param.value}`
+      );
+
+      paramsString.unshift(`date-preset=${preset}`);
+
+      router.push(`?${paramsString.join("&")}`);
     }
   };
 
-  const presetParam = params.get("date-preset")
-    ? params.get("date-preset")
-    : "";
+  const presetParam =
+    params.find((item) => item.param === "date-preset")?.value || "";
 
   const isActive = presetParam === preset;
 

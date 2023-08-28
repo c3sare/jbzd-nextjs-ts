@@ -12,6 +12,7 @@ type PostsPageProps = {
   currentNode: string;
   page: number;
   pageSlug: string;
+  pagesCount: number;
 };
 
 const PostsPage: React.FC<PostsPageProps> = async ({
@@ -19,6 +20,7 @@ const PostsPage: React.FC<PostsPageProps> = async ({
   currentNode,
   page,
   pageSlug,
+  pagesCount,
 }) => {
   const session = await getSession();
   const premium = await getPremium();

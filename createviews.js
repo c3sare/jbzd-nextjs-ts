@@ -257,7 +257,7 @@ connect.then(async (client) => {
                 input: "$posts",
                 as: "post",
                 cond: {
-                  $eq: ["$$post.accepted", true],
+                  $ne: ["$$post.accepted", undefined],
                 },
               },
             },
@@ -359,7 +359,7 @@ connect.then(async (client) => {
                 input: "$posts",
                 as: "post",
                 cond: {
-                  $eq: ["$$post.accepted", true],
+                  $ne: ["$$post.accepted", undefined],
                 },
               },
             },
@@ -528,6 +528,23 @@ connect.then(async (client) => {
             localField: "categoryId",
             foreignField: "_id",
             as: "category",
+            pipeline: [
+              {
+                $lookup: {
+                  from: "Category",
+                  localField: "parentId",
+                  foreignField: "_id",
+                  as: "parent",
+                },
+              },
+              {
+                $set: {
+                  parent: {
+                    $first: "$parent",
+                  },
+                },
+              },
+            ],
           },
         },
         {

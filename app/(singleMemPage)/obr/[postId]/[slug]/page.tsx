@@ -18,7 +18,7 @@ const MemPage: React.FC<MemPageProps> = async ({
 
   if (!post) return notFound();
 
-  return <Post post={post} />;
+  return <Post isPostPage post={post} />;
 };
 
 export default MemPage;

@@ -5,9 +5,10 @@ import type { SubmitHandler } from "react-hook-form";
 import Button from "@/app/components/Button";
 import PresetButton from "../PresetButton";
 import DayPicker from "@/app/components/forms/DayPicker";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
+import useArraySearchParams from "@/app/hooks/useArraySearchParams";
 
 type PostsDateFilterFormData = {
   start?: Date;
@@ -23,28 +24,50 @@ const PostsDateFilterForm: React.FC<PostsDateFilterFormProps> = ({
 }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const params = useSearchParams();
+  const params = useArraySearchParams();
   const { register, watch, setValue, handleSubmit } =
     useForm<PostsDateFilterFormData>({
-      defaultValues: {
-        start: params.get("from") ? new Date(params.get("from")!) : undefined,
-        end: params.get("to") ? new Date(params.get("to")!) : undefined,
-      },
+      defaultValues: (() => {
+        const from = params.find((item) => item.param === "to")?.value;
+        const to = params.find((item) => item.param === "to")?.value;
+
+        return {
+          start: from ? new Date(from) : undefined,
+          end: to ? new Date(to) : undefined,
+        };
+      })(),
     });
 
   const onSubmit: SubmitHandler<PostsDateFilterFormData> = (data) => {
-    router.push(
-      `?from=${format(data.start!, "yyyy-MM-dd")}&to=${format(
-        data.end!,
-        "yyyy-MM-dd"
-      )}`
+    const filteredParams = params.filter(
+      (item) => !["from", "to", "date-preset"].includes(item.param)
     );
+
+    const paramsString = filteredParams.map(
+      (param) => `${param.param}=${param.value}`
+    );
+
+    paramsString.unshift(`to=${format(data.end!, "yyyy-MM-dd")}`);
+    paramsString.unshift(`from=${format(data.start!, "yyyy-MM-dd")}`);
+
+    router.push("?" + paramsString.join("&"));
   };
 
-  const handleReset = () => router.push(pathname);
+  const handleReset = () => {
+    const filteredParams = params.filter(
+      (item) => !["from", "to", "date-preset"].includes(item.param)
+    );
+
+    const paramsString = filteredParams
+      .map((param) => `${param.param}=${param.value}`)
+      .join("&");
+
+    router.push("?" + paramsString);
+  };
 
   const isFiltered =
-    params.get("date-preset") || (params.get("from") && params.get("to"));
+    params.filter((item) => ["from", "to", "date-preset"].includes(item.param))
+      .length > 0;
 
   const dateFrom = watch("start");
   const dateTo = watch("end");

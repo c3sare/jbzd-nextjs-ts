@@ -119,7 +119,7 @@ model Post {
   memContainers MemContainer[]
   authorId      String           @db.ObjectId
   author        User             @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  accepted      Boolean          @default(false)
+  accepted      DateTime?
   link          LinkInformation?
   linkImage     String?
 
@@ -135,11 +135,24 @@ type TagType {
   slug String
 }
 
+type CategoryParentType {
+  id     String   @map("_id") @db.ObjectId
+  name   String
+  slug   String
+  nsfw   Boolean?
+  column Int?
+  order  Int?
+}
+
 type CategoryType {
-  id   String   @map("_id") @db.ObjectId
-  name String
-  nsfw Boolean?
-  slug String
+  id       String              @map("_id") @db.ObjectId
+  name     String
+  slug     String
+  nsfw     Boolean?
+  order    Int?
+  column   Int?
+  parentId String?             @db.ObjectId
+  parent   CategoryParentType?
 }
 
 type AuthorType {
@@ -162,7 +175,7 @@ model PostStats {
   memContainers MemContainer[]
   authorId      String           @db.ObjectId
   author        AuthorType
-  accepted      Boolean
+  accepted      DateTime?
   link          LinkInformation?
   linkImage     String?
   comments      Int

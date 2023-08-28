@@ -13,7 +13,7 @@ type PostActionsProps = {
   pluses: number;
   post: PostType;
   setBadgeCount: (type: "rock" | "silver" | "gold", count: number) => void;
-  isPostPage: boolean;
+  isPostPage?: boolean;
 };
 
 const PostActions: React.FC<PostActionsProps> = ({
@@ -40,7 +40,7 @@ const PostActions: React.FC<PostActionsProps> = ({
       <ReportPostButton
         isLoggedIn={isLoggedIn}
         isOwnPost={isOwnPost}
-        accepted={post.accepted}
+        accepted={Boolean(post?.accepted)}
         postId={post.id}
       />
       <DeletePostButton

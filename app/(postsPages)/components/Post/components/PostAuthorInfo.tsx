@@ -3,7 +3,6 @@ import type { PostType } from "../../types/PostType";
 
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useState } from "react";
 import clsx from "clsx";
 import AuthorInfoButton from "./authorInfo/AuthorInfoButton";
@@ -34,7 +33,7 @@ const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({ author }) => {
         setUserAction(res.data.method);
       })
       .catch((err) => console.log(err))
-      .finally(() => setIsLoading(true));
+      .finally(() => setIsLoading(false));
   };
 
   const isOwnPost = username === author.username;

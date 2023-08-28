@@ -13,18 +13,15 @@ import MemVideo from "./components/memContainers/MemVideo";
 import PostActions from "./components/PostActions";
 import { PostType } from "../types/PostType";
 import PostAuthorInfo from "./components/PostAuthorInfo";
-import { useParams } from "next/navigation";
 import TagList from "./components/TagList";
+import Categories from "./components/Categories";
 
 type PostProps = {
   post: PostType;
+  isPostPage?: boolean;
 };
 
-const Post: React.FC<PostProps> = ({ post }) => {
-  const params = useParams();
-
-  const isPostPage = Boolean(params?.postId && params?.slug);
-
+const Post: React.FC<PostProps> = ({ post, isPostPage }) => {
   const [badge, setBadge] = useState({
     rock: post.rock,
     silver: post.silver,
@@ -70,7 +67,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
         </h3>
         <div className="p-[4px_8px] bg-[#1f1f1f] text-[12px] text-[#777] flex justify-between items-center">
           <div className="flex gap-[5px] text-white max-w-full ml-1 text-[12px]">
-            <Link href={`/${post.category.slug}`}>{post.category.name}</Link>
+            <Categories category={post.category} />
             {post.author && <PostAuthorInfo author={post.author} />}
             <span className="text-[#777] pl-[2px]">
               <ArticleTime addTime={post.addTime} />

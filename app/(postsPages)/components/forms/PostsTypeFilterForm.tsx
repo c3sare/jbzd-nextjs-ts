@@ -3,8 +3,9 @@ import type { FieldValues, SubmitHandler } from "react-hook-form";
 import LabelCheckbox from "@/app/components/LabelCheckbox";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import useArraySearchParams from "@/app/hooks/useArraySearchParams";
 
 type PostsTypeFilterFormProps = {
   isPremium: boolean;
@@ -16,38 +17,54 @@ const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const params = useArraySearchParams();
   const {
     watch,
     register,
     formState: { errors },
     handleSubmit,
   } = useForm({
-    defaultValues: {
-      pharse: searchParams.get("pharse")
-        ? decodeURI(searchParams.get("pharse")!)
-        : "",
-      video: Boolean(searchParams.get("video")),
-      gif: Boolean(searchParams.get("gif")),
-      image: Boolean(searchParams.get("image")),
-      text: Boolean(searchParams.get("text")),
-    },
+    defaultValues: (() => {
+      const pharse =
+        params.find((item) => item.param === "pharse")?.value || "";
+      const video = Boolean(
+        Number(params.find((item) => item.param === "video")?.value)
+      );
+      const gif = Boolean(
+        Number(params.find((item) => item.param === "gif")?.value)
+      );
+      const image = Boolean(
+        Number(params.find((item) => item.param === "image")?.value)
+      );
+      const text = Boolean(
+        Number(params.find((item) => item.param === "text")?.value)
+      );
+
+      return { pharse: decodeURI(pharse), video, gif, image, text };
+    })(),
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    let params = [];
+    const filteredParams = params.filter(
+      (item) =>
+        !["pharse", "video", "gif", "image", "text"].includes(item.param)
+    );
 
-    if (data.pharse) params.push(`pharse=${encodeURI(data.pharse)}`);
+    const paramsString = filteredParams.map(
+      (item) => `${item.param}=${item.value}`
+    );
 
-    if (data.video) params.push("video=1");
+    if (data.pharse) paramsString.push(`pharse=${encodeURI(data.pharse)}`);
 
-    if (data.gif) params.push("gif=1");
+    if (data.video) paramsString.push("video=1");
 
-    if (data.image) params.push("image=1");
+    if (data.gif) paramsString.push("gif=1");
 
-    if (data.text) params.push("text=1");
+    if (data.image) paramsString.push("image=1");
 
-    if (params.length > 0) router.push(`?${params.join("&")}`);
+    if (data.text) paramsString.push("text=1");
+
+    if (paramsString.length > 0) router.push(`?${paramsString.join("&")}`);
     else router.push(pathname);
   };
 
@@ -61,7 +78,7 @@ const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
           disabled={!isPremium}
           placeholder={isPremium ? "Wyszukaj..." : "Opcja dostępna dla Premium"}
         />
-        <div className="flex gap-4 items-center justify-center my-2 flex-wrap">
+        <div className="flex flex-wrap items-center justify-center gap-4 my-2">
           <LabelCheckbox
             register={register}
             watch={watch}
