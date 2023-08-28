@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { CSSProperties } from "react";
 
 type BreadcrumbProps = {

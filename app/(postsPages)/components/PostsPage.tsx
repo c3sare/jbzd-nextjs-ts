@@ -6,6 +6,7 @@ import { getCategories } from "@/app/actions/getCategories";
 import { getSession } from "@/app/actions/getSession";
 import PostComponent from "./Post/Post";
 import { PostType } from "./types/PostType";
+import PageSelect from "./Pagination";
 
 type PostsPageProps = {
   posts: PostType[];
@@ -31,7 +32,8 @@ const PostsPage: React.FC<PostsPageProps> = async ({
   return (
     <>
       <Breadcrumb currentNode={page === 1 ? currentNode : "Strona " + page}>
-        {page > 1 && <Link href={`/${pageSlug}`}>{currentNode}</Link>}
+        {pageSlug !== "" ? <Link href={`/`}>Strona główna</Link> : null}
+        {page > 1 ? <Link href={`/${pageSlug}`}>{currentNode}</Link> : null}
       </Breadcrumb>
       <PostsPageHeader
         categories={categories}
@@ -41,6 +43,13 @@ const PostsPage: React.FC<PostsPageProps> = async ({
       {posts.map((post) => (
         <PostComponent key={post.id} post={post} />
       ))}
+      {pagesCount > 1 && (
+        <PageSelect
+          pageName={pageSlug}
+          currentPage={page}
+          allPages={pagesCount}
+        />
+      )}
     </>
   );
 };

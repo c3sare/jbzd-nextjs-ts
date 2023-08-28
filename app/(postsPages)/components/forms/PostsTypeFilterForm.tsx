@@ -41,7 +41,7 @@ const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
       );
 
       return { pharse: decodeURI(pharse), video, gif, image, text };
-    })(),
+    })() as any,
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -64,7 +64,10 @@ const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
 
     if (data.text) paramsString.push("text=1");
 
-    if (paramsString.length > 0) router.push(`?${paramsString.join("&")}`);
+    const path = pathname.split("/")[1];
+
+    if (paramsString.length > 0)
+      router.push(`/${path}?${paramsString.join("&")}`);
     else router.push(pathname);
   };
 

@@ -1,10 +1,10 @@
 import PostsPage from "@/app/(postsPages)/components/PostsPage";
 import { PageProps } from "@/app/(postsPages)/components/types/PageProps";
-import { getHomePagePosts } from "@/app/actions/posts/getHomePagePosts";
+import { getWaitingPagePosts } from "@/app/actions/posts/getWaitingPagePosts";
 import { notFound } from "next/navigation";
 
 export default async function NextHomePage(props: PageProps) {
-  const posts = await getHomePagePosts(props);
+  const posts = await getWaitingPagePosts(props);
 
   if (!posts || posts.posts.length === 0) return notFound();
 
@@ -12,8 +12,8 @@ export default async function NextHomePage(props: PageProps) {
     <PostsPage
       page={posts.page}
       pagesCount={posts.pagesCount}
-      pageSlug=""
-      currentNode="Strona główna"
+      pageSlug="oczekujace"
+      currentNode="Oczekujące"
       posts={posts.posts}
     />
   );

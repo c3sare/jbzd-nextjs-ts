@@ -50,7 +50,9 @@ const PostsDateFilterForm: React.FC<PostsDateFilterFormProps> = ({
     paramsString.unshift(`to=${format(data.end!, "yyyy-MM-dd")}`);
     paramsString.unshift(`from=${format(data.start!, "yyyy-MM-dd")}`);
 
-    router.push("?" + paramsString.join("&"));
+    const path = pathname.split("/")[1];
+
+    router.push(`/${path}?` + paramsString.join("&"));
   };
 
   const handleReset = () => {

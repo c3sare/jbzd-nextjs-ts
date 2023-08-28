@@ -53,7 +53,7 @@ export async function getHomePagePosts({
       return null;
     }
 
-    return { posts: posts as PostType[], page: index, pagesCount };
+    return { posts: posts as PostType[], page: Number(index), pagesCount };
   } catch (error: any) {
     console.log(error);
     return null;
