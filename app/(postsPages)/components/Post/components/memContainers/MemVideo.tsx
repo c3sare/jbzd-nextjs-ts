@@ -1,3 +1,5 @@
+import "plyr-react/plyr.css";
+
 import Plyr from "plyr-react";
 import { useEffect, useMemo, useRef } from "react";
 
