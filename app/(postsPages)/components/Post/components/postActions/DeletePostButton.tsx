@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { MonitProvider } from "@/app/context/MonitContext";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type DeletePostButtonProps = {
   isLoggedIn: boolean;
@@ -16,6 +17,7 @@ const DeletePostButton: React.FC<DeletePostButtonProps> = ({
   postId,
   isOwnPost,
 }) => {
+  const router = useRouter();
   const monit = useContext(MonitProvider);
 
   if (!isLoggedIn || !isOwnPost) return null;
@@ -25,6 +27,7 @@ const DeletePostButton: React.FC<DeletePostButtonProps> = ({
       .delete(`/api/post/${postId}`)
       .then(() => {
         toast.success("Pomyślnie usunięto post!");
+        router.refresh();
       })
       .catch((err) => {
         console.log(err);

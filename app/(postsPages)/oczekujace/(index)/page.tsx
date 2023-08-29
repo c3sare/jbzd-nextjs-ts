@@ -3,6 +3,8 @@ import PostsPage from "../../components/PostsPage";
 import { PageProps } from "../../components/types/PageProps";
 import { getWaitingPagePosts } from "@/app/actions/posts/getWaitingPagePosts";
 
+export const revalidate = 0;
+
 export default async function Home(props: PageProps) {
   const posts = await getWaitingPagePosts({
     params: { index: 1 },

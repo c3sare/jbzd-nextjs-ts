@@ -3,6 +3,7 @@ import PostActionLinkButton from "./PostActionLinkButton";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type FavouriteButtonProps = {
   postId: string;
@@ -15,6 +16,7 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
   isLoggedIn,
   isFavourite,
 }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(isFavourite);
 
@@ -26,6 +28,7 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
       .post(`/api/post/favourite/${postId}`)
       .then((res) => {
         setIsActive(res.data.isFavourite);
+        router.refresh();
       })
       .catch((err) => {
         console.log(err);

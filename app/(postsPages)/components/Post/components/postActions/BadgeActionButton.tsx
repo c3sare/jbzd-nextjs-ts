@@ -8,6 +8,7 @@ import AddBadgeButton from "./AddBadgeButton";
 import useDropdownContainer from "@/app/hooks/useDropdownContainer";
 import axios from "axios";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type BadgeActionButtonProps = {
   isOwnPost: boolean;
@@ -24,6 +25,7 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
   postId,
   setBadgeCount,
 }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { isVisible, toggleVisible, containerRef } = useDropdownContainer();
 
@@ -43,6 +45,7 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
         } else {
           setBadgeCount(type, count);
           toast.success("Przyznano odznakę!");
+          router.refresh();
         }
       })
       .catch((err) => {

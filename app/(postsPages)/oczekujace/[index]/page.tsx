@@ -3,6 +3,8 @@ import { PageProps } from "@/app/(postsPages)/components/types/PageProps";
 import { getWaitingPagePosts } from "@/app/actions/posts/getWaitingPagePosts";
 import { notFound } from "next/navigation";
 
+export const revalidate = 0;
+
 export default async function NextHomePage(props: PageProps) {
   const posts = await getWaitingPagePosts(props);
 

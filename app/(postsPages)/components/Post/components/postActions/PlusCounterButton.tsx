@@ -1,5 +1,6 @@
 import axios from "axios";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -14,6 +15,7 @@ const PlusCounterButton: React.FC<PlusCounterButtonProps> = ({
   isPlused,
   postId,
 }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [plusCount, setPlusCount] = useState<number>(pluses);
   const [plused, setPlused] = useState<boolean>(isPlused);
@@ -25,6 +27,7 @@ const PlusCounterButton: React.FC<PlusCounterButtonProps> = ({
       .then((res) => {
         setPlused(res.data.isPlused);
         setPlusCount(res.data.count);
+        router.refresh();
       })
       .catch((err) => {
         console.log(err);
