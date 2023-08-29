@@ -5,7 +5,6 @@ import type { FormEvent, KeyboardEvent } from "react";
 import type { CreatePostType } from "@/app/formSchemas/CreatePostSchema";
 
 import clsx from "clsx";
-import axios from "axios";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -38,6 +37,7 @@ import objectToFormData from "@/utils/objectToFormData";
 import toast from "react-hot-toast";
 import LoadingForm from "./LoadingForm";
 import { useRouter } from "next/navigation";
+import { createPost } from "@/app/actions/createPost";
 
 type CategoryWithChildrenType = CategoryType & {
   children: CategoryType[];
@@ -59,7 +59,6 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
   onClose,
   categories,
 }) => {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const tagInput = useRef<HTMLInputElement>(null);
   const {
@@ -169,23 +168,16 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
     [currentCategory, categories]
   );
 
-  const onSubmit = (data: CreatePostType) => {
+  const onSubmit = async (data: CreatePostType) => {
     setIsLoading(true);
-    axios
-      .post("/api/post", objectToFormData(data), {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then(() => {
-        toast.success("Pomyślnie dodano dzidę!");
-        router.refresh();
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Wystąpił problem przy dodawaniu dzidy!");
-      })
-      .finally(onClose);
+    const formData = objectToFormData(data);
+    const res = await createPost(formData);
+    if (res.type === "success") {
+      toast.success(res.message);
+      onClose();
+    } else {
+      setIsLoading(false);
+    }
   };
 
   return (

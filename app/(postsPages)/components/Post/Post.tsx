@@ -18,8 +18,8 @@ import Categories from "./components/Categories";
 
 type PostProps = {
   post: PostType;
-  author?: PostType["author"];
   isPostPage?: boolean;
+  author?: PostType["author"];
   setSpears: (count: number) => void;
   setAuthorMethod: (method: "FOLLOW" | "BLOCK") => void;
 };

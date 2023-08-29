@@ -1,22 +1,22 @@
+"use server";
+
 import { getSession } from "@/app/actions/getSession";
 import CreatePostSchema from "@/app/formSchemas/CreatePostSchema";
 import prisma from "@/app/libs/prismadb";
 import formDataToObject from "@/utils/formDataToObject";
 import getLinkPreview from "monu-linkpreview";
-import { NextResponse } from "next/server";
 import { LinkInformation, Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 import uploadMemFile from "@/utils/uploadMemFile";
 import createSlugFromTitle from "@/utils/createSlugFromTitle";
+import { revalidatePath } from "next/cache";
 
-export async function POST(request: Request) {
+export async function createPost(formData: FormData) {
   const session = await getSession();
 
-  if (!session?.user?.email)
-    return new NextResponse("No authorization", { status: 403 });
+  if (!session?.user?.email) return { message: "Wystąpił błąd", type: "error" };
 
   try {
-    const formData = await request.formData();
     const data: any = formDataToObject(formData);
     data.title = String(data.title);
 
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     });
 
     if (!selectedCategory)
-      return new NextResponse("No category", { status: 400 });
+      return { message: "Nie wybrano kategorii!", type: "error" };
 
     const categoryId = selectedCategory.id;
 
@@ -111,11 +111,30 @@ export async function POST(request: Request) {
         tags,
         link,
       },
+      include: {
+        category: {
+          include: {
+            parent: true,
+          },
+        },
+      },
     });
 
-    return NextResponse.json(JSON.parse(JSON.stringify(post)));
+    if (post?.id) {
+      revalidatePath("/oczekujace");
+      revalidatePath(`/${post.category.slug}`);
+      if (post.category?.parent?.slug)
+        revalidatePath(`/${post.category.parent.slug}`);
+
+      return {
+        message: "Pomyślnie dodano dzidę!",
+        type: "success",
+      };
+    } else {
+      return { message: "Wystąpił błąd", type: "error" };
+    }
   } catch (err: any) {
     console.log(err);
-    throw new NextResponse("Internal Error", { status: 500 });
+    return { message: "Wystąpił błąd", type: "error" };
   }
 }
