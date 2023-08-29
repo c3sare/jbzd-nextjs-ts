@@ -85,17 +85,16 @@ const Post: React.FC<PostProps> = ({ post, isPostPage }) => {
           {post.memContainers.map((mem, index) => {
             switch (mem.type) {
               case "IMAGE":
-                if (mem.data.endsWith(".mp4"))
-                  return <MemVideo key={index} src={mem.data} gif />;
-                else
-                  return (
-                    <MemImage
-                      postLink={postLink}
-                      key={index}
-                      src={mem.data}
-                      title={post.title}
-                    />
-                  );
+                return (
+                  <MemImage
+                    postLink={postLink}
+                    key={index}
+                    src={mem.data}
+                    title={post.title}
+                  />
+                );
+              case "GIF":
+                return <MemVideo key={index} src={mem.data} gif />;
               case "TEXT":
                 return (
                   <MemText postLink={postLink} key={index} html={mem.data} />

@@ -32,8 +32,8 @@ function getAddTimeObject({
     };
   } else if (from && to) {
     return {
-      gt: new Date(from),
-      lt: new Date(to),
+      gte: new Date(from),
+      lte: new Date(to),
     };
   } else {
     return undefined;
@@ -72,9 +72,30 @@ export async function getWaitingPagePosts({
 
     const pagesCount = Math.ceil(postsCount / countOnPage);
 
+    const filteredTypes = [];
+
+    if (video === "1") filteredTypes.push("VIDEO");
+
+    if (gif === "1") filteredTypes.push("GIF");
+
+    if (image === "1") filteredTypes.push("IMAGE");
+
+    if (text === "1") filteredTypes.push("TEXT");
+
     let posts: any = await prisma.postStats.findMany({
       where: {
         ...findParams,
+        ...(filteredTypes.length > 0
+          ? {
+              memContainers: {
+                some: {
+                  type: {
+                    in: filteredTypes,
+                  },
+                },
+              },
+            }
+          : {}),
       },
       orderBy: {
         addTime: "desc",

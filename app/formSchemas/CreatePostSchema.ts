@@ -1,18 +1,23 @@
 import { z } from "zod";
 
-const MAX_FILE_SIZE = 500000;
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
+const MAX_FILE_SIZE = 5000000;
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/gif",
+];
 
 const imageType = z
   .any()
-  .refine((file) => file, "Pole nie może być puste!")
+  .refine((file: File) => file, "Pole nie może być puste!")
   .refine(
-    (file) => file?.size <= MAX_FILE_SIZE,
+    (file: File) => file?.size <= MAX_FILE_SIZE,
     `Maksymalny rozmiar pliku to 5MB.`
   )
   .refine(
     (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-    "Obsługiwane rozszerzenia to .jpg, .jpeg, .png"
+    "Obsługiwane rozszerzenia to .jpg, .jpeg, .png .gif"
   );
 
 const memTypes = ["IMAGE", "VIDEO", "TEXT", "YOUTUBE"] as const;

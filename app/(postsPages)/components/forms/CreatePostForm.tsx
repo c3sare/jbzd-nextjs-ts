@@ -37,6 +37,7 @@ import Tag from "./Tag";
 import objectToFormData from "@/utils/objectToFormData";
 import toast from "react-hot-toast";
 import LoadingForm from "./LoadingForm";
+import { useRouter } from "next/navigation";
 
 type CategoryWithChildrenType = CategoryType & {
   children: CategoryType[];
@@ -58,6 +59,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
   onClose,
   categories,
 }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const tagInput = useRef<HTMLInputElement>(null);
   const {
@@ -177,6 +179,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
       })
       .then(() => {
         toast.success("Pomyślnie dodano dzidę!");
+        router.refresh();
       })
       .catch((err) => {
         console.log(err);

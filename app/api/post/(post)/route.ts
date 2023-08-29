@@ -70,6 +70,10 @@ export async function POST(request: Request) {
       form.memContainers.map(async (item) => {
         if (uploadTypes.includes(item.type)) {
           item.data = await uploadMemFile(item.data);
+
+          if (item.type === "IMAGE" && (item.data as string).endsWith(".mp4")) {
+            item.type = "GIF" as any;
+          }
         }
 
         return {
