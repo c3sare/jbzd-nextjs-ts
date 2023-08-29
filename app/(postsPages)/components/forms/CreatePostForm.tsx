@@ -99,6 +99,10 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
     control,
   });
 
+  const onChangeTagInput = (e: FormEvent<HTMLInputElement>) => {
+    e.currentTarget.value = e.currentTarget.value.replaceAll(",", "");
+  };
+
   const onPressKeyTagInput = (e: KeyboardEvent<HTMLInputElement>) => {
     if (["Tab", ",", "Enter"].includes(e.key)) {
       e.preventDefault();
@@ -328,6 +332,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
             ref={tagInput}
             placeholder="Wpisz tagi ..."
             onKeyDown={onPressKeyTagInput}
+            onChange={onChangeTagInput}
           />
         </div>
         {tags.length > 0 && (
