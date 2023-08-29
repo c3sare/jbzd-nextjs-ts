@@ -25,4 +25,6 @@ const ScrollThumb = forwardRef<HTMLDivElement, ScrollThumbProps>(
   }
 );
 
+ScrollThumb.displayName = "ScrollThumb";
+
 export default ScrollThumb;

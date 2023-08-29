@@ -8,7 +8,6 @@ import { GiDiceSixFacesTwo } from "react-icons/gi";
 import ScrollBarPageButton from "./pagination/ScrollBarPageButton";
 import useAllSearchParams from "@/app/hooks/useAllSearchParams";
 import ScrollBar from "./pagination/ScrollBar";
-import { usePathname } from "next/navigation";
 
 const Pagination = ({
   pageName = "str",
