@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --plyr-color-main: #de2127;
+}
+
 * {
   box-sizing: border-box;
 }

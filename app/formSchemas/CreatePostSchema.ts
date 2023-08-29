@@ -8,18 +8,6 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/gif",
 ];
 
-const imageType = z
-  .any()
-  .refine((file: File) => file, "Pole nie może być puste!")
-  .refine(
-    (file: File) => file?.size <= MAX_FILE_SIZE,
-    `Maksymalny rozmiar pliku to 5MB.`
-  )
-  .refine(
-    (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-    "Obsługiwane rozszerzenia to .jpg, .jpeg, .png .gif"
-  );
-
 const memTypes = ["IMAGE", "VIDEO", "TEXT", "YOUTUBE"] as const;
 
 const CreatePostSchema = z
@@ -37,13 +25,36 @@ const CreatePostSchema = z
       .nonempty("Pole dział jest wymagane."),
     memContainers: z
       .array(
-        z.object({
-          type: z.enum(memTypes),
-          data: z
-            .string({ required_error: "Pole nie może być puste" })
-            .nonempty("Pole nie może być puste!")
-            .or(imageType),
-        })
+        z
+          .object({
+            type: z.enum(memTypes),
+            data: z.any(),
+          })
+          .refine((val) => {
+            if (["TEXT", "YOUTUBE"].includes(val.type)) {
+              const value = val.data as string;
+              if (value && value.length > 0) {
+                return true;
+              } else return false;
+            } else if (["VIDEO", "IMAGE"].includes(val.type)) {
+              const file = val.data as File | null;
+              if (!file) {
+                return "Pole nie może być puste!";
+              }
+              if (file?.size > MAX_FILE_SIZE) {
+                return "Maksymalny rozmiar pliku to 5MB.";
+              }
+              if (val.type === "IMAGE") {
+                if (!ACCEPTED_IMAGE_TYPES.includes(file.type))
+                  return "Obsługiwane rozszerzenia to .jpg, .jpeg, .png .gif";
+              } else if (val.type === "VIDEO") {
+                if (!["video/mp4"].includes(file.type)) {
+                  return "Obsługiwane rozszerzenie to .mp4";
+                }
+              }
+            }
+            return true;
+          })
       )
       .min(1, "Pole typ jest wymagane."),
     linking: z.object({

@@ -60,7 +60,7 @@ const MemVideo: React.FC<MemVideoProps> = ({ src, gif }) => {
   }, [src]);
 
   return (
-    <div ref={ref} style={{ maxWidth: "100%", width: "600px" }}>
+    <div ref={ref} className="w-[600px] max-w-full">
       {plyr}
     </div>
   );

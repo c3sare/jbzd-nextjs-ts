@@ -7,12 +7,14 @@ import { useState } from "react";
 import clsx from "clsx";
 import AuthorInfoButton from "./authorInfo/AuthorInfoButton";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type PostAuthorInfoProps = {
   author: Required<PostType>["author"];
 };
 
 const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({ author }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [spearCount, setSpearCount] = useState<number>(author.spears);
   const [userAction, setUserAction] = useState<"FOLLOW" | "BLOCK" | "">(
@@ -31,6 +33,7 @@ const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({ author }) => {
       })
       .then((res) => {
         setUserAction(res.data.method);
+        router.refresh();
       })
       .catch((err) => console.log(err))
       .finally(() => setIsLoading(false));
@@ -44,6 +47,7 @@ const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({ author }) => {
       .post("/api/user/vote/" + author.id)
       .then((data) => {
         setSpearCount(data.data.count);
+        router.refresh();
       })
       .catch((err) => console.error(err))
       .finally(() => setIsLoading(false));

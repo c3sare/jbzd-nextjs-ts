@@ -3,6 +3,7 @@ import { PostType } from "../../../types/PostType";
 import clsx from "clsx";
 import { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type TagProps = {
   tag: PostType["tags"][0];
@@ -11,6 +12,7 @@ type TagProps = {
 type TagActionType = "FOLLOW" | "BLOCK" | "";
 
 const Tag: React.FC<TagProps> = ({ tag }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tagAction, setTagAction] = useState<TagActionType>(tag.action || "");
 
@@ -23,6 +25,7 @@ const Tag: React.FC<TagProps> = ({ tag }) => {
       })
       .then((res) => {
         setTagAction(res.data.method);
+        router.refresh();
       })
       .catch((err) => console.log(err))
       .finally(() => setIsLoading(false));

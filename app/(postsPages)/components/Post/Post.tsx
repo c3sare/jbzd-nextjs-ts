@@ -39,7 +39,7 @@ const Post: React.FC<PostProps> = ({ post, isPostPage }) => {
   };
 
   return (
-    <article className="flex items-start flex-col md:flex-row relative mx-auto md:mx-0 mb-[40px] max-w-[655px]">
+    <article className="flex items-start flex-col md:flex-row relative mx-auto md:mx-0 mb-[40px] w-full max-w-[655px]">
       <Link
         className="max-w-[40px] hidden md:block"
         href={post.author ? `/uzytkownik/${post.author.username}` : "#"}
@@ -51,7 +51,7 @@ const Post: React.FC<PostProps> = ({ post, isPostPage }) => {
           height={40}
         />
       </Link>
-      <div className="flex-1 mx-auto md:ml-[5px] relative max-w-[600px]">
+      <div className="flex-1 mx-auto md:ml-[5px] relative w-full max-w-[600px]">
         <h3 className="bg-[#1f1f1f] p-[4px_8px] m-[0_0_4px] break-words relative flex items-center justify-between">
           <Link
             className="text-white text-[17px] overflow-hidden block mb-[5px] font-bold"
@@ -65,7 +65,7 @@ const Post: React.FC<PostProps> = ({ post, isPostPage }) => {
             <Badge name="gold" title="Złota dzida" count={badge.gold} />
           </div>
         </h3>
-        <div className="p-[4px_8px] bg-[#1f1f1f] text-[12px] text-[#777] flex justify-between items-center">
+        <div className="p-[4px_8px] bg-[#1f1f1f] text-[12px] text-[#777] flex justify-between items-center w-full">
           <div className="flex gap-[5px] text-white max-w-full ml-1 text-[12px]">
             <Categories category={post.category} />
             {post.author && <PostAuthorInfo author={post.author} />}
@@ -81,7 +81,7 @@ const Post: React.FC<PostProps> = ({ post, isPostPage }) => {
           </div>
         </div>
         {isPostPage && <TagList tags={post.tags} />}
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 w-full">
           {post.memContainers.map((mem, index) => {
             switch (mem.type) {
               case "IMAGE":

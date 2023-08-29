@@ -87,7 +87,11 @@ function MemVideo<T extends FieldValues>({
         </div>
       ) : (
         <>
-          <video src={data ? URL.createObjectURL(data) : undefined} controls />
+          <video
+            src={data ? URL.createObjectURL(data) : undefined}
+            controls
+            className="w-full"
+          />
           <button
             type="button"
             className="absolute bottom-[15px] right-[15px] bg-[#505050] text-white text-[13px] rounded-[3px] leading-[34px] px-[15px] cursor-pointer z-[3] shadow-md"
