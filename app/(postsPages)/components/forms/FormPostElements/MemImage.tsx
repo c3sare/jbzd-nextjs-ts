@@ -16,7 +16,7 @@ type MemImageProps<T extends FieldValues> = {
   control: Control<T>;
 };
 
-const allowedFileTypes = ["image/png", "image/jpeg", "image/gif"];
+const allowedFileTypes = ["image/png", "image/jpg", "image/jpeg", "image/gif"];
 
 function MemImage<T extends FieldValues>({
   setData,

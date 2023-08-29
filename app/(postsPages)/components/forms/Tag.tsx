@@ -21,7 +21,7 @@ function Tag<T extends FieldValues>({
       id={fieldName}
     >
       <span className="border-r border-[#2f2f2f] pr-2">#{name}</span>
-      <button className="text-[10px] mx-1" onClick={onDelete}>
+      <button className="text-[10px] mx-1" onClick={onDelete} type="button">
         <ImCross />
       </button>
     </li>

@@ -114,6 +114,7 @@ const MemContainer: React.FC<MemContainerProps> = ({
         <button
           className="flex items-center justify-center"
           onClick={handleRemoveMem}
+          type="button"
         >
           <BiTrash className="mr-1" /> usuń element
         </button>

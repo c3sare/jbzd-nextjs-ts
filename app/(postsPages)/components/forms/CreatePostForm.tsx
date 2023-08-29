@@ -99,12 +99,8 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
     control,
   });
 
-  const onChangeTagInput = (e: FormEvent<HTMLInputElement>) => {
-    e.currentTarget.value = e.currentTarget.value.replaceAll(",", "");
-  };
-
   const onPressKeyTagInput = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (["Tab", ","].includes(e.key)) {
+    if (["Tab", ",", "Enter"].includes(e.key)) {
       e.preventDefault();
       if (
         !tags.filter((tag: any) => tag.value === e.currentTarget.value)
@@ -331,7 +327,6 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
           <InputStyled
             ref={tagInput}
             placeholder="Wpisz tagi ..."
-            onChange={onChangeTagInput}
             onKeyDown={onPressKeyTagInput}
           />
         </div>
@@ -384,6 +379,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
           className="w-[160px]"
           bgColorClassName="bg-[#616161]"
           onClick={onClose}
+          type="button"
         >
           Anuluj
         </Button>
