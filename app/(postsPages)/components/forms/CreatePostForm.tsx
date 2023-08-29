@@ -185,8 +185,8 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
         <Header>Wpisz tytuł</Header>
         <InputStyled
           placeholder="Wpisz tytuł"
-          {...register("title")}
           id="title"
+          {...register("title")}
         />
         {errors.title && (
           <ErrorMessageBox>{errors.title.message}</ErrorMessageBox>
