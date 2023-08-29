@@ -18,10 +18,19 @@ import Categories from "./components/Categories";
 
 type PostProps = {
   post: PostType;
+  author?: PostType["author"];
   isPostPage?: boolean;
+  setSpears: (count: number) => void;
+  setAuthorMethod: (method: "FOLLOW" | "BLOCK") => void;
 };
 
-const Post: React.FC<PostProps> = ({ post, isPostPage }) => {
+const Post: React.FC<PostProps> = ({
+  post,
+  isPostPage,
+  setSpears,
+  setAuthorMethod,
+  author,
+}) => {
   const [badge, setBadge] = useState({
     rock: post.rock,
     silver: post.silver,
@@ -68,7 +77,13 @@ const Post: React.FC<PostProps> = ({ post, isPostPage }) => {
         <div className="p-[4px_8px] bg-[#1f1f1f] text-[12px] text-[#777] flex justify-between items-center w-full">
           <div className="flex gap-[5px] text-white max-w-full ml-1 text-[12px]">
             <Categories category={post.category} />
-            {post.author && <PostAuthorInfo author={post.author} />}
+            {author && (
+              <PostAuthorInfo
+                author={author}
+                setSpears={setSpears}
+                setAuthorMethod={setAuthorMethod}
+              />
+            )}
             <span className="text-[#777] pl-[2px]">
               <ArticleTime addTime={post.addTime} />
             </span>

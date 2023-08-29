@@ -1,9 +1,9 @@
-import Post from "@/app/(postsPages)/components/Post/Post";
 import { getPostWithStats } from "@/app/actions/posts/getPostWithStats";
 import { notFound } from "next/navigation";
 import SinglePostFooter from "./components/SinglePostFooter";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import Link from "next/link";
+import SinglePost from "./components/SinglePost";
 
 type MemPageProps = {
   params: {
@@ -32,7 +32,7 @@ const MemPage: React.FC<MemPageProps> = async ({
           </Link>
         )}
       </Breadcrumb>
-      <Post isPostPage post={post} />
+      <SinglePost post={post} />
       <SinglePostFooter />
     </>
   );

@@ -7,6 +7,7 @@ import { getSession } from "@/app/actions/getSession";
 import PostComponent from "./Post/Post";
 import { PostType } from "./types/PostType";
 import PageSelect from "./Pagination";
+import Posts from "./Posts";
 
 type PostsPageProps = {
   posts: PostType[];
@@ -40,9 +41,7 @@ const PostsPage: React.FC<PostsPageProps> = async ({
         isPremium={premium.isPremium || false}
         isLoggedIn={isLoggedIn}
       />
-      {posts.map((post) => (
-        <PostComponent key={post.id} post={post} />
-      ))}
+      <Posts posts={posts} />
       {pagesCount > 1 && (
         <PageSelect
           pageName={pageSlug}

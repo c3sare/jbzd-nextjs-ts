@@ -11,15 +11,17 @@ import { useRouter } from "next/navigation";
 
 type PostAuthorInfoProps = {
   author: Required<PostType>["author"];
+  setSpears: (count: number) => void;
+  setAuthorMethod: (method: "FOLLOW" | "BLOCK") => void;
 };
 
-const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({ author }) => {
+const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({
+  author,
+  setSpears,
+  setAuthorMethod,
+}) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [spearCount, setSpearCount] = useState<number>(author.spears);
-  const [userAction, setUserAction] = useState<"FOLLOW" | "BLOCK" | "">(
-    author.action || ""
-  );
   const session = useSession();
 
   const username = session.data?.user?.username;
@@ -32,7 +34,7 @@ const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({ author }) => {
         id: author.id,
       })
       .then((res) => {
-        setUserAction(res.data.method);
+        setAuthorMethod(res.data.method);
         router.refresh();
       })
       .catch((err) => console.log(err))
@@ -46,7 +48,7 @@ const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({ author }) => {
     axios
       .post("/api/user/vote/" + author.id)
       .then((data) => {
-        setSpearCount(data.data.count);
+        setSpears(data.data.count);
         router.refresh();
       })
       .catch((err) => console.error(err))
@@ -89,7 +91,7 @@ const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({ author }) => {
                         alt="Dzida"
                       />
                     </span>
-                    <span>{spearCount}</span>
+                    <span>{author.spears}</span>
                     {!isOwnPost && (
                       <button
                         disabled={isLoading}
@@ -110,7 +112,7 @@ const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({ author }) => {
                 <div className="w-full flex flex-nowrap justify-between text-[12px]">
                   <AuthorInfoButton
                     disabled={author.username === username || isLoading}
-                    active={userAction === "FOLLOW"}
+                    active={author.action === "FOLLOW"}
                     activeClassName="bg-red-600"
                     onClick={() => handleUserAction("FOLLOW")}
                   >
@@ -118,7 +120,7 @@ const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({ author }) => {
                   </AuthorInfoButton>
                   <AuthorInfoButton
                     disabled={author.username === username || isLoading}
-                    active={userAction === "BLOCK"}
+                    active={author.action === "BLOCK"}
                     activeClassName="bg-black"
                     onClick={() => handleUserAction("BLOCK")}
                   >
