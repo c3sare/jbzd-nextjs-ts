@@ -6,4 +6,5 @@ export type PageSearchParams = {
   gif?: string;
   image?: string;
   text?: string;
+  pharse?: string;
 };

@@ -117,14 +117,22 @@ export async function createPost(formData: FormData) {
             parent: true,
           },
         },
+        tags: true,
       },
     });
 
+    /////////// REVALIDATE PATHS ////////////////////////
     if (post?.id) {
       revalidatePath("/oczekujace");
       revalidatePath(`/${post.category.slug}`);
       if (post.category?.parent?.slug)
         revalidatePath(`/${post.category.parent.slug}`);
+
+      if (post.tags.length > 0)
+        post.tags.forEach((tag) => {
+          revalidatePath(`/tag/${tag.id}/${tag.slug}`);
+        });
+      /////////////////////////////////////////////////////
 
       return {
         message: "Pomyślnie dodano dzidę!",

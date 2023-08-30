@@ -53,7 +53,7 @@ export async function getWaitingPagePosts({
 
     const datePreset = searchParams["date-preset"];
 
-    const { to, from, video, gif, image, text } = searchParams;
+    const { to, from, video, gif, image, text, pharse } = searchParams;
 
     const addTime = getAddTimeObject({ datePreset, from, to });
 
@@ -72,7 +72,8 @@ export async function getWaitingPagePosts({
 
     const pagesCount = Math.ceil(postsCount / countOnPage);
 
-    const filteredTypes = [];
+    const allTypes = ["VIDEO", "GIF", "IMAGE", "TEXT"];
+    const filteredTypes: string[] = [];
 
     if (video === "1") filteredTypes.push("VIDEO");
 
@@ -90,7 +91,9 @@ export async function getWaitingPagePosts({
               memContainers: {
                 some: {
                   type: {
-                    in: filteredTypes,
+                    in: allTypes.filter(
+                      (item) => !filteredTypes.includes(item)
+                    ),
                   },
                 },
               },
