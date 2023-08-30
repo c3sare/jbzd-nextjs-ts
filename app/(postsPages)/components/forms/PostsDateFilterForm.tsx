@@ -28,7 +28,7 @@ const PostsDateFilterForm: React.FC<PostsDateFilterFormProps> = ({
   const { register, watch, setValue, handleSubmit } =
     useForm<PostsDateFilterFormData>({
       defaultValues: (() => {
-        const from = params.find((item) => item.param === "to")?.value;
+        const from = params.find((item) => item.param === "from")?.value;
         const to = params.find((item) => item.param === "to")?.value;
 
         return {

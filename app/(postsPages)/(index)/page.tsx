@@ -9,7 +9,7 @@ export default async function Home(props: PageProps) {
     searchParams: props.searchParams,
   });
 
-  if (!posts || posts.posts.length === 0) return notFound();
+  if (!posts) return notFound();
 
   return (
     <PostsPage

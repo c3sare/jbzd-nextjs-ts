@@ -4,41 +4,7 @@ import addActionPostInfo from "@/utils/addActionPostInfo";
 import getActionedUsersLists from "../getActionedUsersLists";
 import getActionedTagsLists from "../getActionedTagsLists";
 import { PageProps } from "@/app/(postsPages)/components/types/PageProps";
-
-function getPresetDate(arg: string) {
-  const date = new Date();
-  const type = arg.slice(arg.length - 1).toLowerCase();
-  const val = Number(arg.slice(0, arg.length - 1));
-
-  if (type === "h") date.setHours(date.getHours() - val);
-
-  if (type === "d") date.setDate(date.getDate() - val);
-
-  return date;
-}
-
-function getAddTimeObject({
-  datePreset,
-  from,
-  to,
-}: {
-  datePreset?: string;
-  from?: string;
-  to?: string;
-}) {
-  if (datePreset) {
-    return {
-      gt: getPresetDate(datePreset),
-    };
-  } else if (from && to) {
-    return {
-      gte: new Date(from),
-      lte: new Date(to),
-    };
-  } else {
-    return undefined;
-  }
-}
+import parseSearchParams from "@/utils/parseSearchParams";
 
 export async function getWaitingPagePosts({
   params: { index },
@@ -49,19 +15,16 @@ export async function getWaitingPagePosts({
 
     const { blockedTagsIds, followedTagsIds } = await getActionedTagsLists();
 
-    let countOnPage = 8;
+    const { addTime, memContainers, title, countOnPage } =
+      await parseSearchParams(searchParams);
 
-    const datePreset = searchParams["date-preset"];
-
-    const { to, from, video, gif, image, text, pharse } = searchParams;
-
-    const addTime = getAddTimeObject({ datePreset, from, to });
-
-    const findParams = {
+    let findParams: any = {
       accepted: {
         isSet: false,
       },
       addTime,
+      memContainers,
+      title,
       NOT: {
         tagIds: { hasSome: blockedTagsIds },
         authorId: { in: blockedUsersIds },
@@ -72,33 +35,9 @@ export async function getWaitingPagePosts({
 
     const pagesCount = Math.ceil(postsCount / countOnPage);
 
-    const allTypes = ["VIDEO", "GIF", "IMAGE", "TEXT"];
-    const filteredTypes: string[] = [];
-
-    if (video === "1") filteredTypes.push("VIDEO");
-
-    if (gif === "1") filteredTypes.push("GIF");
-
-    if (image === "1") filteredTypes.push("IMAGE");
-
-    if (text === "1") filteredTypes.push("TEXT");
-
     let posts: any = await prisma.postStats.findMany({
       where: {
         ...findParams,
-        ...(filteredTypes.length > 0
-          ? {
-              memContainers: {
-                some: {
-                  type: {
-                    in: allTypes.filter(
-                      (item) => !filteredTypes.includes(item)
-                    ),
-                  },
-                },
-              },
-            }
-          : {}),
       },
       orderBy: {
         addTime: "desc",
