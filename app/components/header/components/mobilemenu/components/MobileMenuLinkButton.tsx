@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Link from "next/link";
-import { IconType } from "react-icons/lib";
+import { IconType } from "@react-icons/all-files";
 
 type MobileMenuLinkButtonProps = {
   icon: IconType;

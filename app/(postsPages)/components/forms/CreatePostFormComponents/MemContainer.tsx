@@ -2,7 +2,7 @@ import type { Identifier, XYCoord } from "dnd-core";
 import { useDrag, useDrop } from "react-dnd";
 import { useRef } from "react";
 import MoveButton from "../components/MoveButton";
-import { BiTrash } from "react-icons/bi";
+import { BiTrash } from "@react-icons/all-files/bi/BiTrash";
 import { UseFieldArrayMove } from "react-hook-form";
 
 type MemContainerProps = {

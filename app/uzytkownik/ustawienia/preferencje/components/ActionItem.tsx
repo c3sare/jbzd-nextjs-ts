@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Dispatch, SetStateAction, useState } from "react";
-import { ImCross } from "react-icons/im";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { ImCross } from "@react-icons/all-files/im/ImCross";
+import { AiOutlineLoading3Quarters } from "@react-icons/all-files/ai/AiOutlineLoading3Quarters";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 

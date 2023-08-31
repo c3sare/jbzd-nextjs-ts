@@ -1,4 +1,4 @@
-import { FaStar } from "react-icons/fa";
+import { FaStar } from "@react-icons/all-files/fa/FaStar";
 import PostActionLinkButton from "./PostActionLinkButton";
 import { useState } from "react";
 import axios from "axios";

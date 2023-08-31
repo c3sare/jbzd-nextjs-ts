@@ -6,7 +6,8 @@ import {
   UseFormRegister,
   UseFormWatch,
 } from "react-hook-form";
-import { IoMdCheckboxOutline, IoMdSquareOutline } from "react-icons/io";
+import { IoMdCheckboxOutline } from "@react-icons/all-files/io/IoMdCheckboxOutline";
+import { IoMdSquareOutline } from "@react-icons/all-files/io/IoMdSquareOutline";
 
 type LabelCheckboxProps<T extends FieldValues> = {
   id: Path<T>;

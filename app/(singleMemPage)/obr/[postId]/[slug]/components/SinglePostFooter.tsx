@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GiDiceSixFacesTwo } from "react-icons/gi";
+import { GiDiceSixFacesTwo } from "@react-icons/all-files/gi/GiDiceSixFacesTwo";
 
 const SinglePostFooter = () => {
   return (

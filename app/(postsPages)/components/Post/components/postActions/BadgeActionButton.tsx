@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import toast from "react-hot-toast";
 
-import { IoMdArrowDropup } from "react-icons/io";
+import { IoMdArrowDropup } from "@react-icons/all-files/io/IoMdArrowDropup";
 
 import AddBadgeButton from "./AddBadgeButton";
 import useDropdownContainer from "@/app/hooks/useDropdownContainer";

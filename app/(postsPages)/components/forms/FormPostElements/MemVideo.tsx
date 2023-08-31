@@ -7,7 +7,7 @@ import { useCallback, useRef } from "react";
 import toast from "react-hot-toast";
 import { useWatch } from "react-hook-form";
 
-import { GoUpload } from "react-icons/go";
+import { GoCloudUpload } from "@react-icons/all-files/go/GoCloudUpload";
 
 type MemVideoProps<T extends FieldValues> = {
   setData: (val: File | null) => void;
@@ -75,7 +75,7 @@ function MemVideo<T extends FieldValues>({
                 onDrop(e.currentTarget.files[0]);
             }}
           />
-          <GoUpload fontSize={24} />
+          <GoCloudUpload fontSize={24} />
           <span>Przeciągnij tu plik</span>
           <span className="text-[#777]">lub</span>
           <button

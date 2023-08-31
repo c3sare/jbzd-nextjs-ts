@@ -1,5 +1,6 @@
-import { FaComment } from "react-icons/fa";
-import { AiFillPicture, AiFillFlag } from "react-icons/ai";
+import { FaComment } from "@react-icons/all-files/fa/FaComment";
+import { AiFillPicture } from "@react-icons/all-files/ai/AiFillPicture";
+import { AiFillFlag } from "@react-icons/all-files/ai/AiFillFlag";
 
 import Image from "next/image";
 import Link from "next/link";

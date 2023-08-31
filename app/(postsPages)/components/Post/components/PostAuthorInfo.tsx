@@ -1,4 +1,4 @@
-import { TfiCup } from "react-icons/tfi";
+import { AiFillTrophy } from "@react-icons/all-files/ai/AiFillTrophy";
 import type { PostType } from "../../types/PostType";
 
 import Image from "next/image";
@@ -104,7 +104,7 @@ const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({
                   </div>
                   <div className="flex-grow bg-[#252525] leading-[38px] text-[20px] font-bold text-white items-center p-[0_8px] rounded-[4px] relative flex justify-between">
                     <span className="text-[22px]">
-                      <TfiCup />
+                      <AiFillTrophy />
                     </span>
                     <span>{author.rank}</span>
                   </div>

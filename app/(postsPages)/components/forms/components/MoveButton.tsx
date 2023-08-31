@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { BiMove } from "react-icons/bi";
+import { BiMove } from "@react-icons/all-files/bi/BiMove";
 
 const MoveButton = forwardRef<HTMLDivElement, {}>((_props, ref) => {
   return (

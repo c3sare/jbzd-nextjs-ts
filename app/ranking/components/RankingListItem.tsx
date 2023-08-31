@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TfiCup } from "react-icons/tfi";
+import { AiFillTrophy } from "@react-icons/all-files/ai/AiFillTrophy";
 import Image from "next/image";
 
 type RankingListItemProps = {
@@ -21,7 +21,7 @@ const RankingListItem: React.FC<RankingListItemProps> = ({
       className="p-[7px_15px] w-full flex items-center border-b border-b-[#1f1f1f] last-of-type:border-b-transparent"
     >
       <div className="mr-[10px] w-[75px] text-[14px] flex items-center">
-        <TfiCup className="mr-2" />
+        <AiFillTrophy className="mr-2" />
         <span>{rank}.</span>
       </div>
       <div className="mr-[10px]">

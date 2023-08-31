@@ -4,7 +4,6 @@ import PostsPageHeader from "./PostsPageHeader";
 import { getPremium } from "@/app/actions/getPremium";
 import { getCategories } from "@/app/actions/getCategories";
 import { getSession } from "@/app/actions/getSession";
-import PostComponent from "./Post/Post";
 import { PostType } from "./types/PostType";
 import PageSelect from "./Pagination";
 import Posts from "./Posts";

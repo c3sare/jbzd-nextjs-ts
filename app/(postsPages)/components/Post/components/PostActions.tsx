@@ -1,5 +1,5 @@
 import BadgeActionButton from "./postActions/BadgeActionButton";
-import { FaComment } from "react-icons/fa";
+import { FaComment } from "@react-icons/all-files/fa/FaComment";
 import PlusCounterButton from "./postActions/PlusCounterButton";
 import PostActionLinkButton from "./postActions/PostActionLinkButton";
 import { useSession } from "next-auth/react";

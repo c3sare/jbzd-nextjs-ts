@@ -8,12 +8,6 @@ type PostsProps = {
   posts: PostType[];
 };
 
-const deleteTagDuplicates = (arr: PostType["tags"]) => {
-  return arr.filter(
-    (item, index) => index === arr.findIndex((sitem) => sitem.id === item.id)
-  );
-};
-
 const deleteAuthorDuplicates = (arr: PostType["author"][]) => {
   const newArr = arr.filter((item) => item);
 

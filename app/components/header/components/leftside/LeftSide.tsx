@@ -1,4 +1,4 @@
-import { getSession } from "next-auth/react";
+import { getSession } from "@/app/actions/getSession";
 import MenuButton from "../MenuButton";
 import MenuButtonDropdown from "../MenuButtonDropdown";
 import Categories from "./components/dropdownlists/Categories";
@@ -6,10 +6,10 @@ import Followed from "./components/dropdownlists/Followed";
 
 const LeftSide = async () => {
   const session = await getSession();
-  const isLoggedIn = Boolean(session?.user?.email);
+  const isLoggedIn = Boolean(session?.user);
 
   return (
-    <div className="flex items-center relative ml-auto h-full">
+    <div className="relative flex items-center h-full ml-auto">
       <MenuButton className="lg:flex" href="/oczekujace">
         Oczekujące
       </MenuButton>

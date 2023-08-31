@@ -11,9 +11,10 @@ import { useFieldArray, useForm } from "react-hook-form";
 import React, { useMemo, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { BiImage } from "react-icons/bi";
-import { FaVideo } from "react-icons/fa";
-import { AiFillFileText, AiFillYoutube } from "react-icons/ai";
+import { BiImage } from "@react-icons/all-files/bi/BiImage";
+import { FaVideo } from "@react-icons/all-files/fa/FaVideo";
+import { AiFillFileText } from "@react-icons/all-files/ai/AiFillFileText";
+import { AiFillYoutube } from "@react-icons/all-files/ai/AiFillYoutube";
 
 import BigIconButton from "@/app/components/BigIconButton";
 import InputStyled from "@/app/components/InputStyled";

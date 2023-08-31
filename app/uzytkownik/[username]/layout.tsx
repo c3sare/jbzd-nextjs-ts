@@ -1,7 +1,8 @@
 import { getUser } from "@/app/actions/getUser";
 import Avatar from "./components/Avatar";
-import { AiFillFlag, AiFillPicture } from "react-icons/ai";
-import { FaComment } from "react-icons/fa";
+import { AiFillFlag } from "@react-icons/all-files/ai/AiFillFlag";
+import { AiFillPicture } from "@react-icons/all-files/ai/AiFillPicture";
+import { FaComment } from "@react-icons/all-files/fa/FaComment";
 import { format } from "date-fns";
 import Badge from "./components/Badge";
 import { notFound } from "next/navigation";
@@ -37,7 +38,7 @@ const UserProfileLayout: React.FC<UserProfileLayoutProps> = async ({
 
   if (isPremiumUser && user.premium.hideProfile && !isOwnProfile)
     return (
-      <h1 className="text-2xl text-white font-bold">Profil jest ukryty!</h1>
+      <h1 className="text-2xl font-bold text-white">Profil jest ukryty!</h1>
     );
 
   const isBlocked = Boolean(
@@ -77,7 +78,7 @@ const UserProfileLayout: React.FC<UserProfileLayoutProps> = async ({
             </div>
           </section>
           <div className="mb-[10px]">
-            <div className="flex gap-2 items-center justify-center sm:justify-normal">
+            <div className="flex items-center justify-center gap-2 sm:justify-normal">
               <Badge
                 image="/images/likes/rock.png"
                 name="Kamienna dzida"

@@ -1,4 +1,4 @@
-import { FaFlag } from "react-icons/fa";
+import { FaFlag } from "@react-icons/all-files/fa/FaFlag";
 import PostActionLinkButton from "./PostActionLinkButton";
 import axios from "axios";
 import toast from "react-hot-toast";

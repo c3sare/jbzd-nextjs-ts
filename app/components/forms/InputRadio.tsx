@@ -6,10 +6,8 @@ import {
   UseFormSetValue,
 } from "react-hook-form";
 
-import {
-  RiCheckboxBlankCircleLine,
-  RiCheckboxCircleFill,
-} from "react-icons/ri";
+import { RiCheckboxBlankCircleLine } from "@react-icons/all-files/ri/RiCheckboxBlankCircleLine";
+import { RiCheckboxCircleFill } from "@react-icons/all-files/ri/RiCheckboxCircleFill";
 
 type InputRadioProps<T extends FieldValues> = {
   id: Path<T>;

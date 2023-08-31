@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import ArticleTime from "./components/ArticleTime";
-import { FaComment } from "react-icons/fa";
+import { FaComment } from "@react-icons/all-files/fa/FaComment";
 import MemImage from "./components/memContainers/MemImage";
 import MemText from "./components/memContainers/MemText";
 import MemYoutube from "./components/memContainers/MemYoutube";
@@ -75,7 +75,7 @@ const Post: React.FC<PostProps> = ({
           </div>
         </h3>
         <div className="p-[4px_8px] bg-[#1f1f1f] text-[12px] text-[#777] flex justify-between items-center w-full">
-          <div className="flex gap-[5px] text-white max-w-full ml-1 text-[12px]">
+          <div className="flex gap-[5px] text-white max-w-full ml-1 text-[12px] flex-wrap">
             <Categories category={post.category} />
             {author && (
               <PostAuthorInfo
@@ -96,7 +96,7 @@ const Post: React.FC<PostProps> = ({
           </div>
         </div>
         {isPostPage && <TagList tags={post.tags} />}
-        <div className="flex flex-col gap-1 w-full">
+        <div className="flex flex-col w-full gap-1">
           {post.memContainers.map((mem, index) => {
             switch (mem.type) {
               case "IMAGE":

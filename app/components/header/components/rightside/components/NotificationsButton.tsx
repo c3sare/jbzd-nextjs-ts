@@ -1,6 +1,6 @@
 "use client";
 
-import { BsBellFill } from "react-icons/bs";
+import { BsBellFill } from "@react-icons/all-files/bs/BsBellFill";
 import useDropdownContainer from "@/app/hooks/useDropdownContainer";
 import Link from "next/link";
 import IconButton from "@/app/components/IconButton";
@@ -19,7 +19,7 @@ const NotificationsButton = () => {
       </IconButton>
       {isVisible && (
         <DropdownContainer>
-          <ul className="p-0 m-0 flex flex-col">
+          <ul className="flex flex-col p-0 m-0">
             <li></li>
           </ul>
           <div className="flex flex-nowrap h-[30px] w-full justify-around items-center bg-[#1f1f1f] border-t border-[#313131]">

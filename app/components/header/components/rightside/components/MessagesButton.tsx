@@ -1,6 +1,6 @@
 "use client";
 
-import { BsFillEnvelopeFill } from "react-icons/bs";
+import { BsFillEnvelopeFill } from "@react-icons/all-files/bs/BsFillEnvelopeFill";
 import useDropdownContainer from "@/app/hooks/useDropdownContainer";
 import Link from "next/link";
 import IconButton from "@/app/components/IconButton";

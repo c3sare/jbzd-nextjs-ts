@@ -3,8 +3,9 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { useState } from "react";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-import { GiDiceSixFacesTwo } from "react-icons/gi";
+import { AiOutlineArrowLeft } from "@react-icons/all-files/ai/AiOutlineArrowLeft";
+import { AiOutlineArrowRight } from "@react-icons/all-files/ai/AiOutlineArrowRight";
+import { GiDiceSixFacesTwo } from "@react-icons/all-files/gi/GiDiceSixFacesTwo";
 import ScrollBarPageButton from "./pagination/ScrollBarPageButton";
 import useAllSearchParams from "@/app/hooks/useAllSearchParams";
 import ScrollBar from "./pagination/ScrollBar";

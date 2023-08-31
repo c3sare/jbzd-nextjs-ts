@@ -10,9 +10,9 @@ import PostsDateFilterForm from "./forms/PostsDateFilterForm";
 import PostsTypeFilterForm from "./forms/PostsTypeFilterForm";
 import IconButton from "./IconButton";
 
-import { AiOutlinePlus } from "react-icons/ai";
-import { TbCalendarEvent } from "react-icons/tb";
-import { BiFilter } from "react-icons/bi";
+import { AiOutlinePlus } from "@react-icons/all-files/ai/AiOutlinePlus";
+import { RiCalendarEventFill } from "@react-icons/all-files/ri/RiCalendarEventFill";
+import { BiFilter } from "@react-icons/all-files/bi/BiFilter";
 import { toast } from "react-hot-toast";
 
 type PostsPageHeaderProps = {
@@ -63,7 +63,7 @@ const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({
           Dodaj
         </IconButton>
         <IconButton
-          startIcon={<TbCalendarEvent />}
+          startIcon={<RiCalendarEventFill />}
           onClick={() => handleSetForm(2)}
           active={currentForm === 2}
         >

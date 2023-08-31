@@ -1,11 +1,11 @@
-import { HiSpeakerphone } from "react-icons/hi";
-import { FaSearch } from "react-icons/fa";
-import { IoSettingsSharp } from "react-icons/io5";
-import { BiSolidUser } from "react-icons/bi";
-import { RiFileListFill } from "react-icons/ri";
-import { GiPerspectiveDiceSixFacesFour } from "react-icons/gi";
-import { BsFillStarFill } from "react-icons/bs";
-import { AiOutlineClockCircle } from "react-icons/ai";
+import { HiSpeakerphone } from "@react-icons/all-files/hi/HiSpeakerphone";
+import { FaSearch } from "@react-icons/all-files/fa/FaSearch";
+import { IoSettingsSharp } from "@react-icons/all-files/io5/IoSettingsSharp";
+import { BiUser } from "@react-icons/all-files/bi/BiUser";
+import { RiFileListFill } from "@react-icons/all-files/ri/RiFileListFill";
+import { GiPerspectiveDiceSixFacesFour } from "@react-icons/all-files/gi/GiPerspectiveDiceSixFacesFour";
+import { BsFillStarFill } from "@react-icons/all-files/bs/BsFillStarFill";
+import { AiOutlineClockCircle } from "@react-icons/all-files/ai/AiOutlineClockCircle";
 
 import MobileMenuLinkButton from "./MobileMenuLinkButton";
 import Categories from "../../leftside/components/dropdownlists/Categories";
@@ -55,7 +55,7 @@ const MobileMenuContainer = async () => {
         </MobileMenuLinkButton>
         <MobileMenuLinkButton
           href="/obserwowane/uzytkownicy"
-          icon={BiSolidUser}
+          icon={BiUser}
           disabled={!isLoggedIn}
         >
           Użytkownicy

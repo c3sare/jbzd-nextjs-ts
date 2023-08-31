@@ -1,7 +1,8 @@
 "use client";
 
-import { GrMail } from "react-icons/gr";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { GrMail } from "@react-icons/all-files/gr/GrMail";
+import { AiFillEye } from "@react-icons/all-files/ai/AiFillEye";
+import { AiFillEyeInvisible } from "@react-icons/all-files/ai/AiFillEyeInvisible";
 
 import ActionButton from "./ActionButton";
 import { useState } from "react";

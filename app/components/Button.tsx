@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import { HTMLAttributes } from "react";
-import { AiOutlineLoading } from "react-icons/ai";
+import { AiOutlineLoading } from "@react-icons/all-files/ai/AiOutlineLoading";
 
 type ButtonProps = {
   children?: React.ReactNode;

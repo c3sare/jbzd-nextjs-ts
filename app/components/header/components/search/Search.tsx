@@ -1,6 +1,6 @@
 "use client";
 
-import { BiSearch } from "react-icons/bi";
+import { BiSearch } from "@react-icons/all-files/bi/BiSearch";
 import MenuButton from "../MenuButton";
 import { useCallback, useEffect, useState } from "react";
 import Form from "./components/Form";

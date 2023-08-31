@@ -2,7 +2,7 @@
 
 import IconButton from "@/app/components/IconButton";
 import { signOut } from "next-auth/react";
-import { FaPowerOff } from "react-icons/fa";
+import { FaPowerOff } from "@react-icons/all-files/fa/FaPowerOff";
 
 const SignOutButton = () => {
   return (

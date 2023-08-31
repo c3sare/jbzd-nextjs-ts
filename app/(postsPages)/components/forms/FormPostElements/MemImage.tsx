@@ -8,7 +8,7 @@ import { DndProvider, useDrop } from "react-dnd";
 import { HTML5Backend, NativeTypes } from "react-dnd-html5-backend";
 import Image from "next/image";
 
-import { GoUpload } from "react-icons/go";
+import { GoCloudUpload } from "@react-icons/all-files/go/GoCloudUpload";
 
 type MemImageProps<T extends FieldValues> = {
   setData: (val: File | null) => void;
@@ -76,7 +76,7 @@ function MemImage<T extends FieldValues>({
                 onDrop(e.currentTarget.files[0]);
             }}
           />
-          <GoUpload fontSize={24} />
+          <GoCloudUpload fontSize={24} />
           <span>Przeciągnij tu plik</span>
           <span className="text-[#777]">lub</span>
           <button

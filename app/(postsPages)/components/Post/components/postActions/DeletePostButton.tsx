@@ -1,4 +1,4 @@
-import { FaTrash } from "react-icons/fa";
+import { FaTrash } from "@react-icons/all-files/fa/FaTrash";
 import PostActionLinkButton from "./PostActionLinkButton";
 import { useContext } from "react";
 import { MonitProvider } from "@/app/context/MonitContext";

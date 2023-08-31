@@ -1,4 +1,4 @@
-import { HiSpeakerphone } from "react-icons/hi";
+import { HiSpeakerphone } from "@react-icons/all-files/hi/HiSpeakerphone";
 
 import Logo from "./components/Logo";
 import MenuButton from "./components/MenuButton";

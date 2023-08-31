@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { TfiCup } from "react-icons/tfi";
+import { AiFillTrophy } from "@react-icons/all-files/ai/AiFillTrophy";
 import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -40,7 +40,7 @@ const UserRank: React.FC<UserRankProps> = ({
 
   return (
     <div className="w-full h-[max-content] sm:max-w-[125px] rounded-lg bg-[#1f1f1f] p-[5px_15px] mt-[10px] flex sm:block justify-between items-center flex-row">
-      <div className="flex flex-row items-center sm:justify-between relative">
+      <div className="relative flex flex-row items-center sm:justify-between">
         <Image
           src="/images/spear.png"
           alt="Dzida"
@@ -63,7 +63,7 @@ const UserRank: React.FC<UserRankProps> = ({
         href="/ranking"
         className="flex flex-row items-center sm:justify-between"
       >
-        <TfiCup className="text-[22px] mr-[25px] sm:mr-0" />
+        <AiFillTrophy className="text-[22px] mr-[25px] sm:mr-0" />
         <span className="font-bold text-[22px]">{rank}</span>
       </Link>
     </div>

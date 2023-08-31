@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
 type ButtonSwitchTabProps = {
   children?: React.ReactNode;
@@ -14,8 +14,10 @@ const ButtonSwitchTab: React.FC<ButtonSwitchTabProps> = ({
   href,
 }) => {
   const pathname = usePathname();
+  const params = useParams();
 
-  const isActiveTab = pathname === href;
+  const isActiveTab =
+    pathname === href || (pathname.startsWith(href) && params.index);
 
   console.log(pathname);
   return (
