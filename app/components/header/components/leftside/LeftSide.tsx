@@ -3,6 +3,7 @@ import MenuButton from "../MenuButton";
 import MenuButtonDropdown from "../MenuButtonDropdown";
 import Categories from "./components/dropdownlists/Categories";
 import Followed from "./components/dropdownlists/Followed";
+import RandomPostButton from "./components/RandomPostButton";
 
 const LeftSide = async () => {
   const session = await getSession();
@@ -18,9 +19,7 @@ const LeftSide = async () => {
           Obserwowane
         </MenuButtonDropdown>
       )}
-      <MenuButton href="/losowe" className="lg:flex">
-        Losowe
-      </MenuButton>
+      <RandomPostButton />
       <MenuButtonDropdown
         content={<Categories />}
         className="w-[520px] gap-x-[1px]"

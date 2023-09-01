@@ -9,6 +9,7 @@ import Link from "next/link";
 import { getSession } from "@/app/actions/getSession";
 import { getPremium } from "@/app/actions/getPremium";
 import { getCategories } from "@/app/actions/getCategories";
+import CategoryHeader from "./components/CategoryHeader";
 
 export default async function NextHomePage(props: CategoryPageProps) {
   const posts = await getCategoryPagePosts({
@@ -40,7 +41,9 @@ export default async function NextHomePage(props: CategoryPageProps) {
         categories={categories}
         isPremium={premium.isPremium || false}
         isLoggedIn={isLoggedIn}
-      />
+      >
+        <CategoryHeader />
+      </PostsPageHeader>
       <Posts posts={posts.posts} />
       {posts.pagesCount > 1 && (
         <Pagination

@@ -5,10 +5,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { AiOutlineArrowLeft } from "@react-icons/all-files/ai/AiOutlineArrowLeft";
 import { AiOutlineArrowRight } from "@react-icons/all-files/ai/AiOutlineArrowRight";
-import { GiDiceSixFacesTwo } from "@react-icons/all-files/gi/GiDiceSixFacesTwo";
 import ScrollBarPageButton from "./pagination/ScrollBarPageButton";
 import useAllSearchParams from "@/app/hooks/useAllSearchParams";
 import ScrollBar from "./pagination/ScrollBar";
+import RandomPostButton from "./pagination/RandomPostButton";
 
 const Pagination = ({
   pageName = "str",
@@ -41,12 +41,7 @@ const Pagination = ({
         >
           <AiOutlineArrowLeft />
         </Link>
-        <Link
-          href="/losowe"
-          className="w-[60px] text-[30px] flex items-center justify-center h-[50px] text-white rounded-[2px] bg-[#c03e3e]"
-        >
-          <GiDiceSixFacesTwo />
-        </Link>
+        <RandomPostButton className="w-[60px] text-[30px] flex items-center justify-center h-[50px] text-white rounded-[2px] bg-[#c03e3e]" />
         <Link
           href={{ pathname: `/${pageName}/${currentPage + 1}`, query }}
           className={clsx(
@@ -66,12 +61,7 @@ const Pagination = ({
           >
             następna strona
           </Link>
-          <Link
-            href="/losowe"
-            className="relative flex items-center justify-center w-[20%] h-[50px] ml-[10px] text-[32px] text-white bg-gradient-lightred-blackred"
-          >
-            <GiDiceSixFacesTwo />
-          </Link>
+          <RandomPostButton className="relative flex items-center justify-center w-[20%] h-[50px] ml-[10px] text-[32px] text-white bg-gradient-lightred-blackred" />
         </div>
       )}
       <div className="hidden md:block ml-[56px] pr-[5px]">

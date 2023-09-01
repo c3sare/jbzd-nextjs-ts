@@ -21,12 +21,14 @@ type PostsPageHeaderProps = {
     children: Category[];
   })[];
   isLoggedIn: boolean;
+  children?: React.ReactNode;
 };
 
 const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({
   isPremium,
   categories,
   isLoggedIn,
+  children,
 }) => {
   const pathname = usePathname();
   const params = useSearchParams();
@@ -51,31 +53,38 @@ const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({
 
   return (
     <>
-      <div className="max-w-[600px] md:ml-[45px] flex gap-[10px_5px] flex-wrap sm:flex-nowrap">
-        <IconButton
-          startIcon={<AiOutlinePlus />}
-          variant="secondary"
-          onClick={() => {
-            if (isLoggedIn) handleSetForm(1);
-            else toast.error("Musisz się zalogować!");
-          }}
-        >
-          Dodaj
-        </IconButton>
-        <IconButton
-          startIcon={<RiCalendarEventFill />}
-          onClick={() => handleSetForm(2)}
-          active={currentForm === 2}
-        >
-          Top+
-        </IconButton>
-        <IconButton
-          startIcon={<BiFilter />}
-          onClick={() => handleSetForm(3)}
-          active={currentForm === 3}
-        >
-          Filtruj
-        </IconButton>
+      <div className="md:ml-[45px] max-w-[600px] flex flex-wrap justify-between">
+        <div className="flex gap-[10px_5px] flex-wrap sm:flex-nowrap">
+          <IconButton
+            startIcon={<AiOutlinePlus />}
+            variant="secondary"
+            onClick={() => {
+              if (isLoggedIn) handleSetForm(1);
+              else toast.error("Musisz się zalogować!");
+            }}
+          >
+            Dodaj
+          </IconButton>
+          <IconButton
+            startIcon={<RiCalendarEventFill />}
+            onClick={() => handleSetForm(2)}
+            active={currentForm === 2}
+          >
+            Top+
+          </IconButton>
+          <IconButton
+            startIcon={<BiFilter />}
+            onClick={() => handleSetForm(3)}
+            active={currentForm === 3}
+          >
+            Filtruj
+          </IconButton>
+        </div>
+        {children && (
+          <div className="flex gap-[10px_5px] flex-wrap sm:flex-nowrap">
+            {children}
+          </div>
+        )}
       </div>
       <div className="full-w relative mb-4 md:ml-[45px]">
         {componentsToSwitch[currentForm]}

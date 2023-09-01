@@ -12,6 +12,7 @@ import Categories from "../../leftside/components/dropdownlists/Categories";
 import ProfileInfo from "./ProfileInfo";
 import SidebarForms from "@/app/components/sidebar/components/SidebarForms";
 import { getSession } from "@/app/actions/getSession";
+import MobileMenuRandomPostButton from "./MobileMenuRandomPostButton";
 
 const MobileMenuContainer = async () => {
   const session = await getSession();
@@ -40,12 +41,7 @@ const MobileMenuContainer = async () => {
         >
           Ulubione
         </MobileMenuLinkButton>
-        <MobileMenuLinkButton
-          href="/losowe"
-          icon={GiPerspectiveDiceSixFacesFour}
-        >
-          Losowe
-        </MobileMenuLinkButton>
+        <MobileMenuRandomPostButton />
         <MobileMenuLinkButton
           href="/obserwowane/dzialy"
           icon={RiFileListFill}

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GiDiceSixFacesTwo } from "@react-icons/all-files/gi/GiDiceSixFacesTwo";
+import RandomPostButton from "@/app/(postsPages)/components/pagination/RandomPostButton";
 
 const SinglePostFooter = () => {
   return (
@@ -10,12 +10,7 @@ const SinglePostFooter = () => {
       >
         Przejdź na stronę główną
       </Link>
-      <Link
-        className="flex w-1/5 ml-[10px] relative h-[50px] items-center justify-center rounded-[2px] bg-[#c03e3e] text-[30px]"
-        href="/losowe"
-      >
-        <GiDiceSixFacesTwo />
-      </Link>
+      <RandomPostButton className="flex w-1/5 ml-[10px] relative h-[50px] items-center justify-center rounded-[2px] bg-[#c03e3e] text-[30px]" />
     </div>
   );
 };
