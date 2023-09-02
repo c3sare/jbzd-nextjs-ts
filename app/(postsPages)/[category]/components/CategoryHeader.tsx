@@ -4,20 +4,31 @@ import { useState } from "react";
 import StyledButton from "./StyledButton";
 import { AiFillBell } from "@react-icons/all-files/ai/AiFillBell";
 import { useSession } from "next-auth/react";
+import { setCategoryAction } from "@/app/actions/setCategoryAction";
+import toast from "react-hot-toast";
 
 type CategoryMethod = "" | "FOLLOW" | "BLOCK";
 
-const CategoryHeader = () => {
+type CategoryHeaderProps = {
+  categoryId: string;
+};
+
+const CategoryHeader: React.FC<CategoryHeaderProps> = ({ categoryId }) => {
   const session = useSession();
   const [method, setMethod] = useState<CategoryMethod>("");
 
   const isLoggedIn = session.status === "authenticated";
 
-  const handleClickMethod = (action: CategoryMethod) => {
-    if (action === method) {
-      setMethod("");
-    } else {
-      setMethod(action);
+  const handleClickMethod = async (action: CategoryMethod) => {
+    const formData = new FormData();
+    formData.append("id", categoryId);
+    formData.append("method", action);
+    const res = await setCategoryAction(formData);
+
+    if (res?.method || res?.method === "")
+      setMethod(res.method as CategoryMethod);
+    else if (res?.message) {
+      toast.error(res.message);
     }
   };
 

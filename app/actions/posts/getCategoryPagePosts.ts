@@ -78,6 +78,7 @@ export async function getCategoryPagePosts({
       page: Number(index),
       pagesCount,
       categoryName: categoryDB.name,
+      categoryId: categoryDB.id,
     };
   } catch (error: any) {
     console.log(error);

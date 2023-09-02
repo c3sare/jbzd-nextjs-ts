@@ -39,7 +39,7 @@ export default async function NextHomePage(props: CategoryPageProps) {
         isPremium={premium.isPremium || false}
         isLoggedIn={isLoggedIn}
       >
-        <CategoryHeader />
+        <CategoryHeader categoryId={posts.categoryId} />
       </PostsPageHeader>
       <Posts posts={posts.posts} />
       {posts.pagesCount > 1 && (

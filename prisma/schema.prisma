@@ -60,7 +60,7 @@ model User {
   commentVotes       CommentVote[]
   favouritePosts     FavouritePost[]
   favouriteComments  FavouriteComment[]
-  followedCategories FollowedCategory[]
+  actionedCategories CategoryAction[]
   actionedTags       TagAction[]
   votedUsers         UserVote[]
   userVotedBy        UserVote[]         @relation("UserVotedBy")
@@ -259,7 +259,7 @@ model Category {
   children   Category[]         @relation("CategoryToCategory")
   postIds    String[]           @db.ObjectId
   posts      Post[]
-  followedBy FollowedCategory[]
+  actions CategoryAction[]
 }
 
 model Tag {
@@ -305,13 +305,14 @@ model UserAction {
   @@unique([authorId, userId])
 }
 
-model FollowedCategory {
+model CategoryAction {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   addTime    DateTime @default(now())
   categoryId String   @db.ObjectId
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   authorId   String   @db.ObjectId
   author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  method    UserActionType
 
   @@unique([authorId, categoryId])
 }

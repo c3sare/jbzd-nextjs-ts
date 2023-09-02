@@ -11,11 +11,13 @@ export default async function getFollowedCategoriesIds() {
       id: session.user.id,
     },
     include: {
-      followedCategories: true,
+      actionedCategories: true,
     },
   });
 
   if (!user) return [];
 
-  return user.followedCategories.map((item) => item.categoryId);
+  return user.actionedCategories
+    .filter((item) => item.method === "FOLLOW")
+    .map((item) => item.categoryId);
 }
