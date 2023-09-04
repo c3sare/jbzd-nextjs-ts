@@ -4,6 +4,7 @@ import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
 import formDataToObject from "@/utils/formDataToObject";
 import { CategoryAction } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function setCategoryAction(formData: FormData) {
   const session = await getSession();
@@ -20,6 +21,14 @@ export async function setCategoryAction(formData: FormData) {
     if (!["BLOCK", "FOLLOW"].includes(data.method))
       return { message: "Użyta metoda nie istnieje!" };
 
+    const category = await prisma.category.findFirst({
+      where: {
+        id: data.id,
+      },
+    });
+
+    if (!category) return { message: "Taka kategoria nie istnieje!" };
+
     const isActioned = await prisma.categoryAction.findFirst({
       where: {
         categoryId: data.id,
@@ -35,6 +44,8 @@ export async function setCategoryAction(formData: FormData) {
       });
     }
 
+    let method = "";
+
     if ((isActioned as unknown as CategoryAction)?.method !== data.method) {
       const categoryAction = await prisma.categoryAction.create({
         data: {
@@ -47,10 +58,13 @@ export async function setCategoryAction(formData: FormData) {
           author: { connect: { id: session.user.id } },
         },
       });
-      return { method: categoryAction.method };
+      method = categoryAction.method;
     }
 
-    return { method: "" };
+    revalidatePath(`/ustawienia/preferencje`);
+    revalidatePath(`/${category.slug}`);
+
+    return { method };
   } catch (err: any) {
     return null;
   }

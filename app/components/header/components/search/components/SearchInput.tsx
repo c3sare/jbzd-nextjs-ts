@@ -22,7 +22,8 @@ const SearchInput: React.FC<SearchInputProps> = ({
       type="text"
       placeholder="Wpisz szukaną wartość"
       className={clsx(
-        `w-[700px]
+        `max-w-[700px]
+        w-full
         h-[40px]
         rounded-[5px]
         pl-[15px]

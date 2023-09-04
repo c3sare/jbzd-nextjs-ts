@@ -9,6 +9,7 @@ declare module "next-auth" {
       username: string;
       provider: "google" | "facebook" | "credentials";
       isDeleted?: boolean;
+      coins: number;
     };
   }
 }

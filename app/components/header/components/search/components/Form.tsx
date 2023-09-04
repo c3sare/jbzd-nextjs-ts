@@ -3,35 +3,62 @@
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
 import SearchSubmitButton from "./SearchSubmitButton";
 import SearchInput from "./SearchInput";
-import { useRouter } from "next/navigation";
-import InputRadio from "./InputRadio";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import SelectRadio from "./SelectRadio";
 
-type FormProps = {
-  closeForm: () => void;
-};
+const dataTypes = ["wszystko", "obrazki", "tagi", "uzytkownicy"];
 
-const Form: React.FC<FormProps> = ({ closeForm }) => {
+const Form = () => {
   const router = useRouter();
+  const params = useParams();
+  const searchParams = useSearchParams();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>({
-    defaultValues: {
-      search: "",
-      datatype: "wszystko",
+    defaultValues: async () => {
+      const search = searchParams.get("pharse") || "";
+      const datatype = dataTypes.includes(params.datatype as string)
+        ? params.datatype
+        : "wszystko";
+
+      return {
+        search,
+        datatype,
+      };
     },
-    mode: "onChange",
+    mode: "all",
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     router.push(`/wyszukaj/${data.datatype}?pharse=${encodeURI(data.search)}`);
   };
 
+  const dataTypeValues = [
+    {
+      label: "Wszystko",
+      value: "wszystko",
+      default: true,
+    },
+    {
+      label: "Obrazki",
+      value: "obrazki",
+    },
+    {
+      label: "Tagi",
+      value: "tagi",
+    },
+    {
+      label: "Użytkownicy",
+      value: "uzytkownicy",
+    },
+  ];
+
   return (
     <form
-      className="max-w-[1106px] mx-auto grid h-full items-center"
+      className="max-w-[1106px] mx-auto grid h-full w-full items-center"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-row self-end">
@@ -44,33 +71,11 @@ const Form: React.FC<FormProps> = ({ closeForm }) => {
         />
         <SearchSubmitButton />
       </div>
-      <div className="flex flex-row">
-        <InputRadio
-          register={register}
-          label="Wszystkie"
-          id="datatype"
-          value="wszystko"
-          defaultChecked
-        />
-        <InputRadio
-          register={register}
-          label="Obrazki"
-          id="datatype"
-          value="obrazki"
-        />
-        <InputRadio
-          register={register}
-          label="Tagi"
-          id="datatype"
-          value="tagi"
-        />
-        <InputRadio
-          register={register}
-          label="Użytkownicy"
-          id="datatype"
-          value="uzytkownicy"
-        />
-      </div>
+      <SelectRadio
+        values={dataTypeValues}
+        name="datatype"
+        register={register}
+      />
     </form>
   );
 };

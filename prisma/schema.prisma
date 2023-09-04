@@ -42,7 +42,7 @@ model User {
   hashedPassword String?
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
-  coins          BigInt         @default(0)
+  coins          Int            @default(0)
   token          String?
   tokenExpires   DateTime?
   notifications  Notifications?
@@ -248,18 +248,18 @@ model BadgeComment {
 }
 
 model Category {
-  id         String             @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  nsfw       Boolean?
-  slug       String             @unique
-  order      Int?
-  column     Int?
-  parentId   String?            @db.ObjectId
-  parent     Category?          @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  children   Category[]         @relation("CategoryToCategory")
-  postIds    String[]           @db.ObjectId
-  posts      Post[]
-  actions CategoryAction[]
+  id       String           @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  nsfw     Boolean?
+  slug     String           @unique
+  order    Int?
+  column   Int?
+  parentId String?          @db.ObjectId
+  parent   Category?        @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children Category[]       @relation("CategoryToCategory")
+  postIds  String[]         @db.ObjectId
+  posts    Post[]
+  actions  CategoryAction[]
 }
 
 model Tag {
@@ -306,13 +306,13 @@ model UserAction {
 }
 
 model CategoryAction {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  addTime    DateTime @default(now())
-  categoryId String   @db.ObjectId
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  authorId   String   @db.ObjectId
-  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  method    UserActionType
+  id         String         @id @default(auto()) @map("_id") @db.ObjectId
+  addTime    DateTime       @default(now())
+  categoryId String         @db.ObjectId
+  category   Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  authorId   String         @db.ObjectId
+  author     User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  method     UserActionType
 
   @@unique([authorId, categoryId])
 }

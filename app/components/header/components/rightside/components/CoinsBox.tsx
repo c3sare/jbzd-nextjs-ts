@@ -1,15 +1,19 @@
 "use client";
 
 import useDropdownContainer from "@/app/hooks/useDropdownContainer";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
 const CoinsBox = () => {
+  const session = useSession();
   const { isVisible, toggleVisible, containerRef } = useDropdownContainer();
+
+  const coins = session.data?.user?.coins || 0;
 
   return (
     <div
-      className="h-full flex items-center justify-center lg:relative"
+      className="flex items-center justify-center h-full lg:relative"
       ref={containerRef}
     >
       <div
@@ -18,7 +22,7 @@ const CoinsBox = () => {
       >
         <div className="flex justify-center items-center gap-[10px]">
           <Image alt="Moneta" width={21} height={21} src="/images/coin.png" />
-          <span className="font-bold">0</span>
+          <span className="font-bold">{coins}</span>
         </div>
       </div>
       {isVisible && (

@@ -10,6 +10,7 @@ import { getSession } from "@/app/actions/getSession";
 import { getPremium } from "@/app/actions/getPremium";
 import { getCategories } from "@/app/actions/getCategories";
 import CategoryHeader from "../components/CategoryHeader";
+import { getCategoryAction } from "@/app/actions/getCategoryAction";
 
 export default async function NextHomePage(props: CategoryPageProps) {
   const posts = await getCategoryPagePosts(props);
@@ -21,6 +22,8 @@ export default async function NextHomePage(props: CategoryPageProps) {
   const categories = await getCategories();
 
   const isLoggedIn = Boolean(session?.user?.username);
+
+  const currentAction = await getCategoryAction(posts.categoryId);
 
   return (
     <>
@@ -39,7 +42,10 @@ export default async function NextHomePage(props: CategoryPageProps) {
         isPremium={premium.isPremium || false}
         isLoggedIn={isLoggedIn}
       >
-        <CategoryHeader categoryId={posts.categoryId} />
+        <CategoryHeader
+          categoryId={posts.categoryId}
+          currentAction={currentAction}
+        />
       </PostsPageHeader>
       <Posts posts={posts.posts} />
       {posts.pagesCount > 1 && (

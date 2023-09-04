@@ -76,6 +76,8 @@ export const authOptions: AuthOptions = {
         return session;
       }
 
+      session.user.coins = dbUser.coins || 0;
+
       session.user.provider = token.provider as
         | "credentials"
         | "google"

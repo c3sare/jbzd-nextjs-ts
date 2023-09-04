@@ -3,7 +3,6 @@
 import { useState } from "react";
 import StyledButton from "./StyledButton";
 import { AiFillBell } from "@react-icons/all-files/ai/AiFillBell";
-import { useSession } from "next-auth/react";
 import { setCategoryAction } from "@/app/actions/setCategoryAction";
 import toast from "react-hot-toast";
 
@@ -11,13 +10,14 @@ type CategoryMethod = "" | "FOLLOW" | "BLOCK";
 
 type CategoryHeaderProps = {
   categoryId: string;
+  currentAction: CategoryMethod;
 };
 
-const CategoryHeader: React.FC<CategoryHeaderProps> = ({ categoryId }) => {
-  const session = useSession();
-  const [method, setMethod] = useState<CategoryMethod>("");
-
-  const isLoggedIn = session.status === "authenticated";
+const CategoryHeader: React.FC<CategoryHeaderProps> = ({
+  categoryId,
+  currentAction,
+}) => {
+  const [method, setMethod] = useState<CategoryMethod>(currentAction);
 
   const handleClickMethod = async (action: CategoryMethod) => {
     const formData = new FormData();
@@ -37,27 +37,25 @@ const CategoryHeader: React.FC<CategoryHeaderProps> = ({ categoryId }) => {
   const isFollowed = method === "FOLLOW";
 
   return (
-    isLoggedIn && (
-      <>
-        {!isFollowed && (
-          <StyledButton
-            active={isBlocked}
-            onClick={() => handleClickMethod("BLOCK")}
-          >
-            {isBlocked ? "Wyłącz wyciszenie" : "Wycisz"}
-          </StyledButton>
-        )}
-        {!isBlocked && (
-          <StyledButton
-            active={isFollowed}
-            startIcon={AiFillBell}
-            onClick={() => handleClickMethod("FOLLOW")}
-          >
-            {isFollowed ? "Przestań obserwować" : "Obserwuj"}
-          </StyledButton>
-        )}
-      </>
-    )
+    <>
+      {!isFollowed && (
+        <StyledButton
+          active={isBlocked}
+          onClick={() => handleClickMethod("BLOCK")}
+        >
+          {isBlocked ? "Wyłącz wyciszenie" : "Wycisz"}
+        </StyledButton>
+      )}
+      {!isBlocked && (
+        <StyledButton
+          active={isFollowed}
+          startIcon={AiFillBell}
+          onClick={() => handleClickMethod("FOLLOW")}
+        >
+          {isFollowed ? "Przestań obserwować" : "Obserwuj"}
+        </StyledButton>
+      )}
+    </>
   );
 };
 

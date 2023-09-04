@@ -33,7 +33,7 @@ const Search = () => {
       </MenuButton>
       {isOpenSearchBar && !isSearchPage && (
         <div className="absolute top-[100%] left-0 w-full h-[120px] bg-[#1f1f1f]">
-          <Form closeForm={() => setIsOpenSearchBar(false)} />
+          <Form />
         </div>
       )}
     </>
