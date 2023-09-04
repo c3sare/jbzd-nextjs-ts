@@ -1,3 +1,4 @@
+import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
 import axios from "axios";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
@@ -49,14 +50,23 @@ const PlusCounterButton: React.FC<PlusCounterButtonProps> = ({
             "w-full md:w-[51px] h-[45px] mb-[3px] flex items-center justify-center rounded-[2px] bg-gradient-to-r",
             plused
               ? "from-[#94b425] to-[#87a61c]"
-              : "from-[#c03e3e] to-[#ac2f2f]"
+              : "from-[#c03e3e] to-[#ac2f2f]",
+            isLoading && "opacity-60"
           )}
         >
           <span className="hidden md:block text-[32px] font-semibold leading-[0px] text-[rgba(255,_255,_255,_.7)]">
-            +
+            {isLoading ? (
+              <BiLoaderAlt className="animate-spin text-[26px] mx-auto" />
+            ) : (
+              "+"
+            )}
           </span>
           <span className="md:hidden inline font-bold text-[22px]">
-            +{plusCount}
+            {isLoading ? (
+              <BiLoaderAlt className="animate-spin text-[26px] mx-auto" />
+            ) : (
+              "+" + plusCount
+            )}
           </span>
         </button>
       </div>

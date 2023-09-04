@@ -1,7 +1,6 @@
 import { getSession } from "@/app/actions/getSession";
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
-import { FavouritePost } from "@prisma/client";
 
 type BadgeType = "ROCK" | "SILVER" | "GOLD";
 
@@ -75,7 +74,7 @@ export async function POST(
         },
       });
 
-      await prisma.user.update({
+      const updateCoins = await prisma.user.update({
         where: {
           id: user.id,
         },
@@ -83,6 +82,9 @@ export async function POST(
           coins: {
             decrement: cost[selectedType],
           },
+        },
+        select: {
+          coins: true,
         },
       });
 
@@ -97,6 +99,7 @@ export async function POST(
         result: "OK",
         type: badge.type.toLowerCase(),
         count,
+        coins: updateCoins,
       });
     }
   } catch (err: any) {

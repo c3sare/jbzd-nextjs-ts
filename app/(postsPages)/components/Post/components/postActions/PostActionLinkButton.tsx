@@ -1,3 +1,4 @@
+import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
 import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
@@ -8,6 +9,7 @@ type PostActionLinkButtonProps = {
   children?: React.ReactNode;
   active?: boolean;
   disabled?: boolean;
+  isLoading?: boolean;
 };
 
 const PostActionLinkButton: React.FC<PostActionLinkButtonProps> = ({
@@ -16,10 +18,12 @@ const PostActionLinkButton: React.FC<PostActionLinkButtonProps> = ({
   children,
   active,
   disabled,
+  isLoading,
 }) => {
   const className = clsx(
     "bg-[#181818] rounded-[2px] cursor-pointer flex w-[51px] min-w-[51px] h-[45px] mb-[3px] items-center justify-center text-[28px]",
-    active ? "text-[#f0cc00]" : "text-[#777]"
+    active ? "text-[#f0cc00]" : "text-[#777]",
+    isLoading && "opacity-60"
   );
 
   if (href)
@@ -31,7 +35,11 @@ const PostActionLinkButton: React.FC<PostActionLinkButtonProps> = ({
   else
     return (
       <button disabled={disabled} className={className} onClick={onClick}>
-        {children}
+        {isLoading ? (
+          <BiLoaderAlt className="animate-spin text-[26px] mx-auto" />
+        ) : (
+          children
+        )}
       </button>
     );
 };

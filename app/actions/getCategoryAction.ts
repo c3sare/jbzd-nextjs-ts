@@ -9,12 +9,14 @@ export async function getCategoryAction(id: string) {
       return "";
     }
 
-    const action = await prisma.categoryAction.findFirstOrThrow({
+    const action = await prisma.categoryAction.findFirst({
       where: {
         authorId: session.user.id,
         categoryId: id,
       },
     });
+
+    if (!action) return "";
 
     return action.method;
   } catch (err: any) {

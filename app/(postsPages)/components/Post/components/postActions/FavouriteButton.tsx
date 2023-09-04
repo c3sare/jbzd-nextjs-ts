@@ -41,6 +41,7 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
     <PostActionLinkButton
       disabled={isLoading}
       active={isActive}
+      isLoading={isLoading}
       onClick={handleToggleFavourite}
     >
       <FaStar />

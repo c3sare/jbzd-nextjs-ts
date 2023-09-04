@@ -3,6 +3,7 @@ import PostActionLinkButton from "./PostActionLinkButton";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
 
 type ReportPostButtonProps = {
   accepted: boolean;
@@ -37,7 +38,11 @@ const ReportPostButton: React.FC<ReportPostButtonProps> = ({
 
   return (
     <PostActionLinkButton onClick={handleReportPost} disabled={isLoading}>
-      <FaFlag />
+      {isLoading ? (
+        <BiLoaderAlt className="animate-spin text-[26px] mx-auto" />
+      ) : (
+        <FaFlag />
+      )}
     </PostActionLinkButton>
   );
 };

@@ -48,7 +48,7 @@ const Post: React.FC<PostProps> = ({
   };
 
   return (
-    <article className="flex items-start flex-col md:flex-row relative mx-auto md:mx-0 mb-[40px] w-full max-w-[655px]">
+    <article className="flex items-start flex-col md:flex-row relative mx-auto md:mx-0 mb-[40px] w-full max-w-[655px] min-h-[307px]">
       <Link
         className="max-w-[40px] hidden md:block"
         href={post.author ? `/uzytkownik/${post.author.username}` : "#"}

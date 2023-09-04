@@ -9,6 +9,8 @@ import useDropdownContainer from "@/app/hooks/useDropdownContainer";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
 
 type BadgeActionButtonProps = {
   isOwnPost: boolean;
@@ -25,6 +27,7 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
   postId,
   setBadgeCount,
 }) => {
+  const session = useSession();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { isVisible, toggleVisible, containerRef } = useDropdownContainer();
@@ -34,10 +37,11 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
   const handleAddBadge = (type: BadgeType) => {
     if (!isLoggedIn) return toast.error("Dostęp tylko dla zalogowanych!");
     setIsLoading(true);
+    toggleVisible();
     axios
       .post(`/api/post/badge/${postId}/${type.toLowerCase()}`)
       .then((res) => {
-        const { result, count, type } = res.data;
+        const { result, count, type, coins } = res.data;
         if (result === "NOT_ENOUGHT_COINS") {
           toast.error("Nie wystarczająca ilość monet!");
         } else if (result === "ALREADY_EXIST") {
@@ -45,6 +49,7 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
         } else {
           setBadgeCount(type, count);
           toast.success("Przyznano odznakę!");
+          session.update({ coins });
           router.refresh();
         }
       })
@@ -53,7 +58,6 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
         toast.error("Wystąpił problem przy dodawaniu odznaki!");
       })
       .finally(() => {
-        if (isVisible) toggleVisible();
         setIsLoading(false);
       });
   };
@@ -62,7 +66,9 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
     <div className="w-[51px] min-w-[51px]" ref={containerRef}>
       <div
         className="w-full h-[51px] bg-[#313131] rounded-[3px] flex justify-center items-center relative cursor-pointer"
-        onClick={toggleVisible}
+        onClick={() => {
+          if (!isLoading) toggleVisible();
+        }}
       >
         <IoMdArrowDropup
           className={clsx(
@@ -77,6 +83,11 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
           width={25}
           height={25}
         />
+        {isLoading && (
+          <div className="w-full h-full flex items-center justify-center absolute top-0 left-0 bg-[#333]">
+            <BiLoaderAlt className="animate-spin text-[26px] mx-auto" />
+          </div>
+        )}
       </div>
       {isVisible && (
         <div className="min-w-[51px] flex flex-col bottom-full left-0 absolute bg-[#313131] py-[5px] gap-[10px] z-10 shadow-[5px_-5px_5px_#252525]">
