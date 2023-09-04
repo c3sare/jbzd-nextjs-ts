@@ -14,7 +14,7 @@ export async function GET() {
         email: session.user.email,
       },
       select: {
-        followedCategories: {
+        actionedCategories: {
           include: {
             category: true,
           },

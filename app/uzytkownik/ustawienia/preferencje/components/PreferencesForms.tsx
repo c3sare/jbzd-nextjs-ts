@@ -3,15 +3,15 @@
 import { useState } from "react";
 import ActionedTags, { ActionTagsBoxType } from "./ActionedTags";
 import ActionedUsers, { ActionUsersBoxType } from "./ActionedUsers";
-import FollowedCategories, {
+import ActionedCategories, {
   ActionCategoriesBoxType,
-} from "./FollowedCategories";
+} from "./ActionedCategories";
 
 type PreferencesFormsProps = {
   data: {
     actionedTags: ActionTagsBoxType[];
     actionedUsers: ActionUsersBoxType[];
-    followedCategories: ActionCategoriesBoxType[];
+    actionedCategories: ActionCategoriesBoxType[];
   };
 };
 
@@ -30,10 +30,10 @@ const PreferencesForms: React.FC<PreferencesFormsProps> = ({ data }) => {
         setLockBoxes={setLockBoxes}
         actionedUsers={data.actionedUsers}
       />
-      <FollowedCategories
+      <ActionedCategories
         lockBoxes={lockBoxes}
         setLockBoxes={setLockBoxes}
-        followedCategories={data.followedCategories}
+        actionedCategories={data.actionedCategories}
       />
     </>
   );

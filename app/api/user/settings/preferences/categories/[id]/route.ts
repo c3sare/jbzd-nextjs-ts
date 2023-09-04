@@ -18,7 +18,7 @@ export async function DELETE(
     if (!session?.user?.email)
       return new NextResponse("No authorization", { status: 403 });
 
-    const categoryAction = await prisma.followedCategory.delete({
+    const categoryAction = await prisma.categoryAction.delete({
       where: {
         id,
         author: {

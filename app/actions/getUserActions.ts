@@ -19,7 +19,7 @@ export async function getUserActions() {
         id: true,
         username: true,
         email: true,
-        followedCategories: {
+        actionedCategories: {
           include: {
             category: true,
           },

@@ -14,7 +14,7 @@ export async function getUserPreferences() {
         email: session.user.email,
       },
       include: {
-        followedCategories: {
+        actionedCategories: {
           include: {
             category: true,
           },
@@ -38,7 +38,7 @@ export async function getUserPreferences() {
     });
 
     return {
-      followedCategories: user.followedCategories,
+      actionedCategories: user.actionedCategories,
       actionedUsers: user.actionedUsers,
       actionedTags: user.actionedTags,
     };
