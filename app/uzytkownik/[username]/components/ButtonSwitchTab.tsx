@@ -19,7 +19,6 @@ const ButtonSwitchTab: React.FC<ButtonSwitchTabProps> = ({
   const isActiveTab =
     pathname === href || (pathname.startsWith(href) && params.index);
 
-  console.log(pathname);
   return (
     <Link
       className={clsx(

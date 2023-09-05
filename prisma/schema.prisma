@@ -49,6 +49,7 @@ model User {
   premiumExpires DateTime?
   premium        Premium?
 
+  reported           Report[]
   accounts           Account[]
   actionedByUsers    UserAction[]       @relation("UserActionedBy")
   actionedUsers      UserAction[]       @relation("ActionedUsers")
@@ -124,9 +125,19 @@ model Post {
   linkImage     String?
 
   comments      Comment[]
+  reports       Report[]
   badges        BadgePost[]
   votes         PostVote[]
   favouriteList FavouritePost[]
+}
+
+model Report {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  postId     String   @db.ObjectId
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  reporterId String   @db.ObjectId
+  reporter   User     @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  addTime    DateTime @default(now())
 }
 
 type TagType {

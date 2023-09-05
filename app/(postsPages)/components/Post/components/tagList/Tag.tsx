@@ -4,6 +4,8 @@ import clsx from "clsx";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import setTagActionSA from "../../actions/setTagAction";
+import { toast } from "react-hot-toast";
 
 type TagProps = {
   tag: PostType["tags"][0];
@@ -16,19 +18,17 @@ const Tag: React.FC<TagProps> = ({ tag }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tagAction, setTagAction] = useState<TagActionType>(tag.action || "");
 
-  const handleTagAction = (method: "BLOCK" | "FOLLOW") => {
+  const handleTagAction = async (method: "BLOCK" | "FOLLOW") => {
     setIsLoading(true);
-    axios
-      .post("/api/tag/action", {
-        method,
-        id: tag.id,
-      })
-      .then((res) => {
-        setTagAction(res.data.method);
-        router.refresh();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+    // /api/tag/action
+    const res = await setTagActionSA(tag.id, method);
+
+    if (res.method || res.method === "") {
+      setTagAction(res.method as TagActionType);
+    } else {
+      if (res.message) toast.error(res.message);
+    }
+    setIsLoading(false);
   };
 
   return (

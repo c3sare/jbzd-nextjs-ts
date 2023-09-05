@@ -1,9 +1,10 @@
+"use client";
+
 import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
-import axios from "axios";
 import clsx from "clsx";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import setPostVote from "../../actions/setPostVote";
 
 type PlusCounterButtonProps = {
   pluses: number;
@@ -16,25 +17,21 @@ const PlusCounterButton: React.FC<PlusCounterButtonProps> = ({
   isPlused,
   postId,
 }) => {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [plusCount, setPlusCount] = useState<number>(pluses);
   const [plused, setPlused] = useState<boolean>(isPlused);
 
-  const handleAddVote = () => {
+  const handleAddVote = async () => {
     setIsLoading(true);
-    axios
-      .post(`/api/post/vote/${postId}`)
-      .then((res) => {
-        setPlused(res.data.isPlused);
-        setPlusCount(res.data.count);
-        router.refresh();
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Wystąpił problem przy dodawaniu głosu!");
-      })
-      .finally(() => setIsLoading(false));
+    const res = await setPostVote(postId);
+    // /api/post/vote
+    if (typeof res?.count === "number") {
+      setPlusCount(res.count);
+      setPlused(res.isPlused);
+    } else {
+      toast.error(res.message);
+    }
+    setIsLoading(false);
   };
 
   return (
