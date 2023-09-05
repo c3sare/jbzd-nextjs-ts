@@ -1,4 +1,4 @@
-# MEM Webpage clone using [Next.js](https://nextjs.org/) - Orginal [Jbzd](https://jbzd.com.pl/).
+# Memes page clone using [Next.js](https://nextjs.org/) - Orginal [Jbzd](https://jbzd.com.pl/).
 This is a Fullstack project of a website.
 
 ## Used Technologies
