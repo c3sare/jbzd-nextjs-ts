@@ -1,6 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# MEM Webpage clone using [Next.js](https://nextjs.org/) - Orginal [Jbzd](https://jbzd.com.pl/).
+This is a Fullstack project of a website.
 
-## Getting Started
+## Used Technologies
+- [Next.js](https://nextjs.org/) 13 with APP dir and Server Actions
+- [TypeScript](https://typescript.org/)
+- [Prisma ORM](https://www.prisma.io/)
+- [MongoDB driver](https://www.mongodb.com/docs/drivers/node/current/) (to create views)
+- [React-hook-forms](https://react-hook-form.com/)
+- [Next-auth](https://next-auth.js.org/)
+- [Zod](https://zod.dev/)
+- [Tailwindcss](https://tailwindcss.com/)
+
+## Features
+- Creating account with traditional register form or using OAuth
+- Modify account settings like name, gender, city, avatar, password
+- Every registered account have public profile (can be hidden if have premium)
+- Users ranking based on account create time and profile vote count
+- Creating post with Image, text, video containers
+- Posts can be voted, added to favourites, badged and more..
+- Other users can be blocked, followed (blocked users posts are hided)
+- Posts are divided on categories and tags
+- Posts can be filtered (search page or page filters)
 
 First, run the development server:
 
