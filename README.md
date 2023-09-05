@@ -1,34 +1,77 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Memes page clone using [Next.js](https://nextjs.org/) - Orginal [Jbzd](https://jbzd.com.pl/).
+This is a Fullstack project of a website.
 
-## Getting Started
+## Used Technologies
+- [Next.js](https://nextjs.org/) 13 with APP dir and Server Actions
+- [TypeScript](https://typescript.org/)
+- [Prisma ORM](https://www.prisma.io/)
+- [MongoDB driver](https://www.mongodb.com/docs/drivers/node/current/) (to create views)
+- [React-hook-forms](https://react-hook-form.com/)
+- [Next-auth](https://next-auth.js.org/)
+- [Zod](https://zod.dev/)
+- [Tailwindcss](https://tailwindcss.com/)
 
-First, run the development server:
+## Features
+- Creating account with traditional register form or using OAuth
+- Modify account settings like name, gender, city, avatar, password
+- Every registered account have public profile (can be hidden if have premium)
+- Users ranking based on account create time and profile vote count
+- Creating post with Image, text, video containers
+- Posts can be voted, added to favourites, badged and more..
+- Other users can be blocked, followed (blocked users posts are hided)
+- Posts are divided on categories and tags
+- Posts can be filtered (search page or page filters)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+## Prerequisites
+Node version 18.x.x
+
+### Cloning the repository
+
+```shell
+git clone https://github.com/AntonioErdeljac/next13-discord-clone.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Install packages
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```shell
+npm i
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Setup .env file
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+```js
+DATABASE_URL=
+NEXTAUTH_SECRET=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+FACEBOOK_APP_ID=
+FACEBOOK_APP_SECRET=
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
 
-## Deploy on Vercel
+YOUTUBE_API_KEY=
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+CLOUDINARY_URL=
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Setup Prisma
+
+```shell
+npx prisma db push
+
+```
+
+### Start the app
+
+```shell
+npm run dev
+```
+
+## Available commands
+
+Running commands with npm `npm run [command]`
+
+| command         | description                              |
+| :-------------- | :--------------------------------------- |
+| `dev`           | Starts a development instance of the app |
