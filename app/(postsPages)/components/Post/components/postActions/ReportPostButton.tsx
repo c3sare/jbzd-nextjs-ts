@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
+import createPostReport from "../../actions/createPostReport";
 
 type ReportPostButtonProps = {
   accepted: boolean;
@@ -22,18 +23,20 @@ const ReportPostButton: React.FC<ReportPostButtonProps> = ({
 
   if (accepted || !isLoggedIn || isOwnPost) return null;
 
-  const handleReportPost = () => {
+  const handleReportPost = async () => {
     setIsLoading(true);
-    axios
-      .post(`/api/post/report/${postId}`)
-      .then(() => {
-        toast.success("Dziękujemy za zgłoszenie!");
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Wystąpił problem przy zgłaszaniu!");
-      })
-      .finally(() => setIsLoading(false));
+    // /api/post/report/${postId}
+    const res = await createPostReport(postId);
+    if (typeof res?.reported === "boolean") {
+      if (res.reported) {
+        toast.success("Dziękuję za zgłoszenie!");
+      } else {
+        toast.error("Już zgłosiłeś ten kontent!");
+      }
+    } else {
+      toast.error("Wystąpił problem przy zgłaszaniu!");
+    }
+    setIsLoading(false);
   };
 
   return (

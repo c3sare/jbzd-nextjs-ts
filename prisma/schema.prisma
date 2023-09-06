@@ -138,6 +138,8 @@ model Report {
   reporterId String   @db.ObjectId
   reporter   User     @relation(fields: [reporterId], references: [id], onDelete: Cascade)
   addTime    DateTime @default(now())
+
+  @@unique([postId, reporterId])
 }
 
 type TagType {

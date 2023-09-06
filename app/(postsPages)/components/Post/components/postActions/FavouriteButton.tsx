@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import setFavouritePost from "../../actions/setFavouritePost";
 
 type FavouriteButtonProps = {
   postId: string;
@@ -16,25 +17,20 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
   isLoggedIn,
   isFavourite,
 }) => {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(isFavourite);
 
   if (!isLoggedIn) return null;
 
-  const handleToggleFavourite = () => {
+  const handleToggleFavourite = async () => {
     setIsLoading(true);
-    axios
-      .post(`/api/post/favourite/${postId}`)
-      .then((res) => {
-        setIsActive(res.data.isFavourite);
-        router.refresh();
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Wystąpił problem przy dodwaniu do listy ulubionych!");
-      })
-      .finally(() => setIsLoading(false));
+    // /api/post/favourite/${postId}
+    const res = await setFavouritePost(postId);
+    if (typeof res.isFavourite === "boolean") {
+      setIsActive(res.isFavourite);
+    } else {
+      toast.error(res.message);
+    }
   };
 
   return (
