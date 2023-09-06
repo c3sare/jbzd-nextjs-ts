@@ -31,6 +31,7 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
     } else {
       toast.error(res.message);
     }
+    setIsLoading(false);
   };
 
   return (
