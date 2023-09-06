@@ -32,14 +32,14 @@ const Post: React.FC<PostProps> = ({
   author,
 }) => {
   const [badge, setBadge] = useState({
-    rock: post.rock,
-    silver: post.silver,
-    gold: post.gold,
+    ROCK: post.rock,
+    SILVER: post.silver,
+    GOLD: post.gold,
   });
 
   const postLink = `/obr/${post.id}/${post.slug}`;
 
-  const setBadgeCount = (type: "rock" | "silver" | "gold", count: number) => {
+  const setBadgeCount = (type: "ROCK" | "SILVER" | "GOLD", count: number) => {
     setBadge((prev) => {
       const newState = { ...prev };
       newState[type] = count;
@@ -69,9 +69,9 @@ const Post: React.FC<PostProps> = ({
             {post.title}
           </Link>
           <div className="ml-auto">
-            <Badge name="rock" title="Kamienna dzida" count={badge.rock} />
-            <Badge name="silver" title="Srebrna dzida" count={badge.silver} />
-            <Badge name="gold" title="Złota dzida" count={badge.gold} />
+            <Badge name="rock" title="Kamienna dzida" count={badge.ROCK} />
+            <Badge name="silver" title="Srebrna dzida" count={badge.SILVER} />
+            <Badge name="gold" title="Złota dzida" count={badge.GOLD} />
           </div>
         </h3>
         <div className="p-[4px_8px] bg-[#1f1f1f] text-[12px] text-[#777] flex justify-between items-center w-full">

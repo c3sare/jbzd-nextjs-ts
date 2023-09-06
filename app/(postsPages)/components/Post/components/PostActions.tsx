@@ -12,7 +12,7 @@ type PostActionsProps = {
   postLink: string;
   pluses: number;
   post: PostType;
-  setBadgeCount: (type: "rock" | "silver" | "gold", count: number) => void;
+  setBadgeCount: (type: "ROCK" | "SILVER" | "GOLD", count: number) => void;
   isPostPage?: boolean;
 };
 

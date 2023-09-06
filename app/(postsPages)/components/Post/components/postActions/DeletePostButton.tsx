@@ -2,8 +2,8 @@ import { FaTrash } from "@react-icons/all-files/fa/FaTrash";
 import PostActionLinkButton from "./PostActionLinkButton";
 import { useContext } from "react";
 import { MonitProvider } from "@/app/context/MonitContext";
-import axios from "axios";
 import toast from "react-hot-toast";
+import deletePostAction from "../../actions/deletePost";
 import { useRouter } from "next/navigation";
 
 type DeletePostButtonProps = {
@@ -22,18 +22,16 @@ const DeletePostButton: React.FC<DeletePostButtonProps> = ({
 
   if (!isLoggedIn || !isOwnPost) return null;
 
-  const deletePost = () => {
-    axios
-      .delete(`/api/post/${postId}`)
-      .then(() => {
-        toast.success("Pomyślnie usunięto post!");
-        router.refresh();
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Wystąpił problem przy usuwaniu!");
-      })
-      .finally(monit!.close);
+  const deletePost = async () => {
+    const res = await deletePostAction(postId);
+    // /api/post/ (DELETE)
+    if (res.deleted) {
+      toast.success("Pomyślnie usunięto post!");
+      router.push("/");
+    } else {
+      toast.error(res.message!);
+    }
+    monit!.close();
   };
 
   const handleClickDeleteButton = () => {

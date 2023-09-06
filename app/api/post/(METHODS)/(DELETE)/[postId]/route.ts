@@ -1,0 +1,37 @@
+import prisma from "@/app/libs/prismadb";
+import { getSession } from "@/app/actions/getSession";
+import { NextResponse } from "next/server";
+
+type RequestParams = {
+  params: {
+    postId: string;
+  };
+};
+
+export async function DELETE(
+  request: Request,
+  { params: { postId } }: RequestParams
+) {
+  try {
+    const session = await getSession();
+
+    if (!session?.user?.email)
+      return new NextResponse("No authorization", { status: 403 });
+
+    if (!postId) return new NextResponse("No id provided", { status: 400 });
+
+    const post = await prisma.post.delete({
+      where: {
+        id: postId,
+        authorId: session.user.id,
+      },
+    });
+
+    if (!post) return new NextResponse("Can't delete post!", { status: 500 });
+
+    return NextResponse.json(post);
+  } catch (err: any) {
+    console.log(err);
+    throw new NextResponse("Internal Error", { status: 500 });
+  }
+}
