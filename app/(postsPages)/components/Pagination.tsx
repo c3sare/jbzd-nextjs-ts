@@ -2,13 +2,13 @@
 
 import clsx from "clsx";
 import Link from "next/link";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { AiOutlineArrowLeft } from "@react-icons/all-files/ai/AiOutlineArrowLeft";
 import { AiOutlineArrowRight } from "@react-icons/all-files/ai/AiOutlineArrowRight";
 import ScrollBarPageButton from "./pagination/ScrollBarPageButton";
-import useAllSearchParams from "@/app/hooks/useAllSearchParams";
 import ScrollBar from "./pagination/ScrollBar";
 import RandomPostButton from "./pagination/RandomPostButton";
+import { useSearchParams } from "next/navigation";
 
 const Pagination = ({
   pageName = "str",
@@ -19,20 +19,21 @@ const Pagination = ({
   currentPage: number;
   allPages: number;
 }) => {
-  const query = useAllSearchParams();
+  const params = useSearchParams();
   const [scrollBarProgress, setScrollBarProgress] = useState<number>(0);
+
+  const paramsString = params.toString().replaceAll("+", "%20");
+  const query = paramsString ? "?" + paramsString : "";
 
   return (
     <>
       <div className="md:hidden w-full flex gap-[2px]">
         <Link
-          href={{
-            pathname:
-              currentPage === 2
-                ? `/${pageName}`
-                : `/${pageName}/${currentPage - 1}`,
-            query,
-          }}
+          href={
+            currentPage === 2
+              ? `/${pageName}${query}`
+              : `/${pageName}/${currentPage - 1}${query}`
+          }
           className={clsx(
             "w-[60px] text-[30px] flex items-center justify-center h-[50px] text-white rounded-[2px] bg-[#c03e3e]",
             currentPage === 1 &&
@@ -43,7 +44,7 @@ const Pagination = ({
         </Link>
         <RandomPostButton className="w-[60px] text-[30px] flex items-center justify-center h-[50px] text-white rounded-[2px] bg-[#c03e3e]" />
         <Link
-          href={{ pathname: `/${pageName}/${currentPage + 1}`, query }}
+          href={`/${pageName}/${currentPage + 1}${query}`}
           className={clsx(
             "flex flex-grow text-[30px] items-center justify-center h-[50px] text-white rounded-[2px] bg-[#c03e3e]",
             currentPage + 1 > allPages &&
@@ -56,7 +57,7 @@ const Pagination = ({
       {currentPage < allPages && (
         <div className="hidden md:flex justify-between ml-[56px] pr-[5px]">
           <Link
-            href={{ pathname: `/${pageName}/${currentPage + 1}`, query }}
+            href={`/${pageName}/${currentPage + 1}${query}`}
             className="block w-full max-w-[600px] mb-[10px] leading-[50px] text-[18px] text-center text-white bg-gradient-lightred-blackred"
           >
             następna strona
@@ -108,4 +109,4 @@ const Pagination = ({
   );
 };
 
-export default Pagination;
+export default memo(Pagination);

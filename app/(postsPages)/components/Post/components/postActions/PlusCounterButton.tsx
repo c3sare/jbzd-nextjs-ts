@@ -2,7 +2,7 @@
 
 import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
 import clsx from "clsx";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import setPostVote from "../../actions/setPostVote";
 
@@ -21,7 +21,7 @@ const PlusCounterButton: React.FC<PlusCounterButtonProps> = ({
   const [plusCount, setPlusCount] = useState<number>(pluses);
   const [plused, setPlused] = useState<boolean>(isPlused);
 
-  const handleAddVote = async () => {
+  const handleAddVote = useCallback(async () => {
     setIsLoading(true);
     const res = await setPostVote(postId);
     // /api/post/vote
@@ -32,7 +32,7 @@ const PlusCounterButton: React.FC<PlusCounterButtonProps> = ({
       toast.error(res.message);
     }
     setIsLoading(false);
-  };
+  }, [postId]);
 
   return (
     <div className="w-full md:w-auto">

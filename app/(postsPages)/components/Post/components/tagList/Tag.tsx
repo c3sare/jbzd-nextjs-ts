@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { PostType } from "../../../types/PostType";
 import clsx from "clsx";
-import { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
 import setTagActionSA from "../../actions/setTagAction";
 import { toast } from "react-hot-toast";
 
@@ -14,22 +12,24 @@ type TagProps = {
 type TagActionType = "FOLLOW" | "BLOCK" | "";
 
 const Tag: React.FC<TagProps> = ({ tag }) => {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tagAction, setTagAction] = useState<TagActionType>(tag.action || "");
 
-  const handleTagAction = async (method: "BLOCK" | "FOLLOW") => {
-    setIsLoading(true);
-    // /api/tag/action
-    const res = await setTagActionSA(tag.id, method);
+  const handleTagAction = useCallback(
+    async (method: "BLOCK" | "FOLLOW") => {
+      setIsLoading(true);
+      // /api/tag/action
+      const res = await setTagActionSA(tag.id, method);
 
-    if (res.method || res.method === "") {
-      setTagAction(res.method as TagActionType);
-    } else {
-      if (res.message) toast.error(res.message);
-    }
-    setIsLoading(false);
-  };
+      if (res.method || res.method === "") {
+        setTagAction(res.method as TagActionType);
+      } else {
+        if (res.message) toast.error(res.message);
+      }
+      setIsLoading(false);
+    },
+    [tag.id]
+  );
 
   return (
     <div className="relative h-[25px] group">

@@ -1,6 +1,6 @@
 "use client";
 
-import type { DOMAttributes } from "react";
+import { useMemo, type DOMAttributes } from "react";
 
 import clsx from "clsx";
 
@@ -23,22 +23,27 @@ const IconButton: React.FC<IconButtonProps> = ({
   variant = "primary",
   active,
 }) => {
-  const colors = {
-    primary: "bg-[#3c3c3c]",
-    secondary: "bg-[#c03e3f]",
-  };
+  const colors = useMemo(
+    () => ({
+      primary: "bg-[#3c3c3c]",
+      secondary: "bg-[#c03e3f]",
+    }),
+    []
+  );
 
-  return (
-    <button
-      disabled={disabled}
-      onClick={onClick}
-      className={clsx(
+  const className = useMemo(
+    () =>
+      clsx(
         "cursor-pointer text-white font-bold h-[34px] px-[15px] rounded-[4px] flex justify-center items-center gap-[0_10px] relative flex-[1] sm:flex-none text-[10px] sm:text-[12px]",
         colors[variant],
         active &&
           "after:content-normal after:absolute after:top-[calc(100%_-_2px)] after:left-0 after:w-full after:h-[7px] after:bg-[#3c3c3c]"
-      )}
-    >
+      ),
+    [variant, active, colors]
+  );
+
+  return (
+    <button disabled={disabled} onClick={onClick} className={className}>
       {startIcon && <span className="text-[17px]">{startIcon}</span>}
       {children}
       {endIcon && <span className="text-[17px]">{endIcon}</span>}

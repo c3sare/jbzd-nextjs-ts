@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { memo } from "react";
 
 const badgeImage = {
   rock: "/images/likes/rock.png",
@@ -34,4 +35,4 @@ const Badge: React.FC<BadgeProps> = ({ title, count, name }) => {
   );
 };
 
-export default Badge;
+export default memo(Badge);

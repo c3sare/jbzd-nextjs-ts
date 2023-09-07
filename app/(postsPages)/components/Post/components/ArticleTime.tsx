@@ -1,5 +1,5 @@
 import { differenceInMinutes } from "date-fns";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 
 type ArticleTimeProps = {
   addTime: Date;
@@ -24,4 +24,4 @@ const ArticleTime: React.FC<ArticleTimeProps> = ({ addTime }) => {
   }
 };
 
-export default ArticleTime;
+export default memo(ArticleTime);

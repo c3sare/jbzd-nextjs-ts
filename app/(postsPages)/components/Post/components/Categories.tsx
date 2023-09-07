@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PostType } from "../../types/PostType";
+import { memo } from "react";
 
 type CategoriesProps = {
   category: PostType["category"];
@@ -19,4 +20,4 @@ const Categories: React.FC<CategoriesProps> = ({ category }) => {
   );
 };
 
-export default Categories;
+export default memo(Categories);

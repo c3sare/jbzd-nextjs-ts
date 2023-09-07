@@ -1,9 +1,7 @@
 import { FaStar } from "@react-icons/all-files/fa/FaStar";
 import PostActionLinkButton from "./PostActionLinkButton";
-import { useState } from "react";
-import axios from "axios";
+import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import setFavouritePost from "../../actions/setFavouritePost";
 
 type FavouriteButtonProps = {
@@ -20,9 +18,7 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(isFavourite);
 
-  if (!isLoggedIn) return null;
-
-  const handleToggleFavourite = async () => {
+  const handleToggleFavourite = useCallback(async () => {
     setIsLoading(true);
     // /api/post/favourite/${postId}
     const res = await setFavouritePost(postId);
@@ -32,7 +28,9 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
       toast.error(res.message);
     }
     setIsLoading(false);
-  };
+  }, [postId]);
+
+  if (!isLoggedIn) return null;
 
   return (
     <PostActionLinkButton

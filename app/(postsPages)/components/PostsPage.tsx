@@ -7,6 +7,7 @@ import { getSession } from "@/app/actions/getSession";
 import { PostType } from "./types/PostType";
 import PageSelect from "./Pagination";
 import Posts from "./Posts";
+import { memo } from "react";
 
 type PostsPageProps = {
   posts: PostType[];
@@ -52,4 +53,4 @@ const PostsPage: React.FC<PostsPageProps> = async ({
   );
 };
 
-export default PostsPage;
+export default memo(PostsPage);

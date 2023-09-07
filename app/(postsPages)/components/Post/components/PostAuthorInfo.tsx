@@ -3,7 +3,7 @@ import type { PostType } from "../../types/PostType";
 
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { memo, useCallback, useState } from "react";
 import clsx from "clsx";
 import AuthorInfoButton from "./authorInfo/AuthorInfoButton";
 import axios from "axios";
@@ -15,7 +15,7 @@ type PostAuthorInfoProps = {
   setAuthorMethod: (method: "FOLLOW" | "BLOCK") => void;
 };
 
-const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({
+const PostAuthorInfo: React.FC<PostAuthorInfoProps> = ({
   author,
   setSpears,
   setAuthorMethod,
@@ -24,26 +24,25 @@ const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const session = useSession();
 
-  const username = session.data?.user?.username;
+  const handleUserAction = useCallback(
+    (method: "BLOCK" | "FOLLOW") => {
+      setIsLoading(true);
+      axios
+        .post("/api/user/action", {
+          method,
+          id: author.id,
+        })
+        .then((res) => {
+          setAuthorMethod(res.data.method);
+          router.refresh();
+        })
+        .catch((err) => console.log(err))
+        .finally(() => setIsLoading(false));
+    },
+    [author.id, router, setAuthorMethod]
+  );
 
-  const handleUserAction = (method: "BLOCK" | "FOLLOW") => {
-    setIsLoading(true);
-    axios
-      .post("/api/user/action", {
-        method,
-        id: author.id,
-      })
-      .then((res) => {
-        setAuthorMethod(res.data.method);
-        router.refresh();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
-  };
-
-  const isOwnPost = username === author.username;
-
-  const handleToggleSpear = () => {
+  const handleToggleSpear = useCallback(() => {
     setIsLoading(true);
     axios
       .post("/api/user/vote/" + author.id)
@@ -53,7 +52,10 @@ const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({
       })
       .catch((err) => console.error(err))
       .finally(() => setIsLoading(false));
-  };
+  }, [author.id, router, setSpears]);
+
+  const username = session.data?.user?.username;
+  const isOwnPost = username === author.username;
 
   return (
     <>
@@ -139,4 +141,4 @@ const PostAuthorInfor: React.FC<PostAuthorInfoProps> = ({
   );
 };
 
-export default PostAuthorInfor;
+export default memo(PostAuthorInfo);

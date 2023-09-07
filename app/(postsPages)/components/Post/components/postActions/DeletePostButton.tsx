@@ -1,6 +1,6 @@
 import { FaTrash } from "@react-icons/all-files/fa/FaTrash";
 import PostActionLinkButton from "./PostActionLinkButton";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { MonitProvider } from "@/app/context/MonitContext";
 import toast from "react-hot-toast";
 import deletePostAction from "../../actions/deletePost";
@@ -20,9 +20,7 @@ const DeletePostButton: React.FC<DeletePostButtonProps> = ({
   const router = useRouter();
   const monit = useContext(MonitProvider);
 
-  if (!isLoggedIn || !isOwnPost) return null;
-
-  const deletePost = async () => {
+  const deletePost = useCallback(async () => {
     const res = await deletePostAction(postId);
     // /api/post/ (DELETE)
     if (res.deleted) {
@@ -32,11 +30,13 @@ const DeletePostButton: React.FC<DeletePostButtonProps> = ({
       toast.error(res.message!);
     }
     monit!.close();
-  };
+  }, [postId, monit, router]);
 
-  const handleClickDeleteButton = () => {
+  const handleClickDeleteButton = useCallback(() => {
     monit!.create!("Usuwanie", "Na pewno chcesz usunąć tego mema?", deletePost);
-  };
+  }, [deletePost, monit]);
+
+  if (!isLoggedIn || !isOwnPost) return null;
 
   return (
     <PostActionLinkButton onClick={handleClickDeleteButton}>

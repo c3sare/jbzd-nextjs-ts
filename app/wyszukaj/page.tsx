@@ -1,5 +1,5 @@
 const SearchPage = () => {
-  return null;
+  return <div></div>;
 };
 
 export default SearchPage;

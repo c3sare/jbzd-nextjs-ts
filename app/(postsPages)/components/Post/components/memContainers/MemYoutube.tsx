@@ -1,3 +1,4 @@
+import { memo } from "react";
 import YouTubePlayer from "react-youtube";
 
 type MemYoutubeProps = {
@@ -14,4 +15,4 @@ const MemYoutube: React.FC<MemYoutubeProps> = ({ videoId }) => {
   );
 };
 
-export default MemYoutube;
+export default memo(MemYoutube);

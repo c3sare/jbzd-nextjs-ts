@@ -1,7 +1,7 @@
 import "plyr-react/plyr.css";
 
 import Plyr from "plyr-react";
-import { useEffect, useMemo, useRef } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 
 type MemVideoProps = {
   src: string;
@@ -66,4 +66,4 @@ const MemVideo: React.FC<MemVideoProps> = ({ src, gif }) => {
   );
 };
 
-export default MemVideo;
+export default memo(MemVideo);

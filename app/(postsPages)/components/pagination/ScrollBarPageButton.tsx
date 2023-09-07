@@ -1,5 +1,5 @@
-import useAllSearchParams from "@/app/hooks/useAllSearchParams";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 type ScrollBarPageButtonProps = {
   active: boolean;
@@ -12,7 +12,10 @@ const ScrollBarPageButton: React.FC<ScrollBarPageButtonProps> = ({
   page,
   pageName,
 }) => {
-  const query = useAllSearchParams();
+  const query = useSearchParams();
+
+  const searchParamsString = query.toString().replaceAll("+", "%20");
+  const searchParams = searchParamsString ? "?" + searchParamsString : "";
 
   return (
     <td
@@ -26,13 +29,11 @@ const ScrollBarPageButton: React.FC<ScrollBarPageButtonProps> = ({
         </span>
       ) : (
         <Link
-          href={{
-            pathname:
-              page === 1
-                ? `/${pageName === "str" ? "" : pageName}`
-                : `/${pageName}/${page}`,
-            query,
-          }}
+          href={
+            page === 1
+              ? `/${pageName === "str" ? "" : pageName}${searchParams}`
+              : `/${pageName}/${page}${searchParams}`
+          }
           className="block h-[42px] leading-[58px] pl-[6px] text-white border-l-[2px] border-l-[hsla(0,_0%,_100%,_0)] hover:text-white hover:bg-gradient-lightred-blackred"
         >
           {page}

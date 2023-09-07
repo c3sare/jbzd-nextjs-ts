@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { PostType } from "./types/PostType";
 import PostComponent from "@/app/(postsPages)/components/Post/Post";
 
@@ -22,7 +22,7 @@ const Posts: React.FC<PostsProps> = ({ posts }) => {
     deleteAuthorDuplicates(posts.map((item) => item.author))
   );
 
-  const setSpears = (id: string, count: number) => {
+  const setSpears = useCallback((id: string, count: number) => {
     setAuthors((prevState) => {
       const newState = [...prevState];
 
@@ -33,20 +33,23 @@ const Posts: React.FC<PostsProps> = ({ posts }) => {
         return item;
       });
     });
-  };
+  }, []);
 
-  const setAuthorMethod = (id: string, method: "FOLLOW" | "BLOCK") => {
-    setAuthors((prevState) => {
-      const newState = [...prevState];
+  const setAuthorMethod = useCallback(
+    (id: string, method: "FOLLOW" | "BLOCK") => {
+      setAuthors((prevState) => {
+        const newState = [...prevState];
 
-      return newState.map((item) => {
-        if (item!.id === id) {
-          item!.action = method;
-        }
-        return item;
+        return newState.map((item) => {
+          if (item!.id === id) {
+            item!.action = method;
+          }
+          return item;
+        });
       });
-    });
-  };
+    },
+    []
+  );
 
   return posts.map((post) => {
     const author = authors.find((item) => item!.id === post.authorId);
@@ -56,13 +59,11 @@ const Posts: React.FC<PostsProps> = ({ posts }) => {
         key={post.id}
         post={post}
         setSpears={(count: number) => setSpears(author!.id, count)}
-        setAuthorMethod={(method: "FOLLOW" | "BLOCK") =>
-          setAuthorMethod(author!.id, method)
-        }
+        setAuthorMethod={setAuthorMethod}
         author={author}
       />
     );
   });
 };
 
-export default Posts;
+export default memo(Posts);

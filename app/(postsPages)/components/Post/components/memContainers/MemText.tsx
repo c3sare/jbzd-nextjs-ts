@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { memo } from "react";
 
 type MemTextProps = {
   html: string;
@@ -16,4 +17,4 @@ const MemText: React.FC<MemTextProps> = ({ html, postLink }) => {
   );
 };
 
-export default MemText;
+export default memo(MemText);

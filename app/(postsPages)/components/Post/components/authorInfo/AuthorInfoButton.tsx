@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Link from "next/link";
-import React from "react";
+import React, { memo } from "react";
 import { MouseEventHandler } from "react";
 
 type AuthorInfoButtonProps = {
@@ -42,4 +42,4 @@ const AuthorInfoButton: React.FC<AuthorInfoButtonProps> = ({
   }
 };
 
-export default AuthorInfoButton;
+export default memo(AuthorInfoButton);

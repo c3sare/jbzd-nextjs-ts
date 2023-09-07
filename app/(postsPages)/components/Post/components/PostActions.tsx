@@ -7,6 +7,7 @@ import { PostType } from "../../types/PostType";
 import FavouriteButton from "./postActions/FavouriteButton";
 import DeletePostButton from "./postActions/DeletePostButton";
 import ReportPostButton from "./postActions/ReportPostButton";
+import { memo } from "react";
 
 type PostActionsProps = {
   postLink: string;
@@ -67,4 +68,4 @@ const PostActions: React.FC<PostActionsProps> = ({
   );
 };
 
-export default PostActions;
+export default memo(PostActions);

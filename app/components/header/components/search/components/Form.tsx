@@ -3,7 +3,12 @@
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
 import SearchSubmitButton from "./SearchSubmitButton";
 import SearchInput from "./SearchInput";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import SelectRadio from "./SelectRadio";
 
 const dataTypes = ["wszystko", "obrazki", "tagi", "uzytkownicy"];
@@ -12,6 +17,9 @@ const Form = () => {
   const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const isSearchPage = pathname.startsWith("/wyszukaj");
 
   const {
     register,
@@ -19,10 +27,11 @@ const Form = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: async () => {
-      const search = searchParams.get("pharse") || "";
-      const datatype = dataTypes.includes(params.datatype as string)
-        ? params.datatype
-        : "wszystko";
+      const search = isSearchPage ? searchParams.get("pharse") : "" || "";
+      const datatype =
+        dataTypes.includes(params.datatype as string) && isSearchPage
+          ? params.datatype
+          : "wszystko";
 
       return {
         search,

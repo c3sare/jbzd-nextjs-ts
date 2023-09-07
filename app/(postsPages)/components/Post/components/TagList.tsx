@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { PostType } from "../../types/PostType";
 import Tag from "./tagList/Tag";
 
@@ -15,4 +16,4 @@ const TagList: React.FC<TagListProps> = ({ tags }) => {
   );
 };
 
-export default TagList;
+export default memo(TagList);

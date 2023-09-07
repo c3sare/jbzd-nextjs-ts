@@ -6,7 +6,7 @@ import { IoMdArrowDropup } from "@react-icons/all-files/io/IoMdArrowDropup";
 
 import AddBadgeButton from "./AddBadgeButton";
 import useDropdownContainer from "@/app/hooks/useDropdownContainer";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useSession } from "next-auth/react";
 import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
 import setPostBadge from "../../actions/setPostBadge";
@@ -30,31 +30,34 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { isVisible, toggleVisible, containerRef } = useDropdownContainer();
 
-  if (isOwnPost) return null;
+  const handleAddBadge = useCallback(
+    async (type: BadgeType) => {
+      if (!isLoggedIn) return toast.error("Dostęp tylko dla zalogowanych!");
+      setIsLoading(true);
+      toggleVisible();
+      // /api/post/badge/${postId}/${type.toLowerCase()}
 
-  const handleAddBadge = async (type: BadgeType) => {
-    if (!isLoggedIn) return toast.error("Dostęp tylko dla zalogowanych!");
-    setIsLoading(true);
-    toggleVisible();
-    // /api/post/badge/${postId}/${type.toLowerCase()}
-
-    const res = await setPostBadge(postId, type);
-    if (res.result) {
-      const { result, count, type, coins } = res;
-      if (result === "NOT_ENOUGHT_COINS") {
-        toast.error("Nie wystarczająca ilość monet!");
-      } else if (result === "ALREADY_EXIST") {
-        toast.error("Już przyznałeś taką odznakę!");
-      } else if (result === "OK") {
-        setBadgeCount(type as BadgeType, count as number);
-        toast.success("Przyznano odznakę!");
-        session.update({ coins });
+      const res = await setPostBadge(postId, type);
+      if (res.result) {
+        const { result, count, type, coins } = res;
+        if (result === "NOT_ENOUGHT_COINS") {
+          toast.error("Nie wystarczająca ilość monet!");
+        } else if (result === "ALREADY_EXIST") {
+          toast.error("Już przyznałeś taką odznakę!");
+        } else if (result === "OK") {
+          setBadgeCount(type as BadgeType, count as number);
+          toast.success("Przyznano odznakę!");
+          session.update({ coins });
+        }
+      } else {
+        if (res.message) toast.error(res.message);
       }
-    } else {
-      if (res.message) toast.error(res.message);
-    }
-    setIsLoading(false);
-  };
+      setIsLoading(false);
+    },
+    [postId, isLoggedIn, session, toggleVisible, setBadgeCount]
+  );
+
+  if (isOwnPost) return null;
 
   return (
     <div className="w-[51px] min-w-[51px]" ref={containerRef}>

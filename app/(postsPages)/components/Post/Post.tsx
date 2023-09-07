@@ -3,7 +3,7 @@
 import Badge from "./components/Badge";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { memo, useCallback, useState } from "react";
 import ArticleTime from "./components/ArticleTime";
 import { FaComment } from "@react-icons/all-files/fa/FaComment";
 import MemImage from "./components/memContainers/MemImage";
@@ -21,7 +21,7 @@ type PostProps = {
   isPostPage?: boolean;
   author?: PostType["author"];
   setSpears: (count: number) => void;
-  setAuthorMethod: (method: "FOLLOW" | "BLOCK") => void;
+  setAuthorMethod: (id: string, method: "FOLLOW" | "BLOCK") => void;
 };
 
 const Post: React.FC<PostProps> = ({
@@ -39,13 +39,23 @@ const Post: React.FC<PostProps> = ({
 
   const postLink = `/obr/${post.id}/${post.slug}`;
 
-  const setBadgeCount = (type: "ROCK" | "SILVER" | "GOLD", count: number) => {
-    setBadge((prev) => {
-      const newState = { ...prev };
-      newState[type] = count;
-      return newState;
-    });
-  };
+  const setBadgeCount = useCallback(
+    (type: "ROCK" | "SILVER" | "GOLD", count: number) => {
+      setBadge((prev) => {
+        const newState = { ...prev };
+        newState[type] = count;
+        return newState;
+      });
+    },
+    []
+  );
+
+  const setAuthorMethodWithId = useCallback(
+    (method: "FOLLOW" | "BLOCK") => {
+      setAuthorMethod(author!.id!, method);
+    },
+    [author, setAuthorMethod]
+  );
 
   return (
     <article className="flex items-start flex-col md:flex-row relative mx-auto md:mx-0 mb-[40px] w-full max-w-[655px] min-h-[307px]">
@@ -81,7 +91,7 @@ const Post: React.FC<PostProps> = ({
               <PostAuthorInfo
                 author={author}
                 setSpears={setSpears}
-                setAuthorMethod={setAuthorMethod}
+                setAuthorMethod={setAuthorMethodWithId}
               />
             )}
             <span className="text-[#777] pl-[2px]">
@@ -133,4 +143,4 @@ const Post: React.FC<PostProps> = ({
   );
 };
 
-export default Post;
+export default memo(Post);

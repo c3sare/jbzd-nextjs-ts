@@ -1,8 +1,7 @@
 import { FaFlag } from "@react-icons/all-files/fa/FaFlag";
 import PostActionLinkButton from "./PostActionLinkButton";
-import axios from "axios";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
 import createPostReport from "../../actions/createPostReport";
 
@@ -21,9 +20,7 @@ const ReportPostButton: React.FC<ReportPostButtonProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  if (accepted || !isLoggedIn || isOwnPost) return null;
-
-  const handleReportPost = async () => {
+  const handleReportPost = useCallback(async () => {
     setIsLoading(true);
     // /api/post/report/${postId}
     const res = await createPostReport(postId);
@@ -37,7 +34,9 @@ const ReportPostButton: React.FC<ReportPostButtonProps> = ({
       toast.error("Wystąpił problem przy zgłaszaniu!");
     }
     setIsLoading(false);
-  };
+  }, [postId]);
+
+  if (accepted || !isLoggedIn || isOwnPost) return null;
 
   return (
     <PostActionLinkButton onClick={handleReportPost} disabled={isLoading}>
