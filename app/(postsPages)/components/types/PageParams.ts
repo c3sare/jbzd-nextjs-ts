@@ -1,3 +1,3 @@
 export type PageParams = {
-  index: number;
+  index: string | number;
 };

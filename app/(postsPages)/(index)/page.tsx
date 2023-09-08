@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export default async function Home(props: PageProps) {
   headers();
   const posts = await getHomePagePosts({
-    params: { index: 1 },
+    params: { index: "1" },
     searchParams: props.searchParams,
   });
 
