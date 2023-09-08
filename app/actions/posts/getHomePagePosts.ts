@@ -1,5 +1,3 @@
-"use server";
-
 import prisma from "@/app/libs/prismadb";
 import { PostType } from "@/app/(postsPages)/components/types/PostType";
 import addActionPostInfo from "@/utils/addActionPostInfo";
