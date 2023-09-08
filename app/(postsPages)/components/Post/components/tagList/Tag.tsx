@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PostType } from "../../../types/PostType";
 import clsx from "clsx";
-import { useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import setTagActionSA from "../../actions/setTagAction";
 import { toast } from "react-hot-toast";
 
@@ -74,4 +74,4 @@ const Tag: React.FC<TagProps> = ({ tag }) => {
   );
 };
 
-export default Tag;
+export default memo(Tag);

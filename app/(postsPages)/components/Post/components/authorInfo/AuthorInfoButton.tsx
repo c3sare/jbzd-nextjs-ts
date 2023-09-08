@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Link from "next/link";
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import { MouseEventHandler } from "react";
 
 type AuthorInfoButtonProps = {
@@ -20,11 +20,15 @@ const AuthorInfoButton: React.FC<AuthorInfoButtonProps> = ({
   active,
   activeClassName,
 }) => {
-  const className = clsx(
-    "p-[3px_7px] rounded-[4px] text-[#8f8f8f]",
-    disabled ? "disabled:cursor-normal" : "cursor-pointer hover:text-white",
-    active && "text-white",
-    active && activeClassName
+  const className = useMemo(
+    () =>
+      clsx(
+        "p-[3px_7px] rounded-[4px] text-[#8f8f8f]",
+        disabled ? "disabled:cursor-normal" : "cursor-pointer hover:text-white",
+        active && "text-white",
+        active && activeClassName
+      ),
+    [active, disabled, activeClassName]
   );
 
   if (href) {
