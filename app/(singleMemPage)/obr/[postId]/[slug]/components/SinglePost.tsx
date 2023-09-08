@@ -2,7 +2,7 @@
 
 import Post from "@/app/(postsPages)/components/Post/Post";
 import { PostType } from "@/app/(postsPages)/components/types/PostType";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 type SinglePostProps = {
   post: PostType;
@@ -13,7 +13,7 @@ const SinglePost: React.FC<SinglePostProps> = ({ post }) => {
     post.author
   );
 
-  const setSpears = (count: number) => {
+  const setSpears = useCallback((count: number) => {
     setAuthor((prevState) => {
       if (!prevState) return undefined;
 
@@ -21,18 +21,21 @@ const SinglePost: React.FC<SinglePostProps> = ({ post }) => {
       newState.spears = count;
       return newState;
     });
-  };
+  }, []);
 
-  const setAuthorMethod = (method: "FOLLOW" | "BLOCK") => {
-    setAuthor((prevState) => {
-      if (!prevState) return undefined;
+  const setAuthorMethod = useCallback(
+    (id: string, method: "FOLLOW" | "BLOCK") => {
+      setAuthor((prevState) => {
+        if (!prevState) return undefined;
 
-      const newState = { ...prevState };
-      newState.action = method;
+        const newState = { ...prevState };
+        newState.action = method;
 
-      return newState;
-    });
-  };
+        return newState;
+      });
+    },
+    []
+  );
 
   // setAuthorMethod: (method: "FOLLOW" | "BLOCK") => void;
 
