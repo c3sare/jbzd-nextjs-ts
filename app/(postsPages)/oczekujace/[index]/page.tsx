@@ -1,10 +1,10 @@
 import PostsPage from "@/app/(postsPages)/components/PostsPage";
 import { PageProps } from "@/app/(postsPages)/components/types/PageProps";
 import { notFound } from "next/navigation";
-import { getHomePagePosts } from "@/app/actions/posts/getHomePagePosts";
+import { getWaitingPagePosts } from "@/app/actions/posts/getWaitingPagePosts";
 
 export default async function NextHomePage(props: PageProps) {
-  const posts = await getHomePagePosts(props);
+  const posts = await getWaitingPagePosts(props);
 
   if (!posts || posts.posts.length === 0) return notFound();
 
