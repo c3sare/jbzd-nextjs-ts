@@ -2,6 +2,7 @@
 
 import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
+import revalidatePosts from "@/utils/revalidatePosts";
 import { revalidatePath } from "next/cache";
 
 export default async function setPostVote(postId: string) {
@@ -75,24 +76,7 @@ export default async function setPostVote(postId: string) {
       },
     });
 
-    revalidatePath(`/obr/${vote.post.id}/${vote.post.slug}`);
-    revalidatePath(`/${vote.post.category.slug}`);
-    if (vote.post.category.parent) {
-      revalidatePath(`/${vote.post.category.parent.slug}`);
-    }
-    if (vote.post.accepted) {
-      revalidatePath("/");
-    } else {
-      revalidatePath("/oczekujace");
-    }
-
-    revalidatePath("/ulubione");
-
-    revalidatePath(`/${vote.post.author.username}`);
-
-    vote.post.tags.forEach((tag) => {
-      revalidatePath(`/tag/${tag.id}/${tag.slug}`);
-    });
+    revalidatePosts(vote.post);
 
     return { isPlused: !Boolean(voteIsExist), count };
   } catch (err: any) {

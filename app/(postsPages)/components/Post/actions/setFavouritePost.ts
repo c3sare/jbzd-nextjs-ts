@@ -2,6 +2,7 @@
 
 import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
+import revalidatePosts from "@/utils/revalidatePosts";
 import { FavouritePost } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
@@ -70,26 +71,7 @@ export default async function setFavouritePost(postId: string) {
       });
     }
 
-    revalidatePath("/ulubione");
-    revalidatePath(`/uzytkownik/${favourite.post.author.username}`);
-
-    revalidatePath("/obserwowane/dzialy");
-    revalidatePath("/obserwowane/uzytkownicy");
-
-    revalidatePath(`/${favourite.post.category.slug}`);
-
-    if (favourite.post.category.parent)
-      revalidatePath(`/${favourite.post.category.parent.slug}`);
-
-    if (favourite.post.accepted) {
-      revalidatePath("/");
-    } else {
-      revalidatePath("/oczekujace");
-    }
-
-    favourite.post.tags.forEach((tag) => {
-      revalidatePath(`/tag/${tag.id}/${tag.slug}`);
-    });
+    revalidatePosts(favourite.post);
 
     return { isFavourite: !Boolean(favouriteIsExist) };
   } catch (err: any) {

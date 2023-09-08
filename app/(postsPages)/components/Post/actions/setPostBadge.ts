@@ -2,6 +2,7 @@
 
 import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
+import revalidatePosts from "@/utils/revalidatePosts";
 import { revalidatePath } from "next/cache";
 
 const badgeTypes = ["ROCK", "SILVER", "GOLD"] as const;
@@ -99,24 +100,7 @@ export default async function setPostBadge(postId: string, type: BadgeType) {
         },
       });
 
-      revalidatePath(`/obr/${badge.post.id}/${badge.post.slug}`);
-      revalidatePath(`/${badge.post.category.slug}`);
-      if (badge.post.category.parent) {
-        revalidatePath(`/${badge.post.category.parent.slug}`);
-      }
-      if (badge.post.accepted) {
-        revalidatePath("/");
-      } else {
-        revalidatePath("/oczekujace");
-      }
-
-      revalidatePath("/ulubione");
-
-      revalidatePath(`/${badge.post.author.username}`);
-
-      badge.post.tags.forEach((tag) => {
-        revalidatePath(`/tag/${tag.id}/${tag.slug}`);
-      });
+      revalidatePosts(badge.post);
 
       return {
         result: "OK",

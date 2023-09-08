@@ -3,6 +3,7 @@
 import prisma from "@/app/libs/prismadb";
 import { getSession } from "@/app/actions/getSession";
 import { revalidatePath } from "next/cache";
+import revalidatePosts from "@/utils/revalidatePosts";
 
 export default async function deletePost(postId: string) {
   try {
@@ -30,24 +31,7 @@ export default async function deletePost(postId: string) {
 
     if (!post) return { message: "Nie można usunąć tego posta!" };
 
-    revalidatePath(`/obr/${post.id}/${post.slug}`);
-    revalidatePath(`/${post.category.slug}`);
-    if (post.category.parent) {
-      revalidatePath(`/${post.category.parent.slug}`);
-    }
-    if (post.accepted) {
-      revalidatePath("/");
-    } else {
-      revalidatePath("/oczekujace");
-    }
-
-    revalidatePath("/ulubione");
-
-    revalidatePath(`/${post.author.username}`);
-
-    post.tags.forEach((tag) => {
-      revalidatePath(`/tag/${tag.id}/${tag.slug}`);
-    });
+    revalidatePosts(post);
 
     return { deleted: true };
   } catch (err: any) {
