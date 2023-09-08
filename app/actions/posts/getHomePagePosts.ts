@@ -7,6 +7,8 @@ import { PageProps } from "@/app/(postsPages)/components/types/PageProps";
 import parseSearchParams from "@/utils/parseSearchParams";
 import { headers } from "next/headers";
 
+export const dynamic = "force-dynamic";
+
 export async function getHomePagePosts({
   params: { index },
   searchParams,
