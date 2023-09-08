@@ -3,6 +3,8 @@ import PostsPage from "../components/PostsPage";
 import { getHomePagePosts } from "@/app/actions/posts/getHomePagePosts";
 import { PageProps } from "../components/types/PageProps";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home(props: PageProps) {
   const posts = await getHomePagePosts({
     params: { index: 1 },

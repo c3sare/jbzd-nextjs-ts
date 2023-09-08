@@ -1,3 +1,5 @@
+"use server";
+
 import prisma from "@/app/libs/prismadb";
 import { PostType } from "@/app/(postsPages)/components/types/PostType";
 import addActionPostInfo from "@/utils/addActionPostInfo";
@@ -5,12 +7,14 @@ import getActionedUsersLists from "../getActionedUsersLists";
 import getActionedTagsLists from "../getActionedTagsLists";
 import { PageProps } from "@/app/(postsPages)/components/types/PageProps";
 import parseSearchParams from "@/utils/parseSearchParams";
+import { headers } from "next/headers";
 
 export async function getHomePagePosts({
   params: { index },
   searchParams,
 }: PageProps) {
   try {
+    headers();
     const { blockedUsersIds, followedUsersIds } = await getActionedUsersLists();
 
     const { blockedTagsIds, followedTagsIds } = await getActionedTagsLists();
