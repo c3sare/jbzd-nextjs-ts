@@ -2,8 +2,6 @@
 
 import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
-import revalidatePosts from "@/utils/revalidatePosts";
-import { revalidatePath } from "next/cache";
 
 const badgeTypes = ["ROCK", "SILVER", "GOLD"] as const;
 
@@ -99,8 +97,6 @@ export default async function setPostBadge(postId: string, type: BadgeType) {
           type: selectedType,
         },
       });
-
-      revalidatePosts(badge.post);
 
       return {
         result: "OK",

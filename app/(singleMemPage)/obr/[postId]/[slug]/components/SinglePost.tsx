@@ -13,7 +13,7 @@ const SinglePost: React.FC<SinglePostProps> = ({ post }) => {
     post.author
   );
 
-  const setSpears = useCallback((count: number) => {
+  const setSpears = useCallback((authorId: string, count: number) => {
     setAuthor((prevState) => {
       if (!prevState) return undefined;
 

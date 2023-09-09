@@ -3,7 +3,6 @@
 import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
 import { TagAction } from "@prisma/client";
-import { revalidatePath } from "next/cache";
 
 export default async function setTagAction(
   id: string,
@@ -34,10 +33,6 @@ export default async function setTagAction(
           },
         },
       });
-
-      tagAction.tag.posts.forEach((post) => {
-        revalidatePath(`/obr/${post.id}/${post.slug}`);
-      });
     }
     let currentMethod = "";
     if ((isActioned as unknown as TagAction)?.method !== method) {
@@ -59,10 +54,6 @@ export default async function setTagAction(
           },
         },
       });
-      tagAction.tag.posts.forEach((post) => {
-        revalidatePath(`/obr/${post.id}/${post.slug}`);
-      });
-
       currentMethod = tagAction.method;
     }
 

@@ -10,6 +10,7 @@ const CategoryLink: React.FC<CategoryLinkProps> = ({ children, href }) => {
     <Link
       href={href}
       className="block text-sm font-bold text-white hover:underline"
+      prefetch={false}
     >
       {children}
     </Link>

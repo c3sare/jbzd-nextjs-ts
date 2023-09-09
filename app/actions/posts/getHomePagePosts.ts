@@ -5,7 +5,8 @@ import getActionedUsersLists from "../getActionedUsersLists";
 import getActionedTagsLists from "../getActionedTagsLists";
 import { PageProps } from "@/app/(postsPages)/components/types/PageProps";
 import parseSearchParams from "@/utils/parseSearchParams";
-import { headers } from "next/headers";
+
+export const fetchCache = "force-no-store";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,6 @@ export async function getHomePagePosts({
   searchParams,
 }: PageProps) {
   try {
-    headers();
     const { blockedUsersIds, followedUsersIds } = await getActionedUsersLists();
 
     const { blockedTagsIds, followedTagsIds } = await getActionedTagsLists();

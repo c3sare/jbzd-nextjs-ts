@@ -12,6 +12,12 @@ import { getCategories } from "@/app/actions/getCategories";
 import CategoryHeader from "./components/CategoryHeader";
 import { getCategoryAction } from "@/app/actions/getCategoryAction";
 
+export const fetchCache = "force-no-store";
+
+export const dynamic = "force-dynamic";
+
+export const revalidate = 0;
+
 export default async function NextHomePage(props: CategoryPageProps) {
   const posts = await getCategoryPagePosts({
     params: { index: "1", category: props.params.category },

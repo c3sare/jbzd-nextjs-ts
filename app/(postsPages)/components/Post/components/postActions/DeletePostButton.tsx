@@ -26,6 +26,7 @@ const DeletePostButton: React.FC<DeletePostButtonProps> = ({
     if (res.deleted) {
       toast.success("Pomyślnie usunięto post!");
       router.push("/");
+      router.refresh();
     } else {
       toast.error(res.message!);
     }

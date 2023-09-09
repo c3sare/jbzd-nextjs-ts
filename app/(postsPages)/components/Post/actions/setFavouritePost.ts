@@ -2,9 +2,6 @@
 
 import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
-import revalidatePosts from "@/utils/revalidatePosts";
-import { FavouritePost } from "@prisma/client";
-import { revalidatePath } from "next/cache";
 
 export default async function setFavouritePost(postId: string) {
   const session = await getSession();
@@ -70,8 +67,6 @@ export default async function setFavouritePost(postId: string) {
         },
       });
     }
-
-    revalidatePosts(favourite.post);
 
     return { isFavourite: !Boolean(favouriteIsExist) };
   } catch (err: any) {

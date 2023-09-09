@@ -2,8 +2,6 @@
 
 import prisma from "@/app/libs/prismadb";
 import { getSession } from "@/app/actions/getSession";
-import { revalidatePath } from "next/cache";
-import revalidatePosts from "@/utils/revalidatePosts";
 
 export default async function deletePost(postId: string) {
   try {
@@ -30,8 +28,6 @@ export default async function deletePost(postId: string) {
     });
 
     if (!post) return { message: "Nie można usunąć tego posta!" };
-
-    revalidatePosts(post);
 
     return { deleted: true };
   } catch (err: any) {

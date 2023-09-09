@@ -3,6 +3,7 @@ import PostActionLinkButton from "./PostActionLinkButton";
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import setFavouritePost from "../../actions/setFavouritePost";
+import { useRouter } from "next/navigation";
 
 type FavouriteButtonProps = {
   postId: string;
@@ -15,6 +16,7 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
   isLoggedIn,
   isFavourite,
 }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(isFavourite);
 
@@ -24,6 +26,7 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
     const res = await setFavouritePost(postId);
     if (typeof res.isFavourite === "boolean") {
       setIsActive(res.isFavourite);
+      router.refresh();
     } else {
       toast.error(res.message);
     }

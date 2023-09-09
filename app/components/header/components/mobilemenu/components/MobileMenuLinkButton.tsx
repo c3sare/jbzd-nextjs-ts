@@ -33,7 +33,7 @@ const MobileMenuLinkButton: React.FC<MobileMenuLinkButtonProps> = ({
 
   if (href)
     return (
-      <Link href={href} className={className}>
+      <Link href={href} className={className} prefetch={false}>
         {content}
       </Link>
     );

@@ -6,6 +6,10 @@ import getActionedTagsLists from "../getActionedTagsLists";
 import { PageProps } from "@/app/(postsPages)/components/types/PageProps";
 import parseSearchParams from "@/utils/parseSearchParams";
 
+export const fetchCache = "force-no-store";
+
+export const dynamic = "force-dynamic";
+
 export async function getWaitingPagePosts({
   params: { index },
   searchParams,

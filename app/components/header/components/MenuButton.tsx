@@ -43,7 +43,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
   );
 
   return href ? (
-    <Link href={href} className={classNames}>
+    <Link href={href} className={classNames} prefetch={false}>
       {content}
     </Link>
   ) : (

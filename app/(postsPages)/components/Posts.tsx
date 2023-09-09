@@ -51,6 +51,10 @@ const Posts: React.FC<PostsProps> = ({ posts }) => {
     []
   );
 
+  const setSpearsCount = useCallback((authorId: string, count: number) => {
+    setSpears(authorId, count);
+  }, []);
+
   return posts.map((post) => {
     const author = authors.find((item) => item!.id === post.authorId);
 
@@ -58,7 +62,7 @@ const Posts: React.FC<PostsProps> = ({ posts }) => {
       <PostComponent
         key={post.id}
         post={post}
-        setSpears={(count: number) => setSpears(author!.id, count)}
+        setSpears={setSpearsCount}
         setAuthorMethod={setAuthorMethod}
         author={author}
       />
@@ -66,4 +70,4 @@ const Posts: React.FC<PostsProps> = ({ posts }) => {
   });
 };
 
-export default memo(Posts);
+export default Posts;

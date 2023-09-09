@@ -23,6 +23,7 @@ const MessagesButton = () => {
             <Link
               className="text-[11px] text-[#6e7578] p-0"
               href="/wiadomosci-prywatne"
+              prefetch={false}
             >
               Zobacz wszystkie
             </Link>

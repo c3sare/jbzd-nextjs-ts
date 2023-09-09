@@ -26,6 +26,7 @@ const NotificationsButton = () => {
             <Link
               className="text-[11px] text-[#6e7578] p-0"
               href="/uzytkownik/notyfikacje"
+              prefetch={false}
             >
               Zobacz wszystkie
             </Link>

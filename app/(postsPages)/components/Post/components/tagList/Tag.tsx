@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { memo, useCallback, useState } from "react";
 import setTagActionSA from "../../actions/setTagAction";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type TagProps = {
   tag: PostType["tags"][0];
@@ -12,6 +13,7 @@ type TagProps = {
 type TagActionType = "FOLLOW" | "BLOCK" | "";
 
 const Tag: React.FC<TagProps> = ({ tag }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tagAction, setTagAction] = useState<TagActionType>(tag.action || "");
 
@@ -23,6 +25,7 @@ const Tag: React.FC<TagProps> = ({ tag }) => {
 
       if (res.method || res.method === "") {
         setTagAction(res.method as TagActionType);
+        router.refresh();
       } else {
         if (res.message) toast.error(res.message);
       }

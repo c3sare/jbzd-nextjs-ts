@@ -6,6 +6,12 @@ import Posts from "../components/Posts";
 import Pagination from "../components/Pagination";
 import { getFavouritePagePosts } from "@/app/actions/posts/getFavouritePagePosts";
 
+export const fetchCache = "force-no-store";
+
+export const dynamic = "force-dynamic";
+
+export const revalidate = 0;
+
 export default async function Home(props: PageProps) {
   const posts = await getFavouritePagePosts({
     params: { index: 1 },

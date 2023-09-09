@@ -1,18 +1,25 @@
-import { memo } from "react";
-import YouTubePlayer from "react-youtube";
+import { useEffect, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
+const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 type MemYoutubeProps = {
   videoId: string;
 };
 
 const MemYoutube: React.FC<MemYoutubeProps> = ({ videoId }) => {
-  return (
-    <YouTubePlayer
-      opts={{ width: "100%", height: "338px" }}
-      style={{ width: "600px", maxWidth: "100%" }}
-      videoId={videoId}
-    />
-  );
+  const [player, setPlayer] = useState<any>(null);
+
+  useEffect(() => {
+    if (player === null)
+      setPlayer(
+        <ReactPlayer
+          url={`https://youtube.com/watch?v=${videoId}`}
+          style={{ width: "600px", maxWidth: "100%" }}
+        />
+      );
+  }, []);
+
+  return player;
 };
 
-export default memo(MemYoutube);
+export default MemYoutube;

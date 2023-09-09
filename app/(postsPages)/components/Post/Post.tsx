@@ -3,7 +3,7 @@
 import Badge from "./components/Badge";
 import Image from "next/image";
 import Link from "next/link";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import ArticleTime from "./components/ArticleTime";
 import { FaComment } from "@react-icons/all-files/fa/FaComment";
 import MemImage from "./components/memContainers/MemImage";
@@ -20,7 +20,7 @@ type PostProps = {
   post: PostType;
   isPostPage?: boolean;
   author?: PostType["author"];
-  setSpears: (count: number) => void;
+  setSpears: (authorId: string, count: number) => void;
   setAuthorMethod: (id: string, method: "FOLLOW" | "BLOCK") => void;
 };
 
@@ -52,6 +52,36 @@ const Post: React.FC<PostProps> = ({
 
   const setAuthorMethodWithId = useCallback((method: "FOLLOW" | "BLOCK") => {
     setAuthorMethod(author!.id!, method);
+  }, []);
+
+  const memContainers = useMemo(
+    () =>
+      post.memContainers.map((mem, index) => {
+        switch (mem.type) {
+          case "IMAGE":
+            return (
+              <MemImage
+                postLink={postLink}
+                key={index}
+                src={mem.data}
+                title={post.title}
+              />
+            );
+          case "GIF":
+            return <MemVideo key={index} src={mem.data} gif />;
+          case "TEXT":
+            return <MemText postLink={postLink} key={index} html={mem.data} />;
+          case "VIDEO":
+            return <MemVideo key={index} src={mem.data} />;
+          case "YOUTUBE":
+            return <MemYoutube key={index} videoId={mem.data} />;
+        }
+      }),
+    []
+  );
+
+  const setSpearsCount = useCallback((count: number) => {
+    setSpears(author!.id!, count);
   }, []);
 
   return (
@@ -87,7 +117,7 @@ const Post: React.FC<PostProps> = ({
             {author && (
               <PostAuthorInfo
                 author={author}
-                setSpears={setSpears}
+                setSpears={setSpearsCount}
                 setAuthorMethod={setAuthorMethodWithId}
               />
             )}
@@ -103,31 +133,7 @@ const Post: React.FC<PostProps> = ({
           </div>
         </div>
         {isPostPage && <TagList tags={post.tags} />}
-        <div className="flex flex-col w-full gap-1">
-          {post.memContainers.map((mem, index) => {
-            switch (mem.type) {
-              case "IMAGE":
-                return (
-                  <MemImage
-                    postLink={postLink}
-                    key={index}
-                    src={mem.data}
-                    title={post.title}
-                  />
-                );
-              case "GIF":
-                return <MemVideo key={index} src={mem.data} gif />;
-              case "TEXT":
-                return (
-                  <MemText postLink={postLink} key={index} html={mem.data} />
-                );
-              case "VIDEO":
-                return <MemVideo key={index} src={mem.data} />;
-              case "YOUTUBE":
-                return <MemYoutube key={index} videoId={mem.data} />;
-            }
-          })}
-        </div>
+        <div className="flex flex-col w-full gap-1">{memContainers}</div>
       </div>
       <PostActions
         post={post}

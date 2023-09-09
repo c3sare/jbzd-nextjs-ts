@@ -30,6 +30,7 @@ const CoinsBox = () => {
           <Link
             href="/premium/monetki/tutorial"
             className="px-[10px] py-[5px] text-[16px]"
+            prefetch={false}
           >
             Tutorial
           </Link>

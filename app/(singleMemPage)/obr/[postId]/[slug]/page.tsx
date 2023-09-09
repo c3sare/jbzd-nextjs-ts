@@ -12,6 +12,12 @@ type MemPageProps = {
   };
 };
 
+export const fetchCache = "force-no-store";
+
+export const dynamic = "force-dynamic";
+
+export const revalidate = 0;
+
 const MemPage: React.FC<MemPageProps> = async ({
   params: { postId, slug },
 }) => {
