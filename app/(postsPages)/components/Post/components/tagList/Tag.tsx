@@ -31,7 +31,7 @@ const Tag: React.FC<TagProps> = ({ tag }) => {
       }
       setIsLoading(false);
     },
-    [tag.id]
+    [tag.id, router]
   );
 
   return (

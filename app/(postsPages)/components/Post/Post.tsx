@@ -50,9 +50,12 @@ const Post: React.FC<PostProps> = ({
     []
   );
 
-  const setAuthorMethodWithId = useCallback((method: "FOLLOW" | "BLOCK") => {
-    setAuthorMethod(author!.id!, method);
-  }, []);
+  const setAuthorMethodWithId = useCallback(
+    (method: "FOLLOW" | "BLOCK") => {
+      setAuthorMethod(author!.id!, method);
+    },
+    [author, setAuthorMethod]
+  );
 
   const memContainers = useMemo(
     () =>
@@ -77,12 +80,15 @@ const Post: React.FC<PostProps> = ({
             return <MemYoutube key={index} videoId={mem.data} />;
         }
       }),
-    []
+    [post.memContainers, post.title, postLink]
   );
 
-  const setSpearsCount = useCallback((count: number) => {
-    setSpears(author!.id!, count);
-  }, []);
+  const setSpearsCount = useCallback(
+    (count: number) => {
+      setSpears(author!.id!, count);
+    },
+    [author, setSpears]
+  );
 
   return (
     <article className="flex items-start flex-col md:flex-row relative mx-auto md:mx-0 mb-[40px] w-full max-w-[655px] min-h-[307px]">

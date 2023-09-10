@@ -7,19 +7,12 @@ type MemYoutubeProps = {
 };
 
 const MemYoutube: React.FC<MemYoutubeProps> = ({ videoId }) => {
-  const [player, setPlayer] = useState<any>(null);
-
-  useEffect(() => {
-    if (player === null)
-      setPlayer(
-        <ReactPlayer
-          url={`https://youtube.com/watch?v=${videoId}`}
-          style={{ width: "600px", maxWidth: "100%" }}
-        />
-      );
-  }, []);
-
-  return player;
+  return (
+    <ReactPlayer
+      url={`https://youtube.com/watch?v=${videoId}`}
+      style={{ width: "600px", maxWidth: "100%" }}
+    />
+  );
 };
 
 export default MemYoutube;

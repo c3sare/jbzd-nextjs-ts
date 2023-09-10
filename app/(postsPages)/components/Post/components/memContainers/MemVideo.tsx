@@ -46,7 +46,7 @@ const MemVideo: React.FC<MemVideoProps> = ({ src, gif }) => {
         autoPlay={gif}
       />
     ),
-    []
+    [src, gif]
   );
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const MemVideo: React.FC<MemVideoProps> = ({ src, gif }) => {
       ref.current.querySelector(".plyr__controls")!.innerHTML =
         plyrControls + a;
     }
-  }, []);
+  }, [src]);
 
   return (
     <div ref={ref} className="w-[600px] max-w-full">

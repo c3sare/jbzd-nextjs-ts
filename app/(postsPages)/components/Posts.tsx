@@ -51,9 +51,12 @@ const Posts: React.FC<PostsProps> = ({ posts }) => {
     []
   );
 
-  const setSpearsCount = useCallback((authorId: string, count: number) => {
-    setSpears(authorId, count);
-  }, []);
+  const setSpearsCount = useCallback(
+    (authorId: string, count: number) => {
+      setSpears(authorId, count);
+    },
+    [setSpears]
+  );
 
   return posts.map((post) => {
     const author = authors.find((item) => item!.id === post.authorId);

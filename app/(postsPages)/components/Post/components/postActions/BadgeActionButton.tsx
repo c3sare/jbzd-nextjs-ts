@@ -57,7 +57,7 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
       }
       setIsLoading(false);
     },
-    [postId, isLoggedIn, session, toggleVisible, setBadgeCount]
+    [router, postId, isLoggedIn, session, toggleVisible, setBadgeCount]
   );
 
   if (isOwnPost) return null;

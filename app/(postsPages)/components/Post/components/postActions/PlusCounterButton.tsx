@@ -35,7 +35,7 @@ const PlusCounterButton: React.FC<PlusCounterButtonProps> = ({
       toast.error(res.message);
     }
     setIsLoading(false);
-  }, [postId]);
+  }, [postId, router]);
 
   return (
     <div className="w-full md:w-auto">

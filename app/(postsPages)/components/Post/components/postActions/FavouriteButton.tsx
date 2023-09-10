@@ -31,7 +31,7 @@ const FavouriteButton: React.FC<FavouriteButtonProps> = ({
       toast.error(res.message);
     }
     setIsLoading(false);
-  }, [postId]);
+  }, [postId, router]);
 
   if (!isLoggedIn) return null;
 
