@@ -32,7 +32,10 @@ const PresetButton: React.FC<PresetButtonProps> = ({ children, preset }) => {
   const presetParam =
     params.find((item) => item.param === "date-preset")?.value || "";
 
-  const isActive = presetParam === preset;
+  const from = params.find((item) => item.param === "from")?.value;
+  const to = params.find((item) => item.param === "to")?.value;
+
+  const isActive = presetParam === preset && !from && !to;
 
   return (
     <button

@@ -8,6 +8,7 @@ import clsx from "clsx";
 import AuthorInfoButton from "./authorInfo/AuthorInfoButton";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
 
 type PostAuthorInfoProps = {
   author: Required<PostType>["author"];
@@ -60,10 +61,10 @@ const PostAuthorInfo: React.FC<PostAuthorInfoProps> = ({
   return (
     <>
       <span className="text-[#777]"> przez </span>
-      <span className="relative text-white group">
+      <span className="md:relative text-white group">
         {author.username}
-        <div className="absolute z-[9999999] hidden top-full left-[calc(50%_-_10px)] translate-x--1/2 group-hover:block">
-          <div className="mt-[8px] w-[310px] rounded-[3px] bg-[#313131] flex before:w-0 before:h-0 before:content-normal before:block before:border-r-[5px] before:border-l-[5px] before:border-b-[5px] before:border-solid before:border-[transparent_transparent_#313131] before:absolute before:left-[10px] before:top-[3px] p-[15px]">
+        <div className="absolute z-[9999999] hidden top-full left-0 md:left-[calc(50%_-_10px)] md:translate-x--1/2 group-hover:block max-w-full md:max-w-none">
+          <div className="max-w-full md:max-w-none mt-[8px] w-[310px] rounded-[3px] bg-[#313131] flex md:before:w-0 md:before:h-0 md:before:content-normal md:before:block md:before:border-r-[5px] md:before:border-l-[5px] md:before:border-b-[5px] md:before:border-solid md:before:border-[transparent_transparent_#313131] md:before:absolute md:before:left-[10px] md:before:top-[3px] p-[15px]">
             <div className="w-full flex flex-nowrap gap-[10px]">
               <div className="w-[45px] flex items-center">
                 <Image
@@ -100,7 +101,11 @@ const PostAuthorInfo: React.FC<PostAuthorInfoProps> = ({
                         className="w-[25px] h-[25px] rounded-full absolute right-[-5px] text-white bg-[#c03e3e] font-bold text-[30px] flex items-center justify-center ml-2"
                         onClick={handleToggleSpear}
                       >
-                        +
+                        {isLoading ? (
+                          <BiLoaderAlt className="animate-spin text-[14px] mx-auto" />
+                        ) : (
+                          "+"
+                        )}
                       </button>
                     )}
                   </div>

@@ -183,7 +183,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
 
   return (
     <form
-      className="my-[20px] bg-[#313131] p-[10px] relative text-left max-w-[600px]"
+      className="my-[20px] md:mx-0 mx-auto bg-[#313131] p-[10px] relative text-left max-w-[600px]"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="w-full mb-[20px]">

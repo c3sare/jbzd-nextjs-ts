@@ -1,3 +1,4 @@
+import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
 import clsx from "clsx";
 import Link from "next/link";
 import React, { memo, useMemo } from "react";
@@ -23,7 +24,7 @@ const AuthorInfoButton: React.FC<AuthorInfoButtonProps> = ({
   const className = useMemo(
     () =>
       clsx(
-        "p-[3px_7px] rounded-[4px] text-[#8f8f8f]",
+        "p-[3px_7px] rounded-[4px] text-[#8f8f8f] relative",
         disabled ? "disabled:cursor-normal" : "cursor-pointer hover:text-white",
         active && "text-white",
         active && activeClassName

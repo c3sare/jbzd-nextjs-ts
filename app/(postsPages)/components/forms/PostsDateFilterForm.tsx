@@ -77,7 +77,7 @@ const PostsDateFilterForm: React.FC<PostsDateFilterFormProps> = ({
   return (
     <div
       onSubmit={handleSubmit(onSubmit)}
-      className="relative md:absolute w-[660px] max-w-full flex justify-center items-center gap-[10px] top-[5px] md:top-[calc(100%_+_5px)] z-10 bg-[#3c3c3c] md:left-0 flex-col p-[20px]"
+      className="relative md:absolute w-[660px] max-w-full mx-auto flex justify-center items-center gap-[10px] top-[5px] md:top-[calc(100%_+_5px)] z-10 bg-[#3c3c3c] md:left-0 flex-col p-[20px]"
     >
       <div className="flex w-full gap-[10px] flex-wrap sm:flex-nowrap">
         <PresetButton preset="">Nowe</PresetButton>

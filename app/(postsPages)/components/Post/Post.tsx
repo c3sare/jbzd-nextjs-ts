@@ -112,7 +112,7 @@ const Post: React.FC<PostProps> = ({
           </div>
         </h3>
         <div className="p-[4px_8px] bg-[#1f1f1f] text-[12px] text-[#777] flex justify-between items-center w-full">
-          <div className="flex gap-[5px] text-white max-w-full ml-1 text-[12px] flex-wrap">
+          <div className="flex gap-[5px] text-white max-w-full ml-1 text-[12px] flex-wrap relative">
             <Categories category={post.category} />
             {author && (
               <PostAuthorInfo
