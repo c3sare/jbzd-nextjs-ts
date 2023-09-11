@@ -4,6 +4,7 @@ import SinglePostFooter from "./components/SinglePostFooter";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import Link from "next/link";
 import SinglePost from "./components/SinglePost";
+import AddCommentForm from "./components/Comment/components/AddCommentForm";
 
 type MemPageProps = {
   params: {
@@ -39,6 +40,7 @@ const MemPage: React.FC<MemPageProps> = async ({
         )}
       </Breadcrumb>
       <SinglePost post={post} />
+      <AddCommentForm avatar={"/images/avatars/default.jpg"} postId={post.id} />
       <SinglePostFooter />
     </>
   );
