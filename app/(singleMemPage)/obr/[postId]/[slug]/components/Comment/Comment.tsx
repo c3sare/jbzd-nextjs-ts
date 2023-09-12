@@ -9,11 +9,11 @@ import CommentVotes from "./components/CommentVotes";
 import { HTMLAttributes, useCallback, useMemo, useRef, useState } from "react";
 import { FaReply } from "@react-icons/all-files/fa/FaReply";
 import { FaQuoteLeft } from "@react-icons/all-files/fa/FaQuoteLeft";
-import { FaStar } from "@react-icons/all-files/fa/FaStar";
 import CommentType from "../../types/CommentType";
 import AddCommentForm from "./components/AddCommentForm";
 import parseContentToRC from "./utils/parseContentToRC";
 import BadgeButton from "./components/BadgeButton";
+import FavouriteButton from "./components/FavouriteButton";
 
 type Badges = {
   rock: number;
@@ -24,9 +24,14 @@ type Badges = {
 type CommentProps = {
   comment: CommentType;
   className?: HTMLAttributes<HTMLDivElement>["className"];
+  isLoggedIn: boolean;
 };
 
-const Comment: React.FC<CommentProps> = ({ comment, className }) => {
+const Comment: React.FC<CommentProps> = ({
+  comment,
+  className,
+  isLoggedIn,
+}) => {
   const defaultValue = useRef<string>("");
   const [showAddComment, setShowAddComment] = useState<boolean>(false);
   const [badge, setBadge] = useState<Badges>({
@@ -52,6 +57,8 @@ const Comment: React.FC<CommentProps> = ({ comment, className }) => {
   const voteMinus = comment.minuses?.length === 1 ? "minus" : null;
 
   const voteMethod = votePlus || voteMinus || "";
+
+  const isFavouriteComment = comment.favouriteList?.length === 1;
 
   return (
     <div className={className}>
@@ -89,37 +96,44 @@ const Comment: React.FC<CommentProps> = ({ comment, className }) => {
               postId={comment.postId}
               commentId={comment.id}
               defaultMethod={voteMethod}
+              isLoggedIn={isLoggedIn}
             />
           </header>
           <p className="text-[14px] text-white my-[5px] break-words overflow-hidden">
             {commentContent}
           </p>
-          <div className="flex items-center">
-            <CommentButton
-              onClick={() => {
-                defaultValue.current = `@[${comment.author.username}] `;
-                handleToggleCommentForm();
-              }}
-              icon={FaReply}
-            >
-              Odpowiedz
-            </CommentButton>
-            <CommentButton
-              onClick={() => {
-                defaultValue.current = `@[${comment.author.username}]\n[quote]${comment.content}[/quote]\n`;
-                handleToggleCommentForm();
-              }}
-              icon={FaQuoteLeft}
-            >
-              Zacytuj
-            </CommentButton>
-            <BadgeButton
-              setBadge={setBadge}
-              postId={comment.postId}
-              commentId={comment.id}
-            />
-            <CommentButton icon={FaStar}>Ulubione</CommentButton>
-          </div>
+          {isLoggedIn && (
+            <div className="flex items-center">
+              <CommentButton
+                onClick={() => {
+                  defaultValue.current = `@[${comment.author.username}] `;
+                  handleToggleCommentForm();
+                }}
+                icon={FaReply}
+              >
+                Odpowiedz
+              </CommentButton>
+              <CommentButton
+                onClick={() => {
+                  defaultValue.current = `@[${comment.author.username}]\n[quote]${comment.content}[/quote]\n`;
+                  handleToggleCommentForm();
+                }}
+                icon={FaQuoteLeft}
+              >
+                Zacytuj
+              </CommentButton>
+              <BadgeButton
+                setBadge={setBadge}
+                postId={comment.postId}
+                commentId={comment.id}
+              />
+              <FavouriteButton
+                postId={comment.postId}
+                defaultActive={isFavouriteComment}
+                commentId={comment.id}
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="ml-[45px]">
@@ -137,6 +151,7 @@ const Comment: React.FC<CommentProps> = ({ comment, className }) => {
             <Comment
               className="border-l border-l-white"
               key={subcomment.id}
+              isLoggedIn={isLoggedIn}
               comment={subcomment}
             />
           ))}

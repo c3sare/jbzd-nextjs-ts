@@ -1,4 +1,9 @@
-import { Comment, CommentVoteMinus, CommentVotePlus } from "@prisma/client";
+import {
+  Comment,
+  CommentVoteMinus,
+  CommentVotePlus,
+  FavouriteComment,
+} from "@prisma/client";
 
 export default interface CommentType extends Comment {
   author: {
@@ -15,5 +20,6 @@ export default interface CommentType extends Comment {
   };
   pluses?: CommentVotePlus[];
   minuses?: CommentVoteMinus[];
+  favouriteList?: FavouriteComment[];
   subcomments?: CommentType[];
 }

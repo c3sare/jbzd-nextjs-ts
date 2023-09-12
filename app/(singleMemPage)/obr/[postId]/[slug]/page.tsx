@@ -6,6 +6,7 @@ import Link from "next/link";
 import SinglePost from "./components/SinglePost";
 import CommentSection from "./components/CommentsSection";
 import { getComments } from "@/app/actions/comments/getComments";
+import { getSession } from "next-auth/react";
 
 type MemPageProps = {
   params: {
@@ -37,6 +38,10 @@ const MemPage: React.FC<MemPageProps> = async ({
 
   if (!comments) return notFound();
 
+  const session = await getSession();
+
+  const isLoggedIn = Boolean(session?.user?.id);
+
   return (
     <>
       <Breadcrumb currentNode={post.title}>
@@ -55,6 +60,7 @@ const MemPage: React.FC<MemPageProps> = async ({
         commentsCount={post.comments}
         comments={comments}
         postId={post.id}
+        isLoggedIn={isLoggedIn}
       />
     </>
   );

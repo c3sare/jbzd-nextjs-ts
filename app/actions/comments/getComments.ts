@@ -41,6 +41,14 @@ export async function getComments(postId: string, sort?: string) {
       }
     : undefined;
 
+  const favouriteList = loggedUserId
+    ? {
+        where: {
+          authorId: loggedUserId,
+        },
+      }
+    : undefined;
+
   const comments = await prisma.comment.findMany({
     where: {
       postId,
@@ -53,6 +61,7 @@ export async function getComments(postId: string, sort?: string) {
     include: {
       pluses,
       minuses,
+      favouriteList,
       _count: {
         select: {
           pluses: true,
@@ -73,6 +82,7 @@ export async function getComments(postId: string, sort?: string) {
           },
           pluses,
           minuses,
+          favouriteList,
           _count: {
             select: {
               pluses: true,

@@ -8,6 +8,7 @@ type CommentButtonProps = {
   icon?: IconType;
   className?: HTMLAttributes<HTMLButtonElement>["className"];
   disabled?: boolean;
+  active?: boolean;
 };
 
 const CommentButton: React.FC<CommentButtonProps> = ({
@@ -16,6 +17,7 @@ const CommentButton: React.FC<CommentButtonProps> = ({
   icon: Icon,
   className,
   disabled,
+  active,
 }) => {
   return (
     <button
@@ -23,7 +25,8 @@ const CommentButton: React.FC<CommentButtonProps> = ({
       onClick={onClick}
       className={clsx(
         "text-[12px] text-[#777] mr-[10px] flex items-center justify-between hover:text-[#bd3c3c] disabled:opacity-60",
-        className
+        className,
+        active && "text-[#bd3c3c]"
       )}
     >
       {Icon && <Icon size={16} className="mr-[5px]" />}

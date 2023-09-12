@@ -9,6 +9,7 @@ type CommentVotesProps = {
   postId: string;
   defaultMethod?: "" | "plus" | "minus";
   votes: number;
+  isLoggedIn: boolean;
 };
 
 const CommentVotes: React.FC<CommentVotesProps> = ({
@@ -16,6 +17,7 @@ const CommentVotes: React.FC<CommentVotesProps> = ({
   postId,
   defaultMethod = "",
   votes,
+  isLoggedIn,
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -47,27 +49,31 @@ const CommentVotes: React.FC<CommentVotesProps> = ({
 
   return (
     <div className="flex">
-      <button
-        disabled={isLoading}
-        className={clsx(
-          btnClassName,
-          method === "plus" ? "bg-[#94b425]" : "bg-[#313131]"
-        )}
-        onClick={() => handleClickVote("plus")}
-      >
-        +
-      </button>
+      {isLoggedIn && (
+        <button
+          disabled={isLoading}
+          className={clsx(
+            btnClassName,
+            method === "plus" ? "bg-[#94b425]" : "bg-[#313131]"
+          )}
+          onClick={() => handleClickVote("plus")}
+        >
+          +
+        </button>
+      )}
       <span className="text-[14px] mx-[5px] text-white">{voteCount}</span>
-      <button
-        disabled={isLoading}
-        className={clsx(
-          btnClassName,
-          method === "minus" ? "bg-[#c03e3e]" : "bg-[#313131]"
-        )}
-        onClick={() => handleClickVote("minus")}
-      >
-        -
-      </button>
+      {isLoggedIn && (
+        <button
+          disabled={isLoading}
+          className={clsx(
+            btnClassName,
+            method === "minus" ? "bg-[#c03e3e]" : "bg-[#313131]"
+          )}
+          onClick={() => handleClickVote("minus")}
+        >
+          -
+        </button>
+      )}
     </div>
   );
 };
