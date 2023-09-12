@@ -14,6 +14,7 @@ type AddCommentFormProps = {
   postId: string;
   commentId?: string;
   defaultValue?: string;
+  closeForm?: () => void;
 };
 
 const AddCommentForm: React.FC<AddCommentFormProps> = ({
@@ -21,6 +22,7 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
   postId,
   commentId,
   defaultValue,
+  closeForm,
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -46,6 +48,7 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
       .finally(() => {
         reset({ text: "" });
         setIsLoading(false);
+        if (closeForm) closeForm();
       });
   };
 
@@ -59,7 +62,7 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
       className="flex p-5 flex-wrap relative bg-[#313131] md:m-[15px_0_10px_0] items-start"
     >
       {isLoading && (
-        <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,_0,_0)] flex items-center justify-center">
+        <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,_0,_0,_.6)] flex items-center justify-center">
           <BiLoaderAlt className="animate-spin text-[36px] mx-auto" />
         </div>
       )}

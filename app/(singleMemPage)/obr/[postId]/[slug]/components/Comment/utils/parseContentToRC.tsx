@@ -12,7 +12,7 @@ const options: HTMLReactParserOptions = {
     if (node.attribs && node.name === "a") {
       const props = attributesToProps(node.attribs);
       return (
-        <Link href="/" {...props}>
+        <Link href="/" className="italic text-[#777]" {...props}>
           {domToReact(node.children, options)}
         </Link>
       );
@@ -24,7 +24,7 @@ const options: HTMLReactParserOptions = {
 };
 
 export default function parseContentToRC(content: string) {
-  const userNamePattern = /@\[[A-Za-z1-9]*\]/g;
+  const userNamePattern = /@\[[A-Za-z1-9\-\_]*\]/g;
   const quotePattern =
     /\[quote\][\w\d\s\.,!@#$%^&\*()`~?/><'";:|\\}{\[\]+-_]*\[\/quote\]/g;
   const elements: { textElement: string; nodeElement: string }[] = [];

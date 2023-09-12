@@ -6,14 +6,14 @@ import CommentButton from "./components/CommentButton";
 import ArticleTime from "@/app/(postsPages)/components/Post/components/ArticleTime";
 import Badge from "@/app/(postsPages)/components/Post/components/Badge";
 import CommentVotes from "./components/CommentVotes";
-import { HTMLAttributes, useMemo, useRef, useState } from "react";
+import { HTMLAttributes, useCallback, useMemo, useRef, useState } from "react";
 import { FaReply } from "@react-icons/all-files/fa/FaReply";
 import { FaQuoteLeft } from "@react-icons/all-files/fa/FaQuoteLeft";
 import { FaStar } from "@react-icons/all-files/fa/FaStar";
-import { FaAward } from "@react-icons/all-files/fa/FaAward";
 import CommentType from "../../types/CommentType";
 import AddCommentForm from "./components/AddCommentForm";
 import parseContentToRC from "./utils/parseContentToRC";
+import BadgeButton from "./components/BadgeButton";
 
 type Badges = {
   rock: number;
@@ -43,6 +43,15 @@ const Comment: React.FC<CommentProps> = ({ comment, className }) => {
   const votes = comment._count.pluses - comment._count.minuses;
 
   const handleToggleCommentForm = () => setShowAddComment((prev) => !prev);
+
+  const closeForm = useCallback(() => {
+    setShowAddComment(false);
+  }, [setShowAddComment]);
+
+  const votePlus = comment.pluses?.length === 1 ? "plus" : null;
+  const voteMinus = comment.minuses?.length === 1 ? "minus" : null;
+
+  const voteMethod = votePlus || voteMinus || "";
 
   return (
     <div className={className}>
@@ -79,6 +88,7 @@ const Comment: React.FC<CommentProps> = ({ comment, className }) => {
               votes={votes}
               postId={comment.postId}
               commentId={comment.id}
+              defaultMethod={voteMethod}
             />
           </header>
           <p className="text-[14px] text-white my-[5px] break-words overflow-hidden">
@@ -103,9 +113,11 @@ const Comment: React.FC<CommentProps> = ({ comment, className }) => {
             >
               Zacytuj
             </CommentButton>
-            <CommentButton className="ml-auto" icon={FaAward}>
-              Nagroda
-            </CommentButton>
+            <BadgeButton
+              setBadge={setBadge}
+              postId={comment.postId}
+              commentId={comment.id}
+            />
             <CommentButton icon={FaStar}>Ulubione</CommentButton>
           </div>
         </div>
@@ -113,10 +125,11 @@ const Comment: React.FC<CommentProps> = ({ comment, className }) => {
       <div className="ml-[45px]">
         {showAddComment && (
           <AddCommentForm
-            commentId={comment.id}
+            commentId={comment.precedentId || comment.id}
             postId={comment.postId}
             avatar={comment.author.image!}
             defaultValue={defaultValue.current}
+            closeForm={closeForm}
           />
         )}
         {comment?.subcomments &&

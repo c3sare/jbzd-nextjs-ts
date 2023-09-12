@@ -1,4 +1,4 @@
-import { Comment } from "@prisma/client";
+import { Comment, CommentVoteMinus, CommentVotePlus } from "@prisma/client";
 
 export default interface CommentType extends Comment {
   author: {
@@ -13,5 +13,7 @@ export default interface CommentType extends Comment {
     silver: number;
     gold: number;
   };
+  pluses?: CommentVotePlus[];
+  minuses?: CommentVoteMinus[];
   subcomments?: CommentType[];
 }

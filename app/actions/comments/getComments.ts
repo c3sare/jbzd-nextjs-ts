@@ -1,6 +1,11 @@
 import prisma from "@/app/libs/prismadb";
+import { getSession } from "../getSession";
 
 export async function getComments(postId: string, sort?: string) {
+  const session = await getSession();
+
+  const loggedUserId = session?.user?.id || null;
+
   const orderBy:
     | {
         addTime: "asc" | "desc";
@@ -12,13 +17,29 @@ export async function getComments(postId: string, sort?: string) {
       } =
     sort === "new"
       ? {
-          addTime: "asc",
+          addTime: "desc",
         }
       : {
           pluses: {
-            _count: "asc",
+            _count: "desc",
           },
         };
+
+  const pluses = loggedUserId
+    ? {
+        where: {
+          authorId: loggedUserId,
+        },
+      }
+    : undefined;
+
+  const minuses = loggedUserId
+    ? {
+        where: {
+          authorId: loggedUserId,
+        },
+      }
+    : undefined;
 
   const comments = await prisma.comment.findMany({
     where: {
@@ -30,6 +51,8 @@ export async function getComments(postId: string, sort?: string) {
       },
     },
     include: {
+      pluses,
+      minuses,
       _count: {
         select: {
           pluses: true,
@@ -48,6 +71,8 @@ export async function getComments(postId: string, sort?: string) {
               image: true,
             },
           },
+          pluses,
+          minuses,
           _count: {
             select: {
               pluses: true,
