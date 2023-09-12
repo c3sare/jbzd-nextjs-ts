@@ -1,4 +1,3 @@
-import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
 import clsx from "clsx";
 import Link from "next/link";
 import React, { memo, useMemo } from "react";

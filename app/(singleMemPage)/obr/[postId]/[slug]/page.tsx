@@ -4,12 +4,16 @@ import SinglePostFooter from "./components/SinglePostFooter";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import Link from "next/link";
 import SinglePost from "./components/SinglePost";
-import AddCommentForm from "./components/Comment/components/AddCommentForm";
+import CommentSection from "./components/CommentsSection";
+import { getComments } from "@/app/actions/comments/getComments";
 
 type MemPageProps = {
   params: {
     postId: string;
     slug: string;
+  };
+  searchParams: {
+    sort?: string;
   };
 };
 
@@ -21,12 +25,17 @@ export const revalidate = 0;
 
 const MemPage: React.FC<MemPageProps> = async ({
   params: { postId, slug },
+  searchParams: { sort },
 }) => {
   if (!postId || !slug) return notFound();
 
   const post = await getPostWithStats(postId, slug);
 
   if (!post) return notFound();
+
+  const comments = await getComments(post.id, sort);
+
+  if (!comments) return notFound();
 
   return (
     <>
@@ -40,8 +49,13 @@ const MemPage: React.FC<MemPageProps> = async ({
         )}
       </Breadcrumb>
       <SinglePost post={post} />
-      <AddCommentForm avatar={"/images/avatars/default.jpg"} postId={post.id} />
       <SinglePostFooter />
+      <CommentSection
+        avatar={post.author?.image || "/images/avatars/default.jpg"}
+        commentsCount={post.comments}
+        comments={comments}
+        postId={post.id}
+      />
     </>
   );
 };

@@ -23,6 +23,7 @@
     "dotenv": "^16.3.1",
     "eslint": "8.43.0",
     "eslint-config-next": "^13.4.19",
+    "html-react-parser": "^4.2.2",
     "mongodb": "^5.7.0",
     "monu-linkpreview": "^2.2.2",
     "next": "^13.4.19",

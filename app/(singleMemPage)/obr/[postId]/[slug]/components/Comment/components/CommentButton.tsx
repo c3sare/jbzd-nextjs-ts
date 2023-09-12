@@ -1,28 +1,29 @@
+import { IconType } from "@react-icons/all-files";
 import clsx from "clsx";
 import { DOMAttributes, HTMLAttributes } from "react";
 
 type CommentButtonProps = {
   children?: React.ReactNode;
   onClick?: DOMAttributes<HTMLButtonElement>["onClick"];
-  icon?: React.ReactNode;
+  icon?: IconType;
   className?: HTMLAttributes<HTMLButtonElement>["className"];
 };
 
 const CommentButton: React.FC<CommentButtonProps> = ({
   children,
   onClick,
-  icon,
+  icon: Icon,
   className,
 }) => {
   return (
     <button
       onClick={onClick}
       className={clsx(
-        "text-[12px] text-[#777] mr-[10px] flex items-center justify-between",
+        "text-[12px] text-[#777] mr-[10px] flex items-center justify-between hover:text-[#bd3c3c]",
         className
       )}
     >
-      {icon && <span>{icon}</span>}
+      {Icon && <Icon size={16} className="mr-[5px]" />}
       <span>{children}</span>
     </button>
   );

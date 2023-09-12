@@ -19,6 +19,10 @@ export default function Textarea<T extends FieldValues>({
       className="resize-none bg-[#1f1f1f] inline-block leading-[17px] text-white px-[10px] border border-[#1f1f1f] mx-[2px] pt-[5px] flex-[1] min-h-[42px] max-h-none outline-none overflow-hidden"
       placeholder="Wpisz swój komentarz"
       defaultValue={defaultValue}
+      onFocus={(e) => {
+        e.target.style.removeProperty("height");
+        e.target.style.height = e.target.scrollHeight + 5 + "px";
+      }}
       onChange={(e) => {
         onChange(e);
         e.target.style.removeProperty("height");

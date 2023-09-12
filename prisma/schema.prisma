@@ -51,20 +51,24 @@ model User {
 
   reported           Report[]
   accounts           Account[]
-  actionedByUsers    UserAction[]       @relation("UserActionedBy")
-  actionedUsers      UserAction[]       @relation("ActionedUsers")
+  actionedByUsers    UserAction[]         @relation("UserActionedBy")
+  actionedUsers      UserAction[]         @relation("ActionedUsers")
   posts              Post[]
   comments           Comment[]
   badgedPosts        BadgePost[]
   badgedComments     BadgeComment[]
   postVotes          PostVote[]
-  commentVotes       CommentVote[]
+  commentPlusVotes   CommentVotePlus[]
+  commentMinusVotes  CommentVoteMinus[]
+  commentRockVotes   CommentRockBadge[]
+  commentSilverVotes CommentSilverBadge[]
+  commentGoldVotes   CommentGoldBadge[]
   favouritePosts     FavouritePost[]
   favouriteComments  FavouriteComment[]
   actionedCategories CategoryAction[]
   actionedTags       TagAction[]
   votedUsers         UserVote[]
-  userVotedBy        UserVote[]         @relation("UserVotedBy")
+  userVotedBy        UserVote[]           @relation("UserVotedBy")
 }
 
 model UserVote {
@@ -222,28 +226,76 @@ model BadgePost {
 }
 
 model Comment {
-  id            String             @id @default(auto()) @map("_id") @db.ObjectId
-  addTime       DateTime           @default(now())
-  postId        String             @db.ObjectId
-  post          Post               @relation(fields: [postId], references: [id], onDelete: Cascade)
-  authorId      String             @db.ObjectId
-  author        User               @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id            String               @id @default(auto()) @map("_id") @db.ObjectId
+  addTime       DateTime             @default(now())
+  postId        String               @db.ObjectId
+  post          Post                 @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId      String               @db.ObjectId
+  author        User                 @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content       String
   commentBadges BadgeComment[]
-  commentVotes  CommentVote[]
+  pluses        CommentVotePlus[]
+  minuses       CommentVoteMinus[]
+  rock          CommentRockBadge[]
+  silver        CommentSilverBadge[]
+  gold          CommentGoldBadge[]
   favouriteList FavouriteComment[]
-  precedent     Comment?           @relation("CommentToComment", fields: [precedentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  subcomments   Comment[]          @relation("CommentToComment")
-  precedentId   String?            @db.ObjectId
+  precedent     Comment?             @relation("CommentToComment", fields: [precedentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  subcomments   Comment[]            @relation("CommentToComment")
+  precedentId   String?              @db.ObjectId
 }
 
-model CommentVote {
-  id        String          @id @default(auto()) @map("_id") @db.ObjectId
-  addTime   DateTime        @default(now())
-  type      CommentVoteType
-  commentId String          @db.ObjectId
-  comment   Comment         @relation(fields: [commentId], references: [id], onDelete: Cascade)
-  authorId  String          @db.ObjectId
-  author    User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+model CommentVotePlus {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  addTime   DateTime @default(now())
+  commentId String   @db.ObjectId
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  authorId  String   @db.ObjectId
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, authorId])
+}
+
+model CommentVoteMinus {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  addTime   DateTime @default(now())
+  commentId String   @db.ObjectId
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  authorId  String   @db.ObjectId
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, authorId])
+}
+
+model CommentRockBadge {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  addTime   DateTime @default(now())
+  commentId String   @db.ObjectId
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  authorId  String   @db.ObjectId
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, authorId])
+}
+
+model CommentSilverBadge {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  addTime   DateTime @default(now())
+  commentId String   @db.ObjectId
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  authorId  String   @db.ObjectId
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, authorId])
+}
+
+model CommentGoldBadge {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  addTime   DateTime @default(now())
+  commentId String   @db.ObjectId
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  authorId  String   @db.ObjectId
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@unique([commentId, authorId])
 }

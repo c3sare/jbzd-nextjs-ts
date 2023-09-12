@@ -5,7 +5,7 @@ import { IoSend } from "@react-icons/all-files/io5/IoSend";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Textarea from "./Textarea";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
 
@@ -13,25 +13,27 @@ type AddCommentFormProps = {
   avatar: string;
   postId: string;
   commentId?: string;
+  defaultValue?: string;
 };
 
 const AddCommentForm: React.FC<AddCommentFormProps> = ({
   avatar,
   postId,
   commentId,
+  defaultValue,
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, reset, setFocus } = useForm({
     defaultValues: {
-      text: "",
+      text: defaultValue,
     },
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
     axios
-      .post(`/post/${postId}/comment`, {
+      .post(`/api/post/${postId}/comment`, {
         ...data,
         commentId,
       })
@@ -41,13 +43,20 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
       .catch((err) => {
         console.log(err);
       })
-      .finally(() => setIsLoading(true));
+      .finally(() => {
+        reset({ text: "" });
+        setIsLoading(false);
+      });
   };
+
+  useEffect(() => {
+    setFocus("text");
+  }, [setFocus]);
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex p-5 flex-wrap relative bg-[#313131] md:m-[15px_0_10px_45px] items-start"
+      className="flex p-5 flex-wrap relative bg-[#313131] md:m-[15px_0_10px_0] items-start"
     >
       {isLoading && (
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,_0,_0)] flex items-center justify-center">
