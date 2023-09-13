@@ -32,32 +32,28 @@ export default async function UserProfileLayout({
     return notFound();
   }
 
-  // const session = await getSession();
+  const session = await getSession();
 
-  // const isLoggedIn = Boolean(session?.user?.id);
-  // const isOwnProfile = session?.user?.username === user.username;
-  // const isPremiumUser = user?.premiumExpires
-  //   ? user.premiumExpires > new Date()
-  //   : false;
+  const isLoggedIn = Boolean(session?.user?.id);
+  const isOwnProfile = session?.user?.username === user.username;
+  const isPremiumUser = user?.premiumExpires
+    ? user.premiumExpires > new Date()
+    : false;
 
-  // if (isPremiumUser && user?.premium?.hideProfile && !isOwnProfile)
-  //   return (
-  //     <h1 className="text-2xl font-bold text-white">Profil jest ukryty!</h1>
-  //   );
+  if (isPremiumUser && user?.premium?.hideProfile && !isOwnProfile)
+    return (
+      <h1 className="text-2xl font-bold text-white">Profil jest ukryty!</h1>
+    );
 
-  // const blocked = await prisma.userAction.count({
-  //   where: {
-  //     method: "BLOCK",
-  //     authorId: session?.user?.id,
-  //     userId: user.id,
-  //   },
-  // });
+  const blocked = await prisma.userAction.count({
+    where: {
+      method: "BLOCK",
+      authorId: session?.user?.id,
+      userId: user.id,
+    },
+  });
 
-  // const isBlocked = blocked === 1;
-
-  const isLoggedIn = false;
-  const isOwnProfile = false;
-  const isBlocked = false;
+  const isBlocked = blocked === 1;
 
   return (
     <>
