@@ -15,7 +15,7 @@ export type PostsTabProps = {
 const UserProfilePage: React.FC<PostsTabProps> = async (props) => {
   const posts = await getUserPagePosts(props);
 
-  if (!posts) return notFound();
+  if (!posts || posts.posts.length === 0) return notFound();
 
   return (
     <div>

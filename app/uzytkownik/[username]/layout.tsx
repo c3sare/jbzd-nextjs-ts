@@ -1,9 +1,5 @@
 import { getUser } from "@/app/actions/getUser";
 import Avatar from "./components/Avatar";
-import { AiFillFlag } from "@react-icons/all-files/ai/AiFillFlag";
-import { AiFillPicture } from "@react-icons/all-files/ai/AiFillPicture";
-import { FaComment } from "@react-icons/all-files/fa/FaComment";
-import { format } from "date-fns";
 import Badge from "./components/Badge";
 import { notFound } from "next/navigation";
 import UserRank from "./components/UserRank";
@@ -11,6 +7,13 @@ import UserActions from "./components/UserActions";
 import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
 import ButtonSwitchTab from "./components/ButtonSwitchTab";
+import UserStats from "./components/UserStats";
+
+export const fetchCache = "force-no-store";
+
+export const dynamic = "force-dynamic";
+
+export const revalidate = 0;
 
 type UserProfileLayoutProps = {
   children: React.ReactNode;
@@ -30,28 +33,26 @@ const UserProfileLayout: React.FC<UserProfileLayoutProps> = async ({
   }
 
   const session = await getSession();
-  const isLoggedIn = Boolean(session);
+  const isLoggedIn = Boolean(session?.user?.id);
   const isOwnProfile = session?.user?.username === user.username;
   const isPremiumUser = user?.premiumExpires
     ? user.premiumExpires > new Date()
     : false;
 
-  if (isPremiumUser && user.premium.hideProfile && !isOwnProfile)
+  if (isPremiumUser && user?.premium?.hideProfile && !isOwnProfile)
     return (
       <h1 className="text-2xl font-bold text-white">Profil jest ukryty!</h1>
     );
 
-  const isBlocked = Boolean(
-    await prisma.userAction.count({
-      where: {
-        method: "BLOCK",
-        authorId: session?.user?.id,
-        userId: user.id,
-      },
-    })
-  );
+  const blocked = await prisma.userAction.count({
+    where: {
+      method: "BLOCK",
+      authorId: session?.user?.id,
+      userId: user.id,
+    },
+  });
 
-  const accountCreateDate = format(user.createdAt, "dd.MM.yyyy");
+  const isBlocked = blocked === 1;
 
   return (
     <>
@@ -61,22 +62,7 @@ const UserProfileLayout: React.FC<UserProfileLayoutProps> = async ({
           <header className="font-semibold text-[28px] mb-[10px] text-center sm:text-left">
             {user.username}
           </header>
-          <section className="flex gap-4 mb-[10px] justify-center sm:justify-normal">
-            <div className="flex items-center">
-              <AiFillPicture size={20} color="#888888" />
-              <span className="ml-2">
-                {user.posts} / {user.acceptedPosts}
-              </span>
-            </div>
-            <div className="flex items-center">
-              <FaComment size={20} color="#888888" />
-              <span className="ml-2">{user.comments}</span>
-            </div>
-            <div className="flex items-center">
-              <AiFillFlag size={20} color="#888888" />
-              <span className="ml-2">{accountCreateDate}</span>
-            </div>
-          </section>
+          <UserStats user={user} />
           <div className="mb-[10px]">
             <div className="flex items-center justify-center gap-2 sm:justify-normal">
               <Badge
