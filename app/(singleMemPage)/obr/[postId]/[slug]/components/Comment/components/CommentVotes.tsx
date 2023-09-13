@@ -47,7 +47,7 @@ const CommentVotes: React.FC<CommentVotesProps> = ({
   };
 
   return (
-    <div className="flex">
+    <div className="flex ml-auto md:ml-0">
       {isLoggedIn && (
         <button
           disabled={isLoading}

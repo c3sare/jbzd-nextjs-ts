@@ -252,6 +252,7 @@ model CommentVotePlus {
   comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
   authorId  String   @db.ObjectId
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  commentStats    CommentStats    @relation(fields: [commentId], references: [id])
 
   @@unique([commentId, authorId])
 }
@@ -263,6 +264,7 @@ model CommentVoteMinus {
   comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
   authorId  String   @db.ObjectId
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  commentStats    CommentStats    @relation(fields: [commentId], references: [id])
 
   @@unique([commentId, authorId])
 }
@@ -427,6 +429,7 @@ model UserRanking {
   username String
   spears   Int
   rank     Int
+  comments  CommentStats[]
 }
 
 enum BadgeType {
@@ -443,4 +446,22 @@ enum CommentVoteType {
 enum UserActionType {
   FOLLOW
   BLOCK
+}
+
+model CommentStats {
+  id            String               @id @default(auto()) @map("_id") @db.ObjectId
+  addTime       DateTime             @default(now())
+  postId        String               @db.ObjectId
+  authorId      String               @db.ObjectId
+  content       String
+  author        UserRanking          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  plusVotes     CommentVotePlus[]
+  minusVotes    CommentVoteMinus[]
+  score         Int
+  rock          Int
+  silver        Int
+  gold          Int
+  precedent     CommentStats?             @relation("CommentToCommentx", fields: [precedentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  subcomments   CommentStats[]            @relation("CommentToCommentx")
+  precedentId   String?                   @db.ObjectId
 }

@@ -13,7 +13,7 @@ const Avatar: React.FC<AvatarProps> = ({ src }) => {
       width={118}
       alt="Avatar"
       src={src || "/images/avatars/default.jpg"}
-      className="rounded-full h-[fit-content]"
+      className="rounded-full h-[fit-content] mx-auto md:mx-0"
     />
   );
 };

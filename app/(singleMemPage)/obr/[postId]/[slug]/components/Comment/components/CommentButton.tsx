@@ -31,8 +31,8 @@ const CommentButton: React.FC<CommentButtonProps> = ({
         active && "text-[#bd3c3c]"
       )}
     >
-      {Icon && <Icon size={16} className="mr-[5px]" />}
-      <span>{children}</span>
+      {Icon && <Icon size={16} className="md:mr-[5px]" />}
+      <span className="hidden md:block">{children}</span>
     </button>
   );
 };

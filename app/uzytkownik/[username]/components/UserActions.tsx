@@ -35,7 +35,7 @@ const UserActions: React.FC<UserActions> = ({ id, isBlocked: blockStatus }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full text-center md:text-left">
       <ActionButton>
         <GrMail />
       </ActionButton>

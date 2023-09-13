@@ -37,9 +37,9 @@ const Comment: React.FC<CommentProps> = ({
   const defaultValue = useRef<string>("");
   const [showAddComment, setShowAddComment] = useState<boolean>(false);
   const [badge, setBadge] = useState<Badges>({
-    rock: comment._count.rock,
-    silver: comment._count.silver,
-    gold: comment._count.gold,
+    rock: comment.rock,
+    silver: comment.silver,
+    gold: comment.gold,
   });
 
   const commentContent = useMemo(
@@ -47,20 +47,26 @@ const Comment: React.FC<CommentProps> = ({
     [comment.content]
   );
 
-  const votes = comment._count.pluses - comment._count.minuses;
-
   const handleToggleCommentForm = () => setShowAddComment((prev) => !prev);
 
   const closeForm = useCallback(() => {
     setShowAddComment(false);
   }, [setShowAddComment]);
 
-  const votePlus = comment.pluses?.length === 1 ? "plus" : null;
-  const voteMinus = comment.minuses?.length === 1 ? "minus" : null;
+  const votePlus = comment.plusVotes?.length === 1 ? "plus" : null;
+  const voteMinus = comment.minusVotes?.length === 1 ? "minus" : null;
 
   const voteMethod = votePlus || voteMinus || "";
 
   const isFavouriteComment = comment.favouriteList?.length === 1;
+
+  const badges = (
+    <>
+      <Badge name="rock" title="Kamienna dzida" count={badge.rock} />
+      <Badge name="silver" title="Srebrna dzida" count={badge.silver} />
+      <Badge name="gold" title="Złota dzida" count={badge.gold} />
+    </>
+  );
 
   return (
     <div className={className} id={comment.id}>
@@ -79,28 +85,25 @@ const Comment: React.FC<CommentProps> = ({
         <div className="flex-[1]">
           <header className="flex flex-row items-center">
             <div className="flex">
-              <div className="text-white font-bold mr-[5px]">
+              <div className="text-white font-bold mr-[5px] text-[12px]">
                 <Link href={`/uzytkownik/${comment.author.username}`}>
                   {comment.author.username}
                 </Link>
               </div>
             </div>
-            <div className="text-[#777] text-[12px] block font-bold">
+            <div className="text-[#777] text-[10px] block font-bold">
               <ArticleTime addTime={comment.addTime} />
             </div>
-            <div className="ml-auto mr-[10px]">
-              <Badge name="rock" title="Kamienna dzida" count={badge.rock} />
-              <Badge name="silver" title="Srebrna dzida" count={badge.silver} />
-              <Badge name="gold" title="Złota dzida" count={badge.gold} />
-            </div>
+            <div className="ml-auto mr-[10px] hidden md:block">{badges}</div>
             <CommentVotes
-              votes={votes}
+              votes={comment.score}
               postId={comment.postId}
               commentId={comment.id}
               defaultMethod={voteMethod}
               isLoggedIn={isLoggedIn}
             />
           </header>
+          <div className="w-full md:hidden">{badges}</div>
           <div className="text-[14px] text-white my-[5px] break-words overflow-hidden">
             {commentContent}
           </div>
@@ -148,7 +151,7 @@ const Comment: React.FC<CommentProps> = ({
           )}
         </div>
       </div>
-      <div className="ml-[45px]">
+      <div className="ml-[15px] md:ml-[45px]">
         {showAddComment && (
           <AddCommentForm
             commentId={comment.precedentId || comment.id}
@@ -156,6 +159,7 @@ const Comment: React.FC<CommentProps> = ({
             avatar={comment.author.image!}
             defaultValue={defaultValue.current}
             closeForm={closeForm}
+            autoFocus
           />
         )}
         {comment?.subcomments &&

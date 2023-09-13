@@ -4,6 +4,7 @@ import {
   CommentVotePlus,
   FavouriteComment,
   Post,
+  UserAction,
 } from "@prisma/client";
 
 export default interface CommentType extends Comment {
@@ -11,17 +12,17 @@ export default interface CommentType extends Comment {
     id: string;
     username: string | null;
     image: string | null;
+    spears: number;
+    rank: number;
+    userActions?: UserAction[];
   };
   post?: Post;
-  _count: {
-    pluses: number;
-    minuses: number;
-    rock: number;
-    silver: number;
-    gold: number;
-  };
-  pluses?: CommentVotePlus[];
-  minuses?: CommentVoteMinus[];
+  score: number;
+  rock: number;
+  silver: number;
+  gold: number;
+  plusVotes?: CommentVotePlus[];
+  minusVotes?: CommentVoteMinus[];
   favouriteList?: FavouriteComment[];
   subcomments?: CommentType[];
 }

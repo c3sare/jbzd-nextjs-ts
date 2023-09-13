@@ -15,6 +15,7 @@ type AddCommentFormProps = {
   commentId?: string;
   defaultValue?: string;
   closeForm?: () => void;
+  autoFocus?: boolean;
 };
 
 const AddCommentForm: React.FC<AddCommentFormProps> = ({
@@ -23,6 +24,7 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
   commentId,
   defaultValue,
   closeForm,
+  autoFocus,
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -53,8 +55,8 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
   };
 
   useEffect(() => {
-    setFocus("text");
-  }, [setFocus]);
+    if (autoFocus) setFocus("text");
+  }, [setFocus, autoFocus]);
 
   return (
     <form
