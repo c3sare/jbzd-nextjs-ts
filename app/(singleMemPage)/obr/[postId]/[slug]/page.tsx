@@ -6,7 +6,7 @@ import Link from "next/link";
 import SinglePost from "./components/SinglePost";
 import CommentSection from "./components/CommentsSection";
 import { getComments } from "@/app/actions/comments/getComments";
-import { getSession } from "next-auth/react";
+import { getSession } from "@/app/actions/getSession";
 
 type MemPageProps = {
   params: {
