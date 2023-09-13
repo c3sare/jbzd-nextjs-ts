@@ -32,7 +32,6 @@ const CommentVotes: React.FC<CommentVotesProps> = ({
     axios
       .post(`/api/post/${postId}/comment/${commentId}/vote`, { type: method })
       .then((res) => {
-        console.log(res.data);
         if (res.data?.voted) {
           const { count, type } = res.data;
           setMethod(type);

@@ -1,3 +1,5 @@
+"use client";
+
 import { FaQuoteLeft } from "@react-icons/all-files/fa/FaQuoteLeft";
 
 const Quote: React.FC<React.PropsWithChildren> = ({ children }) => {

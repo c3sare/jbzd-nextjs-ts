@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import RandomPostButton from "@/app/(postsPages)/components/pagination/RandomPostButton";
 

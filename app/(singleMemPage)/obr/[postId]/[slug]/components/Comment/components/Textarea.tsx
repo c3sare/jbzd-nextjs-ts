@@ -1,3 +1,5 @@
+"use client";
+
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 type TextareaProps<T extends FieldValues> = {

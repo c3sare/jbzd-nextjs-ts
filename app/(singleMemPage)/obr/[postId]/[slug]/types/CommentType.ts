@@ -3,6 +3,7 @@ import {
   CommentVoteMinus,
   CommentVotePlus,
   FavouriteComment,
+  Post,
 } from "@prisma/client";
 
 export default interface CommentType extends Comment {
@@ -11,6 +12,7 @@ export default interface CommentType extends Comment {
     username: string | null;
     image: string | null;
   };
+  post?: Post;
   _count: {
     pluses: number;
     minuses: number;

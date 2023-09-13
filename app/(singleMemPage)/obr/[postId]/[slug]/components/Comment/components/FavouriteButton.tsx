@@ -1,3 +1,5 @@
+"use client";
+
 import { FaStar } from "@react-icons/all-files/fa/FaStar";
 import CommentButton from "./CommentButton";
 import { useState } from "react";

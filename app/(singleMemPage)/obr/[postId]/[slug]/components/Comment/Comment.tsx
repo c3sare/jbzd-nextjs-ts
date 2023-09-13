@@ -25,12 +25,14 @@ type CommentProps = {
   comment: CommentType;
   className?: HTMLAttributes<HTMLDivElement>["className"];
   isLoggedIn: boolean;
+  userPage?: boolean;
 };
 
 const Comment: React.FC<CommentProps> = ({
   comment,
   className,
   isLoggedIn,
+  userPage,
 }) => {
   const defaultValue = useRef<string>("");
   const [showAddComment, setShowAddComment] = useState<boolean>(false);
@@ -61,8 +63,8 @@ const Comment: React.FC<CommentProps> = ({
   const isFavouriteComment = comment.favouriteList?.length === 1;
 
   return (
-    <div className={className}>
-      <div className="flex mb-[10px] relative p-[10px]">
+    <div className={className} id={comment.id}>
+      <div className="flex relative p-[10px]">
         <Link
           className="w-[33px] block mr-[15px]"
           href={`/uzytkownik/${comment.author.username}`}
@@ -99,9 +101,9 @@ const Comment: React.FC<CommentProps> = ({
               isLoggedIn={isLoggedIn}
             />
           </header>
-          <p className="text-[14px] text-white my-[5px] break-words overflow-hidden">
+          <div className="text-[14px] text-white my-[5px] break-words overflow-hidden">
             {commentContent}
-          </p>
+          </div>
           {isLoggedIn && (
             <div className="flex items-center">
               <CommentButton
@@ -132,6 +134,16 @@ const Comment: React.FC<CommentProps> = ({
                 defaultActive={isFavouriteComment}
                 commentId={comment.id}
               />
+            </div>
+          )}
+          {userPage && comment.post && (
+            <div className="flex justify-end w-full mt-1 items-ceter">
+              <Link
+                className="block text-[10px] text-[#777]"
+                href={`/obr/${comment.post.id}/${comment.post.slug}#${comment.id}`}
+              >
+                przejdź do posta
+              </Link>
             </div>
           )}
         </div>

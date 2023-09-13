@@ -1,3 +1,5 @@
+"use client";
+
 import { FaAward } from "@react-icons/all-files/fa/FaAward";
 import CommentButton from "./CommentButton";
 import useDropdownContainer from "@/app/hooks/useDropdownContainer";
@@ -66,7 +68,7 @@ const BadgeButton: React.FC<BadgeButtonProps> = ({
   };
 
   return (
-    <div className="ml-auto relative" ref={containerRef}>
+    <div className="relative ml-auto" ref={containerRef}>
       <CommentButton
         onClick={toggleVisible}
         className="ml-auto"

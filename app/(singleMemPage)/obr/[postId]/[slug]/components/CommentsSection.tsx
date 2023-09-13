@@ -12,8 +12,9 @@ type CommentsSectionProps = {
   avatar: string;
   comments: CommentType[];
   commentsCount: number;
-  postId: string;
+  postId?: string;
   isLoggedIn: boolean;
+  userPage?: boolean;
 };
 
 const sortMethods = ["best", "new"] as const;
@@ -26,6 +27,7 @@ const CommentSection: React.FC<CommentsSectionProps> = ({
   commentsCount,
   postId,
   isLoggedIn,
+  userPage,
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -55,7 +57,9 @@ const CommentSection: React.FC<CommentsSectionProps> = ({
 
   return (
     <div className="md:ml-[45px] mx-auto w-full max-w-[600px]">
-      {isLoggedIn && <AddCommentForm postId={postId} avatar={avatar} />}
+      {isLoggedIn && !userPage && (
+        <AddCommentForm postId={postId || ""} avatar={avatar} />
+      )}
       <div>
         <header className="max-w-[600px] bg-[#1f1f1f] h-[60px] flex justify-between items-center px-[20px] m-[10px_0_5px_0]">
           <span className="relative flex items-center text-white">
@@ -83,7 +87,11 @@ const CommentSection: React.FC<CommentsSectionProps> = ({
             </button>
           </div>
         </header>
-        <CommentsList isLoggedIn={isLoggedIn} comments={comments} />
+        <CommentsList
+          userPage={userPage}
+          isLoggedIn={isLoggedIn}
+          comments={comments}
+        />
       </div>
     </div>
   );

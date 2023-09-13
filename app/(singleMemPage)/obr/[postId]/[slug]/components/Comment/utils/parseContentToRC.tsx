@@ -1,3 +1,5 @@
+"use client";
+
 import {
   HTMLReactParserOptions,
   attributesToProps,
@@ -24,7 +26,7 @@ const options: HTMLReactParserOptions = {
 };
 
 export default function parseContentToRC(content: string) {
-  const userNamePattern = /@\[[A-Za-z1-9\-\_]*\]/g;
+  const userNamePattern = /@\[[A-Za-z0-9_\-]*\]/g;
   const quotePattern =
     /\[quote\][\w\d\s\.,!@#$%^&\*()`~?/><'";:|\\}{\[\]+-_]*\[\/quote\]/g;
   const elements: { textElement: string; nodeElement: string }[] = [];
