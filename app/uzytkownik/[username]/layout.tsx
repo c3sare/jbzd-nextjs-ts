@@ -22,10 +22,10 @@ type UserProfileLayoutProps = {
   };
 };
 
-const UserProfileLayout: React.FC<UserProfileLayoutProps> = async ({
+export default async function UserProfileLayout({
   children,
   params: { username },
-}) => {
+}: UserProfileLayoutProps) {
   const user = await getUser(username);
 
   if (!user) {
@@ -33,6 +33,7 @@ const UserProfileLayout: React.FC<UserProfileLayoutProps> = async ({
   }
 
   const session = await getSession();
+
   const isLoggedIn = Boolean(session?.user?.id);
   const isOwnProfile = session?.user?.username === user.username;
   const isPremiumUser = user?.premiumExpires
@@ -105,6 +106,4 @@ const UserProfileLayout: React.FC<UserProfileLayoutProps> = async ({
       <div>{children}</div>
     </>
   );
-};
-
-export default UserProfileLayout;
+}
