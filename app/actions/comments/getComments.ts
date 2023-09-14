@@ -11,18 +11,14 @@ export async function getComments(postId: string, sort?: string) {
         addTime: "asc" | "desc";
       }
     | {
-        pluses: {
-          _count: "asc" | "desc";
-        };
+        score: "asc" | "desc";
       } =
     sort === "new"
       ? {
           addTime: "desc",
         }
       : {
-          pluses: {
-            _count: "desc",
-          },
+          score: "desc",
         };
 
   const pluses = loggedUserId
@@ -41,7 +37,7 @@ export async function getComments(postId: string, sort?: string) {
       }
     : undefined;
 
-  const favouriteList = loggedUserId
+  const favouriteBy = loggedUserId
     ? {
         where: {
           authorId: loggedUserId,
@@ -49,7 +45,15 @@ export async function getComments(postId: string, sort?: string) {
       }
     : undefined;
 
-  const comments = await prisma.comment.findMany({
+  const actionedBy = loggedUserId
+    ? {
+        where: {
+          authorId: loggedUserId,
+        },
+      }
+    : undefined;
+
+  const comments = await prisma.commentStats.findMany({
     where: {
       postId,
       NOT: {
@@ -61,44 +65,22 @@ export async function getComments(postId: string, sort?: string) {
     include: {
       pluses,
       minuses,
-      favouriteList,
-      _count: {
-        select: {
-          pluses: true,
-          minuses: true,
-          rock: true,
-          silver: true,
-          gold: true,
-        },
-      },
+      favouriteBy,
       subcomments: {
         include: {
           author: {
-            select: {
-              id: true,
-              username: true,
-              image: true,
+            include: {
+              actionedBy,
             },
           },
           pluses,
           minuses,
-          favouriteList,
-          _count: {
-            select: {
-              pluses: true,
-              minuses: true,
-              rock: true,
-              silver: true,
-              gold: true,
-            },
-          },
+          favouriteBy,
         },
       },
       author: {
-        select: {
-          id: true,
-          username: true,
-          image: true,
+        include: {
+          actionedBy,
         },
       },
     },

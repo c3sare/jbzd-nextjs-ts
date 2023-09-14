@@ -54,6 +54,11 @@ export async function POST(
               id: commentId,
             },
           },
+          commentStats: {
+            connect: {
+              id: commentId,
+            },
+          },
         },
       });
       return NextResponse.json({ isFavourite: Boolean(favComment) });

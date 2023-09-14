@@ -14,6 +14,7 @@ import AddCommentForm from "./components/AddCommentForm";
 import parseContentToRC from "./utils/parseContentToRC";
 import BadgeButton from "./components/BadgeButton";
 import FavouriteButton from "./components/FavouriteButton";
+import AuthorInfo from "./components/AuthorInfo";
 
 type Badges = {
   rock: number;
@@ -26,6 +27,12 @@ type CommentProps = {
   className?: HTMLAttributes<HTMLDivElement>["className"];
   isLoggedIn: boolean;
   userPage?: boolean;
+  author: CommentType["author"] & {
+    method: "" | "FOLLOW" | "BLOCK";
+  };
+  setSpears?: (id: string, count: number) => void;
+  setAuthorMethod?: (id: string, method: "FOLLOW" | "BLOCK") => void;
+  children?: React.ReactNode;
 };
 
 const Comment: React.FC<CommentProps> = ({
@@ -33,6 +40,10 @@ const Comment: React.FC<CommentProps> = ({
   className,
   isLoggedIn,
   userPage,
+  author,
+  setSpears,
+  setAuthorMethod,
+  children,
 }) => {
   const defaultValue = useRef<string>("");
   const [showAddComment, setShowAddComment] = useState<boolean>(false);
@@ -47,18 +58,32 @@ const Comment: React.FC<CommentProps> = ({
     [comment.content]
   );
 
+  const setSpearCount = useCallback(
+    (count: number) => {
+      setSpears!(author!.id!, count);
+    },
+    [author, setSpears]
+  );
+
+  const setUserMethod = useCallback(
+    (method: "FOLLOW" | "BLOCK") => {
+      setAuthorMethod!(author!.id!, method);
+    },
+    [setAuthorMethod, author]
+  );
+
   const handleToggleCommentForm = () => setShowAddComment((prev) => !prev);
 
   const closeForm = useCallback(() => {
     setShowAddComment(false);
   }, [setShowAddComment]);
 
-  const votePlus = comment.plusVotes?.length === 1 ? "plus" : null;
-  const voteMinus = comment.minusVotes?.length === 1 ? "minus" : null;
+  const votePlus = comment.pluses?.length === 1 ? "plus" : null;
+  const voteMinus = comment.minuses?.length === 1 ? "minus" : null;
 
   const voteMethod = votePlus || voteMinus || "";
 
-  const isFavouriteComment = comment.favouriteList?.length === 1;
+  const isFavouriteComment = comment.favouriteBy?.length === 1;
 
   const badges = (
     <>
@@ -86,9 +111,13 @@ const Comment: React.FC<CommentProps> = ({
           <header className="flex flex-row items-center">
             <div className="flex">
               <div className="text-white font-bold mr-[5px] text-[12px]">
-                <Link href={`/uzytkownik/${comment.author.username}`}>
-                  {comment.author.username}
-                </Link>
+                {author && (
+                  <AuthorInfo
+                    author={author}
+                    setSpears={setSpearCount}
+                    setAuthorMethod={setUserMethod}
+                  />
+                )}
               </div>
             </div>
             <div className="text-[#777] text-[10px] block font-bold">
@@ -162,15 +191,7 @@ const Comment: React.FC<CommentProps> = ({
             autoFocus
           />
         )}
-        {comment?.subcomments &&
-          comment.subcomments.map((subcomment) => (
-            <Comment
-              className="border-l border-l-white"
-              key={subcomment.id}
-              isLoggedIn={isLoggedIn}
-              comment={subcomment}
-            />
-          ))}
+        {children}
       </div>
     </div>
   );

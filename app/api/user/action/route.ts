@@ -45,6 +45,11 @@ export async function POST(request: Request) {
               id,
             },
           },
+          userRanking: {
+            connect: {
+              id,
+            },
+          },
           author: { connect: { id: session.user.id } },
         },
       });

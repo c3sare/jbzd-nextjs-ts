@@ -1,20 +1,12 @@
 "use client";
 
-import { memo, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { PostType } from "./types/PostType";
 import PostComponent from "@/app/(postsPages)/components/Post/Post";
+import deleteAuthorDuplicates from "@/app/libs/deleteAuthorDuplicates";
 
 type PostsProps = {
   posts: PostType[];
-};
-
-const deleteAuthorDuplicates = (arr: PostType["author"][]) => {
-  const newArr = arr.filter((item) => item);
-
-  return newArr.filter(
-    (item, index) =>
-      index === newArr.findIndex((sitem) => sitem!.id === item!.id)
-  );
 };
 
 const Posts: React.FC<PostsProps> = ({ posts }) => {

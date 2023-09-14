@@ -19,18 +19,14 @@ export async function getUserProfileComments(username: string, sort?: string) {
         addTime: "asc" | "desc";
       }
     | {
-        pluses: {
-          _count: "asc" | "desc";
-        };
+        score: "asc" | "desc";
       } =
     sort === "new"
       ? {
           addTime: "desc",
         }
       : {
-          pluses: {
-            _count: "desc",
-          },
+          score: "desc",
         };
 
   const pluses = loggedUserId
@@ -49,7 +45,7 @@ export async function getUserProfileComments(username: string, sort?: string) {
       }
     : undefined;
 
-  const favouriteList = loggedUserId
+  const favouriteBy = loggedUserId
     ? {
         where: {
           authorId: loggedUserId,
@@ -57,29 +53,25 @@ export async function getUserProfileComments(username: string, sort?: string) {
       }
     : undefined;
 
-  const comments = await prisma.comment.findMany({
+  const actionedBy = loggedUserId
+    ? {
+        where: {
+          authorId: loggedUserId,
+        },
+      }
+    : undefined;
+
+  const comments = await prisma.commentStats.findMany({
     where: {
       authorId: user.id,
     },
     include: {
       pluses,
       minuses,
-      favouriteList,
-      post: true,
-      _count: {
-        select: {
-          pluses: true,
-          minuses: true,
-          rock: true,
-          silver: true,
-          gold: true,
-        },
-      },
+      favouriteBy,
       author: {
-        select: {
-          id: true,
-          username: true,
-          image: true,
+        include: {
+          actionedBy,
         },
       },
     },

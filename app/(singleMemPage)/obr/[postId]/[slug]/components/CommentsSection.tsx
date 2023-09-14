@@ -68,7 +68,7 @@ const CommentSection: React.FC<CommentsSectionProps> = ({
           </span>
           <div>
             <button
-              onClick={(e) => handleChangeSort("best")}
+              onClick={() => handleChangeSort("best")}
               className={clsx(
                 "ml-[20px] inline-block",
                 isActiveSortBest ? "text-[#c03e3e]" : "text-white"
@@ -77,7 +77,7 @@ const CommentSection: React.FC<CommentsSectionProps> = ({
               najlepsze
             </button>
             <button
-              onClick={(e) => handleChangeSort("new")}
+              onClick={() => handleChangeSort("new")}
               className={clsx(
                 "ml-[20px] inline-block",
                 isActiveSortNew ? "text-[#c03e3e]" : "text-white"

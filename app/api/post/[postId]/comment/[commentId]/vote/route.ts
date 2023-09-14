@@ -67,6 +67,11 @@ export async function POST(
               id: commentId,
             },
           },
+          commentStats: {
+            connect: {
+              id: commentId,
+            },
+          },
         },
       });
 

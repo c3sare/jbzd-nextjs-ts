@@ -135,88 +135,10 @@ connect.then(async (client) => {
         },
         {
           $lookup: {
-            from: "Comment",
+            from: "CommentStats",
             localField: "_id",
             foreignField: "authorId",
             as: "comments",
-            pipeline: [
-              {
-                $lookup: {
-                  from: "BadgeComment",
-                  localField: "_id",
-                  foreignField: "commentId",
-                  as: "commentBadges",
-                },
-              },
-              {
-                $set: {
-                  rock: {
-                    $filter: {
-                      input: "$commentBadges",
-                      as: "badge",
-                      cond: {
-                        $eq: ["$$badge.type", "ROCK"],
-                      },
-                    },
-                  },
-                  silver: {
-                    $filter: {
-                      input: "$commentBadges",
-                      as: "badge",
-                      cond: {
-                        $eq: ["$$badge.type", "SILVER"],
-                      },
-                    },
-                  },
-                  gold: {
-                    $filter: {
-                      input: "$commentBadges",
-                      as: "badge",
-                      cond: {
-                        $eq: ["$$badge.type", "GOLD"],
-                      },
-                    },
-                  },
-                },
-              },
-              {
-                $set: {
-                  rock: {
-                    $cond: {
-                      if: {
-                        $isArray: "$rock",
-                      },
-                      then: {
-                        $size: "$rock",
-                      },
-                      else: 0,
-                    },
-                  },
-                  silver: {
-                    $cond: {
-                      if: {
-                        $isArray: "$silver",
-                      },
-                      then: {
-                        $size: "$silver",
-                      },
-                      else: 0,
-                    },
-                  },
-                  gold: {
-                    $cond: {
-                      if: {
-                        $isArray: "$gold",
-                      },
-                      then: {
-                        $size: "$gold",
-                      },
-                      else: 0,
-                    },
-                  },
-                },
-              },
-            ],
           },
         },
         {
@@ -859,177 +781,138 @@ connect.then(async (client) => {
       ],
     });
 
-  const commentPipeline = [
-    /////////////////////////////////
-    {
-      $lookup: {
-        from: "UserRanking",
-        localField: "authorId",
-        foreignField: "_id",
-        as: "author",
-        pipeline: [
-          {
-            $lookup: {
-              from: "UserAction",
-              localField: "_id",
-              foreignField: "userId",
-              as: "userActions",
-            },
-          },
-        ],
-      },
-    },
-    {
-      $set: {
-        author: {
-          $first: "$author",
-        },
-      },
-    },
-    ///////////////////////////////
-    {
-      $lookup: {
-        from: "CommentVotePlus",
-        localField: "_id",
-        foreignField: "commentId",
-        as: "plusVotes",
-      },
-    },
-    {
-      $set: {
-        pluses: {
-          $cond: {
-            if: {
-              $isArray: "$plusVotes",
-            },
-            then: {
-              $size: "$plusVotes",
-            },
-            else: 0,
-          },
-        },
-      },
-    },
-    {
-      $lookup: {
-        from: "CommentVoteMinus",
-        localField: "_id",
-        foreignField: "commentId",
-        as: "minusVotes",
-      },
-    },
-    {
-      $set: {
-        minuses: {
-          $cond: {
-            if: {
-              $isArray: "$minusVotes",
-            },
-            then: {
-              $size: "$minusVotes",
-            },
-            else: 0,
-          },
-        },
-      },
-    },
-    ////////////////////////////
-    {
-      $set: {
-        score: {
-          $subtract: ["$pluses", "$minuses"],
-        },
-      },
-    },
-    {
-      $unset: ["pluses", "minuses"],
-    },
-    ////////////////////////////
-    {
-      $lookup: {
-        from: "CommentRockBadge",
-        localField: "_id",
-        foreignField: "commentId",
-        as: "rock",
-      },
-    },
-    {
-      $set: {
-        rock: {
-          $cond: {
-            if: {
-              $isArray: "$rock",
-            },
-            then: {
-              $size: "$rock",
-            },
-            else: 0,
-          },
-        },
-      },
-    },
-    ////////////////////////////
-    {
-      $lookup: {
-        from: "CommentSilverBadge",
-        localField: "_id",
-        foreignField: "commentId",
-        as: "silver",
-      },
-    },
-    {
-      $set: {
-        silver: {
-          $cond: {
-            if: {
-              $isArray: "$silver",
-            },
-            then: {
-              $size: "$silver",
-            },
-            else: 0,
-          },
-        },
-      },
-    },
-    ////////////////////////////
-    {
-      $lookup: {
-        from: "CommentGoldBadge",
-        localField: "_id",
-        foreignField: "commentId",
-        as: "gold",
-      },
-    },
-    {
-      $set: {
-        gold: {
-          $cond: {
-            if: {
-              $isArray: "$gold",
-            },
-            then: {
-              $size: "$gold",
-            },
-            else: 0,
-          },
-        },
-      },
-    },
-  ];
-
   if (!collections.find((item) => item === "CommentStats"))
     await db.createCollection("CommentStats", {
       viewOn: "Comment",
       pipeline: [
-        ...commentPipeline,
+        ///////////////////////////////
         {
           $lookup: {
-            from: "Comment",
-            localField: "precedentId",
-            foreignField: "_id",
-            as: "subcomments",
-            pipeline: commentPipeline,
+            from: "CommentVotePlus",
+            localField: "_id",
+            foreignField: "commentId",
+            as: "pluses",
+          },
+        },
+        {
+          $set: {
+            pluses: {
+              $cond: {
+                if: {
+                  $isArray: "$pluses",
+                },
+                then: {
+                  $size: "$pluses",
+                },
+                else: 0,
+              },
+            },
+          },
+        },
+        {
+          $lookup: {
+            from: "CommentVoteMinus",
+            localField: "_id",
+            foreignField: "commentId",
+            as: "minuses",
+          },
+        },
+        {
+          $set: {
+            minuses: {
+              $cond: {
+                if: {
+                  $isArray: "$minuses",
+                },
+                then: {
+                  $size: "$minuses",
+                },
+                else: 0,
+              },
+            },
+          },
+        },
+        ////////////////////////////
+        {
+          $set: {
+            score: {
+              $subtract: ["$pluses", "$minuses"],
+            },
+          },
+        },
+        {
+          $unset: ["pluses", "minuses"],
+        },
+        ////////////////////////////
+        {
+          $lookup: {
+            from: "CommentRockBadge",
+            localField: "_id",
+            foreignField: "commentId",
+            as: "rock",
+          },
+        },
+        {
+          $set: {
+            rock: {
+              $cond: {
+                if: {
+                  $isArray: "$rock",
+                },
+                then: {
+                  $size: "$rock",
+                },
+                else: 0,
+              },
+            },
+          },
+        },
+        ////////////////////////////
+        {
+          $lookup: {
+            from: "CommentSilverBadge",
+            localField: "_id",
+            foreignField: "commentId",
+            as: "silver",
+          },
+        },
+        {
+          $set: {
+            silver: {
+              $cond: {
+                if: {
+                  $isArray: "$silver",
+                },
+                then: {
+                  $size: "$silver",
+                },
+                else: 0,
+              },
+            },
+          },
+        },
+        ////////////////////////////
+        {
+          $lookup: {
+            from: "CommentGoldBadge",
+            localField: "_id",
+            foreignField: "commentId",
+            as: "gold",
+          },
+        },
+        {
+          $set: {
+            gold: {
+              $cond: {
+                if: {
+                  $isArray: "$gold",
+                },
+                then: {
+                  $size: "$gold",
+                },
+                else: 0,
+              },
+            },
           },
         },
       ],
