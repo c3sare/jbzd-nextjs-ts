@@ -81,7 +81,7 @@ const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({
           </IconButton>
         </div>
         {children && (
-          <div className="flex gap-[10px_5px] flex-wrap sm:flex-nowrap">
+          <div className="flex gap-[10px_5px] max-w-full flex-wrap w-full md:w-auto sm:flex-nowrap my-2 md:my-0">
             {children}
           </div>
         )}

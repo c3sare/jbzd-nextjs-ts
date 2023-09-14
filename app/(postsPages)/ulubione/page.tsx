@@ -5,6 +5,9 @@ import Link from "next/link";
 import Posts from "../components/Posts";
 import Pagination from "../components/Pagination";
 import { getFavouritePagePosts } from "@/app/actions/posts/getFavouritePagePosts";
+import { getPremium } from "@/app/actions/getPremium";
+import ButtonSwitchTab from "@/app/uzytkownik/[username]/components/ButtonSwitchTab";
+import HeaderPremium from "./components/HeaderPremium";
 
 export const fetchCache = "force-no-store";
 
@@ -20,6 +23,8 @@ export default async function Home(props: PageProps) {
 
   if (!posts) return notFound();
 
+  const { isPremium } = await getPremium();
+
   return (
     <>
       <Breadcrumb
@@ -28,6 +33,7 @@ export default async function Home(props: PageProps) {
         <Link href={`/`}>Strona główna</Link>
         {posts.page > 1 ? <Link href="/ulubione">Ulubione</Link> : null}
       </Breadcrumb>
+      <HeaderPremium isPremium={isPremium} />
       <Posts posts={posts.posts} />
       {posts.pagesCount > 1 && (
         <Pagination

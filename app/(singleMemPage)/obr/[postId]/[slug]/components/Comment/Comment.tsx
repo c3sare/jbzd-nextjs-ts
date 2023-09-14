@@ -111,12 +111,14 @@ const Comment: React.FC<CommentProps> = ({
           <header className="flex flex-row items-center">
             <div className="flex">
               <div className="text-white font-bold mr-[5px] text-[12px]">
-                {author && (
+                {isLoggedIn ? (
                   <AuthorInfo
                     author={author}
                     setSpears={setSpearCount}
                     setAuthorMethod={setUserMethod}
                   />
+                ) : (
+                  comment.author.username
                 )}
               </div>
             </div>
