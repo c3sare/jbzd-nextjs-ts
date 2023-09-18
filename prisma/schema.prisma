@@ -68,6 +68,8 @@ model User {
   actionedTags       TagAction[]
   votedUsers         UserVote[]
   userVotedBy        UserVote[]           @relation("UserVotedBy")
+  userNotifications  Notification[]       @relation("userNotifications")
+  userNotifyGuest    Notification[]       @relation("userNotifyGuest")
 }
 
 model UserVote {
@@ -132,6 +134,7 @@ model Post {
   badges        BadgePost[]
   votes         PostVote[]
   favouriteList FavouritePost[]
+  Notification  Notification[]
 }
 
 model Report {
@@ -242,6 +245,7 @@ model Comment {
   precedent     Comment?             @relation("CommentToComment", fields: [precedentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   subcomments   Comment[]            @relation("CommentToComment")
   precedentId   String?              @db.ObjectId
+  Notification  Notification[]
 }
 
 model CommentVotePlus {
@@ -451,4 +455,25 @@ model CommentStats {
   precedent   CommentStats?      @relation("CommentToCommentx", fields: [precedentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   subcomments CommentStats[]     @relation("CommentToCommentx")
   precedentId String?            @db.ObjectId
+}
+
+model Notification {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  addTime   DateTime   @default(now())
+  type      NotifyType
+  postId    String     @db.ObjectId
+  post      Post       @relation(fields: [postId], references: [id])
+  commentId String?    @db.ObjectId
+  comment   Comment?   @relation(fields: [commentId], references: [id])
+  userId    String     @db.ObjectId
+  user      User       @relation("userNotifications", fields: [userId], references: [id])
+  authorId  String     @db.ObjectId
+  author    User       @relation("userNotifyGuest", fields: [authorId], references: [id])
+  seen      Boolean    @default(false)
+}
+
+enum NotifyType {
+  BADGE
+  COMMENT_PIN
+  NEW_COMMENT
 }

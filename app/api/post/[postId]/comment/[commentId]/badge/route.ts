@@ -88,6 +88,14 @@ export async function POST(
             },
           },
         },
+        include: {
+          comment: {
+            include: {
+              author: true,
+              post: true,
+            },
+          },
+        },
       });
 
       const user = await prisma.user.update({
@@ -100,6 +108,34 @@ export async function POST(
           },
         },
       });
+
+      const { newOrders } = badge.comment.author.notifications!;
+
+      if (newOrders && badge.authorId !== badge.comment.authorId) {
+        await prisma.notification.create({
+          data: {
+            type: "BADGE",
+            post: {
+              connect: {
+                id: badge.comment.postId,
+              },
+            },
+            user: {
+              connect: { id: badge.comment.post.authorId },
+            },
+            comment: {
+              connect: {
+                id: badge.comment.id,
+              },
+            },
+            author: {
+              connect: {
+                id: badge.authorId,
+              },
+            },
+          },
+        });
+      }
 
       const count = await badgeModel[type].count({
         where: {

@@ -72,7 +72,39 @@ export async function POST(
             },
           },
         },
+        include: {
+          author: true,
+          post: {
+            include: {
+              author: true,
+            },
+          },
+        },
       });
+
+      if (
+        badge.post.author.notifications?.newOrders &&
+        badge.authorId !== badge.post.authorId
+      ) {
+        await prisma.notification.create({
+          data: {
+            type: "BADGE",
+            post: {
+              connect: {
+                id: badge.postId,
+              },
+            },
+            user: {
+              connect: { id: badge.post.authorId },
+            },
+            author: {
+              connect: {
+                id: badge.authorId,
+              },
+            },
+          },
+        });
+      }
 
       const updateCoins = await prisma.user.update({
         where: {

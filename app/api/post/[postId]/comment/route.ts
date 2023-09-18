@@ -34,7 +34,89 @@ export async function POST(
         content: text,
         precedentId: commentId,
       },
+      include: {
+        post: {
+          include: {
+            author: true,
+          },
+        },
+      },
     });
+
+    const userNamePattern = /@\[[A-Za-z0-9_\-]*\]/g;
+
+    const usernames: string[] = text.match(userNamePattern);
+
+    await Promise.all(
+      usernames.map(async (user) => {
+        const account = await prisma.user.findFirst({
+          where: {
+            username: user,
+          },
+        });
+
+        if (
+          account?.notifications?.newMarks &&
+          account.id !== comment.authorId
+        ) {
+          await prisma.notification.create({
+            data: {
+              type: "COMMENT_PIN",
+              post: {
+                connect: {
+                  id: comment.postId,
+                },
+              },
+              comment: {
+                connect: {
+                  id: comment.id,
+                },
+              },
+              user: {
+                connect: { id: comment.post.authorId },
+              },
+              author: {
+                connect: {
+                  id: comment.authorId,
+                },
+              },
+            },
+          });
+        }
+      })
+    );
+
+    const { newComments, commentsOnHomePage } =
+      comment.post.author.notifications!;
+
+    if (
+      (newComments || (commentsOnHomePage && comment.post.accepted)) &&
+      comment.authorId !== comment.post.authorId
+    ) {
+      await prisma.notification.create({
+        data: {
+          type: "NEW_COMMENT",
+          post: {
+            connect: {
+              id: comment.postId,
+            },
+          },
+          user: {
+            connect: { id: comment.post.authorId },
+          },
+          comment: {
+            connect: {
+              id: comment.id,
+            },
+          },
+          author: {
+            connect: {
+              id: comment.authorId,
+            },
+          },
+        },
+      });
+    }
 
     return NextResponse.json({ id: comment.id });
   } catch (err: any) {
