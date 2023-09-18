@@ -1,8 +1,8 @@
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const useDropdownContainer = () => {
-  const router = useRouter();
+  const pathname = usePathname();
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
@@ -13,7 +13,7 @@ const useDropdownContainer = () => {
 
   useEffect(() => {
     setIsVisible(false);
-  }, [router]);
+  }, [pathname]);
 
   useEffect(() => {
     const hideContainer = (e: any) => {

@@ -51,7 +51,7 @@ export async function POST(
       usernames.map(async (user) => {
         const account = await prisma.user.findFirst({
           where: {
-            username: user,
+            username: user.slice(2, -1),
           },
         });
 
@@ -73,7 +73,7 @@ export async function POST(
                 },
               },
               user: {
-                connect: { id: comment.post.authorId },
+                connect: { id: account.id },
               },
               author: {
                 connect: {

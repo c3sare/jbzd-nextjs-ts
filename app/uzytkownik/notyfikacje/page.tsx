@@ -5,7 +5,6 @@ import NotifyElement from "./components/NotifyElement";
 
 const NotificationsPage = async () => {
   const notifis = await getUserNotifications();
-  console.log(notifis);
 
   return (
     <>

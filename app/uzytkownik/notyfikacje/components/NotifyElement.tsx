@@ -25,13 +25,14 @@ const NotifyElement: React.FC<BadgeElementProps> = ({ notification }) => {
         href={`/obr/${notification.post.id}/${notification.post.slug}${
           notification.commentId ? "#" + notification.commentId : ""
         }`}
-        className="block border-none text-[14px] p-[5px_10px] text-white relative"
+        className="block border-none text-[14px] p-[5px_10px] text-white relative after:block clear-both content-['']"
       >
         <Image
           src={image}
           width={30}
           height={30}
           alt={notification.post.title}
+          className="float-left mr-[10px]"
         />
         <div>
           <span>
