@@ -1,6 +1,3 @@
-import Sidebar from "./components/sidebar/Sidebar";
-import Main from "./components/Main";
-import Wrapper from "./components/Wrapper";
 import Footer from "./components/footer/Footer";
 import FooterLink from "./components/footer/components/FooterLink";
 import Header from "./components/header/Header";
@@ -29,10 +26,7 @@ export default async function RootLayout({
           <MonitContext>
             <ToasterContext />
             <Header />
-            <Wrapper>
-              <Main>{children}</Main>
-              <Sidebar />
-            </Wrapper>
+            {children}
             <Footer>
               <FooterLink href="/">Regulamin</FooterLink>
               <FooterLink href="/">Kontakt</FooterLink>

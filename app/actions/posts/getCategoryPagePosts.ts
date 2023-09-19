@@ -1,10 +1,10 @@
 import prisma from "@/app/libs/prismadb";
-import { PostType } from "@/app/(postsPages)/components/types/PostType";
+import { PostType } from "@/app/(withSidebar)/(postsPages)/components/types/PostType";
 import addActionPostInfo from "@/utils/addActionPostInfo";
 import getActionedUsersLists from "../getActionedUsersLists";
 import getActionedTagsLists from "../getActionedTagsLists";
 import parseSearchParams from "@/utils/parseSearchParams";
-import { CategoryPageProps } from "@/app/(postsPages)/components/types/CategoryPageProps";
+import { CategoryPageProps } from "@/app/(withSidebar)/(postsPages)/components/types/CategoryPageProps";
 import { getSession } from "../getSession";
 
 export async function getCategoryPagePosts({

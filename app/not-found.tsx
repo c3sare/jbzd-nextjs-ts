@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 
 const NotFoundPage = () => {
@@ -15,14 +13,6 @@ const NotFoundPage = () => {
         height={816}
         className="block object-contain max-w-full"
       />
-      <style jsx global>{`
-        #sidebar {
-          display: none !important;
-        }
-        #content {
-          border: none !important;
-        }
-      `}</style>
     </div>
   );
 };

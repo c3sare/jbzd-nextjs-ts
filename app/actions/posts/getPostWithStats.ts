@@ -1,5 +1,5 @@
 import prisma from "@/app/libs/prismadb";
-import { PostType } from "@/app/(postsPages)/components/types/PostType";
+import { PostType } from "@/app/(withSidebar)/(postsPages)/components/types/PostType";
 import getActionedUsersLists from "../getActionedUsersLists";
 import getActionedTagsLists from "../getActionedTagsLists";
 import addActionPostInfo from "@/utils/addActionPostInfo";
