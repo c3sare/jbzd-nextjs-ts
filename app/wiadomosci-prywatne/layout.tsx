@@ -1,6 +1,20 @@
+import { notFound } from "next/navigation";
+import getConversations from "../actions/chat/getConversations";
 import UserSearchForm from "./components/UserSearchForm";
+import ConversationHistoryElement from "./rozmowa/[conversationId]/components/ConversationHistoryElement";
+import { getSession } from "../actions/getSession";
 
-const MessagesLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
+const MessagesLayout: React.FC<React.PropsWithChildren> = async ({
+  children,
+}) => {
+  const session = await getSession();
+
+  if (!session?.user?.id) return notFound();
+
+  const conversations = await getConversations();
+
+  if (!conversations) return notFound();
+
   return (
     <div className="flex w-full mt-[46px] flex-col md:flex-row">
       <aside className="py-[25px] w-full md:w-[350px] flex justify-end">
@@ -21,9 +35,19 @@ const MessagesLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
               </header>
               <div>
                 <section className="max-w-[calc(100%_-_20px)] h-[calc(100vh_-_370px)] relative m-auto">
-                  <p className="text-[#8f8f8f] text-[12px] italic">
-                    Nie masz jeszcze żadnych rozmów
-                  </p>
+                  {conversations.length === 0 ? (
+                    <p className="text-[#8f8f8f] text-[12px] italic">
+                      Nie masz jeszcze żadnych rozmów
+                    </p>
+                  ) : (
+                    conversations.map((conversation) => (
+                      <ConversationHistoryElement
+                        key={conversation.id}
+                        conversation={conversation}
+                        userId={session.user!.id}
+                      />
+                    ))
+                  )}
                 </section>
               </div>
             </div>

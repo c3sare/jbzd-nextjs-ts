@@ -1,6 +1,31 @@
+import type { Message as MessageType } from "@prisma/client";
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 import Image from "next/image";
 
-const Message = () => {
+type MessageProps = {
+  message: MessageType & {
+    author: {
+      id: string;
+      username: string | null;
+      image: string | null;
+    };
+  };
+  userId: string;
+};
+
+const Message: React.FC<MessageProps> = ({ message, userId }) => {
+  const { author, addTime, body } = message;
+  const { username, id, image } = author;
+
+  const isISODate = typeof addTime === "string";
+
+  const addTimeInDate = isISODate ? parseISO(addTime as string) : addTime;
+
+  const addTimeFormatted = format(addTimeInDate, "yyyy-MM-dd HH:mm");
+
+  const isOwnMessage = id === userId;
+
   return (
     <div className="w-[calc(100%_-_20px)] bg-[#252525] rounded-[10px] p-[15px] flex mb-[10px] relative">
       <div className="min-w-[35px] mr-[10px]">
@@ -9,21 +34,22 @@ const Message = () => {
             height={35}
             width={35}
             className="block h-auto max-w-full rounded-full"
-            src="/images/avatars/default.jpg"
+            src={image || "/images/avatars/default.jpg"}
             alt="Avatar"
           />
         </div>
       </div>
       <div className="max-w-[550px] flex-grow">
         <div className="text-[#777] font-bold mb-[7px] text-[12px]">
-          {"username"}
+          {username}
+          {isOwnMessage ? " - Ja" : ""}
         </div>
         <div className="text-white text-[14px] break-words overflow-hidden">
-          {"body"}
+          {body}
         </div>
       </div>
       <div className="text-[12px] text-[#777] italic absolute right-[15px] top-[15px]">
-        {"yyyy-MM-dd HH:mm"}
+        {addTimeFormatted}
       </div>
     </div>
   );

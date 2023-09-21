@@ -79,7 +79,7 @@ model Conversation {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   createdAt     DateTime  @default(now())
   lastMessageAt DateTime?
-  messagesIds   String[]
+  messagesIds   String[]  @db.ObjectId
   messages      Message[]
   userIds       String[]  @db.ObjectId
   users         User[]    @relation(fields: [userIds], references: [id])
