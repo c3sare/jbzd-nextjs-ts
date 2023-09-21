@@ -2,6 +2,7 @@
 
 import { IoSendSharp } from "@react-icons/all-files/io5/IoSendSharp";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
@@ -10,6 +11,7 @@ type AddMessageFormProps = {
 };
 
 const AddMessageForm: React.FC<AddMessageFormProps> = ({ conversationId }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { handleSubmit, register, reset } = useForm({
     defaultValues: {
@@ -26,6 +28,7 @@ const AddMessageForm: React.FC<AddMessageFormProps> = ({ conversationId }) => {
       .catch((err) => console.log(err))
       .finally(() => {
         reset();
+        router.refresh();
         setIsLoading(false);
       });
   };

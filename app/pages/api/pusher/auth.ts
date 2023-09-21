@@ -4,7 +4,10 @@ import { getServerSession } from "next-auth";
 import { pusherServer } from "@/app/libs/pusher";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-async function handler(request: NextApiRequest, response: NextApiResponse) {
+export default async function handler(
+  request: NextApiRequest,
+  response: NextApiResponse
+) {
   const session = await getServerSession(request, response, authOptions);
 
   if (!session?.user?.email) {
@@ -20,11 +23,3 @@ async function handler(request: NextApiRequest, response: NextApiResponse) {
   const authResponse = pusherServer.authorizeChannel(socketId, channel, data);
   return response.send(authResponse);
 }
-
-export {
-  handler as GET,
-  handler as POST,
-  handler as PUT,
-  handler as DELETE,
-  handler as PATCH,
-};

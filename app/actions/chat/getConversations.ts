@@ -36,6 +36,9 @@ export default async function getConversations() {
           take: 1,
         },
       },
+      orderBy: {
+        lastMessageAt: "desc",
+      },
     });
 
     return conversations;
