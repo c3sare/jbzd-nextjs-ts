@@ -153,6 +153,6 @@ export async function POST(
       return NextResponse.json({ alreadyExist: true });
     }
   } catch (err: any) {
-    throw new NextResponse("Internal Error", { status: 500 });
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

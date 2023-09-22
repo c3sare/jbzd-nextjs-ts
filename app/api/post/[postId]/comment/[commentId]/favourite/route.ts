@@ -1,8 +1,6 @@
 import { getSession } from "@/app/actions/getSession";
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
-import { PrismaClient } from "@prisma/client";
-import { PrismaClientOptions } from "@prisma/client/runtime/library";
 import { getPremium } from "@/app/actions/getPremium";
 
 type RequestParams = {
@@ -11,8 +9,6 @@ type RequestParams = {
     commentId: string;
   };
 };
-
-type VoteModelType = PrismaClient<PrismaClientOptions>["commentVotePlus"];
 
 export async function POST(
   request: Request,
@@ -71,6 +67,6 @@ export async function POST(
       return NextResponse.json({ isFavourite: !Boolean(favComment) });
     }
   } catch (err: any) {
-    throw new NextResponse("Internal Error", { status: 500 });
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

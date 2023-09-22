@@ -120,6 +120,6 @@ export async function POST(
 
     return NextResponse.json({ id: comment.id });
   } catch (err: any) {
-    throw new NextResponse("Internal Error", { status: 500 });
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }
