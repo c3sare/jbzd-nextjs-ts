@@ -72,7 +72,9 @@ model User {
   userNotifyGuest    Notification[]       @relation("userNotifyGuest")
   conversationsIds   String[]             @db.ObjectId
   conversations      Conversation[]       @relation(fields: [conversationsIds], references: [id])
-  messages           Message[]
+  messages           Message[]            @relation("CreatedMessages")
+  seenMessageIds     String[]             @db.ObjectId
+  seenMessages       Message[]            @relation("Seen", fields: [seenMessageIds], references: [id])
 }
 
 model Conversation {
@@ -93,8 +95,10 @@ model Message {
   conversationId String       @db.ObjectId
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   authorId       String       @db.ObjectId
-  author         User         @relation(fields: [authorId], references: [id])
+  author         User         @relation("CreatedMessages", fields: [authorId], references: [id])
   body           String
+  seenIds        String[]     @db.ObjectId
+  seen           User[]       @relation("Seen", fields: [seenIds], references: [id])
 }
 
 model UserVote {

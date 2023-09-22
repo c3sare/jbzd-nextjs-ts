@@ -37,6 +37,11 @@ export async function POST(
             id,
           },
         },
+        seen: {
+          connect: {
+            id: session.user.id,
+          },
+        },
       },
       include: {
         author: {

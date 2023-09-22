@@ -18,7 +18,7 @@ const IconButton: React.FC<IconButtonProps> = ({
       type="button"
       onClick={onClick}
       className={clsx(
-        "flex items-center justify-center text-[16px]",
+        "flex items-center justify-center text-[16px] relative",
         className
       )}
     >

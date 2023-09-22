@@ -1,20 +1,13 @@
 "use client";
 
-import { Conversation, Message, User } from "@prisma/client";
+import Conversation from "@/app/wiadomosci-prywatne/types/Conversation";
 import clsx from "clsx";
 import { format } from "date-fns";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
 type ConversationHistoryElementProps = {
-  conversation: Conversation & {
-    users: {
-      id: string;
-      username: string | null;
-      image: string | null;
-    }[];
-    messages: Message[];
-  };
+  conversation: Conversation;
   userId: string;
 };
 
@@ -66,7 +59,7 @@ const ConversationHistoryElement: React.FC<ConversationHistoryElementProps> = ({
         <div className={clsx("italic text-[14px]", activeClassesText)}>
           <small>
             <b>{isOwnMessage ? "Ty" : username}: </b>
-            {body}
+            {body.slice(0, 25)}
           </small>
         </div>
       </div>

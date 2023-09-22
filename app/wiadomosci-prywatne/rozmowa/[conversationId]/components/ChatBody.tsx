@@ -5,6 +5,7 @@ import Message from "./Message";
 import { pusherClient } from "@/app/libs/pusher";
 import { useRouter } from "next/navigation";
 import Scrollbars from "react-custom-scrollbars-2";
+import axios from "axios";
 
 type ChatBodyProps = {
   initialMessages: any[];
@@ -21,15 +22,15 @@ const ChatBody: React.FC<ChatBodyProps> = ({
   const [messages, setMessages] = useState<any[]>(initialMessages);
   const bottomRef = useRef<Scrollbars>(null);
 
-  //   useEffect(() => {
-  //     axios.post(`/api/conversations/${conversationId}/seen`);
-  //   }, [conversationId]);
+  useEffect(() => {
+    axios.post(`/api/conversation/${conversationId}/seen`);
+  }, [conversationId]);
 
   useEffect(() => {
     pusherClient.subscribe(conversationId);
 
     const messageHandler = (message: any) => {
-      //   axios.post(`/api/conversations/${conversationId}/seen`);
+      axios.post(`/api/conversation/${conversationId}/seen`);
 
       setMessages((current) => {
         if (current.find((item) => item.id === message.id)) {
@@ -63,7 +64,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({
       pusherClient.unbind("messages:new", messageHandler);
       pusherClient.unbind("message:update", updateMessageHandler);
     };
-  }, [conversationId]);
+  }, [conversationId, router]);
 
   useEffect(() => {
     bottomRef?.current?.scrollToBottom();

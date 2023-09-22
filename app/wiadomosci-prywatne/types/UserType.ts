@@ -1,5 +1,5 @@
 export default interface UserType {
   id: string;
-  username: string;
-  image?: string;
+  username: string | null;
+  image: string | null;
 }
