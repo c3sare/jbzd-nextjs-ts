@@ -11,7 +11,6 @@ type AddMessageFormProps = {
 };
 
 const AddMessageForm: React.FC<AddMessageFormProps> = ({ conversationId }) => {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { handleSubmit, register, reset } = useForm({
     defaultValues: {
@@ -21,14 +20,11 @@ const AddMessageForm: React.FC<AddMessageFormProps> = ({ conversationId }) => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
-    console.log(data);
     axios
       .post(`/api/conversation/${conversationId}/message`, data)
-      .then((res) => console.log(res))
       .catch((err) => console.log(err))
       .finally(() => {
         reset();
-        router.refresh();
         setIsLoading(false);
       });
   };

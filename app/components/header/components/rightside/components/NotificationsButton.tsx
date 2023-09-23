@@ -10,33 +10,36 @@ import NotificationType from "@/app/(withSidebar)/uzytkownik/notyfikacje/types/N
 import NotifyElement from "@/app/(withSidebar)/uzytkownik/notyfikacje/components/NotifyElement";
 import axios from "axios";
 import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
-import { useRouter } from "next/navigation";
+import { pusherClient } from "@/app/libs/pusher";
+import CountBox from "./CountBox";
 
-const NotificationsButton = () => {
-  const router = useRouter();
+type NotificationsButonProps = {
+  userId: string;
+  initialNotifications: NotificationType[];
+};
+
+const NotificationsButton: React.FC<NotificationsButonProps> = ({
+  userId,
+  initialNotifications,
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [notifications, setNotifications] = useState<NotificationType[]>([]);
+  const [notifications, setNotifications] =
+    useState<NotificationType[]>(initialNotifications);
   const { isVisible, toggleVisible, containerRef } = useDropdownContainer();
 
   useEffect(() => {
-    const controller = new AbortController();
+    pusherClient.subscribe(userId);
+    const handleNewNotification = (notify: NotificationType) => {
+      console.log(notify);
+      setNotifications((prev) => [notify, ...prev]);
+    };
 
-    if (isVisible && notifications.length === 0) {
-      setIsLoading(true);
-      axios
-        .get("/api/notifications", { signal: controller.signal })
-        .then((res) => {
-          const { data } = res;
-          setNotifications(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => setIsLoading(false));
-    }
+    pusherClient.bind("notification:new", handleNewNotification);
 
-    return () => controller.abort();
-  }, [isVisible, notifications]);
+    return () => {
+      pusherClient.unbind("notification:new");
+    };
+  }, [userId]);
 
   const handleSetSeen = useCallback(
     (id: string) => {
@@ -61,7 +64,6 @@ const NotificationsButton = () => {
           newState.forEach((item) => (item.seen = true));
           return newState;
         });
-        router.refresh();
       })
       .catch((err) => console.log(err))
       .finally(() => setIsLoading(false));
@@ -75,6 +77,8 @@ const NotificationsButton = () => {
     />
   ));
 
+  const unSeenCount = notifications.filter((item) => !item.seen).length;
+
   return (
     <div
       className="inline-flex items-center text-left h-full ml-[15px] lg:relative"
@@ -82,6 +86,7 @@ const NotificationsButton = () => {
     >
       <IconButton onClick={toggleVisible}>
         <BsBellFill />
+        <CountBox count={unSeenCount} />
       </IconButton>
       {isVisible && (
         <DropdownContainer>

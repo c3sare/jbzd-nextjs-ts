@@ -1,6 +1,7 @@
 import { getSession } from "@/app/actions/getSession";
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
+import addNotification from "@/app/actions/addNotification";
 
 type RequestParams = {
   params: {
@@ -93,28 +94,11 @@ export async function POST(
       (newComments || (commentsOnHomePage && comment.post.accepted)) &&
       comment.authorId !== comment.post.authorId
     ) {
-      await prisma.notification.create({
-        data: {
-          type: "NEW_COMMENT",
-          post: {
-            connect: {
-              id: comment.postId,
-            },
-          },
-          user: {
-            connect: { id: comment.post.authorId },
-          },
-          comment: {
-            connect: {
-              id: comment.id,
-            },
-          },
-          author: {
-            connect: {
-              id: comment.authorId,
-            },
-          },
-        },
+      await addNotification("NEW_COMMENT", session.user.id, {
+        postId: comment.postId,
+        postAuthorId: comment.post.authorId,
+        commentId: comment.id,
+        commentAuthorId: comment.authorId,
       });
     }
 

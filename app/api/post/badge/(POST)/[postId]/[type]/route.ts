@@ -1,6 +1,7 @@
 import { getSession } from "@/app/actions/getSession";
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
+import addNotification from "@/app/actions/addNotification";
 
 type BadgeType = "ROCK" | "SILVER" | "GOLD";
 
@@ -86,23 +87,9 @@ export async function POST(
         badge.post.author.notifications?.newOrders &&
         badge.authorId !== badge.post.authorId
       ) {
-        await prisma.notification.create({
-          data: {
-            type: "BADGE",
-            post: {
-              connect: {
-                id: badge.postId,
-              },
-            },
-            user: {
-              connect: { id: badge.post.authorId },
-            },
-            author: {
-              connect: {
-                id: badge.authorId,
-              },
-            },
-          },
+        await addNotification("BADGE", {
+          postId: badge.postId,
+          postAuthorId: badge.post.authorId,
         });
       }
 

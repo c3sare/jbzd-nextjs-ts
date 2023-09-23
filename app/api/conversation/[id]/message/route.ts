@@ -65,13 +65,37 @@ export async function POST(
         },
       },
       include: {
-        messages: true,
+        users: {
+          where: {
+            id: {
+              not: session.user.id,
+            },
+          },
+          select: {
+            id: true,
+            username: true,
+            image: true,
+          },
+        },
+        messages: {
+          orderBy: {
+            addTime: "desc",
+          },
+          take: 1,
+        },
       },
     });
 
     if (!message) return new NextResponse("Internal error", { status: 500 });
 
     await pusherServer.trigger(id, "messages:new", message);
+    console.log(updateConversation.userIds);
+    await Promise.all(
+      updateConversation.userIds.map(
+        async (user) =>
+          await pusherServer.trigger(user, "xmessages:new", updateConversation)
+      )
+    );
 
     return NextResponse.json(updateConversation);
   } catch (err: any) {

@@ -1,5 +1,6 @@
 "use server";
 
+import addNotification from "@/app/actions/addNotification";
 import { getSession } from "@/app/actions/getSession";
 import prisma from "@/app/libs/prismadb";
 
@@ -76,23 +77,9 @@ export default async function setPostBadge(postId: string, type: BadgeType) {
         badge.post.author.notifications?.newOrders &&
         badge.authorId !== badge.post.authorId
       ) {
-        await prisma.notification.create({
-          data: {
-            type: "BADGE",
-            post: {
-              connect: {
-                id: badge.postId,
-              },
-            },
-            user: {
-              connect: { id: badge.post.authorId },
-            },
-            author: {
-              connect: {
-                id: badge.authorId,
-              },
-            },
-          },
+        await addNotification("BADGE", {
+          postId: badge.postId,
+          postAuthorId: badge.post.authorId,
         });
       }
 

@@ -69,10 +69,16 @@ export async function POST(request: Request, { params: { id } }: Params) {
     });
 
     // Update all connections with new seen
-    await pusherServer.trigger(session.user.email, "conversation:update", {
+    const conversationWithLastMessage = {
       id,
       messages: [updatedMessage],
-    });
+    };
+
+    await pusherServer.trigger(
+      session.user.email,
+      "conversation:update",
+      conversationWithLastMessage
+    );
 
     // If user has already seen the message, no need to go further
     if (lastMessage.seenIds.indexOf(session.user.id) !== -1) {
@@ -81,6 +87,17 @@ export async function POST(request: Request, { params: { id } }: Params) {
 
     // Update last message seen
     await pusherServer.trigger(id, "message:update", updatedMessage);
+
+    Promise.all(
+      updatedMessage.seenIds.map(
+        async (userId) =>
+          await pusherServer.trigger(
+            userId,
+            "xmessages:update",
+            conversationWithLastMessage
+          )
+      )
+    );
 
     return new NextResponse("Success");
   } catch (err: any) {

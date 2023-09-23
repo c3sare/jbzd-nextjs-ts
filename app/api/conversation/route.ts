@@ -1,7 +1,6 @@
 import { getSession } from "@/app/actions/getSession";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
-import getMessages from "@/app/actions/chat/getMessages";
 
 export async function POST(request: NextRequest) {
   try {

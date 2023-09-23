@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import { pusherClient } from "@/app/libs/pusher";
-import { useRouter } from "next/navigation";
-import Scrollbars from "react-custom-scrollbars-2";
 import axios from "axios";
 
 type ChatBodyProps = {
@@ -18,9 +16,8 @@ const ChatBody: React.FC<ChatBodyProps> = ({
   userId,
   conversationId,
 }) => {
-  const router = useRouter();
   const [messages, setMessages] = useState<any[]>(initialMessages);
-  const bottomRef = useRef<Scrollbars>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     axios.post(`/api/conversation/${conversationId}/seen`);
@@ -39,8 +36,6 @@ const ChatBody: React.FC<ChatBodyProps> = ({
 
         return [...current, message];
       });
-
-      router.refresh();
     };
 
     const updateMessageHandler = (newMessage: any) => {
@@ -53,7 +48,6 @@ const ChatBody: React.FC<ChatBodyProps> = ({
           return currentMessage;
         })
       );
-      router.refresh();
     };
 
     pusherClient.bind("messages:new", messageHandler);
@@ -64,20 +58,19 @@ const ChatBody: React.FC<ChatBodyProps> = ({
       pusherClient.unbind("messages:new", messageHandler);
       pusherClient.unbind("message:update", updateMessageHandler);
     };
-  }, [conversationId, router]);
+  }, [conversationId]);
 
   useEffect(() => {
-    bottomRef?.current?.scrollToBottom();
+    bottomRef?.current?.scrollIntoView();
   }, [messages]);
 
   return (
     <div className="text-white mb-[20px]">
-      <div className="m-auto relative h-[calc(100vh_-_430px)] max-w-[calc(100%_+_20px)] touch-auto">
-        <Scrollbars style={{ width: "100%", height: "100%" }} ref={bottomRef}>
-          {messages.map((message) => (
-            <Message key={message.id} message={message} userId={userId} />
-          ))}
-        </Scrollbars>
+      <div className="m-auto relative h-[calc(100vh_-_430px)] max-w-[calc(100%_+_20px)] touch-auto overflow-y-scroll">
+        {messages.map((message) => (
+          <Message key={message.id} message={message} userId={userId} />
+        ))}
+        <div ref={bottomRef} />
       </div>
     </div>
   );
