@@ -4,6 +4,8 @@ import ChatHeader from "./components/ChatHeader";
 import { redirect } from "next/navigation";
 import { getSession } from "@/app/actions/getSession";
 import ChatBody from "./components/ChatBody";
+import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 
 type ConversationPageProps = {
   params: {
@@ -16,9 +18,10 @@ const ConversationPage: React.FC<ConversationPageProps> = async ({
 }) => {
   const session = await getSession();
   const conversation = await getMessages(conversationId);
-
   if (!conversation || !session?.user?.id)
     return redirect("/wiadomosci-prywatne");
+
+  revalidatePath(`/wiadomosci-prywatne/rozmowa/${conversationId}`);
 
   const messages = conversation.messages;
 
