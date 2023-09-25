@@ -34,7 +34,6 @@ const MessagesButton: React.FC<MessagesButtonProps> = ({
   const { isVisible, toggleVisible, containerRef } = useDropdownContainer();
 
   useEffect(() => {
-    pusherClient.subscribe(userId);
     const handleAddMessages = (conversation: Conversation) => {
       setConversations((prev) => {
         const newState = prev.filter((item) => item.id !== conversation.id);
@@ -57,6 +56,11 @@ const MessagesButton: React.FC<MessagesButtonProps> = ({
 
     pusherClient.bind("xmessages:new", handleAddMessages);
     pusherClient.bind("xmessages:update", handleUpdateMessages);
+
+    return () => {
+      pusherClient.unbind("xmessages:new");
+      pusherClient.unbind("xmessages:update");
+    };
   }, [userId]);
 
   const unSeenCount = conversations.filter(

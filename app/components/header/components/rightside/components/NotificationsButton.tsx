@@ -28,7 +28,6 @@ const NotificationsButton: React.FC<NotificationsButonProps> = ({
   const { isVisible, toggleVisible, containerRef } = useDropdownContainer();
 
   useEffect(() => {
-    pusherClient.subscribe(userId);
     const handleNewNotification = (notify: NotificationType) => {
       console.log(notify);
       setNotifications((prev) => [notify, ...prev]);

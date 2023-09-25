@@ -6,6 +6,8 @@ import NotificationsButton from "./components/NotificationsButton";
 
 import Conversation from "@/app/wiadomosci-prywatne/types/Conversation";
 import NotificationType from "@/app/(withSidebar)/uzytkownik/notyfikacje/types/NotificationType";
+import { useEffect } from "react";
+import { pusherClient } from "@/app/libs/pusher";
 
 type RightSideProps = {
   userId?: string;
@@ -18,8 +20,16 @@ const RightSide: React.FC<RightSideProps> = ({
   messages,
   notifications,
 }) => {
+  useEffect(() => {
+    if (userId) pusherClient.subscribe(userId);
+
+    return () => {
+      if (userId) pusherClient.unsubscribe(userId);
+    };
+  }, [userId]);
+
   return (
-    <div className="flex items-center text-right justify-end h-full">
+    <div className="flex items-center justify-end h-full text-right">
       <CoinsBox />
       {Boolean(userId) && (
         <>
