@@ -3,6 +3,7 @@
 import Conversation from "@/app/wiadomosci-prywatne/types/Conversation";
 import clsx from "clsx";
 import { format } from "date-fns";
+import parseISO from "date-fns/parseISO";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
@@ -21,11 +22,18 @@ const ConversationHistoryElement: React.FC<ConversationHistoryElementProps> = ({
   const [message] = messages;
   const [user] = users;
 
-  const { image, username } = user;
+  const { username } = user;
+
+  const image = user?.image || "/images/avatars/default.jpg";
+
   const { body, authorId } = message;
 
-  const time = format(lastMessageAt!, "HH:mm");
-  const date = format(lastMessageAt!, "yyyy-MM-dd");
+  const isISODate = typeof lastMessageAt === "string";
+
+  const lastMessageDate = isISODate ? parseISO(lastMessageAt) : lastMessageAt;
+
+  const time = format(lastMessageDate!, "HH:mm");
+  const date = format(lastMessageDate!, "yyyy-MM-dd");
 
   const isOwnMessage = authorId === userId;
 
@@ -47,7 +55,7 @@ const ConversationHistoryElement: React.FC<ConversationHistoryElementProps> = ({
     >
       <div className="mr-[10px]">
         <Image
-          src={image || "/images/avatars/default.jpg"}
+          src={image}
           width={35}
           height={35}
           className="block rounded-full"

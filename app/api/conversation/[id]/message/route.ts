@@ -64,13 +64,11 @@ export async function POST(
           push: message.id,
         },
       },
-      include: {
+      select: {
+        id: true,
+        lastMessageAt: true,
+        userIds: true,
         users: {
-          where: {
-            id: {
-              not: session.user.id,
-            },
-          },
           select: {
             id: true,
             username: true,
@@ -89,12 +87,16 @@ export async function POST(
     if (!message) return new NextResponse("Internal error", { status: 500 });
 
     await pusherServer.trigger(id, "messages:new", message);
-    console.log(updateConversation.userIds);
     await Promise.all(
-      updateConversation.userIds.map(
-        async (user) =>
-          await pusherServer.trigger(user, "xmessages:new", updateConversation)
-      )
+      updateConversation.userIds.map(async (user) => {
+        await pusherServer.trigger(user, "xmessages:new", updateConversation);
+        await pusherServer.trigger(user, "chatHistory:update", {
+          ...updateConversation,
+          users: updateConversation.users.filter(
+            (convUser) => convUser.id !== user
+          ),
+        });
+      })
     );
 
     return NextResponse.json(updateConversation);

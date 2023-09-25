@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import { pusherClient } from "@/app/libs/pusher";
 import axios from "axios";
+import revalidateUrl from "@/app/actions/revalidateUrl";
+import { useRouter } from "next/navigation";
 
 type ChatBodyProps = {
   initialMessages: any[];
@@ -16,6 +18,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({
   userId,
   conversationId,
 }) => {
+  const router = useRouter();
   const [messages, setMessages] = useState<any[]>(initialMessages);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -57,6 +60,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({
       pusherClient.unsubscribe(conversationId);
       pusherClient.unbind("messages:new", messageHandler);
       pusherClient.unbind("message:update", updateMessageHandler);
+      router.refresh();
     };
   }, [conversationId]);
 

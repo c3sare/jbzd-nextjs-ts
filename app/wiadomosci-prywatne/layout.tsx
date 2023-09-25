@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import getConversations from "../actions/chat/getConversations";
 import UserSearchForm from "./components/UserSearchForm";
-import ConversationHistoryElement from "./rozmowa/[conversationId]/components/ConversationHistoryElement";
 import { getSession } from "../actions/getSession";
+import ConversationHistory from "./components/ConversationHistory";
 
 const MessagesLayout: React.FC<React.PropsWithChildren> = async ({
   children,
@@ -34,21 +34,10 @@ const MessagesLayout: React.FC<React.PropsWithChildren> = async ({
                 Historia wiadomości:
               </header>
               <div>
-                <section className="max-w-[calc(100%_-_20px)] h-[calc(100vh_-_370px)] relative m-auto">
-                  {conversations.length === 0 ? (
-                    <p className="text-[#8f8f8f] text-[12px] italic">
-                      Nie masz jeszcze żadnych rozmów
-                    </p>
-                  ) : (
-                    conversations.map((conversation) => (
-                      <ConversationHistoryElement
-                        key={conversation.id}
-                        conversation={conversation}
-                        userId={session.user!.id}
-                      />
-                    ))
-                  )}
-                </section>
+                <ConversationHistory
+                  initialHistory={conversations}
+                  userId={session.user.id}
+                />
               </div>
             </div>
           </div>

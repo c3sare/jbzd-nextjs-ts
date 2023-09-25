@@ -43,7 +43,6 @@ const MessagesButton: React.FC<MessagesButtonProps> = ({
     };
 
     const handleUpdateMessages = (conversation: UpdateMessage) => {
-      console.log(conversation);
       setConversations((prev) => {
         return [...prev].map((item) => {
           if (item.id === conversation.id) {

@@ -29,7 +29,6 @@ const NotificationsButton: React.FC<NotificationsButonProps> = ({
 
   useEffect(() => {
     const handleNewNotification = (notify: NotificationType) => {
-      console.log(notify);
       setNotifications((prev) => [notify, ...prev]);
     };
 
