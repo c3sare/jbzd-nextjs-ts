@@ -62,7 +62,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({
       pusherClient.unbind("message:update", updateMessageHandler);
       router.refresh();
     };
-  }, [conversationId]);
+  }, [conversationId, router]);
 
   useEffect(() => {
     bottomRef?.current?.scrollIntoView();
