@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import PostsPage from "../../components/PostsPage";
-import { PageProps } from "../../components/types/PageProps";
-import { getFollowedUsersPosts } from "@/app/actions/posts/getFollowedUsersPosts";
+import PostsPage from "../../../components/PostsPage";
+import { PageProps } from "../../../components/types/PageProps";
+import { getFollowedCategoriesPosts } from "@/app/actions/posts/getFollowedCategoriesPosts";
 
 export const fetchCache = "force-no-store";
 
@@ -10,8 +10,9 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function Home(props: PageProps) {
-  const posts = await getFollowedUsersPosts({
-    params: { index: 1 },
+  console.log(props);
+  const posts = await getFollowedCategoriesPosts({
+    params: { index: props.params?.index || [1] },
     searchParams: props.searchParams,
   });
 
@@ -21,8 +22,8 @@ export default async function Home(props: PageProps) {
     <PostsPage
       page={posts.page}
       pagesCount={posts.pagesCount}
-      pageSlug="obserwowane/uzytkownicy"
-      currentNode="Obserwowani użytkownicy"
+      pageSlug="obserwowane/dzialy"
+      currentNode="Obserwowane działy"
       posts={posts.posts}
     />
   );

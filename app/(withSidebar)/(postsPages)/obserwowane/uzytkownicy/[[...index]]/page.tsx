@@ -10,9 +10,12 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function Home(props: PageProps) {
-  const posts = await getFollowedUsersPosts(props);
+  const posts = await getFollowedUsersPosts({
+    params: { index: props.params.index || [1] },
+    searchParams: props.searchParams,
+  });
 
-  if (!posts || posts.posts.length === 0) return notFound();
+  if (!posts) return notFound();
 
   return (
     <PostsPage

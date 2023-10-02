@@ -11,6 +11,8 @@ export async function getFollowedCategoriesPosts({
   params: { index },
   searchParams,
 }: PageProps) {
+  const currentPage = Number(index?.[0] || 1) - 1;
+
   try {
     const { blockedUsersIds, followedUsersIds } = await getActionedUsersLists();
 
@@ -39,7 +41,7 @@ export async function getFollowedCategoriesPosts({
       orderBy: {
         addTime: "desc",
       },
-      skip: countOnPage * (Number(index) - 1),
+      skip: countOnPage * currentPage,
       take: countOnPage,
     });
 
@@ -55,7 +57,7 @@ export async function getFollowedCategoriesPosts({
       return null;
     }
 
-    return { posts: posts as PostType[], page: Number(index), pagesCount };
+    return { posts: posts as PostType[], page: currentPage, pagesCount };
   } catch (error: any) {
     console.log(error);
     return null;
