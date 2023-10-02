@@ -52,7 +52,7 @@ export async function getHomePagePosts({
       orderBy: {
         accepted: "desc",
       },
-      skip: countOnPage * (Number(index) - 1),
+      skip: countOnPage * currentPage,
       take: countOnPage,
     });
 
@@ -71,7 +71,7 @@ export async function getHomePagePosts({
       return null;
     }
 
-    return { posts: posts as PostType[], page: Number(index), pagesCount };
+    return { posts: posts as PostType[], page: currentPage+1, pagesCount };
   } catch (error: any) {
     console.log(error);
     return null;
