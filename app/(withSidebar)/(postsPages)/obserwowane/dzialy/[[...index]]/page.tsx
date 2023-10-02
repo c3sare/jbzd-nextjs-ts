@@ -10,21 +10,17 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function Home(props: PageProps) {
-  console.log(props);
-  const posts = await getFollowedCategoriesPosts({
-    params: { index: props.params?.index || [1] },
-    searchParams: props.searchParams,
-  });
+  const posts = await getFollowedCategoriesPosts(props);
 
   if (!posts) return notFound();
 
   return (
     <PostsPage
-      page={posts.page}
-      pagesCount={posts.pagesCount}
+      page={posts?.page || 1}
+      pagesCount={posts?.pagesCount || 1}
       pageSlug="obserwowane/dzialy"
       currentNode="Obserwowane działy"
-      posts={posts.posts}
+      posts={posts?.posts || []}
     />
   );
 }

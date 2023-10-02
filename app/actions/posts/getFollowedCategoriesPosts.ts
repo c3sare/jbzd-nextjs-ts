@@ -11,7 +11,11 @@ export async function getFollowedCategoriesPosts({
   params: { index },
   searchParams,
 }: PageProps) {
-  const currentPage = Number(index?.[0] || 1) - 1;
+  const currentPage = Number(index || 1) - 1;
+  const isNanPage = isNaN(currentPage);
+
+  if(isNanPage || currentPage < 0)
+    return null;
 
   try {
     const { blockedUsersIds, followedUsersIds } = await getActionedUsersLists();
@@ -45,6 +49,9 @@ export async function getFollowedCategoriesPosts({
       take: countOnPage,
     });
 
+    if(posts.length === 0 && currentPage > 0)
+      return null;
+
     posts = await addActionPostInfo(
       posts,
       blockedUsersIds,
@@ -57,7 +64,7 @@ export async function getFollowedCategoriesPosts({
       return null;
     }
 
-    return { posts: posts as PostType[], page: currentPage, pagesCount };
+    return { posts: posts as PostType[], page: currentPage+1, pagesCount };
   } catch (error: any) {
     console.log(error);
     return null;

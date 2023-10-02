@@ -12,7 +12,7 @@ export const revalidate = 0;
 export default async function Home(props: TagPageProps) {
   const posts = await getTagPagePosts(props);
 
-  if (!posts || posts.posts.length > 0) return notFound();
+  if (!posts) return notFound();
 
   return (
     <PostsPage

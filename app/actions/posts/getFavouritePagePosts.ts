@@ -11,6 +11,12 @@ export async function getFavouritePagePosts({
   params: { index },
   searchParams,
 }: PageProps) {
+  const currentPage = Number(index || 1) - 1;
+  const isNanPage = isNaN(currentPage);
+
+  if(isNanPage || currentPage < 0)
+    return null;
+
   try {
     const { blockedUsersIds, followedUsersIds } = await getActionedUsersLists();
 
@@ -40,6 +46,9 @@ export async function getFavouritePagePosts({
       skip: countOnPage * (Number(index) - 1),
       take: countOnPage,
     });
+
+    if(posts.length === 0 && currentPage > 0)
+      return null;
 
     posts = await addActionPostInfo(
       posts,

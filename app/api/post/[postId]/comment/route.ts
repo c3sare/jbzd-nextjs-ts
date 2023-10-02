@@ -94,7 +94,7 @@ export async function POST(
       (newComments || (commentsOnHomePage && comment.post.accepted)) &&
       comment.authorId !== comment.post.authorId
     ) {
-      await addNotification("NEW_COMMENT", session.user.id, {
+      await addNotification("NEW_COMMENT", {
         postId: comment.postId,
         postAuthorId: comment.post.authorId,
         commentId: comment.id,

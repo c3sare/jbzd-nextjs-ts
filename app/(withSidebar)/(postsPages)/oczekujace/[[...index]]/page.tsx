@@ -1,6 +1,6 @@
-import PostsPage from "@/app/(withSidebar)/(postsPages)/components/PostsPage";
-import { PageProps } from "@/app/(withSidebar)/(postsPages)/components/types/PageProps";
 import { notFound } from "next/navigation";
+import PostsPage from "../../components/PostsPage";
+import { PageProps } from "../../components/types/PageProps";
 import { getWaitingPagePosts } from "@/app/actions/posts/getWaitingPagePosts";
 
 export const fetchCache = "force-no-store";
@@ -9,10 +9,10 @@ export const dynamic = "force-dynamic";
 
 export const revalidate = 0;
 
-export default async function NextHomePage(props: PageProps) {
+export default async function Home(props: PageProps) {
   const posts = await getWaitingPagePosts(props);
 
-  if (!posts || posts.posts.length === 0) return notFound();
+  if (!posts) return notFound();
 
   return (
     <PostsPage

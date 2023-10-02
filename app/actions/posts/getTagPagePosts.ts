@@ -13,6 +13,12 @@ export async function getTagPagePosts({
   try {
     if (!tagId || !slug) return null;
 
+    const currentPage = Number(index || 1) - 1;
+    const isNanPage = isNaN(currentPage);
+
+    if(isNanPage || currentPage < 0)
+      return null;
+
     const tag = await prisma.tag.findFirst({
       where: {
         slug,
@@ -52,6 +58,9 @@ export async function getTagPagePosts({
       skip: countOnPage * (Number(index) - 1),
       take: countOnPage,
     });
+
+    if(posts.length === 0 && currentPage > 0)
+      return null;
 
     posts = await addActionPostInfo(
       posts,
