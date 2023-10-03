@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import { pusherClient } from "@/app/libs/pusher";
 import axios from "axios";
-import revalidateUrl from "@/app/actions/revalidateUrl";
 import { useRouter } from "next/navigation";
 
 type ChatBodyProps = {
@@ -37,7 +36,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({
           return current;
         }
 
-        return [...current, message];
+        return [...current, message.messages[0]];
       });
     };
 
@@ -45,7 +44,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({
       setMessages((current) =>
         current.map((currentMessage) => {
           if (currentMessage.id === newMessage.id) {
-            return newMessage;
+            return newMessage.messages[0];
           }
 
           return currentMessage;
@@ -53,12 +52,11 @@ const ChatBody: React.FC<ChatBodyProps> = ({
       );
     };
 
-    pusherClient.bind("messages:new", messageHandler);
+    pusherClient.bind("message:new", messageHandler);
     pusherClient.bind("message:update", updateMessageHandler);
 
     return () => {
-      pusherClient.unsubscribe(conversationId);
-      pusherClient.unbind("messages:new", messageHandler);
+      pusherClient.unbind("message:new", messageHandler);
       pusherClient.unbind("message:update", updateMessageHandler);
       router.refresh();
     };

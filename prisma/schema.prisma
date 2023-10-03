@@ -85,6 +85,7 @@ model Conversation {
   messages      Message[]
   userIds       String[]  @db.ObjectId
   users         User[]    @relation(fields: [userIds], references: [id])
+  userBlockedId String?   @db.ObjectId
 
   @@unique([userIds])
 }

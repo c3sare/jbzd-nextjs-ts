@@ -30,10 +30,16 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
       });
     };
 
-    pusherClient.bind("chatHistory:update", handleUpdateHistory);
+    const handleDeleteConversation = (id: string) => {
+      setHistory((prev) => prev.filter((item) => item.id !== id));
+    };
+
+    pusherClient.bind("message:new", handleUpdateHistory);
+    pusherClient.bind("conversation:delete", handleDeleteConversation);
 
     return () => {
-      pusherClient.unbind("chatHistory:update");
+      pusherClient.unbind("message:new", handleUpdateHistory);
+      pusherClient.unbind("conversation:delete", handleDeleteConversation);
       router.refresh();
     };
   }, [router]);

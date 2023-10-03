@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import ActionButton from "./ActionButton";
-import format from "date-fns/format";
 import getTimeFromLastMessage from "../utils/getTimeFromLastMessage";
+import UserChatActions from "./UserChatActions";
 
 type ChatHeaderProps = {
   conversationId: string;
@@ -12,12 +11,16 @@ type ChatHeaderProps = {
     image: string | null;
   };
   lastMessageAt: Date | null;
+  userId: string;
+  userBlockedId: string | null;
 };
 
 const ChatHeader: React.FC<ChatHeaderProps> = ({
   conversationId,
-  user: { id, username, image },
+  user: { username, image },
   lastMessageAt,
+  userId,
+  userBlockedId,
 }) => {
   const lastTimeMessage = getTimeFromLastMessage(lastMessageAt);
 
@@ -38,10 +41,11 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
           Ostatnia wiadomość: {lastTimeMessage}
         </div>
       </Link>
-      <div>
-        <ActionButton>Zablokuj</ActionButton>
-        <ActionButton>Usuń konwersację</ActionButton>
-      </div>
+      <UserChatActions
+        userBlockedId={userBlockedId}
+        userId={userId}
+        conversationId={conversationId}
+      />
     </div>
   );
 };

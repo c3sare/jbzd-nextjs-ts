@@ -27,6 +27,8 @@ const ConversationPage: React.FC<ConversationPageProps> = async ({
         conversationId={conversation.id}
         lastMessageAt={conversation.lastMessageAt}
         user={conversation.users[0]}
+        userId={session.user.id}
+        userBlockedId={conversation.userBlockedId}
       />
       <div>
         <ChatBody
@@ -35,7 +37,10 @@ const ConversationPage: React.FC<ConversationPageProps> = async ({
           conversationId={conversationId}
         />
         <div className="relative">
-          <AddMessageForm conversationId={conversationId} />
+          <AddMessageForm
+            conversationId={conversationId}
+            isBlockedConversation={Boolean(conversation.userBlockedId)}
+          />
         </div>
       </div>
     </div>

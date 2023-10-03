@@ -33,13 +33,13 @@ export default async function getLastMessages() {
         },
         messages: {
           orderBy: {
-            addTime: "asc",
+            addTime: "desc",
           },
           take: 1,
         },
       },
       orderBy: {
-        lastMessageAt: "asc",
+        lastMessageAt: "desc",
       },
       take: 3,
     });

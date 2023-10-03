@@ -57,6 +57,16 @@ export async function POST(
     const updateConversation = await prisma.conversation.update({
       where: {
         id,
+        OR: [
+          {
+            userBlockedId: {
+              isSet: false,
+            },
+          },
+          {
+            userBlockedId: null,
+          },
+        ],
       },
       data: {
         lastMessageAt: message.addTime,
@@ -76,6 +86,15 @@ export async function POST(
           },
         },
         messages: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                username: true,
+                image: true,
+              },
+            },
+          },
           orderBy: {
             addTime: "desc",
           },
@@ -86,16 +105,9 @@ export async function POST(
 
     if (!message) return new NextResponse("Internal error", { status: 500 });
 
-    await pusherServer.trigger(id, "messages:new", message);
     await Promise.all(
-      updateConversation.userIds.map(async (user) => {
-        await pusherServer.trigger(user, "xmessages:new", updateConversation);
-        await pusherServer.trigger(user, "chatHistory:update", {
-          ...updateConversation,
-          users: updateConversation.users.filter(
-            (convUser) => convUser.id !== user
-          ),
-        });
+      updateConversation.userIds.map(async (userId) => {
+        await pusherServer.trigger(userId, "message:new", updateConversation);
       })
     );
 

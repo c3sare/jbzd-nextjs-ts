@@ -38,6 +38,10 @@ const MessagesButton: React.FC<MessagesButtonProps> = ({
       setConversations((prev) => {
         const newState = prev.filter((item) => item.id !== conversation.id);
 
+        conversation.users = conversation.users.filter(
+          (user) => user.id !== userId
+        );
+
         return [conversation, ...newState];
       });
     };
@@ -53,12 +57,20 @@ const MessagesButton: React.FC<MessagesButtonProps> = ({
       });
     };
 
-    pusherClient.bind("xmessages:new", handleAddMessages);
-    pusherClient.bind("xmessages:update", handleUpdateMessages);
+    const handleIsDeletedConversation = (id: string) => {
+      setConversations((prev) =>
+        prev.filter((conversation) => conversation.id !== id)
+      );
+    };
+
+    pusherClient.bind("message:new", handleAddMessages);
+    pusherClient.bind("message:update", handleUpdateMessages);
+    pusherClient.bind("conversation:delete", handleIsDeletedConversation);
 
     return () => {
-      pusherClient.unbind("xmessages:new");
-      pusherClient.unbind("xmessages:update");
+      pusherClient.unbind("message:new", handleAddMessages);
+      pusherClient.unbind("message:update", handleUpdateMessages);
+      pusherClient.unbind("conversation:delete", handleIsDeletedConversation);
     };
   }, [userId]);
 

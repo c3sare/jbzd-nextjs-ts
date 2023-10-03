@@ -79,7 +79,7 @@ export async function GET() {
         },
       },
       orderBy: {
-        lastMessageAt: "asc",
+        lastMessageAt: "desc",
       },
       take: 3,
     });
