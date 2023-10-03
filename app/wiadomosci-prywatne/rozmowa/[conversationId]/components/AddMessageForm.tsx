@@ -1,9 +1,8 @@
 "use client";
 
-import { pusherClient } from "@/app/libs/pusher";
 import { IoSendSharp } from "@react-icons/all-files/io5/IoSendSharp";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 type AddMessageFormProps = {
