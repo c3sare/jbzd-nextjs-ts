@@ -1,9 +1,8 @@
 import getMessages from "@/app/actions/chat/getMessages";
-import AddMessageForm from "./components/AddMessageForm";
-import ChatHeader from "./components/ChatHeader";
 import { redirect } from "next/navigation";
 import { getSession } from "@/app/actions/getSession";
-import ChatBody from "./components/ChatBody";
+import BackToConversationsPage from "./components/BackToConversationsPage";
+import ChatPage from "./components/ChatPage";
 
 type ConversationPageProps = {
   params: {
@@ -19,31 +18,11 @@ const ConversationPage: React.FC<ConversationPageProps> = async ({
   if (!conversation || !session?.user?.id)
     return redirect("/wiadomosci-prywatne");
 
-  const messages = conversation.messages;
-
   return (
-    <div>
-      <ChatHeader
-        conversationId={conversation.id}
-        lastMessageAt={conversation.lastMessageAt}
-        user={conversation.users[0]}
-        userId={session.user.id}
-        userBlockedId={conversation.userBlockedId}
-      />
-      <div>
-        <ChatBody
-          initialMessages={messages}
-          userId={session.user.id}
-          conversationId={conversationId}
-        />
-        <div className="relative">
-          <AddMessageForm
-            conversationId={conversationId}
-            isBlockedConversation={Boolean(conversation.userBlockedId)}
-          />
-        </div>
-      </div>
-    </div>
+    <>
+      <BackToConversationsPage />
+      <ChatPage conversation={conversation} userId={session.user.id} />
+    </>
   );
 };
 

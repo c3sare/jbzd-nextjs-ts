@@ -1,5 +1,4 @@
 import prisma from "@/app/libs/prismadb";
-import { PostType } from "@/app/(withSidebar)/(postsPages)/components/types/PostType";
 import addActionPostInfo from "@/utils/addActionPostInfo";
 import getActionedUsersLists from "../getActionedUsersLists";
 import getActionedTagsLists from "../getActionedTagsLists";
@@ -14,7 +13,10 @@ export async function getCategoryPagePosts({
   try {
     const session = await getSession();
 
-    if (!category) return null;
+    const currentPage = Number(index?.[0] || 1) - 1;
+    const isNanPage = isNaN(currentPage);
+
+    if (!category || isNanPage || currentPage < 0) return null;
 
     const categoryDB = await prisma.category.findFirst({
       where: {
@@ -76,7 +78,7 @@ export async function getCategoryPagePosts({
         orderBy: {
           addTime: "desc",
         },
-        skip: countOnPage * (Number(index) - 1),
+        skip: countOnPage * currentPage,
         take: countOnPage,
       });
 
@@ -95,7 +97,7 @@ export async function getCategoryPagePosts({
 
     return {
       posts: posts,
-      page: Number(index),
+      page: currentPage + 1,
       pagesCount,
       categoryName: categoryDB.name,
       categoryId: categoryDB.id,

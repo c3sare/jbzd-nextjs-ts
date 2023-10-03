@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import ActionButton from "./ActionButton";
 import { MonitProvider } from "@/app/context/MonitContext";
 import axios from "axios";
@@ -20,31 +20,16 @@ const UserChatActions: React.FC<UserChatActionsProps> = ({
 }) => {
   const router = useRouter();
   const monit = useContext(MonitProvider);
-  const [blockedId, setBlockedId] = useState<string | null>(
-    userBlockedId || null
-  );
 
   useEffect(() => {
     const handleIsDeletedConversation = (id: string) => {
       if (conversationId === id) router.push("/wiadomosci-prywatne");
     };
 
-    const handleBlockConversationTrigger = ({
-      conversationId: convId,
-      userBlockedId: userId,
-    }: {
-      conversationId: string;
-      userBlockedId: string | null;
-    }) => {
-      if (conversationId === convId) setBlockedId(userId);
-    };
-
     pusherClient.bind("conversation:delete", handleIsDeletedConversation);
-    pusherClient.bind("conversation:block", handleBlockConversationTrigger);
 
     return () => {
-      pusherClient.unbind("conversation:delete");
-      pusherClient.unbind("conversation:block", handleBlockConversationTrigger);
+      pusherClient.unbind("conversation:delete", handleIsDeletedConversation);
     };
   }, [conversationId, router]);
 
@@ -75,9 +60,9 @@ const UserChatActions: React.FC<UserChatActionsProps> = ({
 
   return (
     <div>
-      {(!blockedId || blockedId === userId) && (
+      {(!userBlockedId || userBlockedId === userId) && (
         <ActionButton onClick={handleBlockConversation}>
-          {blockedId === userId ? "Odblokuj" : "Zablokuj"}
+          {userBlockedId === userId ? "Odblokuj" : "Zablokuj"}
         </ActionButton>
       )}
       <ActionButton onClick={handleDeleteConversation}>

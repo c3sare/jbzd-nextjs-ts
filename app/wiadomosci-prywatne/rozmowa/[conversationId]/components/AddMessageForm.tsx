@@ -21,26 +21,6 @@ const AddMessageForm: React.FC<AddMessageFormProps> = ({
       body: "",
     },
   });
-  const [isBlockedConversation, setIsBlockedConversation] =
-    useState<boolean>(isBlocked);
-
-  useEffect(() => {
-    const handleBlockConversation = ({
-      conversationId: convId,
-      userId,
-    }: {
-      conversationId: string;
-      userId: string | null;
-    }) => {
-      if (conversationId === convId) setIsBlockedConversation(Boolean(userId));
-    };
-
-    pusherClient.bind("conversation:block", handleBlockConversation);
-
-    return () => {
-      pusherClient.unbind("conversation:block", handleBlockConversation);
-    };
-  }, [conversationId]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
@@ -56,9 +36,9 @@ const AddMessageForm: React.FC<AddMessageFormProps> = ({
   return (
     <form className="flex" onSubmit={handleSubmit(onSubmit)}>
       <textarea
-        disabled={isLoading || isBlockedConversation}
+        disabled={isLoading || isBlocked}
         placeholder={
-          isBlockedConversation
+          isBlocked
             ? "Wątek zablokowany, nie możesz pisać."
             : "Wpisz wiadomość..."
         }
@@ -66,7 +46,7 @@ const AddMessageForm: React.FC<AddMessageFormProps> = ({
         {...register("body")}
       />
       <button
-        disabled={isLoading || isBlockedConversation}
+        disabled={isLoading || isBlocked}
         type="submit"
         className="flex items-center justify-center w-[57px] h-[57px] bg-[#c03e3e] rounded-[5px] text-white text-[24px] outline-none"
       >

@@ -17,7 +17,10 @@ const MessagesLayout: React.FC<React.PropsWithChildren> = async ({
 
   return (
     <div className="flex w-full mt-[46px] flex-col md:flex-row">
-      <aside className="py-[25px] w-full md:w-[350px] flex justify-end">
+      <aside
+        className="py-[25px] w-full md:w-[350px] flex justify-end"
+        id="conversationSidebar"
+      >
         <div className="mx-2 md:ml-0 md:mr-[30px] flex w-full md:w-auto md:flex-[0_0_300px] flex-col">
           <div className="mb-[25px]">
             <div className="z-[999] fixed hidden bottom-0 left-0 right-0 top-0 overflow-hidden"></div>
