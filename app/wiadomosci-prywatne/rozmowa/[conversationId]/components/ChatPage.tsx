@@ -35,7 +35,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ conversation, userId }) => {
     return () => {
       pusherClient.unbind("conversation:block", handleBlockConversationTrigger);
     };
-  }, []);
+  }, [conversation.id]);
 
   return (
     <div className="mx-2">
