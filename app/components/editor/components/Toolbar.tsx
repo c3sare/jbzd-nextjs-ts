@@ -10,14 +10,8 @@ import {
   FORMAT_TEXT_COMMAND,
   SELECTION_CHANGE_COMMAND,
 } from "lexical";
-import { $isHeadingNode } from "@lexical/rich-text";
 import { $patchStyleText } from "@lexical/selection";
-import { $isListNode, ListNode } from "@lexical/list";
-import {
-  $findMatchingParent,
-  $getNearestNodeOfType,
-  mergeRegister,
-} from "@lexical/utils";
+import { $findMatchingParent, mergeRegister } from "@lexical/utils";
 import { BsTypeBold } from "@react-icons/all-files/bs/BsTypeBold";
 import { BsTypeUnderline } from "@react-icons/all-files/bs/BsTypeUnderline";
 import { BsTypeItalic } from "@react-icons/all-files/bs/BsTypeItalic";
@@ -68,8 +62,8 @@ export default function ToolbarPlugin(): JSX.Element {
         const selection = $getSelection();
         if ($isRangeSelection(selection)) {
           $patchStyleText(selection, {
-            fontSize: font + "px",
-            lineHeight: line + "px",
+            "font-size": font + "px",
+            "line-height": line + "px",
           });
         }
       });

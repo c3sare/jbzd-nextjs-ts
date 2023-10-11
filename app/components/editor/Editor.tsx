@@ -9,22 +9,30 @@ import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 import Toolbar from "./components/Toolbar";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { editorConfig } from "./config/editorConfig";
+import { $generateHtmlFromNodes } from "@lexical/html";
 
 function OnChangePlugin({ onChange }: { onChange: any }) {
   const [editor] = useLexicalComposerContext();
   useEffect(() => {
-    return editor.registerUpdateListener(({ editorState }) => {
-      onChange(editorState);
-    });
+    const removeUpdateListener = editor.registerUpdateListener(
+      ({ editorState }) => {
+        editorState.read(() => {
+          const htmlString = $generateHtmlFromNodes(editor, null);
+          onChange(htmlString);
+        });
+      }
+    );
+    return () => {
+      removeUpdateListener();
+    };
   }, [editor, onChange]);
 
   return null;
 }
 
 const Editor = ({ setData }: { setData: (val: string) => void }) => {
-  function onChange(editorState: any) {
-    const editorStateJSON = editorState.toJSON();
-    setData(JSON.stringify(editorStateJSON));
+  function onChange(state: any) {
+    setData(state);
   }
 
   return (
@@ -34,7 +42,7 @@ const Editor = ({ setData }: { setData: (val: string) => void }) => {
         <div className="bg-[#181818] relative">
           <RichTextPlugin
             contentEditable={
-              <ContentEditable className="resize-none text-[15px] relative outline-0 p-[15px_10px] caret-[#444] text-white min-h-[264px]" />
+              <ContentEditable className="resize-none text-[18px] leading-[30px] relative outline-0 p-[15px_10px] caret-[#444] text-white min-h-[264px]" />
             }
             placeholder={null}
             ErrorBoundary={LexicalErrorBoundary}

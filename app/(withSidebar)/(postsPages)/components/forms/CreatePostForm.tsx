@@ -218,7 +218,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
               />
               {errors.memContainers?.[index] && (
                 <ErrorMessageBox>
-                  {errors.memContainers?.[index]?.data?.message as string}
+                  {errors.memContainers?.[index]?.message as string}
                 </ErrorMessageBox>
               )}
             </MemContainer>
