@@ -6,29 +6,9 @@ import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 
-import { HeadingNode } from "@lexical/rich-text";
-import ToolbarPlugin from "./plugins/ToolbarPlugin";
+import Toolbar from "./components/Toolbar";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-
-const editorConfig = {
-  namespace: "MyEditor",
-  theme: {
-    heading: {
-      h1: "text-3xl",
-      h2: "text-2xl",
-      h3: "text-xl",
-    },
-    text: {
-      bold: "text-bold",
-      italic: "italic",
-      underline: "underline",
-    },
-  },
-  onError(error: any) {
-    throw error;
-  },
-  nodes: [HeadingNode],
-};
+import { editorConfig } from "./config/editorConfig";
 
 function OnChangePlugin({ onChange }: { onChange: any }) {
   const [editor] = useLexicalComposerContext();
@@ -49,12 +29,12 @@ const Editor = ({ setData }: { setData: (val: string) => void }) => {
 
   return (
     <LexicalComposer initialConfig={editorConfig}>
-      <div className="my-[20px] rounded-[2px] max-w-[600px] text-black relative leading-[20px] font-semibold text-left rounded-tl-[10px] rounded-tr-[10px]">
-        <ToolbarPlugin />
+      <div className="my-[20px] text-black relative leading-[20px] font-semibold text-left border border-[#999] overflow-hidden rounded-[4px]">
+        <Toolbar />
         <div className="bg-[#181818] relative">
           <RichTextPlugin
             contentEditable={
-              <ContentEditable className="max-h-[150px] resize-none text-[15px] relative outline-0 p-[15px_10px] caret-[#444]" />
+              <ContentEditable className="resize-none text-[15px] relative outline-0 p-[15px_10px] caret-[#444] text-white min-h-[264px]" />
             }
             placeholder={null}
             ErrorBoundary={LexicalErrorBoundary}
