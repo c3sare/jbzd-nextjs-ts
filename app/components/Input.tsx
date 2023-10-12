@@ -26,7 +26,7 @@ interface InputProps<T extends FieldValues> {
   placeholder?: string;
   hidden?: boolean;
   disabled?: boolean;
-  type?: "password" | "text" | "number" | "date";
+  type?: "password" | "text" | "number" | "date" | "textarea";
   watch?: UseFormWatch<T>;
   setValue?: UseFormSetValue<T>;
 }
@@ -109,10 +109,29 @@ function Input<T extends FieldValues>({
     [disabled, inputClassNames, placeholder, registerReturn, type]
   );
 
-  const input = useMemo(
-    () => (type === "date" ? dataPicker : textInput),
-    [type, dataPicker, textInput]
+  const textareaInput = useMemo(
+    () => (
+      <textarea
+        style={{ height: "200px" }}
+        {...registerReturn}
+        placeholder={placeholder}
+        disabled={disabled}
+        className={inputClassNames}
+      />
+    ),
+    [disabled, inputClassNames, placeholder, registerReturn]
   );
+
+  const input = useMemo(() => {
+    switch (type) {
+      case "date":
+        return dataPicker;
+      case "textarea":
+        return textareaInput;
+      default:
+        return textInput;
+    }
+  }, [type, dataPicker, textInput, textareaInput]);
 
   return (
     <div

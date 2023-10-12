@@ -28,11 +28,13 @@ export default async function RootLayout({
             <Header />
             {children}
             <Footer>
-              <FooterLink href="/">Regulamin</FooterLink>
-              <FooterLink href="/">Kontakt</FooterLink>
-              <FooterLink href="/">Polityka prywatności</FooterLink>
-              <FooterLink href="/">Dziennik zmian</FooterLink>
-              <FooterLink href="/">FAQ</FooterLink>
+              <FooterLink href="/regulamin">Regulamin</FooterLink>
+              <FooterLink href="/kontakt">Kontakt</FooterLink>
+              <FooterLink href="/polityka-prywatnosci">
+                Polityka prywatności
+              </FooterLink>
+              <FooterLink href="/changelog">Dziennik zmian</FooterLink>
+              <FooterLink href="/faq">FAQ</FooterLink>
             </Footer>
           </MonitContext>
         </AuthContext>

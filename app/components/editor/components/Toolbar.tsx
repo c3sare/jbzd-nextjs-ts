@@ -20,7 +20,7 @@ import { AiOutlineAlignCenter } from "@react-icons/all-files/ai/AiOutlineAlignCe
 import { AiOutlineAlignLeft } from "@react-icons/all-files/ai/AiOutlineAlignLeft";
 import { AiOutlineAlignRight } from "@react-icons/all-files/ai/AiOutlineAlignRight";
 import ToolbarBtn from "../components/ToolbarBtn";
-import BlockFormatDropDown from "../components/BlockFormatDropDown";
+import TextSizeDropDown from "../components/TextSizeDropDown";
 import TextColorDropDown from "./TextColorDropDown";
 
 type AlignType = "left" | "right" | "center";
@@ -128,69 +128,67 @@ export default function ToolbarPlugin(): JSX.Element {
   return (
     <div className="flex mb-[1px] p-1 align-middle bg-[#252525]">
       <TextColorDropDown disabled={!isEditable} onChange={onFontColorSelect} />
-      <BlockFormatDropDown disabled={!isEditable} onChange={onFontSizeSelect} />
-      <>
-        <ToolbarBtn
-          disabled={!isEditable}
-          onClick={() => {
-            activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
-          }}
-          active={isBold}
-          title="Pogrubienie (Ctrl + B)"
-        >
-          <BsTypeBold />
-        </ToolbarBtn>
-        <ToolbarBtn
-          disabled={!isEditable}
-          onClick={() => {
-            activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");
-          }}
-          active={isItalic}
-          title="Kursywa (Ctrl + I)"
-        >
-          <BsTypeItalic />
-        </ToolbarBtn>
-        <ToolbarBtn
-          disabled={!isEditable}
-          onClick={() => {
-            activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline");
-          }}
-          active={isUnderline}
-          title="Podkreślenie (Ctrl + U)"
-        >
-          <BsTypeUnderline />
-        </ToolbarBtn>
-        <ToolbarBtn
-          disabled={!isEditable}
-          onClick={() => {
-            activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left");
-          }}
-          title="Do lewej"
-          active={align === "left"}
-        >
-          <AiOutlineAlignLeft />
-        </ToolbarBtn>
-        <ToolbarBtn
-          disabled={!isEditable}
-          onClick={() => {
-            activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center");
-          }}
-          active={align === "center"}
-          title="Do środka"
-        >
-          <AiOutlineAlignCenter />
-        </ToolbarBtn>
-        <ToolbarBtn
-          disabled={!isEditable}
-          onClick={() => {
-            activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "right");
-          }}
-          active={align === "right"}
-          title="Do prawej"
-        >
-          <AiOutlineAlignRight />
-        </ToolbarBtn>
-      </>
+      <TextSizeDropDown disabled={!isEditable} onChange={onFontSizeSelect} />
+      <ToolbarBtn
+        disabled={!isEditable}
+        onClick={() => {
+          activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
+        }}
+        active={isBold}
+        title="Pogrubienie (Ctrl + B)"
+      >
+        <BsTypeBold />
+      </ToolbarBtn>
+      <ToolbarBtn
+        disabled={!isEditable}
+        onClick={() => {
+          activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");
+        }}
+        active={isItalic}
+        title="Kursywa (Ctrl + I)"
+      >
+        <BsTypeItalic />
+      </ToolbarBtn>
+      <ToolbarBtn
+        disabled={!isEditable}
+        onClick={() => {
+          activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline");
+        }}
+        active={isUnderline}
+        title="Podkreślenie (Ctrl + U)"
+      >
+        <BsTypeUnderline />
+      </ToolbarBtn>
+      <ToolbarBtn
+        disabled={!isEditable}
+        onClick={() => {
+          activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left");
+        }}
+        title="Do lewej"
+        active={align === "left"}
+      >
+        <AiOutlineAlignLeft />
+      </ToolbarBtn>
+      <ToolbarBtn
+        disabled={!isEditable}
+        onClick={() => {
+          activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center");
+        }}
+        active={align === "center"}
+        title="Do środka"
+      >
+        <AiOutlineAlignCenter />
+      </ToolbarBtn>
+      <ToolbarBtn
+        disabled={!isEditable}
+        onClick={() => {
+          activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "right");
+        }}
+        active={align === "right"}
+        title="Do prawej"
+      >
+        <AiOutlineAlignRight />
+      </ToolbarBtn>
     </div>
   );
 }
