@@ -5,7 +5,7 @@ import Select from "@/app/components/forms/Select";
 import Button from "@/app/components/Button";
 import AccountDetailsSchema, {
   AccountDetailsType,
-} from "@/app/formSchemas/AccountDetailsSchema";
+} from "@/app/validators/UserSettings/AccountDetailsSchema";
 import useZodForm from "@/app/hooks/useZodForm";
 import Heading from "../../components/Heading";
 import ZodForm from "@/app/components/forms/ZodForm";

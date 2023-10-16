@@ -6,7 +6,9 @@ import Checkbox from "@/app/components/Checkbox";
 import Link from "next/link";
 import ZodForm from "@/app/components/forms/ZodForm";
 import useZodForm from "@/app/hooks/useZodForm";
-import RegisterSchema, { RegisterType } from "@/app/formSchemas/RegisterSchema";
+import RegisterSchema, {
+  RegisterType,
+} from "@/app/validators/Sidebar/RegisterSchema";
 import { Dispatch, SetStateAction } from "react";
 
 type RegisterFormProps = {

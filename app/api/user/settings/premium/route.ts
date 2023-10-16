@@ -1,5 +1,5 @@
 import { getSession } from "@/app/actions/getSession";
-import UserPremiumSchema from "@/app/formSchemas/UserPremiumSchema";
+import UserPremiumSchema from "@/app/validators/UserSettings/UserPremiumSchema";
 import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 

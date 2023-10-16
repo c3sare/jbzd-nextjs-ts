@@ -1,7 +1,7 @@
 import { getSession } from "@/app/actions/getSession";
 import ChangePasswordSchema, {
   ChangePasswordType,
-} from "@/app/formSchemas/ChangePasswordSchema";
+} from "@/app/validators/UserSettings/ChangePasswordSchema";
 import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";

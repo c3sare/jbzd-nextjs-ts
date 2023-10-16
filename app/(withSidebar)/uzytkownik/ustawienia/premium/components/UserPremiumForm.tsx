@@ -3,7 +3,7 @@
 import ZodForm from "@/app/components/forms/ZodForm";
 import UserPremiumSchema, {
   UserPremiumType,
-} from "@/app/formSchemas/UserPremiumSchema";
+} from "@/app/validators/UserSettings/UserPremiumSchema";
 import useZodForm from "@/app/hooks/useZodForm";
 import LabelCheckbox from "@/app/components/LabelCheckbox";
 import Button from "@/app/components/Button";

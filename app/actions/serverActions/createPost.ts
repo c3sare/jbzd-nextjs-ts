@@ -1,7 +1,7 @@
 "use server";
 
 import { getSession } from "@/app/actions/getSession";
-import CreatePostSchema from "@/app/formSchemas/CreatePostSchema";
+import CreatePostSchema from "@/app/validators/CreatePostSchema";
 import prisma from "@/app/libs/prismadb";
 import formDataToObject from "@/utils/formDataToObject";
 import getLinkPreview from "monu-linkpreview";

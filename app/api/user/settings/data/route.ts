@@ -1,7 +1,7 @@
 import { getSession } from "@/app/actions/getSession";
 import AccountDetailsSchema, {
   AccountDetailsType,
-} from "@/app/formSchemas/AccountDetailsSchema";
+} from "@/app/validators/UserSettings/AccountDetailsSchema";
 import prisma from "@/app/libs/prismadb";
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";

@@ -7,7 +7,7 @@ import Input from "@/app/components/Input";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import ContactSchema, { ContactType } from "@/app/formSchemas/ContactSchema";
+import ContactSchema, { ContactType } from "@/app/validators/ContactSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "@/app/components/Button";
 

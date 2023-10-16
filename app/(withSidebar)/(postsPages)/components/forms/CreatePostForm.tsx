@@ -2,7 +2,7 @@
 
 import type { Category as CategoryType } from "@prisma/client";
 import type { FormEvent, KeyboardEvent } from "react";
-import type { CreatePostType } from "@/app/formSchemas/CreatePostSchema";
+import type { CreatePostType } from "@/app/validators/CreatePostSchema";
 
 import clsx from "clsx";
 import { DndProvider } from "react-dnd";
@@ -27,7 +27,7 @@ import MemYoutube from "./FormPostElements/MemYoutube";
 import InputLinkPreview from "./CreatePostFormComponents/InputLinkPreview";
 import ErrorMessageBox from "./CreatePostFormComponents/ErrorMessageBox";
 import MemContainer from "./CreatePostFormComponents/MemContainer";
-import CreatePostSchema from "@/app/formSchemas/CreatePostSchema";
+import CreatePostSchema from "@/app/validators/CreatePostSchema";
 
 import Header from "./Header";
 import Information from "./Information";
@@ -38,7 +38,7 @@ import objectToFormData from "@/utils/objectToFormData";
 import toast from "react-hot-toast";
 import LoadingForm from "./LoadingForm";
 import { useRouter } from "next/navigation";
-import { createPost } from "@/app/actions/createPost";
+import { createPost } from "@/app/actions/serverActions/createPost";
 
 type CategoryWithChildrenType = CategoryType & {
   children: CategoryType[];

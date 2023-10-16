@@ -1,8 +1,6 @@
 import prisma from "../libs/prismadb";
 import { getSession } from "./getSession";
 
-export const revalidate = 0;
-
 export async function getAvatar() {
   const session = await getSession();
 

@@ -6,7 +6,7 @@ import Input from "@/app/components/Input";
 import Button from "@/app/components/Button";
 import ChangePasswordSchema, {
   ChangePasswordType,
-} from "@/app/formSchemas/ChangePasswordSchema";
+} from "@/app/validators/UserSettings/ChangePasswordSchema";
 import ZodForm from "@/app/components/forms/ZodForm";
 
 const ChangePasswordForm = () => {

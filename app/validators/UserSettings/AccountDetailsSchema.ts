@@ -1,5 +1,5 @@
 import { z } from "zod";
-import namePattern from "../components/regex/namePattern";
+import namePattern from "../../components/regex/namePattern";
 
 const TOO_LONG_VALUE = "Wartość nie może być dłuższa niż 25 znaków";
 const INCORRECT_FIELD_VALUE = "Nie prawidłowo uzupełnione pole!";

@@ -2,7 +2,7 @@ import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 import GetTokenSchema, {
   GetTokenType,
-} from "@/app/formSchemas/PasswordRemindForms/GetTokenSchema";
+} from "@/app/validators/Sidebar/PasswordRemind/GetTokenSchema";
 import getUniqueId from "@/app/libs/getUniqueId";
 import { formatISO } from "date-fns";
 import sendMail from "@/app/libs/sendMail";

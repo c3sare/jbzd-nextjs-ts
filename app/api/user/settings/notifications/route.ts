@@ -1,5 +1,5 @@
 import { getSession } from "@/app/actions/getSession";
-import UserNotificationsSchema from "@/app/formSchemas/UserNotificationsSchema";
+import UserNotificationsSchema from "@/app/validators/UserSettings/UserNotificationsSchema";
 import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 

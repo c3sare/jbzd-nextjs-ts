@@ -2,7 +2,7 @@
 
 import { GiPerspectiveDiceSixFacesFour } from "@react-icons/all-files/gi/GiPerspectiveDiceSixFacesFour";
 import MobileMenuLinkButton from "./MobileMenuLinkButton";
-import { getRandomPost } from "@/app/actions/getRandomPost";
+import { getRandomPost } from "@/app/actions/serverActions/getRandomPost";
 import { useRouter } from "next/navigation";
 
 const MobileMenuRandomPostButton = () => {

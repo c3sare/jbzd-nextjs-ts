@@ -2,7 +2,7 @@ import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 import PasswordResetSchema, {
   PasswordResetType,
-} from "@/app/formSchemas/PasswordRemindForms/PasswordResetSchema";
+} from "@/app/validators/Sidebar/PasswordRemind/PasswordResetSchema";
 import bcrypt from "bcryptjs";
 import { formatISO } from "date-fns";
 

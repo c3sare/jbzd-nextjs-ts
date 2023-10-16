@@ -1,6 +1,6 @@
 "use client";
 
-import { getRandomPost } from "@/app/actions/getRandomPost";
+import { getRandomPost } from "@/app/actions/serverActions/getRandomPost";
 import { GiDiceSixFacesTwo } from "@react-icons/all-files/gi/GiDiceSixFacesTwo";
 import { useRouter } from "next/navigation";
 import { HTMLAttributes } from "react";

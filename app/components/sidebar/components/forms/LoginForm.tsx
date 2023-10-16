@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import GoogleLoginButton from "./components/GoogleLoginButton";
 import ZodForm from "@/app/components/forms/ZodForm";
 import useZodForm from "@/app/hooks/useZodForm";
-import LoginSchema, { LoginType } from "@/app/formSchemas/LoginSchema";
+import LoginSchema, { LoginType } from "@/app/validators/Sidebar/LoginSchema";
 
 const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
   const {
