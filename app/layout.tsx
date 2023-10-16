@@ -3,9 +3,9 @@ import FooterLink from "./components/footer/components/FooterLink";
 import Header from "./components/header/Header";
 import "./styles/globals.css";
 import { Open_Sans } from "next/font/google";
-import ToasterContext from "./context/ToasterContext";
-import AuthContext from "./context/AuthContext";
-import { MonitContext } from "./context/MonitContext";
+import ToasterContext from "@/context/ToasterContext";
+import AuthContext from "@/context/AuthContext";
+import { MonitContext } from "@/context/MonitContext";
 
 const openSans = Open_Sans({ subsets: ["latin"] });
 

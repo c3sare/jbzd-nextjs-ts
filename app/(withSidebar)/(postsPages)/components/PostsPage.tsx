@@ -1,9 +1,9 @@
 import Breadcrumb from "../../../components/Breadcrumb";
 import Link from "next/link";
 import PostsPageHeader from "./PostsPageHeader";
-import { getPremium } from "@/app/actions/getPremium";
-import { getCategories } from "@/app/actions/getCategories";
-import { getSession } from "@/app/actions/getSession";
+import { getPremium } from "@/actions/getPremium";
+import { getCategories } from "@/actions/getCategories";
+import { getSession } from "@/actions/getSession";
 import { PostType } from "./types/PostType";
 import PageSelect from "./Pagination";
 import Posts from "./Posts";

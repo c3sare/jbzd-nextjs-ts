@@ -1,8 +1,8 @@
-import { getSession } from "@/app/actions/getSession";
+import { getSession } from "@/actions/getSession";
 import ChangePasswordSchema, {
   ChangePasswordType,
-} from "@/app/validators/UserSettings/ChangePasswordSchema";
-import prisma from "@/app/libs/prismadb";
+} from "@/validators/UserSettings/ChangePasswordSchema";
+import prisma from "@/libs/prismadb";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 

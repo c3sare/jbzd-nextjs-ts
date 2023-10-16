@@ -1,7 +1,7 @@
-import { getSession } from "@/app/actions/getSession";
+import { getSession } from "@/actions/getSession";
 import { PostStats } from "@prisma/client";
-import prisma from "@/app/libs/prismadb";
-import { getPremium } from "@/app/actions/getPremium";
+import prisma from "@/libs/prismadb";
+import { getPremium } from "@/actions/getPremium";
 
 function getActionMethod(
   id: string,

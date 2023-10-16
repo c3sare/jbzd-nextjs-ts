@@ -1,11 +1,11 @@
-import prisma from "@/app/libs/prismadb";
+import prisma from "@/libs/prismadb";
 import { NextResponse } from "next/server";
 import GetTokenSchema, {
   GetTokenType,
-} from "@/app/validators/Sidebar/PasswordRemind/GetTokenSchema";
-import getUniqueId from "@/app/libs/getUniqueId";
+} from "@/validators/Sidebar/PasswordRemind/GetTokenSchema";
+import getUniqueId from "@/utils/getUniqueId";
 import { formatISO } from "date-fns";
-import sendMail from "@/app/libs/sendMail";
+import sendMail from "@/utils/sendMail";
 
 export async function POST(request: Request) {
   try {
@@ -39,11 +39,11 @@ export async function POST(request: Request) {
       data: { token, tokenExpires },
     });
 
-    sendMail(
-      email,
-      "Reset hasła",
-      `Witam,\n token zmiany hasła: ${token}, ważny przez 15 minut.\n\nPozdrawiam.`
-    );
+    sendMail({
+      to: email,
+      subject: "Reset hasła",
+      text: `Witam,\n token zmiany hasła: ${token}, ważny przez 15 minut.\n\nPozdrawiam.`,
+    });
 
     return NextResponse.json({
       username: update.username,

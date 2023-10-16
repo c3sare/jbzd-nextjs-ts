@@ -1,7 +1,7 @@
 "use server";
 
-import prisma from "@/app/libs/prismadb";
-import { getSession } from "@/app/actions/getSession";
+import prisma from "@/libs/prismadb";
+import { getSession } from "@/actions/getSession";
 
 export default async function deletePost(postId: string) {
   try {

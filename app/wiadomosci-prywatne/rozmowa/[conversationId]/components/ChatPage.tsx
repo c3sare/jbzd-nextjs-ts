@@ -5,7 +5,7 @@ import AddMessageForm from "./AddMessageForm";
 import ChatBody from "./ChatBody";
 import ChatHeader from "./ChatHeader";
 import { useEffect, useState } from "react";
-import { pusherClient } from "@/app/libs/pusher";
+import { pusherClient } from "@/libs/pusher";
 
 type ChatPageProps = {
   conversation: Conversation;

@@ -1,7 +1,7 @@
-import { getSession } from "@/app/actions/getSession";
+import { getSession } from "@/actions/getSession";
 import { NextResponse } from "next/server";
-import prisma from "@/app/libs/prismadb";
-import addNotification from "@/app/actions/addNotification";
+import prisma from "@/libs/prismadb";
+import addNotification from "@/actions/addNotification";
 
 type RequestParams = {
   params: {

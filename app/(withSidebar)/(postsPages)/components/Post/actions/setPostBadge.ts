@@ -1,8 +1,8 @@
 "use server";
 
-import addNotification from "@/app/actions/addNotification";
-import { getSession } from "@/app/actions/getSession";
-import prisma from "@/app/libs/prismadb";
+import addNotification from "@/actions/addNotification";
+import { getSession } from "@/actions/getSession";
+import prisma from "@/libs/prismadb";
 
 const badgeTypes = ["ROCK", "SILVER", "GOLD"] as const;
 

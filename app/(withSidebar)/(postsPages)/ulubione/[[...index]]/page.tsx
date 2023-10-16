@@ -4,8 +4,8 @@ import Breadcrumb from "@/app/components/Breadcrumb";
 import Link from "next/link";
 import Posts from "../../components/Posts";
 import Pagination from "../../components/Pagination";
-import { getFavouritePagePosts } from "@/app/actions/posts/getFavouritePagePosts";
-import { getPremium } from "@/app/actions/getPremium";
+import { getFavouritePagePosts } from "@/actions/posts/getFavouritePagePosts";
+import { getPremium } from "@/actions/getPremium";
 import HeaderPremium from "../components/HeaderPremium";
 
 export const fetchCache = "force-no-store";

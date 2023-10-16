@@ -1,10 +1,10 @@
-import { getSession } from "@/app/actions/getSession";
-import { getUserData } from "@/app/actions/getUserData";
+import { getSession } from "@/actions/getSession";
+import { getUserData } from "@/actions/getUserData";
 import AccountDetailsForm from "./components/AccountDetailsForm";
 import Hr from "@/app/components/Hr";
 import AvatarForm from "./components/AvatarForm";
 import ChangePasswordForm from "./components/ChangePasswordForm";
-import { getAvatar } from "@/app/actions/getAvatar";
+import { getAvatar } from "@/actions/getAvatar";
 import DeleteAccountForm from "./components/DeleteAccountForm";
 
 const UserSettings = async () => {

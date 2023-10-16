@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 import Heading from "../../components/Heading";
-import { MonitProvider } from "@/app/context/MonitContext";
+import { MonitProvider } from "@/context/MonitContext";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 

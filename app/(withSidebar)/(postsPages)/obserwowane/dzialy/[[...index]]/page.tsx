@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import PostsPage from "../../../components/PostsPage";
 import { PageProps } from "../../../components/types/PageProps";
-import { getFollowedCategoriesPosts } from "@/app/actions/posts/getFollowedCategoriesPosts";
+import { getFollowedCategoriesPosts } from "@/actions/posts/getFollowedCategoriesPosts";
 
 export const fetchCache = "force-no-store";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { getRandomPost } from "@/app/actions/serverActions/getRandomPost";
+import { getRandomPost } from "@/actions/serverActions/getRandomPost";
 import MenuButton from "../../MenuButton";
 import { useRouter } from "next/navigation";
 

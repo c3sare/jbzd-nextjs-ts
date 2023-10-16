@@ -3,8 +3,8 @@
 import ZodForm from "@/app/components/forms/ZodForm";
 import UserPremiumSchema, {
   UserPremiumType,
-} from "@/app/validators/UserSettings/UserPremiumSchema";
-import useZodForm from "@/app/hooks/useZodForm";
+} from "@/validators/UserSettings/UserPremiumSchema";
+import useZodForm from "@/hooks/useZodForm";
 import LabelCheckbox from "@/app/components/LabelCheckbox";
 import Button from "@/app/components/Button";
 import RadioSelect from "@/app/components/forms/RadioSelect";
@@ -35,7 +35,7 @@ const UserPremiumForm: React.FC<UserPremiumFormProps> = ({
       </h1>
       <div className="max-w-[360px] mx-auto relative">
         {!isPremium && (
-          <div className="w-full h-full z-10 absolute top-0 left-0">
+          <div className="absolute top-0 left-0 z-10 w-full h-full">
             <BigButton
               href="/premium"
               className="absolute top-[140px] left-[50%] translate-x-[-50%]"

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import PostsPage from "../../../../components/PostsPage";
 import { TagPageProps } from "@/app/(withSidebar)/(postsPages)/components/types/TagPageProps";
-import { getTagPagePosts } from "@/app/actions/posts/getTagPagePosts";
+import { getTagPagePosts } from "@/actions/posts/getTagPagePosts";
 
 export const fetchCache = "force-no-store";
 

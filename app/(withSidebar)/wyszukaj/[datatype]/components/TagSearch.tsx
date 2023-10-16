@@ -1,6 +1,6 @@
 import SearchResultBox from "./SearchResultBox";
 import TagBox from "./TagBox";
-import getTags from "@/app/actions/search/getTags";
+import getTags from "@/actions/search/getTags";
 
 type TagSearchProps = {
   pharse: string;

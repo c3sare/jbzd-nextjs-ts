@@ -1,12 +1,12 @@
 "use client";
 
-import useZodForm from "@/app/hooks/useZodForm";
+import useZodForm from "@/hooks/useZodForm";
 import Heading from "../../components/Heading";
 import Input from "@/app/components/Input";
 import Button from "@/app/components/Button";
 import ChangePasswordSchema, {
   ChangePasswordType,
-} from "@/app/validators/UserSettings/ChangePasswordSchema";
+} from "@/validators/UserSettings/ChangePasswordSchema";
 import ZodForm from "@/app/components/forms/ZodForm";
 
 const ChangePasswordForm = () => {

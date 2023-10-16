@@ -2,7 +2,7 @@
 
 import type { Category as CategoryType } from "@prisma/client";
 import type { FormEvent, KeyboardEvent } from "react";
-import type { CreatePostType } from "@/app/validators/CreatePostSchema";
+import type { CreatePostType } from "@/validators/CreatePostSchema";
 
 import clsx from "clsx";
 import { DndProvider } from "react-dnd";
@@ -27,7 +27,7 @@ import MemYoutube from "./FormPostElements/MemYoutube";
 import InputLinkPreview from "./CreatePostFormComponents/InputLinkPreview";
 import ErrorMessageBox from "./CreatePostFormComponents/ErrorMessageBox";
 import MemContainer from "./CreatePostFormComponents/MemContainer";
-import CreatePostSchema from "@/app/validators/CreatePostSchema";
+import CreatePostSchema from "@/validators/CreatePostSchema";
 
 import Header from "./Header";
 import Information from "./Information";
@@ -37,8 +37,8 @@ import Tag from "./Tag";
 import objectToFormData from "@/utils/objectToFormData";
 import toast from "react-hot-toast";
 import LoadingForm from "./LoadingForm";
-import { useRouter } from "next/navigation";
-import { createPost } from "@/app/actions/serverActions/createPost";
+import { usePathname, useRouter } from "next/navigation";
+import { createPost } from "@/actions/serverActions/createPost";
 
 type CategoryWithChildrenType = CategoryType & {
   children: CategoryType[];
@@ -60,6 +60,8 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
   onClose,
   categories,
 }) => {
+  const pathname = usePathname();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const tagInput = useRef<HTMLInputElement>(null);
   const {
@@ -175,7 +177,8 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
     const res = await createPost(formData);
     if (res.type === "success") {
       toast.success(res.message);
-      onClose();
+      if (pathname === "/oczekujace") router.refresh();
+      else router.push("/oczekujace");
     } else {
       setIsLoading(false);
     }

@@ -1,7 +1,7 @@
 "use client";
 
 import { BsBellFill } from "@react-icons/all-files/bs/BsBellFill";
-import useDropdownContainer from "@/app/hooks/useDropdownContainer";
+import useDropdownContainer from "@/hooks/useDropdownContainer";
 import Link from "next/link";
 import IconButton from "@/app/components/IconButton";
 import DropdownContainer from "../../DropdownContainer";
@@ -10,7 +10,7 @@ import NotificationType from "@/app/(withSidebar)/uzytkownik/notyfikacje/types/N
 import NotifyElement from "@/app/(withSidebar)/uzytkownik/notyfikacje/components/NotifyElement";
 import axios from "axios";
 import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
-import { pusherClient } from "@/app/libs/pusher";
+import { pusherClient } from "@/libs/pusher";
 import CountBox from "./CountBox";
 
 type NotificationsButonProps = {

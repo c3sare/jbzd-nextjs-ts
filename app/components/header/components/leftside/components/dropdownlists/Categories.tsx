@@ -1,7 +1,7 @@
 import CategoryLink from "./components/categories/CategoryLink";
 import CategorySubLink from "./components/categories/CategorySubLink";
-import getIn2DArray from "@/app/libs/getIn2DArray";
-import { getCategories } from "@/app/actions/getCategories";
+import getIn2DArray from "@/utils/getIn2DArray";
+import { getCategories } from "@/actions/getCategories";
 
 const Categories = async () => {
   const categories = await getCategories();

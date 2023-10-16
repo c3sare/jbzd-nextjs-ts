@@ -1,12 +1,12 @@
-import { getPostWithStats } from "@/app/actions/posts/getPostWithStats";
+import { getPostWithStats } from "@/actions/posts/getPostWithStats";
 import { notFound } from "next/navigation";
 import SinglePostFooter from "./components/SinglePostFooter";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import Link from "next/link";
 import SinglePost from "./components/SinglePost";
 import CommentSection from "./components/CommentsSection";
-import { getComments } from "@/app/actions/comments/getComments";
-import { getSession } from "@/app/actions/getSession";
+import { getComments } from "@/actions/comments/getComments";
+import { getSession } from "@/actions/getSession";
 
 type MemPageProps = {
   params: {

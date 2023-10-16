@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import PostsPage from "../../components/PostsPage";
 import { PageProps } from "../../components/types/PageProps";
-import { getWaitingPagePosts } from "@/app/actions/posts/getWaitingPagePosts";
+import { getWaitingPagePosts } from "@/actions/posts/getWaitingPagePosts";
 
 export const fetchCache = "force-no-store";
 

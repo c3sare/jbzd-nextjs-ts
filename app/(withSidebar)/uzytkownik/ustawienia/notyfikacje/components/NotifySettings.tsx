@@ -1,10 +1,10 @@
 "use client";
 
 import ZodForm from "@/app/components/forms/ZodForm";
-import useZodForm from "@/app/hooks/useZodForm";
+import useZodForm from "@/hooks/useZodForm";
 import UserNotificationsSchema, {
   UserNotificationsType,
-} from "@/app/validators/UserSettings/UserNotificationsSchema";
+} from "@/validators/UserSettings/UserNotificationsSchema";
 import Button from "@/app/components/Button";
 import LabelCheckbox from "@/app/components/LabelCheckbox";
 import Heading from "../../components/Heading";

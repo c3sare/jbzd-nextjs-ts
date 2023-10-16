@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { IoMdArrowDropup } from "@react-icons/all-files/io/IoMdArrowDropup";
 
 import AddBadgeButton from "./AddBadgeButton";
-import useDropdownContainer from "@/app/hooks/useDropdownContainer";
+import useDropdownContainer from "@/hooks/useDropdownContainer";
 import { useCallback, useState } from "react";
 import { useSession } from "next-auth/react";
 import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";

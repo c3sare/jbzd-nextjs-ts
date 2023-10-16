@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import Avatar from "@/app/components/Avatar";
-import { getProfileInfo } from "@/app/actions/getProfileInfo";
+import { getProfileInfo } from "@/actions/getProfileInfo";
 import SignOutButton from "./SignOutButton";
 
 const ProfileInfo = async () => {

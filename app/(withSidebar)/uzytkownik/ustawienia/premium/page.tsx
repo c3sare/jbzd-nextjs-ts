@@ -1,4 +1,4 @@
-import { getPremium } from "@/app/actions/getPremium";
+import { getPremium } from "@/actions/getPremium";
 import UserPremiumForm from "./components/UserPremiumForm";
 
 const PremiumPage = async () => {

@@ -1,4 +1,4 @@
-import getPosts from "@/app/actions/search/getPosts";
+import getPosts from "@/actions/search/getPosts";
 import ImageBox from "./ImageBox";
 import SearchResultBox from "./SearchResultBox";
 

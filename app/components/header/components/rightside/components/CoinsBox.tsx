@@ -1,6 +1,6 @@
 "use client";
 
-import useDropdownContainer from "@/app/hooks/useDropdownContainer";
+import useDropdownContainer from "@/hooks/useDropdownContainer";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";

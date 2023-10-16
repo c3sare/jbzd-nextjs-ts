@@ -8,11 +8,11 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import useDropdownContainer from "@/app/hooks/useDropdownContainer";
+import useDropdownContainer from "@/hooks/useDropdownContainer";
 import IconButton from "@/app/components/IconButton";
 import DropdownContainer from "../../DropdownContainer";
 import CountBox from "./CountBox";
-import { pusherClient } from "@/app/libs/pusher";
+import { pusherClient } from "@/libs/pusher";
 import { Message } from "@prisma/client";
 
 type MessagesButtonProps = {

@@ -1,8 +1,8 @@
 import ZodForm from "@/app/components/forms/ZodForm";
 import GetTokenSchema, {
   GetTokenType,
-} from "@/app/validators/Sidebar/PasswordRemind/GetTokenSchema";
-import useZodForm from "@/app/hooks/useZodForm";
+} from "@/validators/Sidebar/PasswordRemind/GetTokenSchema";
+import useZodForm from "@/hooks/useZodForm";
 import { Dispatch, SetStateAction } from "react";
 import Input from "@/app/components/Input";
 import Button from "../../../../Button";

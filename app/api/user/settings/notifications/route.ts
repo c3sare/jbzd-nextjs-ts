@@ -1,6 +1,6 @@
-import { getSession } from "@/app/actions/getSession";
-import UserNotificationsSchema from "@/app/validators/UserSettings/UserNotificationsSchema";
-import prisma from "@/app/libs/prismadb";
+import { getSession } from "@/actions/getSession";
+import UserNotificationsSchema from "@/validators/UserSettings/UserNotificationsSchema";
+import prisma from "@/libs/prismadb";
 import { NextResponse } from "next/server";
 
 export async function GET() {

@@ -1,4 +1,4 @@
-import getUsers from "@/app/actions/search/getUsers";
+import getUsers from "@/actions/search/getUsers";
 import SearchResultBox from "./SearchResultBox";
 import UserBox from "./UserBox";
 

@@ -1,5 +1,5 @@
-import { getSession } from "@/app/actions/getSession";
-import prisma from "@/app/libs/prismadb";
+import { getSession } from "@/actions/getSession";
+import prisma from "@/libs/prismadb";
 import { NextResponse } from "next/server";
 import { UploadApiOptions, v2 as cloudinary } from "cloudinary";
 

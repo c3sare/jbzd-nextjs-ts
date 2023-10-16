@@ -5,8 +5,8 @@ import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
-import prisma from "@/app/libs/prismadb";
-import getUniqueId from "@/app/libs/getUniqueId";
+import prisma from "@/libs/prismadb";
+import getUniqueId from "@/utils/getUniqueId";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),

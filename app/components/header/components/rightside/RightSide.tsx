@@ -7,7 +7,7 @@ import NotificationsButton from "./components/NotificationsButton";
 import Conversation from "@/app/wiadomosci-prywatne/types/Conversation";
 import NotificationType from "@/app/(withSidebar)/uzytkownik/notyfikacje/types/NotificationType";
 import { useEffect } from "react";
-import { pusherClient } from "@/app/libs/pusher";
+import { pusherClient } from "@/libs/pusher";
 
 type RightSideProps = {
   userId?: string;

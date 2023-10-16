@@ -1,8 +1,6 @@
-// @ts-nocheck
-
-import { getSession } from "@/app/actions/getSession";
+import { getSession } from "@/actions/getSession";
 import { NextResponse } from "next/server";
-import prisma from "@/app/libs/prismadb";
+import prisma from "@/libs/prismadb";
 import { PrismaClient } from "@prisma/client";
 import { PrismaClientOptions } from "@prisma/client/runtime/library";
 

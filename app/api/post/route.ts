@@ -1,6 +1,6 @@
-import { getSession } from "@/app/actions/getSession";
-import CreatePostSchema from "@/app/validators/CreatePostSchema";
-import prisma from "@/app/libs/prismadb";
+import { getSession } from "@/actions/getSession";
+import CreatePostSchema from "@/validators/CreatePostSchema";
+import prisma from "@/libs/prismadb";
 import formDataToObject from "@/utils/formDataToObject";
 import getLinkPreview from "monu-linkpreview";
 import { NextResponse } from "next/server";

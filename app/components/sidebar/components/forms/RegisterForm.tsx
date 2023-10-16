@@ -5,10 +5,10 @@ import Button from "../../../Button";
 import Checkbox from "@/app/components/Checkbox";
 import Link from "next/link";
 import ZodForm from "@/app/components/forms/ZodForm";
-import useZodForm from "@/app/hooks/useZodForm";
+import useZodForm from "@/hooks/useZodForm";
 import RegisterSchema, {
   RegisterType,
-} from "@/app/validators/Sidebar/RegisterSchema";
+} from "@/validators/Sidebar/RegisterSchema";
 import { Dispatch, SetStateAction } from "react";
 
 type RegisterFormProps = {

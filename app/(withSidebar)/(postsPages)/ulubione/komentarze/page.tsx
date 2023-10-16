@@ -1,10 +1,10 @@
 import CommentSection from "@/app/(withSidebar)/(singleMemPage)/obr/[postId]/[slug]/components/CommentsSection";
-import { getFavouriteComments } from "@/app/actions/comments/getFavouriteComments";
+import { getFavouriteComments } from "@/actions/comments/getFavouriteComments";
 import Breadcrumb from "@/app/components/Breadcrumb";
-import { getSession } from "@/app/actions/getSession";
+import { getSession } from "@/actions/getSession";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPremium } from "@/app/actions/getPremium";
+import { getPremium } from "@/actions/getPremium";
 import HeaderPremium from "../components/HeaderPremium";
 
 type FavouriteCommentsPageProps = {

@@ -1,6 +1,6 @@
 import PostsPage from "@/app/(withSidebar)/(postsPages)/components/PostsPage";
 import { PageProps } from "@/app/(withSidebar)/(postsPages)/components/types/PageProps";
-import { getHomePagePosts } from "@/app/actions/posts/getHomePagePosts";
+import { getHomePagePosts } from "@/actions/posts/getHomePagePosts";
 import { notFound } from "next/navigation";
 
 export const fetchCache = "force-no-store";

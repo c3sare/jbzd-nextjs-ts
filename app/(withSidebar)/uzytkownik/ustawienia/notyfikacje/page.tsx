@@ -1,4 +1,4 @@
-import { getNotifySettings } from "@/app/actions/getNotifySettings";
+import { getNotifySettings } from "@/actions/getNotifySettings";
 import NotifySettings from "./components/NotifySettings";
 
 const NotificationsPage = async () => {

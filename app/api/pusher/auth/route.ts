@@ -1,6 +1,6 @@
-import { pusherServer } from "@/app/libs/pusher";
+import { pusherServer } from "@/libs/pusher";
 import { NextRequest, NextResponse } from "next/server";
-import { getSession } from "@/app/actions/getSession";
+import { getSession } from "@/actions/getSession";
 
 async function handler(req: NextRequest) {
   const session = await getSession();

@@ -2,7 +2,7 @@
 
 import { FaAward } from "@react-icons/all-files/fa/FaAward";
 import CommentButton from "./CommentButton";
-import useDropdownContainer from "@/app/hooks/useDropdownContainer";
+import useDropdownContainer from "@/hooks/useDropdownContainer";
 import BadgeActionButton from "./BadgeActionButton";
 import { Dispatch, SetStateAction, useState } from "react";
 import axios from "axios";

@@ -1,5 +1,7 @@
-import prisma from "@/app/libs/prismadb";
+import prisma from "@/libs/prismadb";
 import { NextResponse } from "next/server";
+import { getSession } from "@/actions/getSession";
+import { CategoryAction } from "@prisma/client";
 
 export async function GET() {
   try {
@@ -27,9 +29,6 @@ export async function GET() {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }
-
-import { getSession } from "@/app/actions/getSession";
-import { CategoryAction } from "@prisma/client";
 
 export async function POST(request: Request) {
   const session = await getSession();

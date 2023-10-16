@@ -1,4 +1,4 @@
-import { getCategoryPagePosts } from "@/app/actions/posts/getCategoryPagePosts";
+import { getCategoryPagePosts } from "@/actions/posts/getCategoryPagePosts";
 import { notFound } from "next/navigation";
 import { CategoryPageProps } from "../../(withSidebar)/(postsPages)/components/types/CategoryPageProps";
 import Breadcrumb from "@/app/components/Breadcrumb";
@@ -6,11 +6,11 @@ import PostsPageHeader from "../../(withSidebar)/(postsPages)/components/PostsPa
 import Posts from "../../(withSidebar)/(postsPages)/components/Posts";
 import Pagination from "../../(withSidebar)/(postsPages)/components/Pagination";
 import Link from "next/link";
-import { getSession } from "@/app/actions/getSession";
-import { getPremium } from "@/app/actions/getPremium";
-import { getCategories } from "@/app/actions/getCategories";
+import { getSession } from "@/actions/getSession";
+import { getPremium } from "@/actions/getPremium";
+import { getCategories } from "@/actions/getCategories";
 import CategoryHeader from "./components/CategoryHeader";
-import { getCategoryAction } from "@/app/actions/getCategoryAction";
+import { getCategoryAction } from "@/actions/getCategoryAction";
 
 export const fetchCache = "force-no-store";
 

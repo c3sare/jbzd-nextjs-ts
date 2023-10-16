@@ -5,7 +5,7 @@ import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
 import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import useArraySearchParams from "@/app/hooks/useArraySearchParams";
+import useArraySearchParams from "@/hooks/useArraySearchParams";
 
 type PostsTypeFilterFormProps = {
   isPremium: boolean;

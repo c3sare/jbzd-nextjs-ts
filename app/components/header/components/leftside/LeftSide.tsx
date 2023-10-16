@@ -1,4 +1,4 @@
-import { getSession } from "@/app/actions/getSession";
+import { getSession } from "@/actions/getSession";
 import MenuButton from "../MenuButton";
 import MenuButtonDropdown from "../MenuButtonDropdown";
 import Categories from "./components/dropdownlists/Categories";

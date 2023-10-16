@@ -1,6 +1,6 @@
 import { PageSearchParams } from "@/app/(withSidebar)/(postsPages)/components/types/PageSearchParams";
-import { getSession } from "@/app/actions/getSession";
-import prisma from "@/app/libs/prismadb";
+import { getSession } from "@/actions/getSession";
+import prisma from "@/libs/prismadb";
 
 function getPresetDate(arg: string) {
   const date = new Date();

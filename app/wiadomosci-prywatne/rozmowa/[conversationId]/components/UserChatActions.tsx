@@ -2,10 +2,10 @@
 
 import { useContext, useEffect } from "react";
 import ActionButton from "./ActionButton";
-import { MonitProvider } from "@/app/context/MonitContext";
+import { MonitProvider } from "@/context/MonitContext";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { pusherClient } from "@/app/libs/pusher";
+import { pusherClient } from "@/libs/pusher";
 
 type UserChatActionsProps = {
   conversationId: string;

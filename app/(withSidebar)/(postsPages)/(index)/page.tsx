@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import PostsPage from "../components/PostsPage";
-import { getHomePagePosts } from "@/app/actions/posts/getHomePagePosts";
+import { getHomePagePosts } from "@/actions/posts/getHomePagePosts";
 import { PageProps } from "../components/types/PageProps";
 
 export const fetchCache = "force-no-store";

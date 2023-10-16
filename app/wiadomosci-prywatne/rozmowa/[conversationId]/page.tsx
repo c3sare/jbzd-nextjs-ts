@@ -1,6 +1,6 @@
-import getMessages from "@/app/actions/chat/getMessages";
+import getMessages from "@/actions/chat/getMessages";
 import { redirect } from "next/navigation";
-import { getSession } from "@/app/actions/getSession";
+import { getSession } from "@/actions/getSession";
 import BackToConversationsPage from "./components/BackToConversationsPage";
 import ChatPage from "./components/ChatPage";
 

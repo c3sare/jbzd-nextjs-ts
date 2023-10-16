@@ -1,4 +1,4 @@
-import getUserNotifications from "@/app/actions/notifications/getUserNotifications";
+import getUserNotifications from "@/actions/notifications/getUserNotifications";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import Link from "next/link";
 import NotifyElement from "./components/NotifyElement";

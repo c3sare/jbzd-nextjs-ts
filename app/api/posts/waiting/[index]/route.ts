@@ -1,8 +1,8 @@
-import prisma from "@/app/libs/prismadb";
+import prisma from "@/libs/prismadb";
 import { PostType } from "@/app/(withSidebar)/(postsPages)/components/types/PostType";
 import addActionPostInfo from "@/utils/addActionPostInfo";
-import getActionedUsersLists from "@/app/actions/getActionedUsersLists";
-import getActionedTagsLists from "@/app/actions/getActionedTagsLists";
+import getActionedUsersLists from "@/actions/getActionedUsersLists";
+import getActionedTagsLists from "@/actions/getActionedTagsLists";
 import parseSearchParams from "@/utils/parseSearchParams";
 import { NextRequest, NextResponse } from "next/server";
 

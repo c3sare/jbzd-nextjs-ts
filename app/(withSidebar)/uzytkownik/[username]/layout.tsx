@@ -1,11 +1,11 @@
-import { getUser } from "@/app/actions/getUser";
+import { getUser } from "@/actions/getUser";
 import Avatar from "./components/Avatar";
 import Badge from "./components/Badge";
 import { notFound } from "next/navigation";
 import UserRank from "./components/UserRank";
 import UserActions from "./components/UserActions";
-import { getSession } from "@/app/actions/getSession";
-import prisma from "@/app/libs/prismadb";
+import { getSession } from "@/actions/getSession";
+import prisma from "@/libs/prismadb";
 import ButtonSwitchTab from "./components/ButtonSwitchTab";
 import UserStats from "./components/UserStats";
 

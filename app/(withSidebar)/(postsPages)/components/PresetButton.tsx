@@ -1,4 +1,4 @@
-import useArraySearchParams from "@/app/hooks/useArraySearchParams";
+import useArraySearchParams from "@/hooks/useArraySearchParams";
 import clsx from "clsx";
 import { usePathname, useRouter } from "next/navigation";
 

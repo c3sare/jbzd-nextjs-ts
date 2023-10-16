@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
-import { pusherClient } from "@/app/libs/pusher";
+import { pusherClient } from "@/libs/pusher";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 

@@ -1,7 +1,7 @@
 import { FaTrash } from "@react-icons/all-files/fa/FaTrash";
 import PostActionLinkButton from "./PostActionLinkButton";
 import { useCallback, useContext } from "react";
-import { MonitProvider } from "@/app/context/MonitContext";
+import { MonitProvider } from "@/context/MonitContext";
 import toast from "react-hot-toast";
 import deletePostAction from "../../actions/deletePost";
 import { useRouter } from "next/navigation";

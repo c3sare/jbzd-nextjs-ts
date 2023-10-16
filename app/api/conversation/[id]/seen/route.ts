@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import prisma from "@/app/libs/prismadb";
-import { getSession } from "@/app/actions/getSession";
-import { pusherServer } from "@/app/libs/pusher";
+import prisma from "@/libs/prismadb";
+import { getSession } from "@/actions/getSession";
+import { pusherServer } from "@/libs/pusher";
 
 type Params = {
   params: {

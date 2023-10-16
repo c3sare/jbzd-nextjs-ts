@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import CommentType from "../types/CommentType";
 import Comment from "./Comment/Comment";
-import deleteAuthorDuplicates from "@/app/libs/deleteAuthorDuplicates";
+import deleteAuthorDuplicates from "@/utils/deleteAuthorDuplicates";
 
 type CommentsListProps = {
   comments: CommentType[];

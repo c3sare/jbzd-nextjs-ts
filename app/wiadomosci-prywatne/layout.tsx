@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import getConversations from "../actions/chat/getConversations";
+import getConversations from "@/actions/chat/getConversations";
 import UserSearchForm from "./components/UserSearchForm";
-import { getSession } from "../actions/getSession";
+import { getSession } from "@/actions/getSession";
 import ConversationHistory from "./components/ConversationHistory";
 
 const MessagesLayout: React.FC<React.PropsWithChildren> = async ({

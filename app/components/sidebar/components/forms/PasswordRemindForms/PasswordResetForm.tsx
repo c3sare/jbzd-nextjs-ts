@@ -1,8 +1,8 @@
 import ZodForm from "@/app/components/forms/ZodForm";
 import PasswordResetSchema, {
   PasswordResetType,
-} from "@/app/validators/Sidebar/PasswordRemind/PasswordResetSchema";
-import useZodForm from "@/app/hooks/useZodForm";
+} from "@/validators/Sidebar/PasswordRemind/PasswordResetSchema";
+import useZodForm from "@/hooks/useZodForm";
 import { Dispatch, SetStateAction } from "react";
 import Input from "@/app/components/Input";
 import Button from "../../../../Button";

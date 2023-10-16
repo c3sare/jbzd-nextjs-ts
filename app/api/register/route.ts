@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 
-import prisma from "@/app/libs/prismadb";
+import prisma from "@/libs/prismadb";
 import { NextResponse } from "next/server";
-import RegisterSchema from "@/app/validators/Sidebar/RegisterSchema";
+import RegisterSchema from "@/validators/Sidebar/RegisterSchema";
 
 export async function POST(request: Request) {
   try {

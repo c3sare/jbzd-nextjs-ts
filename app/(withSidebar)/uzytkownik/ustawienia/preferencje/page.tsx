@@ -1,4 +1,4 @@
-import { getUserPreferences } from "@/app/actions/getUserPreferences";
+import { getUserPreferences } from "@/actions/getUserPreferences";
 import PreferencesForms from "./components/PreferencesForms";
 
 const PreferencesPage = async () => {

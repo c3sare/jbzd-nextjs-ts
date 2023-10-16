@@ -1,7 +1,7 @@
 "use server";
 
-import { getSession } from "@/app/actions/getSession";
-import prisma from "@/app/libs/prismadb";
+import { getSession } from "@/actions/getSession";
+import prisma from "@/libs/prismadb";
 import { TagAction } from "@prisma/client";
 
 export default async function setTagAction(

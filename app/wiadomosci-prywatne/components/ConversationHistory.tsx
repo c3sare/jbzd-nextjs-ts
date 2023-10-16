@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Conversation from "../types/Conversation";
 import ConversationHistoryElement from "../rozmowa/[conversationId]/components/ConversationHistoryElement";
-import { pusherClient } from "@/app/libs/pusher";
+import { pusherClient } from "@/libs/pusher";
 import { useRouter } from "next/navigation";
 
 type ConversationHistoryProps = {

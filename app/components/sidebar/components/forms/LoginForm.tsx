@@ -9,8 +9,8 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import GoogleLoginButton from "./components/GoogleLoginButton";
 import ZodForm from "@/app/components/forms/ZodForm";
-import useZodForm from "@/app/hooks/useZodForm";
-import LoginSchema, { LoginType } from "@/app/validators/Sidebar/LoginSchema";
+import useZodForm from "@/hooks/useZodForm";
+import LoginSchema, { LoginType } from "@/validators/Sidebar/LoginSchema";
 
 const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
   const {

@@ -1,8 +1,8 @@
-import { getSession } from "@/app/actions/getSession";
+import { getSession } from "@/actions/getSession";
 import AccountDetailsSchema, {
   AccountDetailsType,
-} from "@/app/validators/UserSettings/AccountDetailsSchema";
-import prisma from "@/app/libs/prismadb";
+} from "@/validators/UserSettings/AccountDetailsSchema";
+import prisma from "@/libs/prismadb";
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 

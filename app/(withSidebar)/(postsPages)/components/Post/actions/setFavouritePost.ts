@@ -1,7 +1,7 @@
 "use server";
 
-import { getSession } from "@/app/actions/getSession";
-import prisma from "@/app/libs/prismadb";
+import { getSession } from "@/actions/getSession";
+import prisma from "@/libs/prismadb";
 
 export default async function setFavouritePost(postId: string) {
   const session = await getSession();

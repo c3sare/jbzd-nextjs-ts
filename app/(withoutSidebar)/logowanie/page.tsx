@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getSession } from "@/app/actions/getSession";
+import { getSession } from "@/actions/getSession";
 import SidebarForms from "@/app/components/sidebar/components/SidebarForms";
 
 type LoginPageType = {

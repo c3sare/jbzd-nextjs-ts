@@ -1,7 +1,7 @@
-import { getSession } from "@/app/actions/getSession";
+import { getSession } from "@/actions/getSession";
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/app/libs/prismadb";
-import { pusherServer } from "@/app/libs/pusher";
+import prisma from "@/libs/prismadb";
+import { pusherServer } from "@/libs/pusher";
 
 export async function POST(
   req: NextRequest,

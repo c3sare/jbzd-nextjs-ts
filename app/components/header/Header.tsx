@@ -7,9 +7,9 @@ import LeftSide from "./components/leftside/LeftSide";
 import RightSide from "./components/rightside/RightSide";
 import MobileMenu from "./components/mobilemenu/MobileMenu";
 import MobileMenuContainer from "./components/mobilemenu/components/MobileMenuContainer";
-import { getSession } from "@/app/actions/getSession";
-import getNotifications from "@/app/actions/getNotifications";
-import getLastMessages from "@/app/actions/getLastMessages";
+import { getSession } from "@/actions/getSession";
+import getNotifications from "@/actions/getNotifications";
+import getLastMessages from "@/actions/getLastMessages";
 
 const Header = async () => {
   const session = await getSession();

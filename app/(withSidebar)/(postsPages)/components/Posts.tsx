@@ -3,7 +3,7 @@
 import { useCallback, useState } from "react";
 import { PostType } from "./types/PostType";
 import PostComponent from "@/app/(withSidebar)/(postsPages)/components/Post/Post";
-import deleteAuthorDuplicates from "@/app/libs/deleteAuthorDuplicates";
+import deleteAuthorDuplicates from "@/utils/deleteAuthorDuplicates";
 
 type PostsProps = {
   posts: PostType[];

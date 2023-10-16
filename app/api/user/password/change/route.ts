@@ -1,8 +1,8 @@
-import prisma from "@/app/libs/prismadb";
+import prisma from "@/libs/prismadb";
 import { NextResponse } from "next/server";
 import PasswordResetSchema, {
   PasswordResetType,
-} from "@/app/validators/Sidebar/PasswordRemind/PasswordResetSchema";
+} from "@/validators/Sidebar/PasswordRemind/PasswordResetSchema";
 import bcrypt from "bcryptjs";
 import { formatISO } from "date-fns";
 

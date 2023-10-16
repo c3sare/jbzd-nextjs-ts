@@ -8,7 +8,7 @@ import DayPicker from "@/app/components/forms/DayPicker";
 import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
-import useArraySearchParams from "@/app/hooks/useArraySearchParams";
+import useArraySearchParams from "@/hooks/useArraySearchParams";
 
 type PostsDateFilterFormData = {
   start?: Date;

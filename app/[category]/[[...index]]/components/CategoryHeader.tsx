@@ -3,7 +3,7 @@
 import { useState } from "react";
 import StyledButton from "./StyledButton";
 import { AiFillBell } from "@react-icons/all-files/ai/AiFillBell";
-import { setCategoryAction } from "@/app/actions/serverActions/setCategoryAction";
+import { setCategoryAction } from "@/actions/serverActions/setCategoryAction";
 import toast from "react-hot-toast";
 
 type CategoryMethod = "" | "FOLLOW" | "BLOCK";
