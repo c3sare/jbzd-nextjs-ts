@@ -10,6 +10,7 @@ This is a Fullstack project of a website.
 - [Next-auth](https://next-auth.js.org/)
 - [Zod](https://zod.dev/)
 - [Tailwindcss](https://tailwindcss.com/)
+- [Pusher](https://pusher.com/)
 
 ## Features
 - Creating account with traditional register form or using OAuth
@@ -21,6 +22,8 @@ This is a Fullstack project of a website.
 - Other users can be blocked, followed (blocked users posts are hided)
 - Posts are divided on categories and tags
 - Posts can be filtered (search page or page filters)
+- Real Time Chat between users
+- Real Time notifications (messages and user notifications)
 
 ## Prerequisites
 Node version 18.x.x
@@ -53,11 +56,16 @@ GOOGLE_CLIENT_SECRET=
 YOUTUBE_API_KEY=
 
 CLOUDINARY_URL=
+
+PUSHER_APP_ID=
+NEXT_PUBLIC_PUSHER_APP_KEY=
+PUSHER_SECRET=
 ```
 
 ### Setup Prisma
 
 ```shell
+npx prisma db seed
 npx prisma db push
 
 ```
@@ -74,4 +82,5 @@ Running commands with npm `npm run [command]`
 
 | command         | description                              |
 | :-------------- | :--------------------------------------- |
+| `build`         | Creating production build of the app     |
 | `dev`           | Starts a development instance of the app |
