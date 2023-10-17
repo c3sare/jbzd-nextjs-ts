@@ -1,7 +1,7 @@
 "use client";
 
 import React, { PropsWithChildren, useState } from "react";
-import Modal from "@/app/components/Modal";
+import Modal from "@/components/Modal";
 
 type MonitOptionsProps = {
   open: boolean;

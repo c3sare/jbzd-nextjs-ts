@@ -1,6 +1,6 @@
-import Sidebar from "../components/sidebar/Sidebar";
-import Main from "../components/Main";
-import Wrapper from "../components/Wrapper";
+import Sidebar from "@/components/sidebar/Sidebar";
+import Main from "@/components/Main";
+import Wrapper from "@/components/Wrapper";
 
 const WithSidebarLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (

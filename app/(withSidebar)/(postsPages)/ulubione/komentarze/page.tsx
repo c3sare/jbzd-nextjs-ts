@@ -1,6 +1,6 @@
 import CommentSection from "@/app/(withSidebar)/(singleMemPage)/obr/[postId]/[slug]/components/CommentsSection";
 import { getFavouriteComments } from "@/actions/comments/getFavouriteComments";
-import Breadcrumb from "@/app/components/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumb";
 import { getSession } from "@/actions/getSession";
 import Link from "next/link";
 import { notFound } from "next/navigation";

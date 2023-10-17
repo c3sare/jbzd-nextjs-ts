@@ -1,13 +1,13 @@
 "use client";
 
-import ZodForm from "@/app/components/forms/ZodForm";
+import ZodForm from "@/components/forms/ZodForm";
 import UserPremiumSchema, {
   UserPremiumType,
 } from "@/validators/UserSettings/UserPremiumSchema";
 import useZodForm from "@/hooks/useZodForm";
-import LabelCheckbox from "@/app/components/LabelCheckbox";
-import Button from "@/app/components/Button";
-import RadioSelect from "@/app/components/forms/RadioSelect";
+import LabelCheckbox from "@/components/LabelCheckbox";
+import Button from "@/components/Button";
+import RadioSelect from "@/components/forms/RadioSelect";
 import clsx from "clsx";
 import BigButton from "./BigButton";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import Editor from "@/app/components/editor/Editor";
+import Editor from "@/components/editor/Editor";
 
 type MemTextProps = {
   data: string;

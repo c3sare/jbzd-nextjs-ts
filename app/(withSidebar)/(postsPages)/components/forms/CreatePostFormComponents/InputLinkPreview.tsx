@@ -12,7 +12,7 @@ import type {
 import axios from "axios";
 import { useState } from "react";
 
-import InputStyled from "@/app/components/InputStyled";
+import InputStyled from "@/components/InputStyled";
 import LinkPreviewContainer from "./LinkPreviewContainer";
 
 type LinkPreviewType = {

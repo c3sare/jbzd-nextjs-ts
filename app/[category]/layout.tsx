@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
-import Main from "../components/Main";
-import Sidebar from "../components/sidebar/Sidebar";
-import Wrapper from "../components/Wrapper";
+import Main from "@/components/Main";
+import Sidebar from "@/components/sidebar/Sidebar";
+import Wrapper from "@/components/Wrapper";
 
 const CategoryLayout: React.FC<PropsWithChildren> = ({ children }) => {
   return (

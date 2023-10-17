@@ -1,6 +1,6 @@
 "use client";
 
-import IconButton from "@/app/components/IconButton";
+import IconButton from "@/components/IconButton";
 import { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 

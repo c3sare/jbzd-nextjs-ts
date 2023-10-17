@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { PageProps } from "../../components/types/PageProps";
-import Breadcrumb from "@/app/components/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumb";
 import Link from "next/link";
 import Posts from "../../components/Posts";
 import Pagination from "../../components/Pagination";

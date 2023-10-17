@@ -1,8 +1,8 @@
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 
-import LabelCheckbox from "@/app/components/LabelCheckbox";
-import Button from "@/app/components/Button";
-import Input from "@/app/components/Input";
+import LabelCheckbox from "@/components/LabelCheckbox";
+import Button from "@/components/Button";
+import Input from "@/components/Input";
 import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import useArraySearchParams from "@/hooks/useArraySearchParams";

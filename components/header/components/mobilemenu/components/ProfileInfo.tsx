@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import Avatar from "@/app/components/Avatar";
+import Avatar from "@/components/Avatar";
 import { getProfileInfo } from "@/actions/getProfileInfo";
 import SignOutButton from "./SignOutButton";
 

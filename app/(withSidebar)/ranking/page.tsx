@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getRankingUsers } from "@/actions/getRankingUsers";
-import Breadcrumb from "@/app/components/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumb";
 import RankingListItem from "./components/RankingListItem";
 
 const RankingPage = async () => {

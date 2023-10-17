@@ -1,7 +1,7 @@
 import Pagination from "@/app/(withSidebar)/(postsPages)/components/Pagination";
 import Posts from "@/app/(withSidebar)/(postsPages)/components/Posts";
 import { getUserPagePosts } from "@/actions/posts/getUserPagePosts";
-import Breadcrumb from "@/app/components/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumb";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 

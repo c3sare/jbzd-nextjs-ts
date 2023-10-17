@@ -1,7 +1,7 @@
 import { getPostWithStats } from "@/actions/posts/getPostWithStats";
 import { notFound } from "next/navigation";
 import SinglePostFooter from "./components/SinglePostFooter";
-import Breadcrumb from "@/app/components/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumb";
 import Link from "next/link";
 import SinglePost from "./components/SinglePost";
 import CommentSection from "./components/CommentsSection";

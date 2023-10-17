@@ -3,14 +3,13 @@ import { FaSearch } from "@react-icons/all-files/fa/FaSearch";
 import { IoSettingsSharp } from "@react-icons/all-files/io5/IoSettingsSharp";
 import { BiUser } from "@react-icons/all-files/bi/BiUser";
 import { RiFileListFill } from "@react-icons/all-files/ri/RiFileListFill";
-import { GiPerspectiveDiceSixFacesFour } from "@react-icons/all-files/gi/GiPerspectiveDiceSixFacesFour";
 import { BsFillStarFill } from "@react-icons/all-files/bs/BsFillStarFill";
 import { AiOutlineClockCircle } from "@react-icons/all-files/ai/AiOutlineClockCircle";
 
 import MobileMenuLinkButton from "./MobileMenuLinkButton";
 import Categories from "../../leftside/components/dropdownlists/Categories";
 import ProfileInfo from "./ProfileInfo";
-import SidebarForms from "@/app/components/sidebar/components/SidebarForms";
+import SidebarForms from "@/components/sidebar/components/SidebarForms";
 import { getSession } from "@/actions/getSession";
 import MobileMenuRandomPostButton from "./MobileMenuRandomPostButton";
 

@@ -1,14 +1,14 @@
 "use client";
 
-import Input from "@/app/components/Input";
-import Select from "@/app/components/forms/Select";
-import Button from "@/app/components/Button";
+import Input from "@/components/Input";
+import Select from "@/components/forms/Select";
+import Button from "@/components/Button";
 import AccountDetailsSchema, {
   AccountDetailsType,
 } from "@/validators/UserSettings/AccountDetailsSchema";
 import useZodForm from "@/hooks/useZodForm";
 import Heading from "../../components/Heading";
-import ZodForm from "@/app/components/forms/ZodForm";
+import ZodForm from "@/components/forms/ZodForm";
 
 type AccountDetailsFormProps = {
   userData: AccountDetailsType;

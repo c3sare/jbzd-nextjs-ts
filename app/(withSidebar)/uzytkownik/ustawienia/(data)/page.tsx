@@ -1,7 +1,7 @@
 import { getSession } from "@/actions/getSession";
 import { getUserData } from "@/actions/getUserData";
 import AccountDetailsForm from "./components/AccountDetailsForm";
-import Hr from "@/app/components/Hr";
+import Hr from "@/components/Hr";
 import AvatarForm from "./components/AvatarForm";
 import ChangePasswordForm from "./components/ChangePasswordForm";
 import { getAvatar } from "@/actions/getAvatar";

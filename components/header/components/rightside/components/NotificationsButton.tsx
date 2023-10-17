@@ -3,7 +3,7 @@
 import { BsBellFill } from "@react-icons/all-files/bs/BsBellFill";
 import useDropdownContainer from "@/hooks/useDropdownContainer";
 import Link from "next/link";
-import IconButton from "@/app/components/IconButton";
+import IconButton from "@/components/IconButton";
 import DropdownContainer from "../../DropdownContainer";
 import { useCallback, useEffect, useState } from "react";
 import NotificationType from "@/app/(withSidebar)/uzytkownik/notyfikacje/types/NotificationType";

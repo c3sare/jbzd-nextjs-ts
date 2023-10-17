@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import Form from "@/app/components/header/components/search/components/Form";
+import Form from "@/components/header/components/search/components/Form";
 
 const SearchLayout: React.FC<PropsWithChildren> = ({ children }) => {
   return (

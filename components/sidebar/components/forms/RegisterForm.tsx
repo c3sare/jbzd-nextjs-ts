@@ -1,10 +1,10 @@
 "use client";
 
-import Input from "@/app/components/Input";
-import Button from "../../../Button";
-import Checkbox from "@/app/components/Checkbox";
+import Input from "@/components/Input";
+import Button from "@/components/Button";
+import Checkbox from "@/components/Checkbox";
 import Link from "next/link";
-import ZodForm from "@/app/components/forms/ZodForm";
+import ZodForm from "@/components/forms/ZodForm";
 import useZodForm from "@/hooks/useZodForm";
 import RegisterSchema, {
   RegisterType,

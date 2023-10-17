@@ -1,4 +1,4 @@
-import LoadingBox from "@/app/components/LoadingBox";
+import LoadingBox from "@/components/LoadingBox";
 
 const SettingsLoading = () => {
   return (

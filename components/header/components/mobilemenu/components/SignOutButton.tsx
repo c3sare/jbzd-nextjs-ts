@@ -1,6 +1,6 @@
 "use client";
 
-import IconButton from "@/app/components/IconButton";
+import IconButton from "@/components/IconButton";
 import { signOut } from "next-auth/react";
 import { FaPowerOff } from "@react-icons/all-files/fa/FaPowerOff";
 

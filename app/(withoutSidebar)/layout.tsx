@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
-import Main from "../components/Main";
-import Wrapper from "../components/Wrapper";
+import Main from "@/components/Main";
+import Wrapper from "@/components/Wrapper";
 
 const WithoutSidebarLayout: React.FC<PropsWithChildren> = ({ children }) => {
   return (

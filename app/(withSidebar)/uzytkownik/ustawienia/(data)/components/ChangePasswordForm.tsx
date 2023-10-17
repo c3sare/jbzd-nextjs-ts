@@ -2,12 +2,12 @@
 
 import useZodForm from "@/hooks/useZodForm";
 import Heading from "../../components/Heading";
-import Input from "@/app/components/Input";
-import Button from "@/app/components/Button";
+import Input from "@/components/Input";
+import Button from "@/components/Button";
 import ChangePasswordSchema, {
   ChangePasswordType,
 } from "@/validators/UserSettings/ChangePasswordSchema";
-import ZodForm from "@/app/components/forms/ZodForm";
+import ZodForm from "@/components/forms/ZodForm";
 
 const ChangePasswordForm = () => {
   const { zodFormComponentProps, isLoading } = useZodForm<ChangePasswordType>({

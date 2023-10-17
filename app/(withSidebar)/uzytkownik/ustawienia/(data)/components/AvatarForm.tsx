@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/app/components/Button";
+import Button from "@/components/Button";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import AvatarEditor from "react-avatar-editor";
@@ -113,9 +113,9 @@ const AvatarForm = ({ avatar }: { avatar: string }) => {
                 setFile(URL.createObjectURL(e.target?.files?.[0]));
             }}
           />
-          {isLoading && <div className="h-full w-full absolute top-0 left-0" />}
+          {isLoading && <div className="absolute top-0 left-0 w-full h-full" />}
         </div>
-        <p className="text-center py-4">
+        <p className="py-4 text-center">
           <small>
             <i>
               Avatar nie może zawierać treści +18, ustawienie ich będzie
@@ -123,7 +123,7 @@ const AvatarForm = ({ avatar }: { avatar: string }) => {
             </i>
           </small>
         </p>
-        <p className="text-center pb-4">
+        <p className="pb-4 text-center">
           <small>Kliknij obrazek aby go zmienić.</small>
         </p>
         <input

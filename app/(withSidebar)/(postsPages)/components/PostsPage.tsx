@@ -1,4 +1,4 @@
-import Breadcrumb from "../../../components/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumb";
 import Link from "next/link";
 import PostsPageHeader from "./PostsPageHeader";
 import { getPremium } from "@/actions/getPremium";

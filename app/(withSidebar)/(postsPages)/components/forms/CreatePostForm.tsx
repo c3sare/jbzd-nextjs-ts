@@ -16,10 +16,10 @@ import { FaVideo } from "@react-icons/all-files/fa/FaVideo";
 import { AiFillFileText } from "@react-icons/all-files/ai/AiFillFileText";
 import { AiFillYoutube } from "@react-icons/all-files/ai/AiFillYoutube";
 
-import BigIconButton from "@/app/components/BigIconButton";
-import InputStyled from "@/app/components/InputStyled";
-import TextSwitchButton from "@/app/components/TextSwitchButton";
-import Button from "@/app/components/Button";
+import BigIconButton from "@/components/BigIconButton";
+import InputStyled from "@/components/InputStyled";
+import TextSwitchButton from "@/components/TextSwitchButton";
+import Button from "@/components/Button";
 import MemImage from "./FormPostElements/MemImage";
 import MemVideo from "./FormPostElements/MemVideo";
 import MemText from "./FormPostElements/MemText";

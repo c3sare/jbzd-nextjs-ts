@@ -1,6 +1,6 @@
-import Footer from "./components/footer/Footer";
-import FooterLink from "./components/footer/components/FooterLink";
-import Header from "./components/header/Header";
+import Footer from "@/components/footer/Footer";
+import FooterLink from "@/components/footer/components/FooterLink";
+import Header from "@/components/header/Header";
 import "./styles/globals.css";
 import { Open_Sans } from "next/font/google";
 import ToasterContext from "@/context/ToasterContext";

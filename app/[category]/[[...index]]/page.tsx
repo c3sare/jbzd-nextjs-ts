@@ -1,7 +1,7 @@
 import { getCategoryPagePosts } from "@/actions/posts/getCategoryPagePosts";
 import { notFound } from "next/navigation";
 import { CategoryPageProps } from "../../(withSidebar)/(postsPages)/components/types/CategoryPageProps";
-import Breadcrumb from "@/app/components/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumb";
 import PostsPageHeader from "../../(withSidebar)/(postsPages)/components/PostsPageHeader";
 import Posts from "../../(withSidebar)/(postsPages)/components/Posts";
 import Pagination from "../../(withSidebar)/(postsPages)/components/Pagination";

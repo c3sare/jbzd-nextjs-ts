@@ -1,4 +1,4 @@
-import Breadcrumb from "@/app/components/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumb";
 import Link from "next/link";
 
 type StaticLayoutProps = {

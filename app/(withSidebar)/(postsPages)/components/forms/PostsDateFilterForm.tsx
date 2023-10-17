@@ -2,9 +2,9 @@
 
 import type { SubmitHandler } from "react-hook-form";
 
-import Button from "@/app/components/Button";
+import Button from "@/components/Button";
 import PresetButton from "../PresetButton";
-import DayPicker from "@/app/components/forms/DayPicker";
+import DayPicker from "@/components/forms/DayPicker";
 import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";

@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import useDropdownContainer from "@/hooks/useDropdownContainer";
-import IconButton from "@/app/components/IconButton";
+import IconButton from "@/components/IconButton";
 import DropdownContainer from "../../DropdownContainer";
 import CountBox from "./CountBox";
 import { pusherClient } from "@/libs/pusher";

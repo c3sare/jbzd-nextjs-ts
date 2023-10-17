@@ -2,14 +2,14 @@
 
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import StaticLayout from "../components/StaticLayout";
-import Form from "@/app/components/forms/ZodForm";
-import Input from "@/app/components/Input";
+import Form from "@/components/forms/ZodForm";
+import Input from "@/components/Input";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ContactSchema, { ContactType } from "@/validators/ContactSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Button from "@/app/components/Button";
+import Button from "@/components/Button";
 
 const defaultValues = {
   firstName: "",
