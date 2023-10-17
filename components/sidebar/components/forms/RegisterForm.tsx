@@ -23,7 +23,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
   const formHook = useZodForm({
     schema: RegisterSchema,
   });
-  const { handleSubmit, setIsLoading, reset } = formHook;
+  const { handleSubmit, setIsLoading } = formHook;
 
   const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
