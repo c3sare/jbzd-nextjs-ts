@@ -29,6 +29,7 @@ This is a Fullstack project of a website.
 
 ## Prerequisites
 Node version 18.x.x
+MongoDB database
 
 ### Cloning the repository
 
