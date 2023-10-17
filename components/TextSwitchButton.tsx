@@ -1,25 +1,18 @@
-import {
-  FieldValues,
-  Path,
-  UseFormRegister,
-  UseFormWatch,
-} from "react-hook-form";
+import useZodFormContext from "@/hooks/useZodFormContext";
+import { FieldValues, Path } from "react-hook-form";
 
 type TextSwitchButtonProps<T extends FieldValues> = {
   text: string;
   activeText: string;
-  watch: UseFormWatch<T>;
   id: Path<T>;
-  register: UseFormRegister<T>;
 };
 
 function TextSwitchButton<T extends FieldValues>({
   text,
   activeText,
-  watch,
   id,
-  register,
 }: TextSwitchButtonProps<T>) {
+  const { watch, register } = useZodFormContext<T>();
   const isActive = watch(id);
 
   return (

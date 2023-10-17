@@ -1,15 +1,13 @@
 "use client";
 
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import StaticLayout from "../components/StaticLayout";
 import Form from "@/components/forms/ZodForm";
 import Input from "@/components/Input";
-import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import ContactSchema, { ContactType } from "@/validators/ContactSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
+import ContactSchema from "@/validators/ContactSchema";
 import Button from "@/components/Button";
+import useZodForm from "@/hooks/useZodForm";
 
 const defaultValues = {
   firstName: "",
@@ -21,18 +19,19 @@ const defaultValues = {
 };
 
 const ContactPage = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const formHook = useForm<ContactType>({
+  const formHook = useZodForm({
     defaultValues,
-    resolver: zodResolver(ContactSchema),
+    schema: ContactSchema,
   });
 
   const clearForm = () => formHook.reset(defaultValues);
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const { handleSubmit, setIsLoading } = formHook;
+
+  const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
     axios
-      .post("/api/report-form")
+      .post("/api/report-form", data)
       .then((res) => res.data)
       .then(() => {
         toast.success("Pomyślnie wysłano zgłoszenie!");
@@ -45,20 +44,16 @@ const ContactPage = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  };
-
-  const zodFormProps = {
-    ...formHook,
-    onSubmit,
-    isLoading,
-    errors: formHook.formState.errors,
-    isError: false,
-  };
+  });
 
   return (
     <StaticLayout title="Kontakt">
       <p>Masz jakiś problem? Skontaktuj się z nami!</p>
-      <Form {...zodFormProps} className="max-w-[300px] mx-auto">
+      <Form
+        formHook={formHook}
+        onSubmit={onSubmit}
+        className="max-w-[300px] mx-auto"
+      >
         <Input id="firstName" placeholder="Imię" />
         <Input id="lastName" placeholder="Nazwisko" />
         <Input id="email" placeholder="E-Mail" />

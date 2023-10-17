@@ -6,10 +6,10 @@ import Checkbox from "@/components/Checkbox";
 import Link from "next/link";
 import ZodForm from "@/components/forms/ZodForm";
 import useZodForm from "@/hooks/useZodForm";
-import RegisterSchema, {
-  RegisterType,
-} from "@/validators/Sidebar/RegisterSchema";
+import RegisterSchema from "@/validators/Sidebar/RegisterSchema";
 import { Dispatch, SetStateAction } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 type RegisterFormProps = {
   children?: React.ReactNode;
@@ -20,21 +20,37 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
   children,
   setIndexOfCurrentForm,
 }) => {
-  const { zodFormComponentProps } = useZodForm<RegisterType>({
-    pushFormDataEndpoint: "/api/register",
-    zodSchema: RegisterSchema,
-    customSuccessMessage: "Konto zostało założone prawidłowo!",
-    successDataFetchCallback: () => setIndexOfCurrentForm(0),
+  const formHook = useZodForm({
+    schema: RegisterSchema,
+  });
+  const { handleSubmit, setIsLoading, reset } = formHook;
+
+  const onSubmit = handleSubmit((data) => {
+    setIsLoading(true);
+    axios
+      .post("/api/register", data)
+      .then((res) => res.data)
+      .then(() => {
+        toast.success("Konto zostało założone prawidłowo!");
+        setIndexOfCurrentForm(0);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Wystąpił błąd!");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   });
 
   return (
     <>
-      <ZodForm {...zodFormComponentProps}>
+      <ZodForm formHook={formHook} onSubmit={onSubmit}>
         <Input id="username" placeholder="Nazwa użytkownika" />
         <Input id="email" placeholder="Email" />
         <Input id="password" type="password" placeholder="Hasło" />
         <Input id="repassword" type="password" placeholder="Powtórz hasło" />
-        <Checkbox id="rules" required>
+        <Checkbox id="rules">
           Akceptuję <Link href="/regulamin">regulamin</Link>
         </Checkbox>
         <Button type="submit">Zarejestruj</Button>

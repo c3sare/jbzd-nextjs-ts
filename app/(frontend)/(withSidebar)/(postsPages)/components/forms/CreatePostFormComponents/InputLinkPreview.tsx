@@ -1,19 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import type {
-  Control,
-  FieldValues,
-  Path,
-  PathValue,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
 
 import axios from "axios";
 import { useState } from "react";
 
 import InputStyled from "@/components/InputStyled";
 import LinkPreviewContainer from "./LinkPreviewContainer";
+import useZodFormContext from "@/hooks/useZodFormContext";
 
 type LinkPreviewType = {
   description: string;
@@ -21,15 +13,6 @@ type LinkPreviewType = {
   img: string;
   origin: string;
   title: string;
-};
-
-type InputLinkPreviewProps<T extends FieldValues> = {
-  register: UseFormRegister<T>;
-  getValues: UseFormGetValues<T>;
-  setValue: UseFormSetValue<T>;
-  control: Control<any>;
-  isLoading: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const isValidUrl = (urlString: string) => {
@@ -40,14 +23,9 @@ const isValidUrl = (urlString: string) => {
   }
 };
 
-function InputLinkPreview<T extends FieldValues>({
-  register,
-  getValues,
-  setValue,
-  control,
-  isLoading,
-  setIsLoading,
-}: InputLinkPreviewProps<T>) {
+function InputLinkPreview() {
+  const { control, setIsLoading, register, getValues, setValue } =
+    useZodFormContext();
   const acceptedImageType = ["image/jpeg", "image/png", "image/gif"];
   const [linkPreview, setLinkPreview] = useState<LinkPreviewType | null>(null);
 
@@ -66,8 +44,8 @@ function InputLinkPreview<T extends FieldValues>({
     }
   };
 
-  const inputLinkRegister = register("linking.url" as Path<T>);
-  const inputCustomImageRegister = register("linking.image" as Path<T>);
+  const inputLinkRegister = register("linking.url");
+  const inputCustomImageRegister = register("linking.image");
 
   return (
     <>
@@ -76,22 +54,12 @@ function InputLinkPreview<T extends FieldValues>({
           placeholder="Wpisz link"
           ref={inputLinkRegister.ref}
           onBlur={async (e) => {
-            if (
-              e.target.value === "" &&
-              e.target.value !== getValues("link" as Path<T>)
-            ) {
+            if (e.target.value === "" && e.target.value !== getValues("link")) {
               setLinkPreview(null);
-              setValue(
-                "linking.url" as Path<T>,
-                e.target.value as PathValue<T, Path<T>>
-              );
+              setValue("linking.url", e.target.value);
             } else if (isValidUrl(e.target.value)) {
               const isValidPreview = await getLinkInformation(e.target.value);
-              if (isValidPreview)
-                setValue(
-                  "linking.url" as Path<T>,
-                  e.target.value as PathValue<T, Path<T>>
-                );
+              if (isValidPreview) setValue("linking.url", e.target.value);
             }
           }}
           name={inputLinkRegister.name}
@@ -110,10 +78,7 @@ function InputLinkPreview<T extends FieldValues>({
               if (e.target.files && e.target.files?.[0]) {
                 const val = e.target.files[0];
                 if (acceptedImageType.includes(val.type))
-                  setValue(
-                    "linking.image" as Path<T>,
-                    val as PathValue<T, Path<T>>
-                  );
+                  setValue("linking.image", val);
               }
             }}
           />

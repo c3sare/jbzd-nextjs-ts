@@ -2,49 +2,41 @@
 
 import "react-datepicker/dist/react-datepicker.css";
 import clsx from "clsx";
-import {
-  FieldErrors,
-  FieldValues,
-  Path,
-  PathValue,
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormWatch,
-} from "react-hook-form";
+import { FieldValues, Path, PathValue } from "react-hook-form";
 import ErrorInputBox from "./ErrorInputBox";
 import { formatISO, parseISO } from "date-fns";
 import pl from "date-fns/locale/pl";
 import DatePicker, { registerLocale } from "react-datepicker";
 import { useMemo } from "react";
+import useZodFormContext from "@/hooks/useZodFormContext";
 registerLocale("pl", pl);
 
 interface InputProps<T extends FieldValues> {
-  register?: UseFormRegister<T>;
   id: Path<T>;
-  required?: boolean;
-  errors?: FieldErrors<T>;
   placeholder?: string;
   hidden?: boolean;
-  disabled?: boolean;
   type?: "password" | "text" | "number" | "date" | "textarea";
-  watch?: UseFormWatch<T>;
-  setValue?: UseFormSetValue<T>;
+  disabled?: boolean;
 }
 
 function Input<T extends FieldValues>({
-  register,
   id,
-  errors,
   placeholder,
-  disabled,
   hidden,
   type,
-  setValue,
-  watch,
+  disabled: disabledCustom,
 }: InputProps<T>) {
+  const {
+    register,
+    watch,
+    formState: { errors },
+    isLoading: disabled,
+    setValue,
+  } = useZodFormContext<T>();
+
   const registerReturn = register!(id);
 
-  const currentValue = watch ? watch(id) : null;
+  const currentValue = watch(id);
 
   const inputClassNames = clsx(
     `
@@ -66,7 +58,7 @@ function Input<T extends FieldValues>({
   const dataPicker = useMemo(
     () => (
       <DatePicker
-        disabled={disabled}
+        disabled={disabledCustom || disabled}
         ref={registerReturn.ref}
         name={registerReturn.name}
         placeholderText={placeholder}
@@ -90,6 +82,7 @@ function Input<T extends FieldValues>({
       inputClassNames,
       currentValue,
       disabled,
+      disabledCustom,
       id,
       placeholder,
       setValue,
@@ -102,11 +95,18 @@ function Input<T extends FieldValues>({
         type={type || "text"}
         {...registerReturn}
         placeholder={placeholder}
-        disabled={disabled}
+        disabled={disabledCustom || disabled}
         className={inputClassNames}
       />
     ),
-    [disabled, inputClassNames, placeholder, registerReturn, type]
+    [
+      disabled,
+      disabledCustom,
+      inputClassNames,
+      placeholder,
+      registerReturn,
+      type,
+    ]
   );
 
   const textareaInput = useMemo(
@@ -115,11 +115,11 @@ function Input<T extends FieldValues>({
         style={{ height: "200px" }}
         {...registerReturn}
         placeholder={placeholder}
-        disabled={disabled}
+        disabled={disabledCustom || disabled}
         className={inputClassNames}
       />
     ),
-    [disabled, inputClassNames, placeholder, registerReturn]
+    [disabled, disabledCustom, inputClassNames, placeholder, registerReturn]
   );
 
   const input = useMemo(() => {

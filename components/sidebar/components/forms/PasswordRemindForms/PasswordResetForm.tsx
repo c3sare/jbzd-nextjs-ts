@@ -1,11 +1,11 @@
 import ZodForm from "@/components/forms/ZodForm";
-import PasswordResetSchema, {
-  PasswordResetType,
-} from "@/validators/Sidebar/PasswordRemind/PasswordResetSchema";
+import PasswordResetSchema from "@/validators/Sidebar/PasswordRemind/PasswordResetSchema";
 import useZodForm from "@/hooks/useZodForm";
 import { Dispatch, SetStateAction } from "react";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 type PasswordResetForm = {
   setIndexOfCurrentForm: Dispatch<SetStateAction<number>>;
@@ -16,20 +16,34 @@ const PasswordResetForm: React.FC<PasswordResetForm> = ({
   setIndexOfCurrentForm,
   email,
 }) => {
-  const { zodFormComponentProps } = useZodForm<PasswordResetType>({
-    zodSchema: PasswordResetSchema,
-    pushFormDataEndpoint: "/api/user/password/change",
-    successDataFetchCallback: () => {
-      setIndexOfCurrentForm(0);
-    },
-    customSuccessMessage: "Hasło zostało pomyślnie zmienione!",
-    defaultFormValues: {
+  const formHook = useZodForm({
+    schema: PasswordResetSchema,
+    defaultValues: {
       email,
     },
   });
 
+  const { handleSubmit, setIsLoading } = formHook;
+
+  const onSubmit = handleSubmit((data) => {
+    axios
+      .post("/api/user/password/change", data)
+      .then((res) => res.data)
+      .then(() => {
+        toast.success("Hasło zostało pomyślnie zmienione!");
+        setIndexOfCurrentForm(0);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Wystąpił problem przy zmianie hasła!");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  });
+
   return (
-    <ZodForm {...zodFormComponentProps}>
+    <ZodForm formHook={formHook} onSubmit={onSubmit}>
       <Input hidden id="email" />
       <Input id="token" placeholder="TOKEN" />
       <Input type="password" id="password" placeholder="Nowe Hasło" />

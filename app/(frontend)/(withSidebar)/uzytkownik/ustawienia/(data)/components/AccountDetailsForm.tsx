@@ -9,26 +9,48 @@ import AccountDetailsSchema, {
 import useZodForm from "@/hooks/useZodForm";
 import Heading from "../../components/Heading";
 import ZodForm from "@/components/forms/ZodForm";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 type AccountDetailsFormProps = {
   userData: AccountDetailsType;
 };
 
+const defaultValues: {
+  [key: string]: any;
+} = {};
+
 const AccountDetailsForm: React.FC<AccountDetailsFormProps> = ({
   userData,
 }) => {
-  const { zodFormComponentProps, isLoading } = useZodForm<AccountDetailsType>({
-    // initialFormDataEndpoint: "/api/user/settings/data",
-    zodSchema: AccountDetailsSchema,
-    pushFormDataEndpoint: "/api/user/settings/data",
-    pushFormDataMethod: "POST",
-    defaultFormValues: userData,
+  const apiEndpoint = "/api/user/settings/data";
+  const formHook = useZodForm({
+    schema: AccountDetailsSchema,
+    defaultValues: userData,
+  });
+
+  const { setIsLoading, handleSubmit } = formHook;
+
+  const onSubmit = handleSubmit((data) => {
+    setIsLoading(true);
+    axios
+      .post(apiEndpoint, data)
+      .then((res) => res.data)
+      .then((data) => {
+        defaultValues[apiEndpoint] = data;
+        toast.success("Pomyślnie zaakutalizowano!");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Wystąpił problem!");
+      })
+      .finally(() => setIsLoading(false));
   });
 
   return (
     <>
       <Heading>Dane konta</Heading>
-      <ZodForm {...zodFormComponentProps}>
+      <ZodForm formHook={formHook} onSubmit={onSubmit}>
         <Input id="name" placeholder="Imię" />
         <Select id="gender" valueAsNumber>
           <option value={0}>Mężczyzna</option>

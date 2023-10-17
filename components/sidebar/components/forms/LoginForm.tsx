@@ -1,6 +1,5 @@
 "use client";
 
-import { SubmitHandler } from "react-hook-form";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import FacebookLoginButton from "./components/FacebookLoginButton";
@@ -10,26 +9,17 @@ import { useRouter } from "next/navigation";
 import GoogleLoginButton from "./components/GoogleLoginButton";
 import ZodForm from "@/components/forms/ZodForm";
 import useZodForm from "@/hooks/useZodForm";
-import LoginSchema, { LoginType } from "@/validators/Sidebar/LoginSchema";
+import LoginSchema from "@/validators/Sidebar/LoginSchema";
 
 const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const {
-    register,
-    isLoading,
-    setIsLoading,
-    handleSubmit,
-    isError,
-    formState: { errors },
-    setValue,
-    watch,
-    reset,
-  } = useZodForm<LoginType>({
-    zodSchema: LoginSchema,
-    pushFormDataEndpoint: "",
+  const formHook = useZodForm({
+    schema: LoginSchema,
   });
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<LoginType> = (data) => {
+  const { setIsLoading, handleSubmit, isLoading } = formHook;
+
+  const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
     signIn("credentials", {
       ...data,
@@ -51,23 +41,11 @@ const LoginForm: React.FC<React.PropsWithChildren> = ({ children }) => {
         toast.error("Wystąpił nieoczekiwany błąd!");
         setIsLoading(false);
       });
-  };
-
-  const newZodFormComponentProps = {
-    isLoading,
-    isError,
-    handleSubmit,
-    onSubmit,
-    register,
-    errors,
-    setValue,
-    watch,
-    reset,
-  };
+  });
 
   return (
     <>
-      <ZodForm {...newZodFormComponentProps}>
+      <ZodForm formHook={formHook} onSubmit={onSubmit}>
         <Input id="login" placeholder="Podaj nick lub email" />
         <Input type="password" id="password" placeholder="Hasło" />
         <Button type="submit">Zaloguj się</Button>

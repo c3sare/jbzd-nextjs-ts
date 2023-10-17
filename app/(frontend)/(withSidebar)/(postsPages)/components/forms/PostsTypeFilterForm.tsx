@@ -1,16 +1,24 @@
-import type { FieldValues, SubmitHandler } from "react-hook-form";
-
 import LabelCheckbox from "@/components/LabelCheckbox";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { usePathname, useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
 import useArraySearchParams from "@/hooks/useArraySearchParams";
+import Form from "@/components/forms/ZodForm";
+import useZodForm from "@/hooks/useZodForm";
+import { z } from "zod";
 
 type PostsTypeFilterFormProps = {
   isPremium: boolean;
   onClose: () => void;
 };
+
+const PostsTypeFilterFormSchema = z.object({
+  pharse: z.string().min(1, "Pole jest puste!"),
+  gif: z.boolean(),
+  image: z.boolean(),
+  text: z.boolean(),
+  video: z.boolean(),
+});
 
 const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
   isPremium,
@@ -18,12 +26,8 @@ const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
   const router = useRouter();
   const pathname = usePathname();
   const params = useArraySearchParams();
-  const {
-    watch,
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm({
+  const formHook = useZodForm({
+    schema: PostsTypeFilterFormSchema,
     defaultValues: (() => {
       const pharse =
         params.find((item) => item.param === "pharse")?.value || "";
@@ -41,10 +45,12 @@ const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
       );
 
       return { pharse: decodeURI(pharse), video, gif, image, text };
-    })() as any,
+    })(),
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const { handleSubmit } = formHook;
+
+  const onSubmit = handleSubmit((data) => {
     const filteredParams = params.filter(
       (item) =>
         !["pharse", "video", "gif", "image", "text"].includes(item.param)
@@ -69,46 +75,36 @@ const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
     if (paramsString.length > 0)
       router.push(`/${path}?${paramsString.join("&")}`);
     else router.push(pathname);
-  };
+  });
 
   return (
     <div className="relative md:absolute max-w-full mx-auto flex justify-center items-center gap-[10px] top-[5px] md:top-[calc(100%_+_5px)] z-10 bg-[#3c3c3c] md:left-1/2 md:translate-x-[-50%] flex-col p-[20px]">
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-full">
+      <Form onSubmit={onSubmit} className="max-w-full" formHook={formHook}>
         <Input
           id="pharse"
-          register={register}
-          errors={errors}
           disabled={!isPremium}
           placeholder={isPremium ? "Wyszukaj..." : "Opcja dostępna dla Premium"}
         />
         <div className="flex flex-wrap items-center justify-center gap-4 my-2">
           <LabelCheckbox
-            register={register}
-            watch={watch}
             id="video"
             label="Video"
             variant="secondary"
             className="m-0"
           />
           <LabelCheckbox
-            register={register}
-            watch={watch}
             id="gif"
             label="Gify"
             variant="secondary"
             className="m-0"
           />
           <LabelCheckbox
-            register={register}
-            watch={watch}
             id="image"
             label="Obrazki"
             variant="secondary"
             className="m-0"
           />
           <LabelCheckbox
-            register={register}
-            watch={watch}
             id="text"
             label="Tekst"
             variant="secondary"
@@ -116,7 +112,7 @@ const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
           />
         </div>
         <Button type="submit">Filtruj</Button>
-      </form>
+      </Form>
     </div>
   );
 };

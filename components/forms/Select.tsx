@@ -1,26 +1,19 @@
-import {
-  FieldErrors,
-  FieldValues,
-  Path,
-  UseFormRegister,
-} from "react-hook-form";
+import { FieldValues, Path } from "react-hook-form";
+import useZodFormContext from "@/hooks/useZodFormContext";
 
 type SelectProps<T extends FieldValues> = {
   id: Path<T>;
-  register?: UseFormRegister<T>;
-  errors?: FieldErrors<T>;
-  disabled?: boolean;
   children?: React.ReactNode;
   valueAsNumber?: boolean;
 };
 
 function Select<T extends FieldValues>({
   id,
-  register,
-  disabled,
   children,
   valueAsNumber,
 }: SelectProps<T>) {
+  const { register, isLoading: disabled } = useZodFormContext<T>();
+
   return (
     <div className="w-full my-[5px]">
       <select

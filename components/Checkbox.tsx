@@ -1,31 +1,22 @@
 "use client";
 
 import clsx from "clsx";
-import {
-  FieldErrors,
-  FieldValues,
-  Path,
-  UseFormRegister,
-} from "react-hook-form";
+import { FieldValues, Path } from "react-hook-form";
 import ErrorInputBox from "./ErrorInputBox";
+import useZodFormContext from "@/hooks/useZodFormContext";
 
 type CheckboxProps<T extends FieldValues> = {
   id: Path<T>;
   children?: React.ReactNode;
-  register?: UseFormRegister<T>;
-  errors?: FieldErrors<T>;
-  required?: boolean;
-  disabled?: boolean;
 };
 
-function Checkbox<T extends FieldValues>({
-  id,
-  children,
-  register,
-  errors,
-  required,
-  disabled,
-}: CheckboxProps<T>) {
+function Checkbox<T extends FieldValues>({ id, children }: CheckboxProps<T>) {
+  const {
+    formState: { errors },
+    isLoading: disabled,
+    register,
+  } = useZodFormContext();
+
   return (
     <label
       className={clsx(
@@ -34,11 +25,7 @@ function Checkbox<T extends FieldValues>({
         disabled && "opacity-80"
       )}
     >
-      <input
-        type="checkbox"
-        disabled={disabled}
-        {...register!(id, { required })}
-      />
+      <input type="checkbox" disabled={disabled} {...register!(id)} />
       <span className="text-[#777] w-full text-right">{children}</span>
       {errors![id] && (
         <ErrorInputBox>

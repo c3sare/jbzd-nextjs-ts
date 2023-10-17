@@ -6,22 +6,20 @@ import type {
 } from "react-hook-form";
 
 import clsx from "clsx";
+import useZodFormContext from "@/hooks/useZodFormContext";
 
 type CategoryProps<T extends FieldValues> = {
   name: string;
   slug: string;
   fieldName: Path<T>;
-  register: UseFormRegister<T>;
-  watch: UseFormWatch<T>;
 };
 
 function Category<T extends FieldValues>({
   name,
   slug,
   fieldName,
-  register,
-  watch,
 }: CategoryProps<T>) {
+  const { register, watch } = useZodFormContext();
   const currentValue = watch(fieldName);
 
   const isCurrentCategory = slug === currentValue;

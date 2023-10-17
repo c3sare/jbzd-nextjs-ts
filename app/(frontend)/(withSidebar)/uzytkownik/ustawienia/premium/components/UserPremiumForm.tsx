@@ -10,6 +10,8 @@ import Button from "@/components/Button";
 import RadioSelect from "@/components/forms/RadioSelect";
 import clsx from "clsx";
 import BigButton from "./BigButton";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 type UserPremiumFormProps = {
   data: {
@@ -18,15 +20,36 @@ type UserPremiumFormProps = {
   };
 };
 
+const defaultValues: {
+  [key: string]: any;
+} = {};
+
 const UserPremiumForm: React.FC<UserPremiumFormProps> = ({
   data: { isPremium, premium },
 }) => {
-  const { zodFormComponentProps, watch, register, setValue, isLoading } =
-    useZodForm<UserPremiumType>({
-      zodSchema: UserPremiumSchema,
-      pushFormDataEndpoint: "/api/user/settings/premium",
-      defaultFormValues: premium!,
-    });
+  const apiEndpoint = "/api/user/settings/premium";
+  const formHook = useZodForm({
+    schema: UserPremiumSchema,
+    defaultValues: defaultValues[apiEndpoint] || premium!,
+  });
+
+  const { handleSubmit, setIsLoading } = formHook;
+
+  const onSubmit = handleSubmit((data) => {
+    setIsLoading(true);
+    axios
+      .post(apiEndpoint, data)
+      .then((res) => res.data)
+      .then((data) => {
+        toast.success("Pomyślnie zaaktualizowano!");
+        defaultValues[apiEndpoint] = data;
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Wystąpił błąd!");
+      })
+      .finally(() => setIsLoading(false));
+  });
 
   return (
     <div className="max-w-[540px] mx-auto">
@@ -45,13 +68,11 @@ const UserPremiumForm: React.FC<UserPremiumFormProps> = ({
           </div>
         )}
         <ZodForm
-          {...zodFormComponentProps}
+          formHook={formHook}
+          onSubmit={onSubmit}
           className={clsx(!isPremium && "blur")}
         >
           <RadioSelect
-            register={register}
-            watch={watch}
-            setValue={setValue}
             label="Wybór liczby obrazków na stronę:"
             id="picsCountOnPage"
             options={[
@@ -71,33 +92,27 @@ const UserPremiumForm: React.FC<UserPremiumFormProps> = ({
             valueAsNumber
           />
           <LabelCheckbox
-            watch={watch}
             id="adminPostsOff"
             label="Wyłączenie postów administracji"
           />
           <LabelCheckbox
-            watch={watch}
             id="commentsPicsGifsOff"
             label="Wyłączenie obrazków/gifów z komentarzy"
           />
           <LabelCheckbox
-            watch={watch}
             id="hideNegativeComments"
             label="Ukrywanie zminusowanych komenatrzy"
           />
-          <LabelCheckbox watch={watch} id="hideAds" label="Wyłącz reklamy" />
+          <LabelCheckbox id="hideAds" label="Wyłącz reklamy" />
           <LabelCheckbox
-            watch={watch}
             id="hideProfile"
             label="Ukrycie profilu (nie można do niego wejść)"
           />
           <LabelCheckbox
-            watch={watch}
             id="hidePremiumIcon"
             label="Ukrycie ikonki premium przy nicku (działa z opóźnieniem kilku minutowym!)"
           />
           <LabelCheckbox
-            watch={watch}
             id="hideLowReputationComments"
             label="Ukrywanie komenatrzy użytkowników o niskiej reputacji"
           />

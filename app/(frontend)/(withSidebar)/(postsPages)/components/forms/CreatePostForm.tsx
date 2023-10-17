@@ -7,9 +7,8 @@ import type { CreatePostType } from "@/validators/CreatePostSchema";
 import clsx from "clsx";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useFieldArray, useForm } from "react-hook-form";
-import React, { useMemo, useRef, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useFieldArray } from "react-hook-form";
+import React, { useMemo, useRef } from "react";
 
 import { BiImage } from "@react-icons/all-files/bi/BiImage";
 import { FaVideo } from "@react-icons/all-files/fa/FaVideo";
@@ -39,6 +38,9 @@ import toast from "react-hot-toast";
 import LoadingForm from "./LoadingForm";
 import { usePathname, useRouter } from "next/navigation";
 import { createPost } from "@/actions/serverActions/createPost";
+import useZodForm from "@/hooks/useZodForm";
+import Form from "@/components/forms/ZodForm";
+import Input from "@/components/Input";
 
 type CategoryWithChildrenType = CategoryType & {
   children: CategoryType[];
@@ -62,18 +64,9 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
 }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const tagInput = useRef<HTMLInputElement>(null);
-  const {
-    register,
-    formState: { errors },
-    watch,
-    setValue,
-    control,
-    handleSubmit,
-    getValues,
-  } = useForm<CreatePostType>({
-    resolver: zodResolver(CreatePostSchema),
+  const formHook = useZodForm({
+    schema: CreatePostSchema,
     mode: "all",
     shouldUnregister: true,
     defaultValues: {
@@ -91,7 +84,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
     move: moveMem,
   } = useFieldArray({
     name: "memContainers",
-    control,
+    control: formHook.control,
   });
   const {
     fields: tags,
@@ -99,7 +92,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
     remove: removeTag,
   } = useFieldArray({
     name: "tags",
-    control,
+    control: formHook.control,
   });
 
   const onChangeTagInput = (e: FormEvent<HTMLInputElement>) => {
@@ -157,6 +150,17 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
     }
   };
 
+  const {
+    isLoading,
+    setIsLoading,
+    formState: { errors },
+    watch,
+    handleSubmit,
+    control,
+    setValue,
+    register,
+  } = formHook;
+
   const isActiveLinking = watch("linking.isActive");
   const currentCategory = watch("category");
 
@@ -185,17 +189,14 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
   };
 
   return (
-    <form
+    <Form
       className="my-[20px] md:mx-0 mx-auto bg-[#313131] p-[10px] relative text-left max-w-[600px]"
+      formHook={formHook}
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="w-full mb-[20px]">
         <Header>Wpisz tytuł</Header>
-        <InputStyled
-          placeholder="Wpisz tytuł"
-          id="title"
-          {...register("title")}
-        />
+        <Input placeholder="Wpisz tytuł" id="title" />
         {errors.title && (
           <ErrorMessageBox>{errors.title.message}</ErrorMessageBox>
         )}
@@ -296,8 +297,6 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
                     name={category.name}
                     fieldName="category"
                     slug={category.slug}
-                    register={register}
-                    watch={watch}
                   />
                 ))}
               </div>
@@ -313,8 +312,6 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
                       name={category.name}
                       fieldName="category"
                       slug={category.slug}
-                      register={register}
-                      watch={watch}
                     />
                   ))}
                 </div>
@@ -360,20 +357,11 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
         <TextSwitchButton
           text="Pokaż linkowanie"
           activeText="Schowaj linkowanie"
-          watch={watch}
-          register={register}
           id="linking.isActive"
         />
         {isActiveLinking && (
           <>
-            <InputLinkPreview
-              register={register}
-              getValues={getValues}
-              setValue={setValue}
-              control={control}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-            />
+            <InputLinkPreview />
             {errors.linking && (
               <ErrorMessageBox>{errors.linking.message}</ErrorMessageBox>
             )}
@@ -394,7 +382,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
         </Button>
       </div>
       {isLoading && <LoadingForm />}
-    </form>
+    </Form>
   );
 };
 

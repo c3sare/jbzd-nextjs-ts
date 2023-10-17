@@ -8,27 +8,23 @@ import {
 } from "react-hook-form";
 import { IoMdCheckboxOutline } from "@react-icons/all-files/io/IoMdCheckboxOutline";
 import { IoMdSquareOutline } from "@react-icons/all-files/io/IoMdSquareOutline";
+import useZodFormContext from "@/hooks/useZodFormContext";
 
 type LabelCheckboxProps<T extends FieldValues> = {
   id: Path<T>;
-  register?: UseFormRegister<T>;
   label: string;
-  watch?: UseFormWatch<T>;
-  disabled?: boolean;
   className?: HTMLAttributes<HTMLLabelElement>["className"];
   variant?: "primary" | "secondary";
 };
 
 function LabelCheckbox<T extends FieldValues>({
   id,
-  register,
   label,
-  watch,
-  disabled,
   className = "mb-[25px]",
   variant = "primary",
 }: LabelCheckboxProps<T>) {
-  const isChecked = watch!(id);
+  const { watch, register, isLoading: disabled } = useZodFormContext();
+  const isChecked = watch(id);
 
   const color = {
     primary: "text-[#b4d132]",

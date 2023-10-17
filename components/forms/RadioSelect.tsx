@@ -1,37 +1,30 @@
-import {
-  FieldValues,
-  Path,
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormWatch,
-} from "react-hook-form";
+import { FieldValues, Path } from "react-hook-form";
 import InputRadio from "./InputRadio";
 import clsx from "clsx";
+import useZodFormContext from "@/hooks/useZodFormContext";
 
 type RadioSelectProps<T extends FieldValues> = {
-  watch: UseFormWatch<T>;
-  register: UseFormRegister<T>;
   label: string;
   id: Path<T>;
   options: {
     value: string | number;
     label: string | number;
   }[];
-  setValue: UseFormSetValue<T>;
   valueAsNumber?: boolean;
-  disabled?: boolean;
 };
 
 function RadioSelect<T extends FieldValues>({
-  register,
   label,
   id,
   options,
-  setValue,
-  watch,
   valueAsNumber,
-  disabled,
 }: RadioSelectProps<T>) {
+  const {
+    register,
+    watch,
+    isLoading: disabled,
+    setValue,
+  } = useZodFormContext<T>();
   const currentValue = watch(id);
 
   return (

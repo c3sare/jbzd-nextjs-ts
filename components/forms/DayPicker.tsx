@@ -1,33 +1,23 @@
-import {
-  FieldValues,
-  Path,
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormWatch,
-} from "react-hook-form";
+import { FieldValues, Path } from "react-hook-form";
 import pl from "date-fns/locale/pl";
 import { DayPicker as DatePicker } from "react-day-picker";
 import "@/styles/DayPicker.css";
+import useZodFormContext from "@/hooks/useZodFormContext";
 
 type DayPickerProps = {
-  register: UseFormRegister<FieldValues>;
   id: Path<FieldValues>;
   minDate?: Date;
   maxDate?: Date;
-  watch: UseFormWatch<FieldValues>;
-  setValue: UseFormSetValue<FieldValues>;
   title?: string;
 };
 
 const DayPicker: React.FC<DayPickerProps> = ({
-  register,
   id,
   minDate,
   maxDate,
-  watch,
-  setValue,
   title,
 }) => {
+  const { watch, setValue, register } = useZodFormContext();
   const value = watch(id);
 
   const { name } = register(id, { required: true });

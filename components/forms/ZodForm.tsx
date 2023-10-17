@@ -1,92 +1,49 @@
-import React, { HTMLAttributes } from "react";
+import React, {
+  DOMAttributes,
+  Dispatch,
+  HTMLAttributes,
+  SetStateAction,
+} from "react";
 import ErrorBox from "./ErrorBox";
-import {
-  FieldErrors,
-  FieldValues,
-  SubmitHandler,
-  UseFormHandleSubmit,
-  UseFormRegister,
-  UseFormReset,
-  UseFormSetValue,
-  UseFormWatch,
-} from "react-hook-form";
+import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 
-type FormProps<T extends FieldValues> = {
-  handleSubmit: UseFormHandleSubmit<T>;
-  onSubmit: SubmitHandler<T>;
-  isLoading: boolean;
+export type ZodFormHookReturn<T extends FieldValues> = UseFormReturn<T> & {
   isError: boolean;
-  children: React.ReactNode;
-  getInitialFormData?: (reset?: UseFormReset<T>) => Promise<any>;
-  reset: UseFormReset<T>;
-  register: UseFormRegister<T>;
-  errors: FieldErrors<T>;
-  setValue: UseFormSetValue<T>;
-  watch: UseFormWatch<T>;
-  className?: HTMLAttributes<HTMLFormElement>["className"];
+  isLoading: boolean;
+  setIsError: Dispatch<SetStateAction<boolean>>;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
 };
 
-function Form<T extends FieldValues>({
-  children,
-  isLoading,
-  isError,
-  handleSubmit,
-  getInitialFormData,
-  onSubmit,
-  register,
-  errors,
-  setValue,
-  watch,
-  reset,
-  className,
-}: FormProps<T>) {
-  return (
-    <form
-      onSubmit={handleSubmit!(onSubmit!)}
-      className={clsx("relative", className)}
-    >
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
-          const addProps = {
-            register,
-            errors,
-            disabled: isLoading,
-          };
-          if (child.props?.id) {
-            if (child.props?.type === "date") {
-              return React.cloneElement(child, {
-                ...child.props,
-                ...addProps,
-                setValue,
-                watch,
-              });
-            }
-            return React.cloneElement(child, {
-              ...child.props,
-              ...addProps,
-            });
-          } else if (child.props?.type === "submit") {
-            return React.cloneElement(child, {
-              ...child.props,
-              isLoading,
-              disabled: addProps.disabled,
-            });
-          }
-        }
+type FormProps<T extends FieldValues> = {
+  formHook: ZodFormHookReturn<T>;
+  onSubmit: React.FormEventHandler<HTMLFormElement>;
+} & HTMLAttributes<HTMLFormElement> &
+  Omit<DOMAttributes<HTMLFormElement>, "onSubmit">;
 
-        return child;
-      })}
-      {isError && (
-        <ErrorBox
-          onClick={
-            getInitialFormData && reset
-              ? () => getInitialFormData(reset)
-              : () => null
-          }
-        />
-      )}
-    </form>
+function Form<T extends FieldValues>({
+  formHook,
+  className,
+  onSubmit,
+  children,
+}: FormProps<T>) {
+  const router = useRouter();
+  return (
+    <FormProvider {...formHook}>
+      <form onSubmit={onSubmit} className={clsx("relative", className)}>
+        {children}
+        {formHook.isError && (
+          <ErrorBox
+            onClick={() => {
+              formHook.setIsError(false);
+              formHook.setIsLoading(true);
+              router.refresh();
+            }}
+          />
+        )}
+      </form>
+    </FormProvider>
   );
 }
 
