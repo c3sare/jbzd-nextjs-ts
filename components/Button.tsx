@@ -26,12 +26,12 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   isLoading: isLoadingComponent,
 }) => {
-  const { isLoading } = useZodFormContext();
+  const hookForm = useZodFormContext();
 
   return (
     <div className={clsx(className ? className : "flex justify-end my-2")}>
       <button
-        disabled={isLoading || disabled}
+        disabled={hookForm?.isLoading || disabled}
         onClick={onClick}
         type={type || "button"}
         className={clsx(
@@ -42,7 +42,7 @@ const Button: React.FC<ButtonProps> = ({
       >
         <span className="relative">
           {children}
-          {(isLoading || isLoadingComponent) && (
+          {(hookForm?.isLoading || isLoadingComponent) && (
             <div className="absolute left-[calc(100%_+_8px)] top-[50%] translate-y-[-50%]">
               <AiOutlineLoading className="animate-spin" />
             </div>

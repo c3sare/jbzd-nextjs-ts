@@ -1,4 +1,4 @@
-//use this to create views in mongodb database (prisma is not support views in mongodb)
+//use this to create views in mongodb database (prisma not supports views in mongodb yet)
 
 //command: node createviews.js
 import dotenv from "dotenv";

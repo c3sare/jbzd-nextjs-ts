@@ -11,19 +11,16 @@ import Heading from "../../components/Heading";
 import ZodForm from "@/components/forms/ZodForm";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type AccountDetailsFormProps = {
   userData: AccountDetailsType;
 };
 
-const defaultValues: {
-  [key: string]: any;
-} = {};
-
 const AccountDetailsForm: React.FC<AccountDetailsFormProps> = ({
   userData,
 }) => {
-  const apiEndpoint = "/api/user/settings/data";
+  const router = useRouter();
   const formHook = useZodForm({
     schema: AccountDetailsSchema,
     defaultValues: userData,
@@ -34,11 +31,11 @@ const AccountDetailsForm: React.FC<AccountDetailsFormProps> = ({
   const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
     axios
-      .post(apiEndpoint, data)
+      .post("/api/user/settings/data", data)
       .then((res) => res.data)
-      .then((data) => {
-        defaultValues[apiEndpoint] = data;
+      .then(() => {
         toast.success("Pomyślnie zaakutalizowano!");
+        router.refresh();
       })
       .catch((err) => {
         console.log(err);

@@ -12,6 +12,7 @@ import clsx from "clsx";
 import BigButton from "./BigButton";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type UserPremiumFormProps = {
   data: {
@@ -20,17 +21,13 @@ type UserPremiumFormProps = {
   };
 };
 
-const defaultValues: {
-  [key: string]: any;
-} = {};
-
 const UserPremiumForm: React.FC<UserPremiumFormProps> = ({
   data: { isPremium, premium },
 }) => {
-  const apiEndpoint = "/api/user/settings/premium";
+  const router = useRouter();
   const formHook = useZodForm({
     schema: UserPremiumSchema,
-    defaultValues: defaultValues[apiEndpoint] || premium!,
+    defaultValues: premium!,
   });
 
   const { handleSubmit, setIsLoading } = formHook;
@@ -38,11 +35,11 @@ const UserPremiumForm: React.FC<UserPremiumFormProps> = ({
   const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
     axios
-      .post(apiEndpoint, data)
+      .post("/api/user/settings/premium", data)
       .then((res) => res.data)
-      .then((data) => {
+      .then(() => {
         toast.success("Pomyślnie zaaktualizowano!");
-        defaultValues[apiEndpoint] = data;
+        router.refresh();
       })
       .catch((err) => {
         console.log(err);

@@ -7,5 +7,6 @@ export const config = {
     "/ulubione/:path*",
     "/wiadomosci-prywatne/:path*",
     "/obserwowane/:path*",
+    "/premium/:path*",
   ],
 };

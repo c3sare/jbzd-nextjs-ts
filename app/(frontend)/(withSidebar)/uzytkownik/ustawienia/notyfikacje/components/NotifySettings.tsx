@@ -10,20 +10,17 @@ import LabelCheckbox from "@/components/LabelCheckbox";
 import Heading from "../../components/Heading";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type NotifySettingsProps = {
   data: UserNotificationsType;
 };
 
-const defaultValues: {
-  [key: string]: any;
-} = {};
-
 const NotifySettings: React.FC<NotifySettingsProps> = ({ data }) => {
-  const apiEndpoint = "/api/user/settings/notifications";
+  const router = useRouter();
   const formHook = useZodForm({
     schema: UserNotificationsSchema,
-    defaultValues: defaultValues[apiEndpoint] || data,
+    defaultValues: data,
   });
 
   const { handleSubmit, setIsLoading } = formHook;
@@ -31,11 +28,11 @@ const NotifySettings: React.FC<NotifySettingsProps> = ({ data }) => {
   const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
     axios
-      .post(apiEndpoint, data)
+      .post("/api/user/settings/notifications", data)
       .then((res) => res.data)
-      .then((data) => {
-        defaultValues[apiEndpoint] = data;
+      .then(() => {
         toast.success("Pomyślnie zmieniono!");
+        router.refresh();
       })
       .finally(() => setIsLoading(false));
   });
