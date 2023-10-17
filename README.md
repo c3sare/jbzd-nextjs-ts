@@ -1,6 +1,8 @@
 # Memes page clone using [Next.js](https://nextjs.org/) - Orginal [Jbzd](https://jbzd.com.pl/).
 This is a Fullstack project of a website.
 
+![image](https://github.com/c3sare/jbzd-nextjs-ts/assets/80517943/1755d458-c38a-40ca-a9ee-18540ddb68a7)
+
 ## Used Technologies
 - [Next.js](https://nextjs.org/) 13 with APP dir and Server Actions
 - [TypeScript](https://typescript.org/)
