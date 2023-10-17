@@ -7,7 +7,7 @@ import {
 } from "react-hook-form";
 import pl from "date-fns/locale/pl";
 import { DayPicker as DatePicker } from "react-day-picker";
-import "@/app/styles/DayPicker.css";
+import "@/styles/DayPicker.css";
 
 type DayPickerProps = {
   register: UseFormRegister<FieldValues>;

@@ -4,8 +4,8 @@ import CoinsBox from "./components/CoinsBox";
 import MessagesButton from "./components/MessagesButton";
 import NotificationsButton from "./components/NotificationsButton";
 
-import Conversation from "@/app/wiadomosci-prywatne/types/Conversation";
-import NotificationType from "@/app/(withSidebar)/uzytkownik/notyfikacje/types/NotificationType";
+import Conversation from "@/app/(frontend)/wiadomosci-prywatne/types/Conversation";
+import NotificationType from "@/app/(frontend)/(withSidebar)/uzytkownik/notyfikacje/types/NotificationType";
 import { useEffect } from "react";
 import { pusherClient } from "@/libs/pusher";
 

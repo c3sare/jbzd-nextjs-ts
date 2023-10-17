@@ -1,4 +1,4 @@
-import { PageSearchParams } from "@/app/(withSidebar)/(postsPages)/components/types/PageSearchParams";
+import { PageSearchParams } from "@/app/(frontend)/(withSidebar)/(postsPages)/components/types/PageSearchParams";
 import { getSession } from "@/actions/getSession";
 import prisma from "@/libs/prismadb";
 

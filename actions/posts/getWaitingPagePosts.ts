@@ -1,9 +1,9 @@
 import prisma from "@/libs/prismadb";
-import { PostType } from "@/app/(withSidebar)/(postsPages)/components/types/PostType";
+import { PostType } from "@/app/(frontend)/(withSidebar)/(postsPages)/components/types/PostType";
 import addActionPostInfo from "@/utils/addActionPostInfo";
 import getActionedUsersLists from "../getActionedUsersLists";
 import getActionedTagsLists from "../getActionedTagsLists";
-import { PageProps } from "@/app/(withSidebar)/(postsPages)/components/types/PageProps";
+import { PageProps } from "@/app/(frontend)/(withSidebar)/(postsPages)/components/types/PageProps";
 import parseSearchParams from "@/utils/parseSearchParams";
 
 export const fetchCache = "force-no-store";
