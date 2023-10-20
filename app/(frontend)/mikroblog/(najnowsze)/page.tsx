@@ -1,5 +1,11 @@
+import BlogPost from "../_components/BlogPost";
+
 const NewestBlogsPage = () => {
-  return <div>Najnowsze</div>;
+  return (
+    <>
+      <BlogPost />
+    </>
+  );
 };
 
 export default NewestBlogsPage;
