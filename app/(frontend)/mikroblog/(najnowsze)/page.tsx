@@ -1,4 +1,4 @@
-import BlogPost from "../_components/BlogPost";
+import BlogPost from "../_components/pages/BlogPost";
 
 const NewestBlogsPage = () => {
   return (
