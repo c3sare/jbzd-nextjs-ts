@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Logo = () => {
   return (
-    <Link href="/" className="mx-[4px] mr-[20px] block">
+    <Link href="/" className="mx-[4px] mr-[10px] block">
       <Image
         alt="Logo"
         width={45}

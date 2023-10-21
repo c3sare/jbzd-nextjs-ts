@@ -79,7 +79,7 @@ const NotificationsButton: React.FC<NotificationsButonProps> = ({
 
   return (
     <div
-      className="inline-flex items-center text-left h-full ml-[15px] lg:relative"
+      className="inline-flex items-center text-left h-full ml-[15px] md:relative"
       ref={containerRef}
     >
       <IconButton onClick={toggleVisible}>

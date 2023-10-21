@@ -26,7 +26,7 @@ const Header = async () => {
           <MenuButton
             icon={<HiSpeakerphone className="mr-[5px]" size={20} />}
             href="/mikroblog"
-            className="lg:flex"
+            className="md:flex"
           >
             Mikroblog
           </MenuButton>

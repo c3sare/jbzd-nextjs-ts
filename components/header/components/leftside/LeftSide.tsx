@@ -11,7 +11,7 @@ const LeftSide = async () => {
 
   return (
     <div className="relative flex items-center h-full ml-auto">
-      <MenuButton className="lg:flex" href="/oczekujace">
+      <MenuButton className="md:flex" href="/oczekujace">
         Oczekujące
       </MenuButton>
       {isLoggedIn && (

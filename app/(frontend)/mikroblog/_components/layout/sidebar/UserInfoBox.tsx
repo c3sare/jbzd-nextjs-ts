@@ -27,7 +27,7 @@ const UserInfoBox: React.FC<UserInfoBoxProps> = ({
         <h2 className="text-[18px] font-semibold text-white float-left ml-2 max-w-[165px] overflow-hidden">
           {username}
         </h2>
-        <div className="w-[calc(100%_-_105px)] mt-[4px] float-left">
+        <div className="w-[calc(100%_-_105px)] mt-[4px] float-left flex-wrap flex">
           {children}
         </div>
       </div>

@@ -19,7 +19,7 @@ const MobileMenuContainer = async () => {
   const isLoggedIn = Boolean(session?.user?.email);
 
   return (
-    <div className="lg:hidden fixed top-[46px] left-0 w-full h-[calc(100vh-46px)] bg-[#313131] pt-0 overflow-y-auto">
+    <div className="md:hidden fixed top-[46px] left-0 w-full h-[calc(100vh-46px)] bg-[#313131] pt-0 overflow-y-auto">
       <div className="pb-[5px]">
         {isLoggedIn ? <ProfileInfo /> : <SidebarForms />}
       </div>

@@ -10,7 +10,10 @@ const UserInfoBoxLink: React.FC<UserInfoBoxLinkProps> = ({
   href,
 }) => {
   return (
-    <Link className="mr-[20px] text-[12px] text-[#b3d734]" href={href}>
+    <Link
+      className="mr-[20px] text-[12px] text-[#b3d734] whitespace-nowrap"
+      href={href}
+    >
       {children}
     </Link>
   );

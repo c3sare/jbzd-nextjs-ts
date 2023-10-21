@@ -16,8 +16,9 @@ const useDropdownContainer = () => {
   }, [pathname]);
 
   useEffect(() => {
-    const hideContainer = (e: any) => {
-      if (!containerRef.current?.contains(e.target)) setIsVisible(false);
+    const hideContainer = (e: MouseEvent) => {
+      if (!containerRef.current?.contains(e.target as Node))
+        setIsVisible(false);
     };
     if (isVisible) {
       document.addEventListener("click", hideContainer, true);

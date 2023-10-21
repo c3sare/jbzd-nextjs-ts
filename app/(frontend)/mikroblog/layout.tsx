@@ -7,12 +7,13 @@ import UserInfoBoxLink from "./_components/layout/sidebar/UserInfoBoxLink";
 import AddBlogForm from "./_components/layout/blogForm/AddBlogForm";
 import BlogNavbar from "./_components/layout/BlogNavbar";
 import BlogNavbarItem from "./_components/layout/BlogNavbarItem";
+import BlogNavbarFilterItem from "./_components/layout/BlogNavbarFilterItem";
 
 const MikroblogLayout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <div className="max-w-[1110px] mx-auto px-[15px] mt-[45px]">
       <div className="mx-[-15px]">
-        <div className="float-right w-1/3 relative min-h-[1px] px-[15px]">
+        <div className="hidden md:block float-right w-1/3 relative min-h-[1px] px-[15px]">
           <div>
             <div className="mt-[108px] relative bg-[#313131] pb-[24px]">
               <UserInfoBox avatar={undefined} username="c3sare">
@@ -41,7 +42,7 @@ const MikroblogLayout: React.FC<PropsWithChildren> = ({ children }) => {
             </ul>
           </div>
         </div>
-        <div className="w-2/3 float-left relative min-h-[1px] px-[15px]">
+        <div className="w-full md:w-2/3 float-left relative min-h-[1px] px-[15px] ">
           <AddBlogForm />
           <BlogNavbar>
             <BlogNavbarItem href="/mikroblog">Najnowsze</BlogNavbarItem>
@@ -51,6 +52,13 @@ const MikroblogLayout: React.FC<PropsWithChildren> = ({ children }) => {
               Obserwowane
             </BlogNavbarItem>
             <BlogNavbarItem href="/mikroblog/moje">Moje</BlogNavbarItem>
+            <li className="ml-auto float-right">
+              <ul className="flex flex-wrap">
+                <BlogNavbarFilterItem rangeInHours={6} />
+                <BlogNavbarFilterItem rangeInHours={12} />
+                <BlogNavbarFilterItem rangeInHours={24} />
+              </ul>
+            </li>
           </BlogNavbar>
           {children}
         </div>

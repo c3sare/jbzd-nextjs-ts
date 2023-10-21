@@ -45,14 +45,14 @@ const AddBlogForm = () => {
 
   return (
     <Form
-      className="mb-[25px] relative"
+      className="my-[25px] relative"
       formHook={formHook}
       onSubmit={onSubmit}
     >
       <div className="block w-full max-h-full transition-all ease-in-out">
         <div>
           <div className="relative">
-            <div className="pt-[61px] relative">
+            <div className="relative">
               <Textarea
                 placeholder="Dodaj nowy wpis..."
                 onFocus={() => setUnrolled(true)}

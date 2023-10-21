@@ -80,7 +80,7 @@ const MessagesButton: React.FC<MessagesButtonProps> = ({
 
   return (
     <div
-      className="inline-flex items-center text-left ml-[15px] h-full lg:relative"
+      className="inline-flex items-center text-left ml-[15px] h-full md:relative"
       ref={containerRef}
     >
       <IconButton onClick={toggleVisible}>

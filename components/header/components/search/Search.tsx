@@ -26,13 +26,13 @@ const Search = () => {
       <MenuButton
         icon={<BiSearch className="mr-[5px]" size={20} />}
         active={isSearchPage}
-        className="lg:flex"
+        className="md:flex"
         onClick={handleToggleSearchBar}
       >
         Szukaj
       </MenuButton>
       {isOpenSearchBar && !isSearchPage && (
-        <div className="absolute top-[100%] left-0 w-full h-[120px] bg-[#1f1f1f]">
+        <div className="hidden md:flex absolute top-[100%] left-0 w-full h-[120px] bg-[#1f1f1f]">
           <Form />
         </div>
       )}

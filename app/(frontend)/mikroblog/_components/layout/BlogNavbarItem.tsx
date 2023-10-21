@@ -15,7 +15,7 @@ const BlogNavbarItem: React.FC<BlogNavbarItemProps> = ({ children, href }) => {
   const isActive = pathname === href;
 
   return (
-    <li className={clsx("px-[15px] text-[13px] float-left relative")}>
+    <li className={clsx("px-[15px] text-[13px] relative")}>
       <Link
         className={clsx(
           "overflow-hidden block relative py-[10px] font-bold transition-colors",

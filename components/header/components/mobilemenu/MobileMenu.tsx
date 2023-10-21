@@ -20,7 +20,7 @@ const MobileMenu: React.FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <>
-      <IconButton className="mx-5 lg:hidden" onClick={toggleMenuVisibility}>
+      <IconButton className="mx-5 md:hidden" onClick={toggleMenuVisibility}>
         <div className="relative w-[30px] h-[22px]">
           <span className="w-full h-[2px] my-[4px] block bg-white" />
           <span className="w-full h-[2px] my-[4px] block bg-white" />
