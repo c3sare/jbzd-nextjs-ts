@@ -10,6 +10,11 @@ const BlogPostSchema = z.object({
     .max(500, "Wpis jest za długi!")
     .min(1, "Pole opis jest wymagane."),
   adultContent: z.boolean(),
+  files: z.array(
+    z.object({
+      value: z.string(),
+    })
+  ),
 });
 
 export default BlogPostSchema;
