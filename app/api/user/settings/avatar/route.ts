@@ -2,6 +2,7 @@ import { getSession } from "@/actions/getSession";
 import prisma from "@/libs/prismadb";
 import { NextResponse } from "next/server";
 import { UploadApiOptions, v2 as cloudinary } from "cloudinary";
+import isValidBase64Format from "@/utils/isValidBase64Format";
 
 export async function GET() {
   const session = await getSession();
@@ -38,13 +39,7 @@ export async function POST(request: Request) {
 
     const { avatar } = body;
 
-    const base64RegExp =
-      /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$/;
-    const isBase64 = (str: string) => base64RegExp.test(str);
-
-    const isValidBase64 = isBase64(
-      avatar.replace("data:image/png;base64,", "")
-    );
+    const isValidBase64 = isValidBase64Format(avatar);
 
     if (!avatar || !isValidBase64)
       return new NextResponse("Internal Error", { status: 500 });

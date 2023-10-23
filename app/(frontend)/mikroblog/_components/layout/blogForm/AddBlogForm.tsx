@@ -6,6 +6,7 @@ import { FaQuoteRight } from "@react-icons/all-files/fa/FaQuoteRight";
 import { FaImage } from "@react-icons/all-files/fa/FaImage";
 import { FaChartBar } from "@react-icons/all-files/fa/FaChartBar";
 import { FaTrash } from "@react-icons/all-files/fa/FaTrash";
+import { FaPlay } from "@react-icons/all-files/fa/FaPlay";
 
 import React, { useRef, useState } from "react";
 import EditorButton from "./components/EditorButton";
@@ -74,23 +75,28 @@ const AddBlogForm = () => {
   const handleAddFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length && e.target.files.length > 0) {
       Array.from(e.target.files).forEach((file) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-          append({ value: reader.result as string });
-        };
-        reader.onerror = function (error) {
-          console.log("Error: ", error);
-        };
+        if (file.type.indexOf("image") === 0) {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = function () {
+            append({ value: reader.result as string, type: "IMAGE" });
+          };
+        } else if (file.type.indexOf("video") === 0) {
+          append({ value: file, type: "VIDEO" });
+        }
       });
     }
   };
 
-  const handleDeleteImage = (index: number, id: string) => {
+  const handleDeleteItem = (index: number, id: string) => {
     if (messageRef.current) {
       remove(index);
       messageRef.current.value = messageRef.current.value.replaceAll(
         `[image hash=${id}]`,
+        ""
+      );
+      messageRef.current.value = messageRef.current.value.replaceAll(
+        `[video hash=${id}]`,
         ""
       );
     }
@@ -99,6 +105,12 @@ const AddBlogForm = () => {
   const handleAddImageToTextarea = (id: string) => {
     if (messageRef.current) {
       messageRef.current.value += `[image hash=${id}]`;
+    }
+  };
+
+  const handleAddVideoToTextarea = (id: string) => {
+    if (messageRef.current) {
+      messageRef.current.value += `[video hash=${id}]`;
     }
   };
 
@@ -176,16 +188,33 @@ const AddBlogForm = () => {
       </Form>
       <ul className="m-[0_0_8px] w-full flex">
         {files.map((file, i) => (
-          <li className="w-[calc(100%_/_5_-_8px)] m-1 leading-[0] h-full relative border-2 border-[#6e7578] rounded-[5px]">
-            <img
-              onClick={() => handleAddImageToTextarea(file.id)}
-              key={file.id}
-              src={file.value}
-              alt={`Obraz ${i + 1}`}
-              className="w-full cursor-pointer"
-            />
+          <li
+            key={i}
+            className="cursor-pointer w-[130px] h-[130px] m-1 leading-[0] border-2 border-[#6e7578] rounded-[5px] relative"
+          >
+            {file.type === "IMAGE" && (
+              <img
+                onClick={() => handleAddImageToTextarea(file.id)}
+                key={file.id}
+                src={file.value}
+                alt={`Obraz ${i + 1}`}
+                className="w-full h-full object-cover"
+              />
+            )}
+            {file.type === "VIDEO" && (
+              <span onClick={() => handleAddVideoToTextarea(file.id)}>
+                <video
+                  className="w-full h-full object-cover"
+                  src={URL.createObjectURL(file.value as File)}
+                />
+                <FaPlay
+                  size={32}
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                />
+              </span>
+            )}
             <button
-              onClick={() => handleDeleteImage(i, file.id)}
+              onClick={() => handleDeleteItem(i, file.id)}
               className="absolute bottom-0 right-0 bg-[#e01d1d] w-[23px] h-[23px] text-center flex items-center justify-center"
             >
               <FaTrash size={15} />

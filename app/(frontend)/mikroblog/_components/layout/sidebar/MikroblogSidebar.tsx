@@ -4,7 +4,7 @@ import { useState } from "react";
 import SwitchTabButton from "./SwitchTabButton";
 
 type MikroblogSidebarProps = {
-  children: JSX.Element[];
+  children: [JSX.Element, JSX.Element];
 };
 
 const MikroblogSidebar: React.FC<MikroblogSidebarProps> = ({ children }) => {

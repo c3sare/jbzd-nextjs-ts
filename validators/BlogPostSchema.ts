@@ -1,4 +1,6 @@
+import isValidBase64Format from "@/utils/isValidBase64Format";
 import { z } from "zod";
+import QuestionnaireSchema from "./QuestionnaireSchema";
 
 const BlogPostSchema = z.object({
   message: z
@@ -12,9 +14,21 @@ const BlogPostSchema = z.object({
   adultContent: z.boolean(),
   files: z.array(
     z.object({
-      value: z.string(),
+      type: z.enum(["IMAGE", "VIDEO"]),
+      value: z.any().refine(
+        (val) => {
+          if (typeof val === "string") {
+            return isValidBase64Format(val);
+          } else if (val instanceof File) {
+            return true;
+          }
+          return false;
+        },
+        { message: "Plik jest nieprawidłowy!" }
+      ),
     })
   ),
+  questionnaire: z.optional(QuestionnaireSchema),
 });
 
 export default BlogPostSchema;
