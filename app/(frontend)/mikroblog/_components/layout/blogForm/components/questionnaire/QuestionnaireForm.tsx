@@ -8,13 +8,15 @@ import { z } from "zod";
 import AnswersSection from "./components/AnswersSection";
 
 type QuestionnaireFormProps = {
-  currentFormValues?: z.infer<typeof QuestionnaireSchema>;
-  setQuestionnaire?: (formData: z.infer<typeof QuestionnaireSchema>) => void;
+  onClose: () => void;
+  currentFormValues?: z.infer<typeof QuestionnaireSchema> | null;
+  setData?: ((data: z.infer<typeof QuestionnaireSchema>) => void) | null;
 };
 
 const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({
   currentFormValues,
-  setQuestionnaire,
+  onClose,
+  setData,
 }) => {
   const formHook = useZodForm({
     schema: QuestionnaireSchema,
@@ -25,11 +27,14 @@ const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({
   });
 
   const onSubmit = formHook.handleSubmit((data) => {
-    if (setQuestionnaire) setQuestionnaire(data);
+    if (setData) {
+      setData(data);
+      onClose();
+    }
   });
 
   return (
-    <div className="w-full h-full absolute top-0 left-0 bg-[rgba(0,_0,_0,_.6)] z-[9999]">
+    <div className="w-full h-full fixed top-0 left-0 bg-[rgba(0,_0,_0,_.6)] z-[9999]">
       <div className="w-full">
         <div className="max-w-[750px] p-[25px] w-[98%] rounded-[5px] m-[25px_auto] bg-[#313131] text-white overflow-hidden border-2 border-[#383737]">
           <h2 className="text-center text-[26px] mb-[10px] w-full font-bold">
@@ -75,6 +80,7 @@ const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({
             </div>
             <div className="bg-[#1f1f1f] mb-[-25px] mx-[-25px] p-[25px] relative flex justify-between">
               <button
+                onClick={onClose}
                 type="button"
                 className="text-white bg-[#6d7578] hover:bg-[#3c4143] border-0 transition-colors duration-200 ease-in-out uppercase text-[14px] px-[30px] py-[10px] inline-block relative min-w-[80px] text-center outline-none appearance-none font-bold"
               >

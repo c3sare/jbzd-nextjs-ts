@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
+
 import { FaBold } from "@react-icons/all-files/fa/FaBold";
 import { FaItalic } from "@react-icons/all-files/fa/FaItalic";
 import { FaQuoteRight } from "@react-icons/all-files/fa/FaQuoteRight";
@@ -7,8 +9,9 @@ import { FaImage } from "@react-icons/all-files/fa/FaImage";
 import { FaChartBar } from "@react-icons/all-files/fa/FaChartBar";
 import { FaTrash } from "@react-icons/all-files/fa/FaTrash";
 import { FaPlay } from "@react-icons/all-files/fa/FaPlay";
+import { ImCross } from "@react-icons/all-files/im/ImCross";
 
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import EditorButton from "./components/EditorButton";
 import Form from "@/components/forms/ZodForm";
 import useZodForm from "@/hooks/useZodForm";
@@ -19,8 +22,14 @@ import { FieldValue, FieldValues, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import ErrorInfo from "./components/ErrorInfo";
 import Textarea from "./components/Textarea";
+import { QuestionnaireContext } from "../../../_context/QuestionnaireProvider";
+import QuestionnaireSchema from "@/validators/QuestionnaireSchema";
+import objectToFormData from "@/utils/objectToFormData";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const AddBlogForm = () => {
+  const questionnaireCtx = useContext(QuestionnaireContext);
   const formHook = useZodForm({
     schema: BlogPostSchema,
     defaultValues: {
@@ -38,8 +47,6 @@ const AddBlogForm = () => {
   const [unRolled, setUnrolled] = useState<boolean>(false);
   const messageRef = useRef<HTMLTextAreaElement>(null);
   const filesRef = useRef<HTMLInputElement | null>(null);
-
-  const onSubmit = formHook.handleSubmit((data) => {});
 
   const errors = (
     Object.keys(formHook.formState.errors) as FieldValue<FieldValues>[]
@@ -76,11 +83,7 @@ const AddBlogForm = () => {
     if (e.target.files?.length && e.target.files.length > 0) {
       Array.from(e.target.files).forEach((file) => {
         if (file.type.indexOf("image") === 0) {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = function () {
-            append({ value: reader.result as string, type: "IMAGE" });
-          };
+          append({ value: file, type: "IMAGE" });
         } else if (file.type.indexOf("video") === 0) {
           append({ value: file, type: "VIDEO" });
         }
@@ -113,6 +116,32 @@ const AddBlogForm = () => {
       messageRef.current.value += `[video hash=${id}]`;
     }
   };
+
+  const resetForm = () =>
+    formHook.reset({
+      questionnaire: undefined,
+      message: "",
+      adultContent: false,
+      files: [],
+    });
+
+  const onSubmit = formHook.handleSubmit((data) => {
+    formHook.setIsLoading(true);
+    const formData = objectToFormData(data);
+    axios
+      .put("/api/blog", formData)
+      .then((res) => res.data)
+      .then((data) => {
+        resetForm();
+      })
+      .catch((err) => {
+        toast.error("Wystąpił błąd!");
+        console.log(err);
+      })
+      .finally(() => formHook.setIsLoading(false));
+  });
+
+  const questionnaire = formHook.watch("questionnaire");
 
   return (
     <>
@@ -171,7 +200,23 @@ const AddBlogForm = () => {
                         icon={FaImage}
                         title="Dodaj obrazek/film"
                       />
-                      <EditorButton icon={FaChartBar} title="Ankieta" />
+                      <EditorButton
+                        onClick={() => {
+                          if (questionnaireCtx?.createForm)
+                            questionnaireCtx.createForm({
+                              data: formHook.getValues()["questionnaire"],
+                              setFormData: (
+                                data:
+                                  | z.infer<typeof QuestionnaireSchema>
+                                  | undefined
+                              ) => {
+                                formHook.setValue("questionnaire", data);
+                              },
+                            });
+                        }}
+                        icon={FaChartBar}
+                        title="Ankieta"
+                      />
                       <li className="inline-block float-right mr-[10px] ml-auto">
                         <LabelCheckbox label="+18" id="adultContent" />
                       </li>
@@ -186,6 +231,18 @@ const AddBlogForm = () => {
           </div>
         </div>
       </Form>
+      {questionnaire && (
+        <div className="mb-[8px] ml-[5px]">
+          <div className="text-white bg-black inline-flex items-center justify-center p-[10px] gap-2 text-[12px]">
+            Post z ankietą: {questionnaire.question}
+            <button
+              onClick={() => formHook.setValue("questionnaire", undefined)}
+            >
+              <ImCross />
+            </button>
+          </div>
+        </div>
+      )}
       <ul className="m-[0_0_8px] w-full flex">
         {files.map((file, i) => (
           <li
@@ -196,20 +253,20 @@ const AddBlogForm = () => {
               <img
                 onClick={() => handleAddImageToTextarea(file.id)}
                 key={file.id}
-                src={file.value}
+                src={URL.createObjectURL(file.value as File)}
                 alt={`Obraz ${i + 1}`}
-                className="w-full h-full object-cover"
+                className="object-cover w-full h-full"
               />
             )}
             {file.type === "VIDEO" && (
               <span onClick={() => handleAddVideoToTextarea(file.id)}>
                 <video
-                  className="w-full h-full object-cover"
+                  className="object-cover w-full h-full"
                   src={URL.createObjectURL(file.value as File)}
                 />
                 <FaPlay
                   size={32}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                  className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                 />
               </span>
             )}

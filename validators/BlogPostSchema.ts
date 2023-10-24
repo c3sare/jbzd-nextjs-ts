@@ -1,6 +1,14 @@
-import isValidBase64Format from "@/utils/isValidBase64Format";
 import { z } from "zod";
 import QuestionnaireSchema from "./QuestionnaireSchema";
+
+const MAX_FILE_SIZE = 5000000;
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/gif",
+  "video/mp4",
+];
 
 const BlogPostSchema = z.object({
   message: z
@@ -15,17 +23,45 @@ const BlogPostSchema = z.object({
   files: z.array(
     z.object({
       type: z.enum(["IMAGE", "VIDEO"]),
-      value: z.any().refine(
-        (val) => {
-          if (typeof val === "string") {
-            return isValidBase64Format(val);
-          } else if (val instanceof File) {
-            return true;
+      value: z
+        .any()
+        .refine(
+          (val) => {
+            const file = val as File | null;
+
+            return Boolean(file);
+          },
+          {
+            message: "Pole nie może być puste!",
           }
-          return false;
-        },
-        { message: "Plik jest nieprawidłowy!" }
-      ),
+        )
+        .refine(
+          (val) => {
+            const file = val as File | null;
+            if (!file) return false;
+
+            if (file.size > MAX_FILE_SIZE) {
+              return false;
+            }
+            return true;
+          },
+          {
+            message: "Maksymalny rozmiar pliku to 5MB.",
+          }
+        )
+        .refine(
+          (val) => {
+            const file = val as File | null;
+            if (!file) return false;
+
+            if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) return false;
+
+            return true;
+          },
+          {
+            message: "Obsługiwane rozszerzenia to .jpg, .jpeg, .png .gif .mp4",
+          }
+        ),
     })
   ),
   questionnaire: z.optional(QuestionnaireSchema),

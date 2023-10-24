@@ -8,6 +8,8 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/libs/prismadb";
 import getUniqueId from "@/utils/getUniqueId";
 
+type SessionProvider = "credentials" | "google" | "facebook";
+
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -78,10 +80,7 @@ export const authOptions: AuthOptions = {
 
       session.user.coins = dbUser.coins || 0;
 
-      session.user.provider = token.provider as
-        | "credentials"
-        | "google"
-        | "facebook";
+      session.user.provider = token.provider as SessionProvider;
       session.user.id = token.userId;
       session.user.username = dbUser.username!;
       delete (session.user as any).name;

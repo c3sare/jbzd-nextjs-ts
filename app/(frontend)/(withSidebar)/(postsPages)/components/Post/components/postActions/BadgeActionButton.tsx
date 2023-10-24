@@ -10,7 +10,6 @@ import { useCallback, useState } from "react";
 import { useSession } from "next-auth/react";
 import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
 import setPostBadge from "../../actions/setPostBadge";
-import { useRouter } from "next/navigation";
 
 type BadgeType = "ROCK" | "SILVER" | "GOLD";
 
@@ -27,7 +26,6 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
   postId,
   setBadgeCount,
 }) => {
-  const router = useRouter();
   const session = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { isVisible, toggleVisible, containerRef } = useDropdownContainer();
@@ -37,7 +35,6 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
       if (!isLoggedIn) return toast.error("Dostęp tylko dla zalogowanych!");
       setIsLoading(true);
       toggleVisible();
-      // /api/post/badge/${postId}/${type.toLowerCase()}
 
       const res = await setPostBadge(postId, type);
       if (res.result) {
@@ -49,7 +46,6 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
         } else if (result === "OK") {
           setBadgeCount(type as BadgeType, count as number);
           toast.success("Przyznano odznakę!");
-          router.refresh();
           session.update({ coins });
         }
       } else {
@@ -57,7 +53,7 @@ const BadgeActionButton: React.FC<BadgeActionButtonProps> = ({
       }
       setIsLoading(false);
     },
-    [router, postId, isLoggedIn, session, toggleVisible, setBadgeCount]
+    [postId, isLoggedIn, session, toggleVisible, setBadgeCount]
   );
 
   if (isOwnPost) return null;

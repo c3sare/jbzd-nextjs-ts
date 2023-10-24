@@ -8,13 +8,11 @@ import AddBlogForm from "./_components/layout/blogForm/AddBlogForm";
 import BlogNavbar from "./_components/layout/BlogNavbar";
 import BlogNavbarItem from "./_components/layout/BlogNavbarItem";
 import BlogNavbarFilterItem from "./_components/layout/BlogNavbarFilterItem";
-import QuestionnaireForm from "./_components/layout/blogForm/components/questionnaire/QuestionnaireForm";
-import { z } from "zod";
-import QuestionnaireSchema from "@/validators/QuestionnaireSchema";
+import QuestionnaireProvider from "./_context/QuestionnaireProvider";
 
 const MikroblogLayout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <>
+    <QuestionnaireProvider>
       <div className="max-w-[1110px] mx-auto px-[15px] mt-[45px]">
         <div className="mx-[-15px]">
           <div className="hidden md:block float-right w-1/3 relative min-h-[1px] px-[15px]">
@@ -56,7 +54,7 @@ const MikroblogLayout: React.FC<PropsWithChildren> = ({ children }) => {
                 Obserwowane
               </BlogNavbarItem>
               <BlogNavbarItem href="/mikroblog/moje">Moje</BlogNavbarItem>
-              <li className="ml-auto float-right">
+              <li className="float-right ml-auto">
                 <ul className="flex flex-wrap">
                   <BlogNavbarFilterItem rangeInHours={6} />
                   <BlogNavbarFilterItem rangeInHours={12} />
@@ -68,8 +66,7 @@ const MikroblogLayout: React.FC<PropsWithChildren> = ({ children }) => {
           </div>
         </div>
       </div>
-      <QuestionnaireForm />
-    </>
+    </QuestionnaireProvider>
   );
 };
 
