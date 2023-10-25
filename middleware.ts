@@ -8,5 +8,8 @@ export const config = {
     "/wiadomosci-prywatne/:path*",
     "/obserwowane/:path*",
     "/premium/:path*",
+    "/mikroblog/moje/:path*",
+    "/mikroblog/obserwowane/:path*",
+    "/mikroblog/ulubione/:path*",
   ],
 };
