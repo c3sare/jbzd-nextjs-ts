@@ -40,7 +40,7 @@ const ScrollContainer: React.FC<ScrollContainerProps> = ({
   }, []);
 
   useEffect(() => {
-    const handleDragScrollItem = (e: MouseEvent) => {
+    const handleDragScrollItem = (e: MouseEvent | TouchEvent) => {
       const containerHeight =
         scrollContainer.current!.scrollHeight -
         scrollContainer.current!.offsetHeight;
@@ -54,7 +54,8 @@ const ScrollContainer: React.FC<ScrollContainerProps> = ({
 
       const startTopPosition = startScrollTop.current;
       const startPosition = startScroll.current;
-      const movePosition = e.clientY;
+      const movePosition =
+        (e as MouseEvent).clientY || (e as TouchEvent).touches[0].clientY;
 
       const moveDiff = startPosition - movePosition;
 
@@ -79,6 +80,8 @@ const ScrollContainer: React.FC<ScrollContainerProps> = ({
     if (isDragging) {
       window.addEventListener("mousemove", handleDragScrollItem, true);
       window.addEventListener("mouseup", handleStopDragging, true);
+      window.addEventListener("touchmove", handleDragScrollItem, true);
+      window.addEventListener("touchend", handleStopDragging, true);
     } else {
       window.removeEventListener("mousemove", handleDragScrollItem, true);
       window.removeEventListener("mouseup", handleStopDragging, true);
@@ -87,6 +90,8 @@ const ScrollContainer: React.FC<ScrollContainerProps> = ({
     return () => {
       window.removeEventListener("mousemove", handleDragScrollItem, true);
       window.removeEventListener("mouseup", handleStopDragging, true);
+      window.removeEventListener("touchmove", handleDragScrollItem, true);
+      window.removeEventListener("touchend", handleStopDragging, true);
     };
   }, [isDragging]);
 
@@ -105,8 +110,10 @@ const ScrollContainer: React.FC<ScrollContainerProps> = ({
       (top / (scrollHeight - containerHeight)) * maxScrollTop + "%";
   };
 
-  const handleStartDragging = (e: React.MouseEvent<HTMLDivElement>) => {
-    startScroll.current = e.clientY;
+  const handleStartDragging = (e: React.MouseEvent | React.TouchEvent) => {
+    startScroll.current =
+      (e as React.MouseEvent).clientY ||
+      (e as React.TouchEvent).touches[0].clientY;
     startScrollTop.current = Number(
       scrollbarItem.current!.style.top.slice(0, -1)
     );
@@ -121,6 +128,7 @@ const ScrollContainer: React.FC<ScrollContainerProps> = ({
           isDragging && "select-none"
         )}
         onScroll={handleOnScroll}
+        onTouchStart={handleOnScroll}
         ref={scrollContainer}
       >
         <div>{children}</div>
@@ -134,6 +142,7 @@ const ScrollContainer: React.FC<ScrollContainerProps> = ({
             className="top-[0%] bg-[#68696b] width-[6px] cursor-pointer relative"
             ref={scrollbarItem}
             onMouseDown={handleStartDragging}
+            onTouchStart={handleStartDragging}
           />
         </div>
       </div>
