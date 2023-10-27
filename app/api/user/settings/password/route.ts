@@ -4,7 +4,7 @@ import ChangePasswordSchema, {
 } from "@/validators/UserSettings/ChangePasswordSchema";
 import prisma from "@/libs/prismadb";
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 
 export async function POST(request: Request) {
   try {

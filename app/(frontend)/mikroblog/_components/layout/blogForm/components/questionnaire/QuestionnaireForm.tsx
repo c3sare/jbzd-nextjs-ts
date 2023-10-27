@@ -6,11 +6,12 @@ import useZodForm from "@/hooks/useZodForm";
 import QuestionnaireSchema from "@/validators/QuestionnaireSchema";
 import { z } from "zod";
 import AnswersSection from "./components/AnswersSection";
+import { createPortal } from "react-dom";
 
 type QuestionnaireFormProps = {
   onClose: () => void;
-  currentFormValues?: z.infer<typeof QuestionnaireSchema> | null;
-  setData?: ((data: z.infer<typeof QuestionnaireSchema>) => void) | null;
+  currentFormValues?: z.infer<typeof QuestionnaireSchema>;
+  setData: (data: z.infer<typeof QuestionnaireSchema>) => void;
 };
 
 const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({
@@ -33,7 +34,7 @@ const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({
     }
   });
 
-  return (
+  return createPortal(
     <div className="w-full h-full fixed top-0 left-0 bg-[rgba(0,_0,_0,_.6)] z-[9999]">
       <div className="w-full">
         <div className="max-w-[750px] p-[25px] w-[98%] rounded-[5px] m-[25px_auto] bg-[#313131] text-white overflow-hidden border-2 border-[#383737]">
@@ -96,7 +97,8 @@ const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({
           </Form>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

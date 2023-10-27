@@ -11,7 +11,7 @@ import { FaTrash } from "@react-icons/all-files/fa/FaTrash";
 import { FaPlay } from "@react-icons/all-files/fa/FaPlay";
 import { ImCross } from "@react-icons/all-files/im/ImCross";
 
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import EditorButton from "./components/EditorButton";
 import Form from "@/components/forms/ZodForm";
 import useZodForm from "@/hooks/useZodForm";
@@ -22,14 +22,15 @@ import { FieldValue, FieldValues, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import ErrorInfo from "./components/ErrorInfo";
 import Textarea from "./components/Textarea";
-import { QuestionnaireContext } from "../../../_context/QuestionnaireProvider";
 import QuestionnaireSchema from "@/validators/QuestionnaireSchema";
 import objectToFormData from "@/utils/objectToFormData";
 import axios from "axios";
 import toast from "react-hot-toast";
+import QuestionnaireForm from "./components/questionnaire/QuestionnaireForm";
 
 const AddBlogForm = () => {
-  const questionnaireCtx = useContext(QuestionnaireContext);
+  const [isVisibleQuestionnaire, setIsVisibleQuestionnaire] =
+    useState<boolean>(false);
   const formHook = useZodForm({
     schema: BlogPostSchema,
     defaultValues: {
@@ -141,6 +142,10 @@ const AddBlogForm = () => {
       .finally(() => formHook.setIsLoading(false));
   });
 
+  const setQuestionnaire = (data: z.infer<typeof QuestionnaireSchema>) => {
+    formHook.setValue("questionnaire", data);
+  };
+
   const questionnaire = formHook.watch("questionnaire");
 
   return (
@@ -201,19 +206,7 @@ const AddBlogForm = () => {
                         title="Dodaj obrazek/film"
                       />
                       <EditorButton
-                        onClick={() => {
-                          if (questionnaireCtx?.createForm)
-                            questionnaireCtx.createForm({
-                              data: formHook.getValues()["questionnaire"],
-                              setFormData: (
-                                data:
-                                  | z.infer<typeof QuestionnaireSchema>
-                                  | undefined
-                              ) => {
-                                formHook.setValue("questionnaire", data);
-                              },
-                            });
-                        }}
+                        onClick={() => setIsVisibleQuestionnaire(true)}
                         icon={FaChartBar}
                         title="Ankieta"
                       />
@@ -231,6 +224,13 @@ const AddBlogForm = () => {
           </div>
         </div>
       </Form>
+      {isVisibleQuestionnaire && (
+        <QuestionnaireForm
+          setData={setQuestionnaire}
+          currentFormValues={questionnaire}
+          onClose={() => setIsVisibleQuestionnaire(false)}
+        />
+      )}
       {questionnaire && (
         <div className="mb-[8px] ml-[5px]">
           <div className="text-white bg-black inline-flex items-center justify-center p-[10px] gap-2 text-[12px]">
