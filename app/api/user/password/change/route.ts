@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import PasswordResetSchema, {
   PasswordResetType,
 } from "@/validators/Sidebar/PasswordRemind/PasswordResetSchema";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { formatISO } from "date-fns";
 
 export async function POST(request: Request) {

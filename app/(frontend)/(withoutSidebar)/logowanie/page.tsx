@@ -29,6 +29,7 @@ const ErrorMessagesDetails: {
     "The authorize callback returned null in the Credentials provider. We don't recommend providing information about which part of the credentials were wrong, as it might be abused by malicious hackers.",
   SessionRequired:
     "The content of this page requires you to be signed in at all times. See useSession for configuration.",
+  CallbackRouteError: "Użyty adres jest powiązany z inną usługą!",
   Default: "Wystąpił nieznany błąd, spróbuj ponownie później.",
 };
 

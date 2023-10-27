@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "scontent-waw1-1.xx.fbcdn.net",
+      },
     ],
   },
   // typescript: {
