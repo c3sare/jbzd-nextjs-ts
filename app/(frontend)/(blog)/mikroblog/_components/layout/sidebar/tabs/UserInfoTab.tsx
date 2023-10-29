@@ -1,6 +1,6 @@
-import Box from "../Box";
-import EmptyBoxElement from "../EmptyBoxElement";
-import LinkBoxElement from "../LinkBoxElement";
+import Box from "../authorized/Box";
+import EmptyBoxElement from "../authorized/EmptyBoxElement";
+import LinkBoxElement from "../authorized/LinkBoxElement";
 
 const UserInfoTab: React.FC = () => {
   return (

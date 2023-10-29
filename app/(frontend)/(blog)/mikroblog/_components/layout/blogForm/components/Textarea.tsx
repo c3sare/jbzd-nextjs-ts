@@ -1,5 +1,6 @@
 import useZodFormContext from "@/hooks/useZodFormContext";
 import { getCaretPosition } from "@/utils/getCaretPosition";
+import axios from "axios";
 import clsx from "clsx";
 import {
   ButtonHTMLAttributes,
@@ -8,11 +9,15 @@ import {
   MutableRefObject,
   forwardRef,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { FieldValues, Path } from "react-hook-form";
+import { Autocomplete } from "../types/Autocomplete";
+import ChooseList from "./ChooseList";
 
-const usernameRegex = /(@[A-Za-z0-9\-\_])\w+/g;
+const usernameRegex = /^@([A-Za-z0-9\_])\w{1,22}$/;
+const tagRegex = /^#([A-Za-z0-9\_])\w{1,22}$/;
 
 type TextareaProps<T extends FieldValues> = {
   id: Path<T>;
@@ -21,30 +26,14 @@ type TextareaProps<T extends FieldValues> = {
   isActive?: boolean;
 };
 
-type Autocomplete =
-  | {
-      x: number;
-      y: number;
-      pharse: string;
-      type: "users";
-      tab?: { id: string; username: string }[];
-    }
-  | {
-      x: number;
-      y: number;
-      pharse: string;
-      type: "tags";
-      tab?: {
-        id: string;
-        name: string;
-      }[];
-    };
-
 const Textarea = <T extends FieldValues>(
   { id, placeholder, onFocus, isActive }: TextareaProps<T>,
   ref: ForwardedRef<HTMLTextAreaElement>
 ) => {
-  const [autocomplete, setAutocomplete] = useState<Autocomplete | null>(null);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const timeout = useRef<NodeJS.Timeout | null>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [autocomplete, setAutocomplete] = useState<Autocomplete>(null);
   const { register } = useZodFormContext();
 
   useEffect(() => {
@@ -61,6 +50,30 @@ const Textarea = <T extends FieldValues>(
       window.removeEventListener("keydown", handleHideAutocomplete, true);
   }, [autocomplete]);
 
+  const getList = (type: "user" | "tag", pharse: string) => {
+    const endpoint = `/api/blog/${type}/autocomplete`;
+
+    axios
+      .post(endpoint, { pharse })
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(data);
+        if (typeof data?.length === "number") {
+          if (autocomplete !== null) {
+            setAutocomplete((prev) => {
+              if (prev !== null) {
+                const newState = { ...prev };
+                newState.tab = data;
+
+                return newState;
+              }
+              return prev;
+            });
+          }
+        }
+      });
+  };
+
   const handleOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { style, scrollHeight, selectionStart, selectionEnd, value } =
       e.target;
@@ -75,23 +88,35 @@ const Textarea = <T extends FieldValues>(
       const indexOfHash =
         val.lastIndexOf("#") > -1 ? val.lastIndexOf("#") : undefined;
 
-      if (indexOfAt || indexOfHash) {
+      if (typeof indexOfAt === "number" || typeof indexOfHash === "number") {
         const currentMark = val.slice(indexOfAt || indexOfHash);
 
         const indexOfSpace = currentMark.lastIndexOf(" ");
         const indexOfEnter = currentMark.lastIndexOf("\n");
 
         if (indexOfSpace === -1 && indexOfEnter === -1) {
-          if (usernameRegex.test(currentMark)) {
+          if (usernameRegex.test(currentMark) || tagRegex.test(currentMark)) {
             const { x, y } = getCaretPosition(
               e.target,
               indexOfAt! || indexOfHash!
             );
+            if (timeout.current !== null) clearTimeout(timeout.current);
+            timeout.current = null;
+
+            const pharse = currentMark.slice(1);
+
+            timeout.current = setTimeout(
+              () =>
+                getList(typeof indexOfAt === "number" ? "user" : "tag", pharse),
+              400
+            );
+
             return setAutocomplete({
               x,
               y,
-              pharse: currentMark.slice(1),
-              type: indexOfAt ? "users" : "tags",
+              pharse,
+              index: selectionStart,
+              type: indexOfAt ? "user" : "tag",
             });
           }
         }
@@ -106,7 +131,18 @@ const Textarea = <T extends FieldValues>(
     <>
       <textarea
         placeholder={placeholder}
-        onFocus={onFocus}
+        onFocus={(e) => {
+          if (onFocus) onFocus(e);
+          setIsFocused(true);
+        }}
+        onKeyDown={(e) => {
+          if (
+            autocomplete?.tab &&
+            autocomplete.tab.length &&
+            ["ArrowUp", "ArrowDown", "Enter"].includes(e.key)
+          )
+            e.preventDefault();
+        }}
         className={clsx(
           "mb-[-3px] float-none bg-black p-[10px] w-full text-white",
           "resize-none overflow-hidden leading-[24px] text-[18px]",
@@ -116,31 +152,24 @@ const Textarea = <T extends FieldValues>(
           isActive ? "border-l-black" : "border-l-[#94b424]"
         )}
         {...registerReturn}
+        onBlur={(e) => {
+          registerReturn.onBlur(e);
+          setIsFocused(false);
+        }}
         onChange={handleOnChange}
         ref={(e) => {
           registerReturn.ref(e);
+          textAreaRef.current = e;
           if (ref) (ref as MutableRefObject<HTMLTextAreaElement>).current = e!;
         }}
       />
       {!!autocomplete && autocomplete.tab && autocomplete.tab?.length > 0 && (
-        <div
-          className="text-white absolute bg-[#4a4a4a] text-[12px] min-w-[140px] max-w-[180px] max-h-[200px] overflow-y-auto z-[999]"
-          style={{
-            top: autocomplete.y + 40 + "px",
-            left: autocomplete.x + 20 + "px",
-          }}
-        >
-          <ul>
-            {[...Array(10)].map((_i, i) => (
-              <li
-                className="border-b border-b-[#313131] cursor-pointer box-border h-[27px] p-[0_12px] whitespace-nowrap flex items-center"
-                key={i}
-              >
-                {autocomplete.pharse}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ChooseList
+          isFocused={isFocused}
+          autocomplete={autocomplete}
+          setAutocomplete={setAutocomplete}
+          textAreaRef={textAreaRef}
+        />
       )}
     </>
   );

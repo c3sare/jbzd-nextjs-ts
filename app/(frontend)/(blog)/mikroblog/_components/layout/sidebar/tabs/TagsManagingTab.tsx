@@ -1,5 +1,5 @@
-import Box from "../Box";
-import EmptyBoxElement from "../EmptyBoxElement";
+import Box from "../authorized/Box";
+import EmptyBoxElement from "../authorized/EmptyBoxElement";
 
 const TagsManagingTab: React.FC = () => {
   return (
