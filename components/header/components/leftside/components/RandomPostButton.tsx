@@ -9,7 +9,7 @@ const RandomPostButton = () => {
 
   return (
     <MenuButton
-      className="md:flex"
+      className="hidden md:flex"
       onClick={async () => {
         const post = await getRandomPost();
 

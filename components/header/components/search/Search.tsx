@@ -26,7 +26,7 @@ const Search = () => {
       <MenuButton
         icon={<BiSearch className="mr-[5px]" size={20} />}
         active={isSearchPage}
-        className="md:flex"
+        className="hidden md:flex"
         onClick={handleToggleSearchBar}
       >
         Szukaj

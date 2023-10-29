@@ -1,10 +1,10 @@
 import prisma from "@/libs/prismadb";
-import { PostType } from "@/app/(frontend)/(withSidebar)/(postsPages)/components/types/PostType";
+import { PostType } from "@/app/(frontend)/(restSite)/(withSidebar)/(postsPages)/components/types/PostType";
 import addActionPostInfo from "@/utils/addActionPostInfo";
 import getActionedUsersLists from "../getActionedUsersLists";
 import getActionedTagsLists from "../getActionedTagsLists";
 import parseSearchParams from "@/utils/parseSearchParams";
-import { TagPageProps } from "@/app/(frontend)/(withSidebar)/(postsPages)/components/types/TagPageProps";
+import { TagPageProps } from "@/app/(frontend)/(restSite)/(withSidebar)/(postsPages)/components/types/TagPageProps";
 
 export async function getTagPagePosts({
   params: { index, tagId, slug },

@@ -19,14 +19,14 @@ const Header = async () => {
   const userId = session?.user?.id;
 
   return (
-    <header className="flex justify-center items-center w-full h-[46px] bg-[#181818] fixed left-0 right-0 top-0 z-[1000] border-b border-[#252525]">
+    <header className="flex justify-center items-center w-full h-[46px] bg-[#181818] fixed left-0 right-0 top-0 z-[1000] border-b border-[#252525] md:pr-[15px]">
       <div className="h-full max-w-[1116px] m-auto flex justify-center items-center w-full">
         <div className="flex items-center h-full">
           <Logo />
           <MenuButton
             icon={<HiSpeakerphone className="mr-[5px]" size={20} />}
             href="/mikroblog"
-            className="md:flex"
+            className="hidden md:flex"
           >
             Mikroblog
           </MenuButton>

@@ -17,7 +17,7 @@ const CoinsBox = () => {
       ref={containerRef}
     >
       <div
-        className="inline-block ml-[15px] text-left px-[10px] py-[5px] rounded-xl bg-[#4f4f4f] select-none cursor-pointer"
+        className="inline-block text-left px-[10px] py-[5px] rounded-xl bg-[#4f4f4f] select-none cursor-pointer"
         onClick={toggleVisible}
       >
         <div className="flex justify-center items-center gap-[10px]">

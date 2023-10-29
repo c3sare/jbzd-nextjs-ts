@@ -1,6 +1,6 @@
 "use client";
 
-import type Conversation from "@/app/(frontend)/wiadomosci-prywatne/types/Conversation";
+import type Conversation from "@/app/(frontend)/(restSite)/wiadomosci-prywatne/types/Conversation";
 
 import { BsFillEnvelopeFill } from "@react-icons/all-files/bs/BsFillEnvelopeFill";
 

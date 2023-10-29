@@ -1,9 +1,9 @@
 import prisma from "@/libs/prismadb";
-import { PostType } from "@/app/(frontend)/(withSidebar)/(postsPages)/components/types/PostType";
+import { PostType } from "@/app/(frontend)/(restSite)/(withSidebar)/(postsPages)/components/types/PostType";
 import addActionPostInfo from "@/utils/addActionPostInfo";
 import getActionedUsersLists from "../getActionedUsersLists";
 import getActionedTagsLists from "../getActionedTagsLists";
-import { PostsTabProps } from "@/app/(frontend)/(withSidebar)/uzytkownik/[username]/(dzidy)/[[...index]]/page";
+import { PostsTabProps } from "@/app/(frontend)/(restSite)/(withSidebar)/uzytkownik/[username]/(dzidy)/[[...index]]/page";
 
 export async function getUserPagePosts({
   params: { index, username },

@@ -22,8 +22,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
 }) => {
   const classNames = clsx(
     `
-    hidden
-    pr-[20px]
+    pr-[8px]
     pl-[8px]
     text-[15px]
     items-center
