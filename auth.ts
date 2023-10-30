@@ -8,6 +8,9 @@ import Google from "next-auth/providers/google";
 import LoginSchema from "./validators/Sidebar/LoginSchema";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/libs/prismadb";
+import getUniqueId from "@/utils/getUniqueId";
+
+type SessionProvider = "credentials" | "google" | "facebook";
 
 export const {
   auth,
@@ -51,4 +54,69 @@ export const {
       },
     }),
   ],
+  callbacks: {
+    jwt: async ({ token, user, account }) => {
+      if (user && account) {
+        token.provider = account.provider;
+        token.userId = account.userId || user.id;
+      }
+
+      return token;
+    },
+    session: async ({ session, token }) => {
+      if (!session.user?.email) return session;
+
+      const dbUser = await prisma.user.findUnique({
+        where: {
+          email: session.user?.email,
+        },
+      });
+
+      if (!dbUser) {
+        session.user.isDeleted = true;
+        return session;
+      }
+
+      session.user.coins = dbUser.coins || 0;
+
+      session.user.provider = token.provider as SessionProvider;
+      session.user.id = token.userId as string;
+      session.user.username = dbUser.username!;
+      delete (session.user as any).name;
+
+      if (!session.user.username) {
+        const userUniqueId = getUniqueId();
+        const username = "guest_" + userUniqueId;
+
+        const update = await prisma.user.update({
+          where: {
+            email: session.user.email,
+          },
+          data: {
+            username,
+            premium: {
+              picsCountOnPage: 8,
+              adminPostsOff: false,
+              commentsPicsGifsOff: false,
+              hideNegativeComments: false,
+              hideAds: true,
+              hideProfile: false,
+              hidePremiumIcon: false,
+              hideLowReputationComments: false,
+            },
+            notifications: {
+              newOrders: true,
+              newMarks: true,
+              commentsOnHomePage: true,
+              newComments: true,
+            },
+          },
+        });
+
+        if (!update) return session;
+      }
+
+      return session;
+    },
+  },
 });
