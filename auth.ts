@@ -1,5 +1,3 @@
-import prisma from "@/libs/prismadb";
-
 import NextAuth from "next-auth";
 import authConfig from "./auth.config";
 
@@ -8,6 +6,8 @@ import Credentials from "next-auth/providers/credentials";
 import Facebook from "next-auth/providers/facebook";
 import Google from "next-auth/providers/google";
 import LoginSchema from "./validators/Sidebar/LoginSchema";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import prisma from "@/libs/prismadb";
 
 export const {
   auth,
@@ -15,6 +15,10 @@ export const {
   signOut,
   handlers: { GET, POST },
 } = NextAuth({
+  adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: "jwt",
+  },
   ...authConfig,
   providers: [
     Facebook,

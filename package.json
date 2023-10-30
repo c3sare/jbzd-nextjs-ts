@@ -16,7 +16,6 @@
     "@hookform/resolvers": "^3.3.1",
     "@lexical/react": "^0.12.2",
     "@prisma/client": "^5.5.2",
-    "@prisma/extension-accelerate": "^0.6.2",
     "@react-icons/all-files": "^4.1.0",
     "axios": "^1.5.1",
     "bcryptjs": "^2.4.3",

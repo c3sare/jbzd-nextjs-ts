@@ -1,19 +1,12 @@
 import type { NextAuthConfig } from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import getUniqueId from "@/utils/getUniqueId";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/libs/prismadb";
 
 type SessionProvider = "credentials" | "google" | "facebook";
 
-const prisma = new PrismaClient();
-
 export default {
   providers: [],
-  adapter: PrismaAdapter(prisma),
-  session: {
-    strategy: "jwt",
-  },
   pages: {
     signIn: "/logowanie",
     signOut: "/api/auth/signout",
