@@ -1,14 +1,13 @@
 "use client";
 
-import { signOut } from "next-auth/react";
 import { FaPowerOff } from "@react-icons/all-files/fa/FaPowerOff";
+import { signOutAction } from "./actions/signOutAction";
 
 const SignOutButton = () => {
   return (
     <button
-      onClick={(e) => {
-        e.preventDefault();
-        signOut();
+      onClick={async () => {
+        await signOutAction();
       }}
       className="text-neutral-500"
     >

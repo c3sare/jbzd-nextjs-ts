@@ -6,9 +6,18 @@ import getUniqueId from "@/utils/getUniqueId";
 
 type SessionProvider = "credentials" | "google" | "facebook";
 
-export const authConfig: NextAuthConfig = {
+export default {
   providers: [],
   adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: "jwt",
+  },
+  pages: {
+    signIn: "/logowanie",
+    signOut: "/api/auth/signout",
+    error: "/logowanie",
+    newUser: "/",
+  },
   callbacks: {
     jwt: async ({ token, user, account }) => {
       if (user && account) {
@@ -74,13 +83,4 @@ export const authConfig: NextAuthConfig = {
       return session;
     },
   },
-  pages: {
-    signIn: "/logowanie",
-    signOut: "/api/auth/signout",
-    error: "/logowanie",
-    newUser: "/",
-  },
-  session: {
-    strategy: "jwt",
-  },
-};
+} satisfies NextAuthConfig;

@@ -1,6 +1,7 @@
-import { signIn } from "next-auth/react";
+"use client";
+
 import { SetStateAction } from "react";
-import { toast } from "react-hot-toast";
+import { logInWithGoogle } from "./actions/logInWithGoogle";
 
 const GoogleLoginButton: React.FC<{
   setIsLoading: (value: SetStateAction<boolean>) => void;
@@ -10,18 +11,11 @@ const GoogleLoginButton: React.FC<{
     <div className="w-full pt-2">
       <button
         disabled={disabled}
-        onClick={(e) => {
+        onClick={async (e) => {
           e.preventDefault();
           setIsLoading(true);
-          signIn("google", { redirect: false }).then((callback) => {
-            if (callback?.error) {
-              toast.error("Nieprawidłowe dane!");
-            }
 
-            if (callback?.ok && !callback?.error) {
-              toast.success("Zostałeś zalogowany!");
-            }
-          });
+          await logInWithGoogle();
         }}
         className="w-full block bg-red-500 text-white rounded-[4px] leading-[30px] text-[13px] disabled:opacity-80"
       >

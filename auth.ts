@@ -1,7 +1,7 @@
 import prisma from "@/libs/prismadb";
 
 import NextAuth from "next-auth";
-import { authConfig } from "./auth.config";
+import authConfig from "./auth.config";
 
 import bcrypt from "bcryptjs";
 import Credentials from "next-auth/providers/credentials";
@@ -21,6 +21,7 @@ export const {
     Google,
     Credentials({
       async authorize(credentials) {
+        console.log(credentials);
         const { login, password } = LoginSchema.parse(credentials);
 
         const user = await prisma.user.findFirst({
