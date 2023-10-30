@@ -3,12 +3,13 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import prisma from "@/libs/prismadb";
 import getUniqueId from "@/utils/getUniqueId";
+import { PrismaClient } from "@prisma/client";
 
 type SessionProvider = "credentials" | "google" | "facebook";
 
 export default {
   providers: [],
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma as unknown as PrismaClient),
   session: {
     strategy: "jwt",
   },
