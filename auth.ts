@@ -9,7 +9,12 @@ import Facebook from "next-auth/providers/facebook";
 import Google from "next-auth/providers/google";
 import LoginSchema from "./validators/Sidebar/LoginSchema";
 
-export const { auth, signIn, signOut, handlers } = NextAuth({
+export const {
+  auth,
+  signIn,
+  signOut,
+  handlers: { GET, POST },
+} = NextAuth({
   ...authConfig,
   providers: [
     Facebook,
