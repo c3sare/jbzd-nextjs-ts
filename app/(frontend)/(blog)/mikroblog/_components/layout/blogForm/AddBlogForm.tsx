@@ -2,6 +2,13 @@
 
 /* eslint-disable @next/next/no-img-element */
 
+import { v4 as uuid } from "uuid";
+import React, { useRef, useState } from "react";
+import { FieldValue, FieldValues, useFieldArray } from "react-hook-form";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { z } from "zod";
+
 import { FaBold } from "@react-icons/all-files/fa/FaBold";
 import { FaItalic } from "@react-icons/all-files/fa/FaItalic";
 import { FaQuoteRight } from "@react-icons/all-files/fa/FaQuoteRight";
@@ -11,21 +18,17 @@ import { FaTrash } from "@react-icons/all-files/fa/FaTrash";
 import { FaPlay } from "@react-icons/all-files/fa/FaPlay";
 import { ImCross } from "@react-icons/all-files/im/ImCross";
 
-import React, { useRef, useState } from "react";
+import objectToFormData from "@/utils/objectToFormData";
+import QuestionnaireSchema from "@/validators/QuestionnaireSchema";
+import BlogPostSchema from "@/validators/BlogPostSchema";
+
 import EditorButton from "./components/EditorButton";
 import Form from "@/components/forms/ZodForm";
 import useZodForm from "@/hooks/useZodForm";
-import BlogPostSchema from "@/validators/BlogPostSchema";
 import LabelCheckbox from "./components/LabelCheckbox";
 import Button from "./components/Button";
-import { FieldValue, FieldValues, useFieldArray } from "react-hook-form";
-import { z } from "zod";
 import ErrorInfo from "./components/ErrorInfo";
 import Textarea from "./components/Textarea";
-import QuestionnaireSchema from "@/validators/QuestionnaireSchema";
-import objectToFormData from "@/utils/objectToFormData";
-import axios from "axios";
-import toast from "react-hot-toast";
 import QuestionnaireForm from "./components/questionnaire/QuestionnaireForm";
 
 const AddBlogForm = () => {
@@ -84,9 +87,9 @@ const AddBlogForm = () => {
     if (e.target.files?.length && e.target.files.length > 0) {
       Array.from(e.target.files).forEach((file) => {
         if (file.type.indexOf("image") === 0) {
-          append({ value: file, type: "IMAGE" });
+          append({ value: file, type: "IMAGE", uuid: uuid() });
         } else if (file.type.indexOf("video") === 0) {
-          append({ value: file, type: "VIDEO" });
+          append({ value: file, type: "VIDEO", uuid: uuid() });
         }
       });
     }
@@ -251,7 +254,7 @@ const AddBlogForm = () => {
           >
             {file.type === "IMAGE" && (
               <img
-                onClick={() => handleAddImageToTextarea(file.id)}
+                onClick={() => handleAddImageToTextarea(file.uuid)}
                 key={file.id}
                 src={URL.createObjectURL(file.value as File)}
                 alt={`Obraz ${i + 1}`}
@@ -259,7 +262,7 @@ const AddBlogForm = () => {
               />
             )}
             {file.type === "VIDEO" && (
-              <span onClick={() => handleAddVideoToTextarea(file.id)}>
+              <span onClick={() => handleAddVideoToTextarea(file.uuid)}>
                 <video
                   className="object-cover w-full h-full"
                   src={URL.createObjectURL(file.value as File)}

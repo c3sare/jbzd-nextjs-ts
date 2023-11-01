@@ -75,6 +75,9 @@ model User {
   messages           Message[]            @relation("CreatedMessages")
   seenMessageIds     String[]             @db.ObjectId
   seenMessages       Message[]            @relation("Seen", fields: [seenMessageIds], references: [id])
+  actionedBlogTags   ActionedBlogTag[]
+  blogPostVotes      BlogPostVotes[]
+  questionnaireVotes  QuestionnaireVote[]
 }
 
 model Conversation {
@@ -278,6 +281,88 @@ model Comment {
   Notification  Notification[]
 }
 
+enum FileType {
+  VIDEO
+  IMAGE
+}
+
+type BlogPostFile {
+  id  String
+  type FileType
+  url   String
+}
+
+model BlogTag {
+  id            String               @id @default(auto()) @map("_id") @db.ObjectId
+  addTime       DateTime             @default(now())
+  postsIds      String[]             @db.ObjectId
+  posts         BlogPost[]           @relation(fields: [postsIds], references: [id])
+  name          String               @unique
+  slug          String               @unique
+  actions       ActionedBlogTag[]
+}
+
+model ActionedBlogTag {
+  id            String               @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String               @db.ObjectId
+  user          User                 @relation(fields: [userId], references: [id])
+  tagId         String               @db.ObjectId
+  tag           BlogTag              @relation(fields: [tagId], references: [id])
+  method        ActionType
+}
+
+enum VoteMethod {
+  PLUS
+  MINUS
+}
+
+model BlogPostVotes {
+  id            String               @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String               @db.ObjectId
+  user          User                 @relation(fields: [userId], references: [id])
+  postId         String               @db.ObjectId
+  post          BlogPost              @relation(fields: [postId], references: [id])
+  method        VoteMethod
+}
+
+type QuestionnaireAnswer {
+  id    Int
+  title String
+}
+
+model QuestionnaireVote {
+  id            String               @id @default(auto()) @map("_id") @db.ObjectId
+  authorId      String               @db.ObjectId
+  author        User                 @relation(fields: [authorId], references: [id])
+  questionnaireId String             @db.ObjectId
+  questionnaire   Questionnaire      @relation(fields: [questionnaireId], references: [id])
+  answerId        Int                
+
+  @@unique([authorId, questionnaireId])
+}
+
+model Questionnaire {
+  id            String               @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  postId        String               @db.ObjectId @unique
+  post          BlogPost             @relation(fields: [postId], references: [id]) 
+  answers       QuestionnaireAnswer[]
+  votes         QuestionnaireVote[]
+}
+
+model BlogPost {
+  id            String               @id @default(auto()) @map("_id") @db.ObjectId
+  addTime       DateTime             @default(now())
+  files         BlogPostFile[]       
+  text          String
+  tagIds        String[]             @db.ObjectId
+  tags          BlogTag[]            @relation(fields: [tagIds], references: [id])
+  actionedByIds String[]          @db.ObjectId
+  voteIds   String[]          @db.ObjectId
+  votes   BlogPostVotes[]
+  questionnaire   Questionnaire?
+}
+
 model CommentVotePlus {
   id           String       @id @default(auto()) @map("_id") @db.ObjectId
   addTime      DateTime     @default(now())
@@ -385,7 +470,7 @@ model FavouriteComment {
 model UserAction {
   id          String         @id @default(auto()) @map("_id") @db.ObjectId
   addTime     DateTime       @default(now())
-  method      UserActionType
+  method      ActionType
   userId      String         @db.ObjectId
   authorId    String         @db.ObjectId
   user        User           @relation("UserActionedBy", fields: [userId], references: [id], onDelete: Cascade)
@@ -402,7 +487,7 @@ model CategoryAction {
   category   Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   authorId   String         @db.ObjectId
   author     User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  method     UserActionType
+  method     ActionType
 
   @@unique([authorId, categoryId])
 }
@@ -410,7 +495,7 @@ model CategoryAction {
 model TagAction {
   id       String         @id @default(auto()) @map("_id") @db.ObjectId
   addTime  DateTime       @default(now())
-  method   UserActionType
+  method   ActionType
   tagId    String         @db.ObjectId
   tag      Tag            @relation(fields: [tagId], references: [id], onDelete: Cascade)
   authorId String         @db.ObjectId
@@ -462,7 +547,7 @@ enum BadgeType {
   GOLD
 }
 
-enum UserActionType {
+enum ActionType {
   FOLLOW
   BLOCK
 }

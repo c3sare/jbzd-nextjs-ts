@@ -23,6 +23,7 @@ const BlogPostSchema = z.object({
   files: z.array(
     z.object({
       type: z.enum(["IMAGE", "VIDEO"]),
+      uuid: z.string().uuid(),
       value: z
         .any()
         .refine(

@@ -57,7 +57,6 @@ const Textarea = <T extends FieldValues>(
       .post(endpoint, { pharse })
       .then((res) => res.data)
       .then((data) => {
-        console.log(data);
         if (typeof data?.length === "number") {
           if (autocomplete !== null) {
             setAutocomplete((prev) => {
@@ -108,7 +107,7 @@ const Textarea = <T extends FieldValues>(
             timeout.current = setTimeout(
               () =>
                 getList(typeof indexOfAt === "number" ? "user" : "tag", pharse),
-              400
+              300
             );
 
             return setAutocomplete({
