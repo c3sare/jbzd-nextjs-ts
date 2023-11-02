@@ -28,7 +28,6 @@ const parseTypes = (formData: FormData) => {
         return (data[key] = val);
     }
   });
-  console.log(data);
   return data;
 };
 

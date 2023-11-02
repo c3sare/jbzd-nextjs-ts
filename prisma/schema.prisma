@@ -83,6 +83,8 @@ model User {
   blogPostReports      ReportedBlogPost[]
   blogCommentReports   ReportedBlogPostComments[]
   favouriteBlogPosts   FavouriteBlogPost[]
+  blogPosts            BlogPost[]
+  blogPostComments     BlogPostComment[]
 }
 
 model Conversation {
@@ -346,6 +348,11 @@ type QuestionnaireAnswer {
   title String
 }
 
+enum MarkOption {
+  single
+  multiple
+}
+
 model QuestionnaireVote {
   id              String        @id @default(auto()) @map("_id") @db.ObjectId
   authorId        String        @db.ObjectId
@@ -362,6 +369,8 @@ model Questionnaire {
   title   String
   postId  String                @unique @db.ObjectId
   post    BlogPost              @relation(fields: [postId], references: [id])
+  availableTo   DateTime?
+    markOption      MarkOption    
   answers QuestionnaireAnswer[]
   votes   QuestionnaireVote[]
 }
@@ -395,6 +404,9 @@ model BlogPost {
   tags          BlogTag[]           @relation(fields: [tagIds], references: [id])
   observedByIds String[]            @db.ObjectId
   voteIds       String[]            @db.ObjectId
+  adultContent  Boolean        
+  authorId      String              @db.ObjectId
+  author        User                @relation(fields: [authorId], references: [id])
   votes         BlogPostVote[]
   questionnaire Questionnaire?
   observedBy    ObservedBlogPost[]
@@ -407,6 +419,8 @@ model BlogPostComment {
   addTime DateTime                   @default(now())
   files   BlogPostFile[]
   text    String
+  authorId      String              @db.ObjectId
+  author        User                @relation(fields: [authorId], references: [id])
   tagIds  String[]                   @db.ObjectId
   tags    BlogTag[]                  @relation(fields: [tagIds], references: [id])
   reports ReportedBlogPostComments[]
