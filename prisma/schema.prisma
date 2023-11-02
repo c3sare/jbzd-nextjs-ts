@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "mongodb"
-  url       = env("DATABASE_URL")
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 type Notifications {
@@ -49,35 +49,40 @@ model User {
   premiumExpires DateTime?
   premium        Premium?
 
-  reported           Report[]
-  accounts           Account[]
-  actionedByUsers    UserAction[]         @relation("UserActionedBy")
-  actionedUsers      UserAction[]         @relation("ActionedUsers")
-  posts              Post[]
-  comments           Comment[]
-  badgedPosts        BadgePost[]
-  postVotes          PostVote[]
-  commentPlusVotes   CommentVotePlus[]
-  commentMinusVotes  CommentVoteMinus[]
-  commentRockVotes   CommentRockBadge[]
-  commentSilverVotes CommentSilverBadge[]
-  commentGoldVotes   CommentGoldBadge[]
-  favouritePosts     FavouritePost[]
-  favouriteComments  FavouriteComment[]
-  actionedCategories CategoryAction[]
-  actionedTags       TagAction[]
-  votedUsers         UserVote[]
-  userVotedBy        UserVote[]           @relation("UserVotedBy")
-  userNotifications  Notification[]       @relation("userNotifications")
-  userNotifyGuest    Notification[]       @relation("userNotifyGuest")
-  conversationsIds   String[]             @db.ObjectId
-  conversations      Conversation[]       @relation(fields: [conversationsIds], references: [id])
-  messages           Message[]            @relation("CreatedMessages")
-  seenMessageIds     String[]             @db.ObjectId
-  seenMessages       Message[]            @relation("Seen", fields: [seenMessageIds], references: [id])
-  actionedBlogTags   ActionedBlogTag[]
-  blogPostVotes      BlogPostVotes[]
-  questionnaireVotes  QuestionnaireVote[]
+  reported             Report[]
+  accounts             Account[]
+  actionedByUsers      UserAction[]               @relation("UserActionedBy")
+  actionedUsers        UserAction[]               @relation("ActionedUsers")
+  posts                Post[]
+  comments             Comment[]
+  badgedPosts          BadgePost[]
+  postVotes            PostVote[]
+  commentPlusVotes     CommentVotePlus[]
+  commentMinusVotes    CommentVoteMinus[]
+  commentRockVotes     CommentRockBadge[]
+  commentSilverVotes   CommentSilverBadge[]
+  commentGoldVotes     CommentGoldBadge[]
+  favouritePosts       FavouritePost[]
+  favouriteComments    FavouriteComment[]
+  actionedCategories   CategoryAction[]
+  actionedTags         TagAction[]
+  votedUsers           UserVote[]
+  userVotedBy          UserVote[]                 @relation("UserVotedBy")
+  userNotifications    Notification[]             @relation("userNotifications")
+  userNotifyGuest      Notification[]             @relation("userNotifyGuest")
+  conversationsIds     String[]                   @db.ObjectId
+  conversations        Conversation[]             @relation(fields: [conversationsIds], references: [id])
+  messages             Message[]                  @relation("CreatedMessages")
+  seenMessageIds       String[]                   @db.ObjectId
+  seenMessages         Message[]                  @relation("Seen", fields: [seenMessageIds], references: [id])
+  actionedBlogTags     ActionedBlogTag[]
+  blogPostVotes        BlogPostVote[]
+  blogPostCommentVotes BlogPostCommentVote[]
+  questionnaireVotes   QuestionnaireVote[]
+  observedBlogPosts    ObservedBlogPost[]
+  blogPostReports      ReportedBlogPost[]
+  blogCommentReports   ReportedBlogPostComments[]
+  favouriteBlogPosts   FavouriteBlogPost[]
 }
 
 model Conversation {
@@ -287,28 +292,30 @@ enum FileType {
 }
 
 type BlogPostFile {
-  id  String
+  id   String
   type FileType
-  url   String
+  url  String
 }
 
 model BlogTag {
-  id            String               @id @default(auto()) @map("_id") @db.ObjectId
-  addTime       DateTime             @default(now())
-  postsIds      String[]             @db.ObjectId
-  posts         BlogPost[]           @relation(fields: [postsIds], references: [id])
-  name          String               @unique
-  slug          String               @unique
-  actions       ActionedBlogTag[]
+  id         String            @id @default(auto()) @map("_id") @db.ObjectId
+  addTime    DateTime          @default(now())
+  postsIds   String[]          @db.ObjectId
+  posts      BlogPost[]        @relation(fields: [postsIds], references: [id])
+  commentIds String[]          @db.ObjectId
+  comments   BlogPostComment[] @relation(fields: [commentIds], references: [id])
+  name       String            @unique
+  slug       String            @unique
+  actions    ActionedBlogTag[]
 }
 
 model ActionedBlogTag {
-  id            String               @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String               @db.ObjectId
-  user          User                 @relation(fields: [userId], references: [id])
-  tagId         String               @db.ObjectId
-  tag           BlogTag              @relation(fields: [tagId], references: [id])
-  method        ActionType
+  id     String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId String     @db.ObjectId
+  user   User       @relation(fields: [userId], references: [id])
+  tagId  String     @db.ObjectId
+  tag    BlogTag    @relation(fields: [tagId], references: [id])
+  method ActionType
 }
 
 enum VoteMethod {
@@ -316,13 +323,22 @@ enum VoteMethod {
   MINUS
 }
 
-model BlogPostVotes {
-  id            String               @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String               @db.ObjectId
-  user          User                 @relation(fields: [userId], references: [id])
-  postId         String               @db.ObjectId
-  post          BlogPost              @relation(fields: [postId], references: [id])
-  method        VoteMethod
+model BlogPostVote {
+  id     String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId String     @db.ObjectId
+  user   User       @relation(fields: [userId], references: [id])
+  postId String     @db.ObjectId
+  post   BlogPost   @relation(fields: [postId], references: [id])
+  method VoteMethod
+}
+
+model BlogPostCommentVote {
+  id        String          @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String          @db.ObjectId
+  user      User            @relation(fields: [userId], references: [id])
+  commentId String          @db.ObjectId
+  comment   BlogPostComment @relation(fields: [commentId], references: [id])
+  method    VoteMethod
 }
 
 type QuestionnaireAnswer {
@@ -331,36 +347,89 @@ type QuestionnaireAnswer {
 }
 
 model QuestionnaireVote {
-  id            String               @id @default(auto()) @map("_id") @db.ObjectId
-  authorId      String               @db.ObjectId
-  author        User                 @relation(fields: [authorId], references: [id])
-  questionnaireId String             @db.ObjectId
-  questionnaire   Questionnaire      @relation(fields: [questionnaireId], references: [id])
-  answerId        Int                
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  authorId        String        @db.ObjectId
+  author          User          @relation(fields: [authorId], references: [id])
+  questionnaireId String        @db.ObjectId
+  questionnaire   Questionnaire @relation(fields: [questionnaireId], references: [id])
+  answerId        Int
 
   @@unique([authorId, questionnaireId])
 }
 
 model Questionnaire {
-  id            String               @id @default(auto()) @map("_id") @db.ObjectId
-  title         String
-  postId        String               @db.ObjectId @unique
-  post          BlogPost             @relation(fields: [postId], references: [id]) 
-  answers       QuestionnaireAnswer[]
-  votes         QuestionnaireVote[]
+  id      String                @id @default(auto()) @map("_id") @db.ObjectId
+  title   String
+  postId  String                @unique @db.ObjectId
+  post    BlogPost              @relation(fields: [postId], references: [id])
+  answers QuestionnaireAnswer[]
+  votes   QuestionnaireVote[]
+}
+
+model ObservedBlogPost {
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  postId String   @db.ObjectId
+  post   BlogPost @relation(fields: [postId], references: [id])
+  userId String   @db.ObjectId
+  user   User     @relation(fields: [userId], references: [id])
+
+  @@unique([postId, userId])
+}
+
+model FavouriteBlogPost {
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  postId String   @db.ObjectId
+  post   BlogPost @relation(fields: [postId], references: [id])
+  userId String   @db.ObjectId
+  user   User     @relation(fields: [userId], references: [id])
+
+  @@unique([postId, userId])
 }
 
 model BlogPost {
-  id            String               @id @default(auto()) @map("_id") @db.ObjectId
-  addTime       DateTime             @default(now())
-  files         BlogPostFile[]       
+  id            String              @id @default(auto()) @map("_id") @db.ObjectId
+  addTime       DateTime            @default(now())
+  files         BlogPostFile[]
   text          String
-  tagIds        String[]             @db.ObjectId
-  tags          BlogTag[]            @relation(fields: [tagIds], references: [id])
-  actionedByIds String[]          @db.ObjectId
-  voteIds   String[]          @db.ObjectId
-  votes   BlogPostVotes[]
-  questionnaire   Questionnaire?
+  tagIds        String[]            @db.ObjectId
+  tags          BlogTag[]           @relation(fields: [tagIds], references: [id])
+  observedByIds String[]            @db.ObjectId
+  voteIds       String[]            @db.ObjectId
+  votes         BlogPostVote[]
+  questionnaire Questionnaire?
+  observedBy    ObservedBlogPost[]
+  reports       ReportedBlogPost[]
+  favouriteBy   FavouriteBlogPost[]
+}
+
+model BlogPostComment {
+  id      String                     @id @default(auto()) @map("_id") @db.ObjectId
+  addTime DateTime                   @default(now())
+  files   BlogPostFile[]
+  text    String
+  tagIds  String[]                   @db.ObjectId
+  tags    BlogTag[]                  @relation(fields: [tagIds], references: [id])
+  reports ReportedBlogPostComments[]
+  voteIds String[]                   @db.ObjectId
+  votes   BlogPostCommentVote[]
+}
+
+model ReportedBlogPost {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  addTime  DateTime @default(now())
+  postId   String   @db.ObjectId
+  post     BlogPost @relation(fields: [postId], references: [id])
+  authorId String   @db.ObjectId
+  author   User     @relation(fields: [authorId], references: [id])
+}
+
+model ReportedBlogPostComments {
+  id        String          @id @default(auto()) @map("_id") @db.ObjectId
+  addTime   DateTime        @default(now())
+  commentId String          @db.ObjectId
+  comment   BlogPostComment @relation(fields: [commentId], references: [id])
+  authorId  String          @db.ObjectId
+  author    User            @relation(fields: [authorId], references: [id])
 }
 
 model CommentVotePlus {
@@ -468,38 +537,38 @@ model FavouriteComment {
 }
 
 model UserAction {
-  id          String         @id @default(auto()) @map("_id") @db.ObjectId
-  addTime     DateTime       @default(now())
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  addTime     DateTime    @default(now())
   method      ActionType
-  userId      String         @db.ObjectId
-  authorId    String         @db.ObjectId
-  user        User           @relation("UserActionedBy", fields: [userId], references: [id], onDelete: Cascade)
-  userRanking UserRanking    @relation(fields: [userId], references: [id])
-  author      User           @relation("ActionedUsers", fields: [authorId], references: [id], onDelete: Cascade)
+  userId      String      @db.ObjectId
+  authorId    String      @db.ObjectId
+  user        User        @relation("UserActionedBy", fields: [userId], references: [id], onDelete: Cascade)
+  userRanking UserRanking @relation(fields: [userId], references: [id])
+  author      User        @relation("ActionedUsers", fields: [authorId], references: [id], onDelete: Cascade)
 
   @@unique([authorId, userId])
 }
 
 model CategoryAction {
-  id         String         @id @default(auto()) @map("_id") @db.ObjectId
-  addTime    DateTime       @default(now())
-  categoryId String         @db.ObjectId
-  category   Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  authorId   String         @db.ObjectId
-  author     User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  addTime    DateTime   @default(now())
+  categoryId String     @db.ObjectId
+  category   Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  authorId   String     @db.ObjectId
+  author     User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   method     ActionType
 
   @@unique([authorId, categoryId])
 }
 
 model TagAction {
-  id       String         @id @default(auto()) @map("_id") @db.ObjectId
-  addTime  DateTime       @default(now())
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  addTime  DateTime   @default(now())
   method   ActionType
-  tagId    String         @db.ObjectId
-  tag      Tag            @relation(fields: [tagId], references: [id], onDelete: Cascade)
-  authorId String         @db.ObjectId
-  author   User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  tagId    String     @db.ObjectId
+  tag      Tag        @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  authorId String     @db.ObjectId
+  author   User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@unique([authorId, tagId])
 }
