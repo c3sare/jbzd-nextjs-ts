@@ -326,16 +326,18 @@ enum VoteMethod {
 }
 
 model BlogPostVote {
-  id     String     @id @default(auto()) @map("_id") @db.ObjectId
-  userId String     @db.ObjectId
-  user   User       @relation(fields: [userId], references: [id])
-  postId String     @db.ObjectId
-  post   BlogPost   @relation(fields: [postId], references: [id])
-  method VoteMethod
+  id      String     @id @default(auto()) @map("_id") @db.ObjectId
+  addTime DateTime   @default(now())
+  userId  String     @db.ObjectId
+  user    User       @relation(fields: [userId], references: [id])
+  postId  String     @db.ObjectId
+  post    BlogPost   @relation(fields: [postId], references: [id])
+  method  VoteMethod
 }
 
 model BlogPostCommentVote {
   id        String          @id @default(auto()) @map("_id") @db.ObjectId
+  addTime   DateTime        @default(now())
   userId    String          @db.ObjectId
   user      User            @relation(fields: [userId], references: [id])
   commentId String          @db.ObjectId
@@ -365,14 +367,14 @@ model QuestionnaireVote {
 }
 
 model Questionnaire {
-  id      String                @id @default(auto()) @map("_id") @db.ObjectId
-  title   String
-  postId  String                @unique @db.ObjectId
-  post    BlogPost              @relation(fields: [postId], references: [id])
-  availableTo   DateTime?
-    markOption      MarkOption    
-  answers QuestionnaireAnswer[]
-  votes   QuestionnaireVote[]
+  id          String                @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  postId      String                @unique @db.ObjectId
+  post        BlogPost              @relation(fields: [postId], references: [id])
+  availableTo DateTime?
+  markOption  MarkOption
+  answers     QuestionnaireAnswer[]
+  votes       QuestionnaireVote[]
 }
 
 model ObservedBlogPost {
@@ -404,7 +406,7 @@ model BlogPost {
   tags          BlogTag[]           @relation(fields: [tagIds], references: [id])
   observedByIds String[]            @db.ObjectId
   voteIds       String[]            @db.ObjectId
-  adultContent  Boolean        
+  adultContent  Boolean
   authorId      String              @db.ObjectId
   author        User                @relation(fields: [authorId], references: [id])
   votes         BlogPostVote[]
@@ -412,20 +414,23 @@ model BlogPost {
   observedBy    ObservedBlogPost[]
   reports       ReportedBlogPost[]
   favouriteBy   FavouriteBlogPost[]
+  comments      BlogPostComment[]
 }
 
 model BlogPostComment {
-  id      String                     @id @default(auto()) @map("_id") @db.ObjectId
-  addTime DateTime                   @default(now())
-  files   BlogPostFile[]
-  text    String
-  authorId      String              @db.ObjectId
-  author        User                @relation(fields: [authorId], references: [id])
-  tagIds  String[]                   @db.ObjectId
-  tags    BlogTag[]                  @relation(fields: [tagIds], references: [id])
-  reports ReportedBlogPostComments[]
-  voteIds String[]                   @db.ObjectId
-  votes   BlogPostCommentVote[]
+  id       String                     @id @default(auto()) @map("_id") @db.ObjectId
+  addTime  DateTime                   @default(now())
+  files    BlogPostFile[]
+  text     String
+  authorId String                     @db.ObjectId
+  author   User                       @relation(fields: [authorId], references: [id])
+  tagIds   String[]                   @db.ObjectId
+  tags     BlogTag[]                  @relation(fields: [tagIds], references: [id])
+  reports  ReportedBlogPostComments[]
+  postId   String                     @db.ObjectId
+  post     BlogPost                   @relation(fields: [postId], references: [id])
+  voteIds  String[]                   @db.ObjectId
+  votes    BlogPostCommentVote[]
 }
 
 model ReportedBlogPost {

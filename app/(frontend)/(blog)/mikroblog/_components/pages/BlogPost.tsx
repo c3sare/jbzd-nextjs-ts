@@ -15,8 +15,13 @@ import AvatarBox from "./components/post/AvatarBox";
 import BlogPostHeader from "./components/post/header/BlogPostHeader";
 import Comment from "./components/post/comment/Comment";
 import clsx from "clsx";
+import { BlogPostType } from "../../(tabs)/(najnowsze)/_types/BlogPost";
 
-const BlogPost = () => {
+type BlogPostProps = {
+  post: BlogPostType;
+};
+
+const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
   const [isExpandedPostOptions, setIsExpandedPostOptions] =
     useState<boolean>(false);
 
@@ -39,7 +44,7 @@ const BlogPost = () => {
             Jakąś budkę w zatłoczonym miejscu otworzyć to myślę, że by się
             spokojnie sprzedawało, z odpowiednim marketingiem.
           </MessageBox>
-          <ul className="transition-opacity sm:opacity-0 ease-in-out duration-200 group-hover:opacity-100">
+          <ul className="transition-opacity duration-200 ease-in-out sm:opacity-0 group-hover:opacity-100">
             <li className="float-left leading-[20px] mr-[15px]">
               <ActionButton icon={FaReply}>Odpowiedz</ActionButton>
             </li>

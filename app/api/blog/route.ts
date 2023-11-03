@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/libs/prismadb";
 import uploadMemFile from "@/utils/uploadMemFile";
 import { auth } from "@/auth";
+import { Prisma } from "@prisma/client";
 
 export async function PUT(req: NextRequest) {
   try {
@@ -13,75 +14,58 @@ export async function PUT(req: NextRequest) {
 
     const formData = await req.formData();
     const data = formDataToObject(formData);
-    console.log(data);
 
-    const {
-      message,
-      files,
+    const { message, files, adultContent, questionnaire } =
+      BlogPostSchema.parse(data);
+
+    let blogPostCreate: Prisma.BlogPostCreateInput = {
+      text: message,
       adultContent,
-      questionnaire: survey,
-    } = BlogPostSchema.parse(data);
-
-    const uploadFiles = await Promise.all(
-      files.map(async (file) => {
-        const url = await uploadMemFile(file.value);
-
-        return {
-          id: file.uuid,
-          type: file.type,
-          url,
-        };
-      })
-    );
-
-    const availableTo = new Date();
-
-    if (survey?.availableTime === "1d") {
-      availableTo.setDate(availableTo.getDate() + 1);
-    } else if (survey?.availableTime === "3d") {
-      availableTo.setDate(availableTo.getDate() + 3);
-    } else if (survey?.availableTime === "7d") {
-      availableTo.setDate(availableTo.getDate() + 7);
-    }
-
-    const questionnaire = survey?.question
-      ? {
-          create: {
-            title: survey.question,
-            answers: survey.answers.map((answer, i) => ({
-              id: i + 1,
-              title: answer.value,
-            })),
-            markOption: survey.markOption,
-            availableTo: survey.availableTime ? availableTo : undefined,
-          },
-        }
-      : undefined;
-
-    const blogPost = await prisma.blogPost.create({
-      data: {
-        text: message,
-        files: uploadFiles,
-        adultContent,
-        questionnaire: survey?.question
-          ? {
-              create: {
-                title: survey.question,
-                answers: survey.answers.map((answer, i) => ({
-                  id: i + 1,
-                  title: answer.value,
-                })),
-                markOption: survey.markOption,
-                availableTo: survey.availableTime ? availableTo : undefined,
-              },
-            }
-          : undefined,
-        author: {
-          connect: {
-            id: session.user.id,
-          },
+      author: {
+        connect: {
+          id: session.user.id,
         },
       },
+    };
+
+    if (files.length)
+      blogPostCreate.files = await Promise.all(
+        files.map(async (file) => {
+          const url = await uploadMemFile(file.value);
+
+          return {
+            id: file.uuid,
+            type: file.type,
+            url,
+          };
+        })
+      );
+
+    if (questionnaire) {
+      const { question, answers, markOption, availableTime } = questionnaire;
+      blogPostCreate.questionnaire = {
+        create: {
+          title: question,
+          answers: answers.map((answer, i) => ({
+            id: i + 1,
+            title: answer.value,
+          })),
+          markOption,
+        },
+      };
+
+      if (availableTime !== "") {
+        const days = Number(availableTime.slice(0, 1));
+
+        const date = new Date();
+        date.setDate(date.getDate() + days);
+
+        blogPostCreate.questionnaire.create!.availableTo = date;
+      }
+    }
+
+    const blogPost = await prisma.blogPost.create({
+      data: blogPostCreate,
     });
 
     return NextResponse.json(blogPost);
