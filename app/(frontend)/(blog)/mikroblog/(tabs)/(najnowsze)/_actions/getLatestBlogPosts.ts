@@ -9,6 +9,16 @@ export async function getLatestBlogPosts() {
 
     const posts = await prisma.blogPost.findMany({
       include: {
+        questionnaire: {
+          include: {
+            votes: {
+              select: {
+                id: true,
+                answerId: true,
+              },
+            },
+          },
+        },
         author: true,
         votes: {
           include: {
@@ -21,7 +31,7 @@ export async function getLatestBlogPosts() {
             },
           },
           orderBy: {
-            addTime: "asc",
+            addTime: "desc",
           },
         },
         comments: {
@@ -32,7 +42,7 @@ export async function getLatestBlogPosts() {
         },
       },
       orderBy: {
-        addTime: "asc",
+        addTime: "desc",
       },
       take: 10,
     });

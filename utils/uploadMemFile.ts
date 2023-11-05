@@ -24,7 +24,7 @@ export default async function uploadMemFile(file: File) {
   try {
     const uploadResult = await uploadStream(file, options);
 
-    return uploadResult.secure_url;
+    return uploadResult.public_id;
   } catch (err: any) {
     throw new Error("Internal error");
   }

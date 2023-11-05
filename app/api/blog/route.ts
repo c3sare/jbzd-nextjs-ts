@@ -28,7 +28,7 @@ export async function PUT(req: NextRequest) {
       },
     };
 
-    if (files.length)
+    if (files !== null && files.length)
       blogPostCreate.files = await Promise.all(
         files.map(async (file) => {
           const url = await uploadMemFile(file.value);

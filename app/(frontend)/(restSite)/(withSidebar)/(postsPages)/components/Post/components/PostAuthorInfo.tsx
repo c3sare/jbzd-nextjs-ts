@@ -64,7 +64,12 @@ const PostAuthorInfo: React.FC<PostAuthorInfoProps> = ({
       <span className="md:relative text-white group">
         {author.username}
         <div className="absolute z-[9999999] hidden top-full left-0 md:left-[calc(50%_-_10px)] md:translate-x--1/2 group-hover:block max-w-full md:max-w-none">
-          <div className="max-w-full md:max-w-none mt-[8px] w-[310px] rounded-[3px] bg-[#313131] flex md:before:w-0 md:before:h-0 md:before:content-normal md:before:block md:before:border-r-[5px] md:before:border-l-[5px] md:before:border-b-[5px] md:before:border-solid md:before:border-[transparent_transparent_#313131] md:before:absolute md:before:left-[10px] md:before:top-[3px] p-[15px]">
+          <div
+            className={clsx(
+              "max-w-full mt-[8px] w-[310px] rounded-[3px] bg-[#313131] flex p-[15px] md:max-w-none ",
+              "md:before:w-0 md:before:h-0 md:before:content-normal md:before:block md:before:border-r-[5px] md:before:border-l-[5px] md:before:border-b-[5px] md:before:border-solid md:before:border-[transparent_transparent_#313131] md:before:absolute md:before:left-[10px] md:before:top-[3px]"
+            )}
+          >
             <div className="w-full flex flex-nowrap gap-[10px]">
               <div className="w-[45px] flex items-center">
                 <Image

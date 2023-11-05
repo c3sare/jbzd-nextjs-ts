@@ -1,4 +1,5 @@
 import Image from "next/image";
+import notFoundImg from "@/public/images/404.png";
 
 const NotFoundPage = () => {
   return (
@@ -7,7 +8,7 @@ const NotFoundPage = () => {
         Błąd
       </h1>
       <Image
-        src="/images/404.png"
+        src={notFoundImg}
         alt="Nie znalezion strony"
         width={878}
         height={816}

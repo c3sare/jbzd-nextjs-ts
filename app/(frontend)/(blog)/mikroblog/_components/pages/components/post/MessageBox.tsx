@@ -1,34 +1,57 @@
 import Image from "next/image";
+import { useContext } from "react";
+import { LightBoxContext } from "../../../LightBox";
+import transformText from "../../_utils/transformText";
+import cloudinaryLoader from "@/cloudinaryLoader";
 
 type MessageBoxProps = {
   children?: React.ReactNode;
-  images: string[];
+  images: {
+    id: string;
+    type: "IMAGE" | "VIDEO";
+    url: string;
+  }[];
+  message: string;
 };
 
-const MessageBox: React.FC<MessageBoxProps> = ({ children, images }) => {
+const MessageBox: React.FC<MessageBoxProps> = ({ images, message }) => {
+  const createLightbox = useContext(LightBoxContext);
+
+  const handleShowImage = (index: number) => {
+    createLightbox(
+      images.map((item) => item.url),
+      index
+    );
+  };
+
+  const { parsed, usedImageIds } = transformText(message, images);
+
   return (
-    <div>
-      <div>
-        <span>
-          <p className="break-words text-[13px] text-white mb-[10px] leading-[17px]">
-            <span>
-              <span>{children}</span>
-              <span className="max-w-[300px] my-[10px] block">
-                {images.map((image, i) => (
-                  <Image
-                    key={i}
-                    src={image}
-                    alt={`Post image ${i}`}
-                    width={300}
-                    height={225}
-                  />
-                ))}
-              </span>
-            </span>
-          </p>
-        </span>
+    <>
+      <div className="break-words text-[13px] text-white mb-[10px] leading-[17px]">
+        {parsed}
       </div>
-    </div>
+      <div className="flex items-center flex-wrap">
+        {images
+          .filter((item) => !usedImageIds.includes(item.id))
+          .map((image, i) => (
+            <span
+              key={image.id}
+              onClick={() => handleShowImage(i)}
+              className="w-[51px] m-[5px] h-[51px] block relative overflow-hidden cursor-pointer"
+            >
+              <Image
+                loader={cloudinaryLoader}
+                key={image.id}
+                src={image.url}
+                alt={`Obrazek mikroblog ${image.id}`}
+                fill
+                className="object-cover"
+              />
+            </span>
+          ))}
+      </div>
+    </>
   );
 };
 

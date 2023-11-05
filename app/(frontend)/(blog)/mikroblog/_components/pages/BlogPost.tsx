@@ -16,6 +16,7 @@ import BlogPostHeader from "./components/post/header/BlogPostHeader";
 import Comment from "./components/post/comment/Comment";
 import clsx from "clsx";
 import { BlogPostType } from "../../(tabs)/(najnowsze)/_types/BlogPost";
+import Survey from "./components/post/survey/Survey";
 
 type BlogPostProps = {
   post: BlogPostType;
@@ -27,23 +28,21 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
 
   return (
     <div className="relative mb-[25px]">
-      <AvatarBox username="c3sare" avatar={undefined} />
+      <AvatarBox username={post.author.username!} avatar={post.author.image!} />
       <div className="float-left w-full sm:w-[calc(100%_-_70px)] relative">
-        <BlogPostHeader username="c3sare" addTime={new Date()} score={1} />
+        <BlogPostHeader
+          username={post.author.username!}
+          addTime={post.addTime}
+          score={post.score}
+        />
         <div className="clear-both relative p-[15px_15px_25px] bg-[#313131] group">
-          <MessageBox images={["/images/blog/1.jpg"]}>
-            Ej, w sumie, dlaczego to one nie są sprzedawane na wynos w podobny
-            sposób jak kebaby, burrito, czy inne potrawy na bazie tortilli?
-            <br />
-            No niby tortilla a naleśnik, nie to samo, ale w tym przypadku to
-            dość podobna rzecz. <br />
-            Przecież to nie taki zły pomysł, farsz może być z wielu rzeczy,
-            oprócz mięsa, kapusty i grzybów, to przecież nie raz się widzi, jak
-            zamiast tego wpieprzają tam jakiś szpinak, albo jajka i cholera wie
-            co jeszcze, to już szeroka lista do menu. <br />
-            Jakąś budkę w zatłoczonym miejscu otworzyć to myślę, że by się
-            spokojnie sprzedawało, z odpowiednim marketingiem.
-          </MessageBox>
+          {!!post.questionnaire && (
+            <Survey questionnaire={post.questionnaire} />
+          )}
+          <MessageBox
+            images={post.files.filter((item) => item.type === "IMAGE")}
+            message={post.text}
+          />
           <ul className="transition-opacity duration-200 ease-in-out sm:opacity-0 group-hover:opacity-100">
             <li className="float-left leading-[20px] mr-[15px]">
               <ActionButton icon={FaReply}>Odpowiedz</ActionButton>

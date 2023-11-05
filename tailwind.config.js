@@ -13,6 +13,28 @@ module.exports = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       keyframes: {
+        bounceleft: {
+          "0%": {
+            right: "0px",
+          },
+          "50%": {
+            right: "8px",
+          },
+          "100%": {
+            right: "0px",
+          },
+        },
+        bounceright: {
+          "0%": {
+            left: "0px",
+          },
+          "50%": {
+            left: "8px",
+          },
+          "100%": {
+            left: "0px",
+          },
+        },
         fade: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
@@ -47,6 +69,8 @@ module.exports = {
         fadeout: "fadeout 0.6s ease forwards",
         slidein: "slidein 0.6s ease forwards",
         slideout: "slideout 0.6s ease forwards",
+        bounceleft: "bounceleft 1s infinite",
+        bounceright: "bounceright 1s infinite",
       },
     },
   },

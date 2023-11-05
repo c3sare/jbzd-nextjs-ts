@@ -38,7 +38,7 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({
         className="min-w-[50px] mr-[20px] relative text-[18px] font-semibold text-white"
         href={userProfileHref}
       >
-        c3sare
+        {username}
       </Link>
       <time className="text-[12px] font-semibold text-[#6e7578] relative bottom-[-2px]">
         <Link href={userProfileHref}>{time}</Link>
