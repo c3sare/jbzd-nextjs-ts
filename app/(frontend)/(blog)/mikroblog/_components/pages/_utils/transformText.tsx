@@ -85,7 +85,6 @@ export default function transformText(str: string, assetList: AssetList) {
   while (str.match(quoteRegex)) {
     const toReplace = str.match(quoteRegex);
     if (toReplace === null) break;
-    console.log(toReplace);
 
     str = str.replaceAll(toReplace[0], `<q>${toReplace[0].slice(3, -3)}</q>`);
   }
@@ -108,7 +107,10 @@ export default function transformText(str: string, assetList: AssetList) {
     str = str.replaceAll(toReplace[0], `<i>${toReplace[0].slice(2, -2)}</i>`);
   }
 
-  str = str.replaceAll("\n", "<br/>");
+  str = str
+    .split("\n")
+    .filter((item) => item)
+    .join("\n");
 
   return { parsed: htmlToReact(str), usedImageIds };
 }

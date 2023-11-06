@@ -1,8 +1,9 @@
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { LightBoxContext } from "../../../LightBox";
 import transformText from "../../_utils/transformText";
 import cloudinaryLoader from "@/cloudinaryLoader";
+import clsx from "clsx";
 
 type MessageBoxProps = {
   children?: React.ReactNode;
@@ -16,6 +17,8 @@ type MessageBoxProps = {
 
 const MessageBox: React.FC<MessageBoxProps> = ({ images, message }) => {
   const createLightbox = useContext(LightBoxContext);
+  const [readMore, setReadMore] = useState<boolean>(false);
+  const messageContainerRef = useRef<HTMLDivElement>(null);
 
   const handleShowImage = (index: number) => {
     createLightbox(
@@ -24,14 +27,27 @@ const MessageBox: React.FC<MessageBoxProps> = ({ images, message }) => {
     );
   };
 
+  useEffect(() => {
+    if (messageContainerRef.current)
+      if (messageContainerRef.current.clientHeight > 500) {
+        setReadMore(true);
+      }
+  }, []);
+
   const { parsed, usedImageIds } = transformText(message, images);
 
   return (
-    <>
+    <div
+      className={clsx(
+        "w-full",
+        readMore && "max-h-[450px] overflow-hidden relative"
+      )}
+      ref={messageContainerRef}
+    >
       <div className="break-words text-[13px] text-white mb-[10px] leading-[17px]">
         {parsed}
       </div>
-      <div className="flex items-center flex-wrap">
+      <div className="flex flex-wrap items-center">
         {images
           .filter((item) => !usedImageIds.includes(item.id))
           .map((image, i) => (
@@ -51,7 +67,15 @@ const MessageBox: React.FC<MessageBoxProps> = ({ images, message }) => {
             </span>
           ))}
       </div>
-    </>
+      {readMore && (
+        <button
+          onClick={() => setReadMore(false)}
+          className="block text-center py-[10px] bg-[#222] mt-[2px] text-[#c23d3a] text-[14px] absolute bottom-0 w-full"
+        >
+          Zobacz więcej
+        </button>
+      )}
+    </div>
   );
 };
 

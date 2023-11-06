@@ -30,7 +30,7 @@ const SurveyAnswer: React.FC<SurveyAnswerProps> = ({
 
   const icons = {
     single: [RiCheckboxBlankCircleLine, RiCheckboxCircleFill],
-    multiple: [ImCheckboxChecked, ImCheckboxUnchecked],
+    multiple: [ImCheckboxUnchecked, ImCheckboxChecked],
   };
 
   const Icon = icons[markOption][Number(!!answer.isMarked)];

@@ -34,6 +34,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
           username={post.author.username!}
           addTime={post.addTime}
           score={post.score}
+          voters={post.votes}
         />
         <div className="clear-both relative p-[15px_15px_25px] bg-[#313131] group">
           {!!post.questionnaire && (

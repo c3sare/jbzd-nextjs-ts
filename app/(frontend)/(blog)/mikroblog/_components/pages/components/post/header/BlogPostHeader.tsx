@@ -5,11 +5,13 @@ import getTimeFromLastMessage from "@/app/(frontend)/(restSite)/wiadomosci-prywa
 import VoteButton from "./components/VoteButton";
 import Score from "./components/Score";
 import Voters from "./components/Voters";
+import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
 
 type BlogPostHeaderProps = {
   username?: string;
   addTime: Date;
   score?: number;
+  voters: BlogPostType["votes"];
 };
 
 type VoteType = "" | "PLUS" | "MINUS";
@@ -18,6 +20,7 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({
   username,
   addTime,
   score = 0,
+  voters,
 }) => {
   const [vote, setVote] = useState<VoteType>("");
   const userProfileHref = `/mikroblog/uzytkownik/${username}`;
@@ -44,7 +47,7 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({
         <Link href={userProfileHref}>{time}</Link>
       </time>
       <div className="flex items-center justify-center float-right">
-        <Voters />
+        <Voters voters={voters} />
         <Score value={score} />
         <VoteButton
           type="PLUS"

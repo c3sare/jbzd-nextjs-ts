@@ -5,6 +5,9 @@ import prisma from "@/libs/prismadb";
 import uploadMemFile from "@/utils/uploadMemFile";
 import { auth } from "@/auth";
 import { Prisma } from "@prisma/client";
+import createSlugFromTitle from "@/utils/createSlugFromTitle";
+
+const tagRegex = /#([a-zA-Z0-9]){3,32}/gim;
 
 export async function PUT(req: NextRequest) {
   try {
@@ -67,6 +70,38 @@ export async function PUT(req: NextRequest) {
     const blogPost = await prisma.blogPost.create({
       data: blogPostCreate,
     });
+
+    const tags = message.match(tagRegex);
+
+    if (tags) {
+      await Promise.all(
+        tags.map(async (tag) => {
+          const name = tag.slice(1);
+          const slug = createSlugFromTitle(name);
+          return await prisma.blogTag.upsert({
+            where: {
+              slug,
+            },
+            create: {
+              slug,
+              name,
+              posts: {
+                connect: {
+                  id: blogPost.id,
+                },
+              },
+            },
+            update: {
+              posts: {
+                connect: {
+                  id: blogPost.id,
+                },
+              },
+            },
+          });
+        })
+      );
+    }
 
     return NextResponse.json(blogPost);
   } catch (err) {
