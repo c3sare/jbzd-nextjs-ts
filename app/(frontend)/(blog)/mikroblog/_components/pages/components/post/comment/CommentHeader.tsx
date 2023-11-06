@@ -43,7 +43,7 @@ const CommentHeader: React.FC<CommentHeaderProps> = ({
         {time}
       </time>
       <div className="ml-auto flex items-center justify-end">
-        <Voters />
+        <Voters voters={[]} />
         <Score value={score} />
         <VoteButton
           type="PLUS"
