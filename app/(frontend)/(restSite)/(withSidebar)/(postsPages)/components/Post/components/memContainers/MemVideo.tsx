@@ -10,6 +10,10 @@ type MemVideoProps = {
 
 const MemVideo: React.FC<MemVideoProps> = ({ src, gif }) => {
   const ref = useRef<HTMLDivElement>(null);
+  src =
+    `https://res.cloudinary.com/${
+      process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+    }/${gif ? "image" : "video"}/upload/` + src;
   const plyr = useMemo(
     () => (
       <Plyr
@@ -17,7 +21,7 @@ const MemVideo: React.FC<MemVideoProps> = ({ src, gif }) => {
           type: "video",
           sources: [
             {
-              src: src,
+              src,
               type: "video/mp4",
             },
           ],

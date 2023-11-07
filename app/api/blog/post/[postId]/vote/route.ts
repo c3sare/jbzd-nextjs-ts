@@ -1,0 +1,93 @@
+import { NextResponse } from "next/server";
+import prisma from "@/libs/prismadb";
+import { getSession } from "@/actions/getSession";
+import { Prisma } from "@prisma/client";
+
+type BlogPostVoteParams = {
+  params: {
+    postId: string;
+  };
+};
+
+export async function POST(
+  req: Request,
+  { params: { postId } }: BlogPostVoteParams
+) {
+  try {
+    const { method } = await req.json();
+
+    if (!method || !["PLUS", "MINUS"].includes(method))
+      return new NextResponse("Internal error", { status: 400 });
+
+    const session = await getSession();
+
+    if (!session?.user?.id) return new NextResponse("No auth", { status: 403 });
+
+    const userId = session.user.id;
+
+    const currentVote = await prisma.blogPostVote.findUnique({
+      where: {
+        userId_postId: {
+          userId,
+          postId,
+        },
+      },
+    });
+
+    if (currentVote?.method !== method || !currentVote) {
+      await prisma.blogPostVote.upsert({
+        where: {
+          userId_postId: { userId, postId },
+        },
+        update: {
+          method,
+        },
+        create: {
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+          post: {
+            connect: {
+              id: postId,
+            },
+          },
+          method,
+        },
+      });
+    } else {
+      await prisma.blogPostVote.delete({
+        where: {
+          userId_postId: {
+            userId,
+            postId,
+          },
+        },
+      });
+    }
+
+    const votes = await prisma.blogPostVote.findMany({
+      where: {
+        postId,
+      },
+    });
+
+    const plusVotesCount = votes.filter(
+      (item) => item.method === "PLUS"
+    ).length;
+    const minusVotesCount = votes.filter(
+      (item) => item.method === "MINUS"
+    ).length;
+
+    const score = plusVotesCount - minusVotesCount;
+
+    const voteMethod =
+      votes.find((item) => item.userId === userId)?.method || "";
+
+    return NextResponse.json({ score, method: voteMethod });
+  } catch (err) {
+    console.log(err);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}

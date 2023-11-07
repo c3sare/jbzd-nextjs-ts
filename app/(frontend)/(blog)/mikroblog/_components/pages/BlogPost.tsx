@@ -30,12 +30,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
     <div className="relative mb-[25px]">
       <AvatarBox username={post.author.username!} avatar={post.author.image!} />
       <div className="float-left w-full sm:w-[calc(100%_-_70px)] relative">
-        <BlogPostHeader
-          username={post.author.username!}
-          addTime={post.addTime}
-          score={post.score}
-          voters={post.votes}
-        />
+        <BlogPostHeader post={post} />
         <div className="clear-both relative p-[15px_15px_25px] bg-[#313131] group">
           {!!post.questionnaire && (
             <Survey questionnaire={post.questionnaire} />

@@ -1,3 +1,4 @@
+import cloudinaryLoader from "@/cloudinaryLoader";
 import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
@@ -13,6 +14,7 @@ const MemImage: React.FC<MemImageProps> = ({ src, title, postLink }) => {
     <Link href={postLink}>
       <Image
         src={src}
+        loader={cloudinaryLoader}
         alt={title}
         width={600}
         height={300}

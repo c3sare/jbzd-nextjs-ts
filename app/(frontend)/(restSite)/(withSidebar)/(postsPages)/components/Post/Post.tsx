@@ -15,6 +15,7 @@ import { PostType } from "../types/PostType";
 import PostAuthorInfo from "./components/PostAuthorInfo";
 import TagList from "./components/TagList";
 import Categories from "./components/Categories";
+import cloudinaryLoader from "@/cloudinaryLoader";
 
 type PostProps = {
   post: PostType;
@@ -99,6 +100,7 @@ const Post: React.FC<PostProps> = ({
         <Image
           src={post.author?.image || "/images/avatars/default.jpg"}
           alt={post.author?.username || "Avatar"}
+          loader={cloudinaryLoader}
           width={40}
           height={40}
         />

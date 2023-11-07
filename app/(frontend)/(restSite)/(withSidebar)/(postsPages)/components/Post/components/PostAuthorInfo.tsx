@@ -9,6 +9,7 @@ import AuthorInfoButton from "./authorInfo/AuthorInfoButton";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
+import cloudinaryLoader from "@/cloudinaryLoader";
 
 type PostAuthorInfoProps = {
   author: Required<PostType>["author"];
@@ -61,7 +62,7 @@ const PostAuthorInfo: React.FC<PostAuthorInfoProps> = ({
   return (
     <>
       <span className="text-[#777]"> przez </span>
-      <span className="md:relative text-white group">
+      <span className="text-white md:relative group">
         {author.username}
         <div className="absolute z-[9999999] hidden top-full left-0 md:left-[calc(50%_-_10px)] md:translate-x--1/2 group-hover:block max-w-full md:max-w-none">
           <div
@@ -75,6 +76,7 @@ const PostAuthorInfo: React.FC<PostAuthorInfoProps> = ({
                 <Image
                   alt={author.username + " avatar"}
                   width={45}
+                  loader={cloudinaryLoader}
                   height={45}
                   className="rounded-[50%]"
                   src={author.image || "/images/avatars/default.jpg"}

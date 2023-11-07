@@ -6,33 +6,34 @@ import VoteButton from "./components/VoteButton";
 import Score from "./components/Score";
 import Voters from "./components/Voters";
 import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 type BlogPostHeaderProps = {
-  username?: string;
-  addTime: Date;
-  score?: number;
-  voters: BlogPostType["votes"];
+  post: BlogPostType;
 };
 
 type VoteType = "" | "PLUS" | "MINUS";
 
-const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({
-  username,
-  addTime,
-  score = 0,
-  voters,
-}) => {
-  const [vote, setVote] = useState<VoteType>("");
-  const userProfileHref = `/mikroblog/uzytkownik/${username}`;
+const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
+  const [vote, setVote] = useState<VoteType>(post.method);
+  const [score, setScore] = useState<number>(post.score);
+  const userProfileHref = `/mikroblog/uzytkownik/${post.author.username}`;
 
-  const time = getTimeFromLastMessage(addTime);
+  const time = getTimeFromLastMessage(post.addTime);
 
   const handleVoteButton = (type: VoteType) => {
-    setVote((prev) => {
-      if (prev === type) return "";
-
-      return type;
-    });
+    axios
+      .post(`/api/blog/post/${post.id}/vote`, { method: type })
+      .then((res) => res.data)
+      .then((data) => {
+        setVote(data.method);
+        setScore(data.score);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Wystąpił błąd!");
+      });
   };
 
   return (
@@ -41,13 +42,13 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({
         className="min-w-[50px] mr-[20px] relative text-[18px] font-semibold text-white"
         href={userProfileHref}
       >
-        {username}
+        {post.author.username}
       </Link>
       <time className="text-[12px] font-semibold text-[#6e7578] relative bottom-[-2px]">
         <Link href={userProfileHref}>{time}</Link>
       </time>
       <div className="flex items-center justify-center float-right">
-        <Voters voters={voters} />
+        <Voters voters={post.votes} />
         <Score value={score} />
         <VoteButton
           type="PLUS"

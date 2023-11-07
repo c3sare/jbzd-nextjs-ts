@@ -5,9 +5,16 @@ export async function getLatestBlogPosts() {
   try {
     const session = await getSession();
 
-    if (!session?.user) return [];
+    if (!session?.user?.id) return [];
 
     const posts = await prisma.blogPost.findMany({
+      where: {
+        NOT: {
+          parentId: {
+            isSet: true,
+          },
+        },
+      },
       include: {
         questionnaire: {
           include: {
@@ -34,7 +41,7 @@ export async function getLatestBlogPosts() {
             addTime: "desc",
           },
         },
-        comments: {
+        children: {
           orderBy: {
             addTime: "asc",
           },
@@ -49,6 +56,8 @@ export async function getLatestBlogPosts() {
 
     return posts.map((post) => ({
       ...post,
+      method: (post.votes.find((item) => item.userId === session.user!.id)
+        ?.method || "") as "" | "PLUS" | "MINUS",
       score:
         post.votes.filter((item) => item.method === "PLUS").length -
         post.votes.filter((item) => item.method === "MINUS").length,
