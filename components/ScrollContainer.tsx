@@ -55,7 +55,7 @@ const ScrollContainer: React.FC<ScrollContainerProps> = ({
       const startTopPosition = startScrollTop.current;
       const startPosition = startScroll.current;
       const movePosition =
-        (e as MouseEvent).clientY || (e as TouchEvent).touches[0].clientY;
+        (e as MouseEvent).clientY || (e as TouchEvent).touches[0]!.clientY;
 
       const moveDiff = startPosition - movePosition;
 
@@ -113,7 +113,7 @@ const ScrollContainer: React.FC<ScrollContainerProps> = ({
   const handleStartDragging = (e: React.MouseEvent | React.TouchEvent) => {
     startScroll.current =
       (e as React.MouseEvent).clientY ||
-      (e as React.TouchEvent).touches[0].clientY;
+      (e as React.TouchEvent).touches[0]!.clientY;
     startScrollTop.current = Number(
       scrollbarItem.current!.style.top.slice(0, -1)
     );

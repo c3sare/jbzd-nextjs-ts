@@ -22,11 +22,11 @@ const ConversationHistoryElement: React.FC<ConversationHistoryElementProps> = ({
   const [message] = messages;
   const [user] = users;
 
-  const { username } = user;
+  const { username } = user!;
 
   const image = user?.image || "/images/avatars/default.jpg";
 
-  const { body, authorId } = message;
+  const { body, authorId } = message!;
 
   const isISODate = typeof lastMessageAt === "string";
 

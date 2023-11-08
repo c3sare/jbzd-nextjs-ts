@@ -68,10 +68,10 @@ const LightBox: React.FC<PropsWithChildren> = ({ children }) => {
             <Image
               loader={cloudinaryLoader}
               alt="Lightbox image"
-              src={images[currentImage]}
+              src={images[currentImage]!}
               width={1500}
               height={1500}
-              className="max-h-full w-auto"
+              className="w-auto max-h-full"
             />
           </div>
           {images.length > 1 && (
@@ -100,7 +100,7 @@ const LightBox: React.FC<PropsWithChildren> = ({ children }) => {
             onClick={handleCloseLightBox}
             className="absolute top-0 right-0 w-[40px] h-[40px] flex items-center justify-center hover:bg-[rgba(0,_0,_0,_.6)] transition-colors text-[18px] hover:text-[#58e8d2] group/close"
           >
-            <AiOutlineClose className="group-hover/close:scale-75 transition-transform" />
+            <AiOutlineClose className="transition-transform group-hover/close:scale-75" />
           </button>
         </div>
       )}

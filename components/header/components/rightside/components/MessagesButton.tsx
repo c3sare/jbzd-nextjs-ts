@@ -50,7 +50,7 @@ const MessagesButton: React.FC<MessagesButtonProps> = ({
       setConversations((prev) => {
         return [...prev].map((item) => {
           if (item.id === conversation.id) {
-            item.messages[0].seenIds = conversation.messages[0].seenIds;
+            item.messages[0]!.seenIds = conversation.messages[0]!.seenIds;
           }
           return item;
         });
@@ -75,7 +75,7 @@ const MessagesButton: React.FC<MessagesButtonProps> = ({
   }, [userId]);
 
   const unSeenCount = conversations.filter(
-    (item) => !item.messages[0].seenIds.find((subitem) => subitem === userId)
+    (item) => !item.messages[0]!.seenIds.find((subitem) => subitem === userId)
   ).length;
 
   return (
@@ -101,7 +101,7 @@ const MessagesButton: React.FC<MessagesButtonProps> = ({
                 >
                   <Image
                     src={
-                      conversation.users[0].image ||
+                      conversation.users[0]!.image ||
                       "/images/avatars/default.jpg"
                     }
                     width={30}
@@ -111,10 +111,10 @@ const MessagesButton: React.FC<MessagesButtonProps> = ({
                   />
                   <div>
                     <div className="text-[#777] font-bold">
-                      {conversation.users[0].username}
+                      {conversation.users[0]!.username}
                     </div>
                     <p className="m-0 text-white">
-                      {conversation.messages[0].body.slice(0, 25)}
+                      {conversation.messages[0]!.body.slice(0, 25)}
                     </p>
                   </div>
                 </Link>

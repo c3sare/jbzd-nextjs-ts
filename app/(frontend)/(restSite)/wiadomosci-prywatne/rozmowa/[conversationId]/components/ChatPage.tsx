@@ -42,7 +42,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ conversation, userId }) => {
       <ChatHeader
         conversationId={conversation.id}
         lastMessageAt={conversation.lastMessageAt}
-        user={conversation.users[0]}
+        user={conversation.users[0]!}
         userId={userId}
         userBlockedId={blockedId}
       />

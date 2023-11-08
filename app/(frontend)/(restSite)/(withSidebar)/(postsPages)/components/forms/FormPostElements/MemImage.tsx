@@ -73,7 +73,7 @@ function MemImage<T extends FieldValues>({
             accept={allowedFileTypes.join(", ")}
             onChange={(e) => {
               if (e.currentTarget?.files && e.currentTarget.files.length > 0)
-                onDrop(e.currentTarget.files[0]);
+                onDrop(e.currentTarget.files[0]!);
             }}
           />
           <GoCloudUpload fontSize={24} />

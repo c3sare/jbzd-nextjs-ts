@@ -1,3 +1,4 @@
+import { MarkOption } from "@prisma/client";
 import { z } from "zod";
 
 const QuestionnaireSchema = z.object({
@@ -17,7 +18,7 @@ const QuestionnaireSchema = z.object({
     .array()
     .min(2, "Wprowadź przynajmniej 2 odpowiedzi!")
     .max(20, "Nie może być więcej niż 20 odpowiedzi!"),
-  markOption: z.enum(["single", "multiple"]),
+  markOption: z.nativeEnum(MarkOption),
   availableTime: z.enum(["", "1d", "3d", "7d"]),
 });
 

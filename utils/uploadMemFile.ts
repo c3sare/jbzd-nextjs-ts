@@ -8,7 +8,7 @@ const dataTypes: any = {
 
 export default async function uploadMemFile(file: File) {
   const fileTypeExt = file.type;
-  const fileType = fileTypeExt.split("/")[0];
+  const fileType = fileTypeExt.split("/")[0]!;
   const isVideo = fileType === "video";
 
   const resource_type = isVideo ? "video" : undefined;

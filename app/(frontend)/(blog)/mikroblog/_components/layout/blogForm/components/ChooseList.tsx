@@ -65,7 +65,8 @@ const ChooseList: React.FC<ChooseListProps> = ({
           else return prev + 1;
         });
       } else if (e.key === "Enter") {
-        handleSelectOption(autocomplete!.tab[currentOption]);
+        const selectedUser = autocomplete?.tab[currentOption];
+        if (selectedUser) handleSelectOption(selectedUser);
       }
     };
 

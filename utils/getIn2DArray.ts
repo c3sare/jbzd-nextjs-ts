@@ -18,7 +18,7 @@ export default function getIn2DArray(arr: CategoryWithChildren[]) {
     (_item) => []
   );
   arr.forEach((item) => {
-    columns[item.column ? item.column - 1 : 0].push(item);
+    columns[item.column ? item.column - 1 : 0]!.push(item);
   });
   return columns;
 }

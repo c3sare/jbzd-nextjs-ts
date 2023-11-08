@@ -1,5 +1,6 @@
 import { z } from "zod";
 import QuestionnaireSchema from "./QuestionnaireSchema";
+import { FileType } from "@prisma/client";
 
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -23,7 +24,7 @@ const BlogPostSchema = z.object({
   files: z
     .array(
       z.object({
-        type: z.enum(["IMAGE", "VIDEO"]),
+        type: z.nativeEnum(FileType),
         uuid: z.string().uuid(),
         value: z
           .any()

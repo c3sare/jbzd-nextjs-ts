@@ -37,7 +37,7 @@ const SidebarForms = () => {
     );
   });
 
-  const CurrentForm = forms[indexOfCurrentForm].component;
+  const CurrentForm = forms[indexOfCurrentForm]!.component;
 
   const currentFormIndexIsOdd = indexOfCurrentForm % 2 === 1;
 

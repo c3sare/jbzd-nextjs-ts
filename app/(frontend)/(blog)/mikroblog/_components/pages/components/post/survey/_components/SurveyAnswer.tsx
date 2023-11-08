@@ -33,7 +33,7 @@ const SurveyAnswer: React.FC<SurveyAnswerProps> = ({
     multiple: [ImCheckboxUnchecked, ImCheckboxChecked],
   };
 
-  const Icon = icons[markOption][Number(!!answer.isMarked)];
+  const Icon = icons[markOption][Number(!!answer.isMarked)]!;
 
   const percentText = `${votePercent.toFixed(2)}%`;
 
