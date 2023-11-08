@@ -17,19 +17,25 @@ import Comment from "./components/post/comment/Comment";
 import clsx from "clsx";
 import { BlogPostType } from "../../(tabs)/(najnowsze)/_types/BlogPost";
 import Survey from "./components/post/survey/Survey";
+import MoreCommentsBtn from "./components/post/comment/MoreCommentsBtn";
+import CommentForm from "./components/commentForm/CommentForm";
 
 type BlogPostProps = {
   post: BlogPostType;
 };
 
 const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
+  const [defaultCommentText, setDefaultCommentText] = useState<string>("");
+  const [isVisibleCommentForm, setIsVisibleCommentForm] =
+    useState<boolean>(false);
+  const [comments, setComments] = useState(post.children);
   const [isExpandedPostOptions, setIsExpandedPostOptions] =
     useState<boolean>(false);
 
   return (
-    <div className="relative mb-[25px]">
+    <div className="relative mb-[25px] flex">
       <AvatarBox username={post.author.username!} avatar={post.author.image!} />
-      <div className="float-left w-full sm:w-[calc(100%_-_70px)] relative">
+      <div className="w-full sm:w-[calc(100%_-_70px)] relative">
         <BlogPostHeader post={post} />
         <div className="clear-both relative p-[15px_15px_25px] bg-[#313131] group">
           {!!post.questionnaire && (
@@ -39,9 +45,14 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
             images={post.files.filter((item) => item.type === "IMAGE")}
             message={post.text}
           />
-          <ul className="transition-opacity duration-200 ease-in-out sm:opacity-0 group-hover:opacity-100">
+          <ul className="transition-opacity duration-200 ease-in-out sm:opacity-0 group-hover:opacity-100 pt-4">
             <li className="float-left leading-[20px] mr-[15px]">
-              <ActionButton icon={FaReply}>Odpowiedz</ActionButton>
+              <ActionButton
+                onClick={() => setIsVisibleCommentForm(true)}
+                icon={FaReply}
+              >
+                Odpowiedz
+              </ActionButton>
             </li>
             <li className="float-left leading-[20px] mr-[15px]">
               <ActionButton icon={IoLink}>Link</ActionButton>
@@ -82,13 +93,33 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
             )}
           </ul>
         </div>
-        <div className="pt-[20px] bg-[#313131]">
-          <div>
-            <ul className="px-[7.5px] w-full">
-              <Comment />
-            </ul>
-          </div>
-        </div>
+        {post._count.children === 0 && (
+          <>
+            <div className="pt-[20px] bg-[#313131]">
+              <div>
+                <ul className="px-[7.5px] w-full">
+                  {comments.map((comment) => (
+                    <Comment comment={comment} />
+                  ))}
+                  {(post._count.children > 3 ||
+                    comments.length < post._count.children) && (
+                    <li className="w-full pb-[20px]">
+                      <MoreCommentsBtn />
+                    </li>
+                  )}
+                </ul>
+              </div>
+            </div>
+          </>
+        )}
+        {isVisibleCommentForm && (
+          <CommentForm
+            onClose={() => {
+              setIsVisibleCommentForm(false);
+              setDefaultCommentText("");
+            }}
+          />
+        )}
       </div>
     </div>
   );

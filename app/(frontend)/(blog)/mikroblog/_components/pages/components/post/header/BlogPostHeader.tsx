@@ -18,6 +18,7 @@ type VoteType = "" | "PLUS" | "MINUS";
 
 const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
   const session = useSession();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [voters, setVoters] = useState(post.votes);
   const [vote, setVote] = useState<VoteType>(post.method);
   const [score, setScore] = useState<number>(post.score);
@@ -26,6 +27,7 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
   const time = getTimeFromLastMessage(post.addTime);
 
   const handleVoteButton = (type: VoteType) => {
+    setIsLoading(true);
     axios
       .post(`/api/blog/post/${post.id}/vote`, { method: type })
       .then((res) => res.data)
@@ -44,7 +46,8 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
       .catch((err) => {
         console.log(err);
         toast.error("Wystąpił błąd!");
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -60,15 +63,17 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
       </time>
       <div className="flex items-center justify-center float-right">
         <Voters voters={voters} />
-        <Score value={score} />
+        <Score isLoading={isLoading} value={score} />
         <VoteButton
           type="PLUS"
           vote={vote}
+          disabled={isLoading}
           onClick={() => handleVoteButton("PLUS")}
         />
         <VoteButton
           type="MINUS"
           vote={vote}
+          disabled={isLoading}
           onClick={() => handleVoteButton("MINUS")}
         />
       </div>

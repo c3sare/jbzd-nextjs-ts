@@ -7,9 +7,15 @@ type VoteButtonProps = {
   type: "PLUS" | "MINUS";
   vote: "PLUS" | "MINUS" | "";
   onClick?: ButtonHTMLAttributes<HTMLButtonElement>["onClick"];
+  disabled?: boolean;
 };
 
-const VoteButton: React.FC<VoteButtonProps> = ({ type, vote, onClick }) => {
+const VoteButton: React.FC<VoteButtonProps> = ({
+  type,
+  vote,
+  onClick,
+  disabled,
+}) => {
   const icons = {
     PLUS: {
       icon: BiPlus,
@@ -27,9 +33,10 @@ const VoteButton: React.FC<VoteButtonProps> = ({ type, vote, onClick }) => {
 
   return (
     <button
+      disabled={disabled}
       onClick={onClick}
       className={clsx(
-        "w-[24px] h-[24px] p-0 leading-[24px] ml-[2px] inline-block text-center text-[11px] font-semibold transition-all duration-200 ease-in-out",
+        "w-[24px] h-[24px] p-0 leading-[24px] ml-[2px] inline-block text-center text-[11px] font-semibold transition-all duration-200 ease-in-out disabled:opacity-60",
         isActive ? icons[type].className : "bg-[#6e7578] hover:bg-[#565b5d]"
       )}
     >

@@ -15,7 +15,7 @@ const MikroblogLayout: React.FC<PropsWithChildren> = async ({ children }) => {
 
   return (
     <LightBox>
-      <div className="max-w-[1110px] mx-auto px-[15px] mt-[45px] min-h-[calc(100vh_-_97px)]">
+      <div className="max-w-[1110px] mx-auto px-[15px] mt-[45px] pt-2 min-h-[calc(100vh_-_97px)]">
         <div className="mx-[-15px]">
           <div className="hidden md:block float-right w-1/3 relative min-h-[1px] px-[15px]">
             <div>

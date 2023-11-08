@@ -47,6 +47,11 @@ export async function getLatestBlogPosts() {
           },
           take: 3,
         },
+        _count: {
+          select: {
+            children: true,
+          },
+        },
       },
       orderBy: {
         addTime: "desc",

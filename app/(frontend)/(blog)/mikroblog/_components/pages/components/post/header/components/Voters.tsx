@@ -22,7 +22,7 @@ const Voters: React.FC<VotersProps> = ({ voters }) => {
         <AiFillQuestionCircle size={18} />
       </button>
       {isVisible && (
-        <div className="absolute top-full left-[calc(50%_-_20px)] -translate-x-1/2 w-[200px] pt-[10px] z-[11]">
+        <div className="absolute top-full left-[calc(50%_-_20px)] -translate-x-1/2 w-[215px] pt-[10px] z-[11]">
           <div
             className={clsx(
               "w-full p-[10px] bg-[#6e7578] text-white text-[12px] text-left rounded-[5px] shadow-md relative max-h-[250px]",

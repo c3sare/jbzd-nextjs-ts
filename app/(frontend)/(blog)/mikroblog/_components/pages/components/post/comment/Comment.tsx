@@ -10,8 +10,13 @@ import { IoIosMore } from "@react-icons/all-files/io/IoIosMore";
 import ActionButton from "../ActionButton";
 import Rank from "../Rank";
 import CommentHeader from "./CommentHeader";
+import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
 
-const Comment = () => {
+type CommentProps = {
+  comment: BlogPostType["children"][number];
+};
+
+const Comment: React.FC<CommentProps> = ({ comment }) => {
   const [isExpandedPostOptions, setIsExpandedPostOptions] =
     useState<boolean>(false);
 
