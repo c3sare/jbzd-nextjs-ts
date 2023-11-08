@@ -6,7 +6,6 @@ import { BsChevronRight } from "@react-icons/all-files/bs/BsChevronRight";
 
 import { PropsWithChildren, createContext, useRef, useState } from "react";
 import Image from "next/image";
-import cloudinaryLoader from "@/cloudinaryLoader";
 
 export const LightBoxContext = createContext(
   (_images: string[], _index: number) => {}
@@ -66,7 +65,6 @@ const LightBox: React.FC<PropsWithChildren> = ({ children }) => {
             className="h-[80%] my-[10%] max-w-[75%] flex items-center justify-center mx-auto relative"
           >
             <Image
-              loader={cloudinaryLoader}
               alt="Lightbox image"
               src={images[currentImage]!}
               width={1500}

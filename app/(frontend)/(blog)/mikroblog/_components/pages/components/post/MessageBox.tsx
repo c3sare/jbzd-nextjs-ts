@@ -2,7 +2,6 @@ import Image from "next/image";
 import { useContext, useEffect, useRef, useState } from "react";
 import { LightBoxContext } from "../../../LightBox";
 import transformText from "../../_utils/transformText";
-import cloudinaryLoader from "@/cloudinaryLoader";
 import clsx from "clsx";
 
 type MessageBoxProps = {
@@ -57,7 +56,6 @@ const MessageBox: React.FC<MessageBoxProps> = ({ images, message }) => {
               className="w-[51px] m-[5px] h-[51px] block relative overflow-hidden cursor-pointer"
             >
               <Image
-                loader={cloudinaryLoader}
                 key={image.id}
                 src={image.url}
                 alt={`Obrazek mikroblog ${image.id}`}

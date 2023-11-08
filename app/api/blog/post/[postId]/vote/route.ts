@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/libs/prismadb";
 import { getSession } from "@/actions/getSession";
-import { Prisma } from "@prisma/client";
+import { BlogPostVote, Prisma, User } from "@prisma/client";
 
 type BlogPostVoteParams = {
   params: {
@@ -33,9 +33,14 @@ export async function POST(
         },
       },
     });
+    let vote:
+      | (BlogPostVote & {
+          user: Pick<User, "id" | "username" | "image">;
+        })
+      | null = null;
 
     if (currentVote?.method !== method || !currentVote) {
-      await prisma.blogPostVote.upsert({
+      vote = await prisma.blogPostVote.upsert({
         where: {
           userId_postId: { userId, postId },
         },
@@ -54,6 +59,15 @@ export async function POST(
             },
           },
           method,
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              username: true,
+              image: true,
+            },
+          },
         },
       });
     } else {
@@ -85,7 +99,7 @@ export async function POST(
     const voteMethod =
       votes.find((item) => item.userId === userId)?.method || "";
 
-    return NextResponse.json({ score, method: voteMethod });
+    return NextResponse.json({ score, method: voteMethod, vote });
   } catch (err) {
     console.log(err);
     return new NextResponse("Internal error", { status: 500 });

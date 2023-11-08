@@ -8,6 +8,7 @@ import Voters from "./components/Voters";
 import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 type BlogPostHeaderProps = {
   post: BlogPostType;
@@ -16,6 +17,8 @@ type BlogPostHeaderProps = {
 type VoteType = "" | "PLUS" | "MINUS";
 
 const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
+  const session = useSession();
+  const [voters, setVoters] = useState(post.votes);
   const [vote, setVote] = useState<VoteType>(post.method);
   const [score, setScore] = useState<number>(post.score);
   const userProfileHref = `/mikroblog/uzytkownik/${post.author.username}`;
@@ -29,6 +32,14 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
       .then((data) => {
         setVote(data.method);
         setScore(data.score);
+        console.log(data);
+        setVoters((prev) => {
+          const newState = prev.filter(
+            (voter) => voter.user.id !== session.data?.user?.id
+          );
+          if (data.method === "") return newState;
+          else return [data.vote, ...newState];
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -48,7 +59,7 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
         <Link href={userProfileHref}>{time}</Link>
       </time>
       <div className="flex items-center justify-center float-right">
-        <Voters voters={post.votes} />
+        <Voters voters={voters} />
         <Score value={score} />
         <VoteButton
           type="PLUS"

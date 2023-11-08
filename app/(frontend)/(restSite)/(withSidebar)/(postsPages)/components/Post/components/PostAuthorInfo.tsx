@@ -9,7 +9,6 @@ import AuthorInfoButton from "./authorInfo/AuthorInfoButton";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
-import cloudinaryLoader from "@/cloudinaryLoader";
 
 type PostAuthorInfoProps = {
   author: Required<PostType>["author"];
@@ -76,7 +75,6 @@ const PostAuthorInfo: React.FC<PostAuthorInfoProps> = ({
                 <Image
                   alt={author.username + " avatar"}
                   width={45}
-                  loader={cloudinaryLoader}
                   height={45}
                   className="rounded-[50%]"
                   src={author.image || "/images/avatars/default.jpg"}

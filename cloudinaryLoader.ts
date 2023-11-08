@@ -11,7 +11,8 @@ export default function cloudinaryLoader({
   width,
   quality,
 }: cloudinaryLoader) {
-  if (src.indexOf("http") === 0) return src;
+  if (src.indexOf("/") === 0 || src.indexOf("http") === 0)
+    return `/_next/image?url=${src}&w=${width}&q=${quality || 75}`;
 
   const params = ["f_auto", "c_limit", `w_${width}`, `q_${quality || "auto"}`];
 

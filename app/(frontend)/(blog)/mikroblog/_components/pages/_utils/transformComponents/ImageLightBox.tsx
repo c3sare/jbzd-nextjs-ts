@@ -1,4 +1,3 @@
-import cloudinaryLoader from "@/cloudinaryLoader";
 import Image from "next/image";
 import { useContext } from "react";
 import { LightBoxContext } from "../../../LightBox";
@@ -15,13 +14,7 @@ const ImageLightBox: React.FC<ImageLightBoxProps> = ({ src, alt }) => {
       className="cursor-pointer block max-w-[300px]"
       onClick={() => createLightBox([src], 0)}
     >
-      <Image
-        width={300}
-        height={300}
-        loader={cloudinaryLoader}
-        src={src}
-        alt={alt}
-      />
+      <Image width={300} height={300} src={src} alt={alt} />
     </span>
   );
 };
