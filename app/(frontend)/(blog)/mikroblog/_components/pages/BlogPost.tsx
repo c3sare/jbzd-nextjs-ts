@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import { FaReply } from "@react-icons/all-files/fa/FaReply";
 import { IoLink } from "@react-icons/all-files/io5/IoLink";
@@ -31,11 +31,12 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
   const [comments, setComments] = useState(post.children);
   const [isExpandedPostOptions, setIsExpandedPostOptions] =
     useState<boolean>(false);
+  const commentformInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   return (
     <div className="relative mb-[25px] flex">
       <AvatarBox username={post.author.username!} avatar={post.author.image!} />
-      <div className="w-full sm:w-[calc(100%_-_70px)] relative">
+      <div className="w-full md:w-[calc(100%_-_70px)] relative">
         <BlogPostHeader post={post} />
         <div className="clear-both relative p-[15px_15px_25px] bg-[#313131] group">
           {!!post.questionnaire && (
@@ -45,7 +46,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
             images={post.files.filter((item) => item.type === "IMAGE")}
             message={post.text}
           />
-          <ul className="transition-opacity duration-200 ease-in-out sm:opacity-0 group-hover:opacity-100 pt-4">
+          <ul className="pt-4 transition-opacity duration-200 ease-in-out sm:opacity-0 group-hover:opacity-100">
             <li className="float-left leading-[20px] mr-[15px]">
               <ActionButton
                 onClick={() => setIsVisibleCommentForm(true)}
@@ -99,7 +100,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
               <div>
                 <ul className="px-[7.5px] w-full">
                   {comments.map((comment) => (
-                    <Comment comment={comment} />
+                    <Comment key={comment.id} comment={comment} />
                   ))}
                   {(post._count.children > 3 ||
                     comments.length < post._count.children) && (
@@ -114,6 +115,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
         )}
         {isVisibleCommentForm && (
           <CommentForm
+            ref={commentformInputRef}
             onClose={() => {
               setIsVisibleCommentForm(false);
               setDefaultCommentText("");

@@ -8,7 +8,7 @@ import Voters from "./components/Voters";
 import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useSession } from "next-auth/react";
+import { useBlogContext } from "@/app/(frontend)/(blog)/_context/BlogContext";
 
 type BlogPostHeaderProps = {
   post: BlogPostType;
@@ -17,14 +17,15 @@ type BlogPostHeaderProps = {
 type VoteType = "" | "PLUS" | "MINUS";
 
 const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
-  const session = useSession();
+  const {
+    method: { postVote },
+  } = useBlogContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [voters, setVoters] = useState(post.votes);
-  const [vote, setVote] = useState<VoteType>(post.method);
+  const vote = postVote.getMethod(post.id);
   const [score, setScore] = useState<number>(post.score);
   const userProfileHref = `/mikroblog/uzytkownik/${post.author.username}`;
 
-  const time = getTimeFromLastMessage(post.addTime);
+  const time = getTimeFromLastMessage(new Date(post.addTime));
 
   const handleVoteButton = (type: VoteType) => {
     setIsLoading(true);
@@ -32,16 +33,10 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
       .post(`/api/blog/post/${post.id}/vote`, { method: type })
       .then((res) => res.data)
       .then((data) => {
-        setVote(data.method);
         setScore(data.score);
-        console.log(data);
-        setVoters((prev) => {
-          const newState = prev.filter(
-            (voter) => voter.user.id !== session.data?.user?.id
-          );
-          if (data.method === "") return newState;
-          else return [data.vote, ...newState];
-        });
+        postVote.remove(post.id);
+
+        if (data.method !== "") postVote.add(data.vote);
       })
       .catch((err) => {
         console.log(err);
@@ -62,7 +57,7 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
         <Link href={userProfileHref}>{time}</Link>
       </time>
       <div className="flex items-center justify-center float-right">
-        <Voters voters={voters} />
+        <Voters method={vote} voters={post.votes} />
         <Score isLoading={isLoading} value={score} />
         <VoteButton
           type="PLUS"

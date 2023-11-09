@@ -3,12 +3,17 @@ import { AiFillQuestionCircle } from "@react-icons/all-files/ai/AiFillQuestionCi
 import clsx from "clsx";
 import VoterItem from "./VoterItem";
 import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
+import { useBlogContext } from "@/app/(frontend)/(blog)/_context/BlogContext";
 
 type VotersProps = {
   voters: BlogPostType["votes"];
+  method: "" | "PLUS" | "MINUS";
 };
 
-const Voters: React.FC<VotersProps> = ({ voters }) => {
+const Voters: React.FC<VotersProps> = ({ voters, method }) => {
+  const {
+    data: { session },
+  } = useBlogContext();
   const { isVisible, toggleVisible, containerRef } = useDropdownContainer();
 
   return (
@@ -29,10 +34,20 @@ const Voters: React.FC<VotersProps> = ({ voters }) => {
               "after:absolute after:bottom-full after:left-[calc(50%_+_18px)] after:-translate-x-1/2 after:border-[#6e7578] after:border-t-0 after:border-l-[5px] after:border-r-[5px] after:border-b-[5px] after:border-l-transparent after:border-r-transparent after:border-t-transparent"
             )}
           >
-            {voters.length === 0 && (
+            {voters.length === 0 && method === "" && (
               <div className="w-full italic text-center">
                 Nikt jeszcze nie ocenił.
               </div>
+            )}
+            {method !== "" && (
+              <VoterItem
+                key={session.id}
+                user={{
+                  id: session.id,
+                  username: session.username,
+                  vote: method,
+                }}
+              />
             )}
             {voters.map((item) => (
               <VoterItem

@@ -13,7 +13,7 @@ const AvatarBox: React.FC<AvatarBoxProps> = ({
   username,
 }) => {
   return (
-    <div className="min-w-[50px] mr-[20px]">
+    <div className="min-w-[50px] mr-[20px] hidden md:block">
       <div className="relative">
         <Link
           className="w-[50px] h-[50px] float-left rounded-full overflow-hidden text-[#c23d3a]"

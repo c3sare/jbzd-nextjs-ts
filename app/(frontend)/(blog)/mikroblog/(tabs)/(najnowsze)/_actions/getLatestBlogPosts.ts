@@ -42,6 +42,20 @@ export async function getLatestBlogPosts() {
           },
         },
         children: {
+          include: {
+            author: true,
+            votes: {
+              include: {
+                user: {
+                  select: {
+                    id: true,
+                    image: true,
+                    username: true,
+                  },
+                },
+              },
+            },
+          },
           orderBy: {
             addTime: "asc",
           },
@@ -61,11 +75,17 @@ export async function getLatestBlogPosts() {
 
     return posts.map((post) => ({
       ...post,
-      method: (post.votes.find((item) => item.userId === session.user!.id)
-        ?.method || "") as "" | "PLUS" | "MINUS",
+      votes: post.votes.filter((vote) => vote.userId !== session.user!.id),
       score:
         post.votes.filter((item) => item.method === "PLUS").length -
         post.votes.filter((item) => item.method === "MINUS").length,
+      children: post.children.map((child) => ({
+        ...child,
+        score:
+          child.votes.filter((item) => item.method === "PLUS").length -
+          child.votes.filter((item) => item.method === "MINUS").length,
+        votes: child.votes.filter((vote) => vote.userId !== session.user!.id),
+      })),
     }));
   } catch (err) {
     console.log(err);

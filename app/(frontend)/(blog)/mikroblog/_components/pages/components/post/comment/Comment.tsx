@@ -21,7 +21,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
     useState<boolean>(false);
 
   return (
-    <li className="group w-full">
+    <li className="w-full group">
       <div className="border-t border-t-[hsla(198,_4%,_45%,.5)] flex">
         <div className="w-[30px] mt-[17px] h-[30px] mr-[15px] relative float-left min-w-auto">
           <Link href="/mikroblog/uzytkownik/c3sare">
@@ -36,7 +36,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
           <Rank className="scale-[.7] absolute right-[-10px] bottom-[-15px]" />
         </div>
         <div className="w-[calc(100%_-_45px)] relative flex flex-col">
-          <CommentHeader addTime={new Date()} />
+          <CommentHeader comment={comment} />
           <div className="p-[0_0_35px] text-left clear-both relative bg-[#313131]">
             <span className="overflow-hidden">
               <p className="break-words text-[13px] text-[#ddd] mb-[10px] leading-[17px]">
@@ -48,7 +48,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
                 </span>
               </p>
             </span>
-            <ul className="transition-opacity sm:opacity-0 ease-in-out duration-200 group-hover:opacity-100">
+            <ul className="transition-opacity duration-200 ease-in-out sm:opacity-0 group-hover:opacity-100">
               <li className="float-left leading-[20px] mr-[15px]">
                 <ActionButton icon={FaReply}>Odpowiedz</ActionButton>
               </li>
