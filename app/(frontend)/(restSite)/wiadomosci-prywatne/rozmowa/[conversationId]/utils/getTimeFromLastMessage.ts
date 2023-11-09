@@ -1,5 +1,9 @@
+import { parseISO } from "date-fns";
+
 export default function getTimeFromLastMessage(date: Date | null) {
   if (!date) return "--";
+
+  if (typeof date === "string") date = parseISO(date);
 
   const now = new Date().getTime();
   const past = date.getTime();

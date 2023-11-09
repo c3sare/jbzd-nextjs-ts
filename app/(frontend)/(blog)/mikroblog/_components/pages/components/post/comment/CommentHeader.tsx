@@ -3,11 +3,11 @@ import Link from "next/link";
 import Voters from "../header/components/Voters";
 import Score from "../header/components/Score";
 import VoteButton from "../header/components/VoteButton";
-import { useBlogContext } from "@/app/(frontend)/(blog)/_context/BlogContext";
 import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 type VoteType = "" | "PLUS" | "MINUS";
 
@@ -16,15 +16,14 @@ type CommentHeaderProps = {
 };
 
 const CommentHeader: React.FC<CommentHeaderProps> = ({ comment }) => {
-  const {
-    method: { postVote },
-  } = useBlogContext();
+  const session = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const vote = postVote.getMethod(comment.id);
+  const [voters, setVoters] = useState(comment.votes);
+  const [vote, setVote] = useState<VoteType>(comment.method);
   const [score, setScore] = useState<number>(comment.score);
   const userProfileHref = `/mikroblog/uzytkownik/${comment.author.username}`;
 
-  const time = getTimeFromLastMessage(new Date(comment.addTime));
+  const time = getTimeFromLastMessage(comment.addTime);
 
   const handleVoteButton = (type: VoteType) => {
     setIsLoading(true);
@@ -32,10 +31,16 @@ const CommentHeader: React.FC<CommentHeaderProps> = ({ comment }) => {
       .post(`/api/blog/post/${comment.id}/vote`, { method: type })
       .then((res) => res.data)
       .then((data) => {
+        setVote(data.method);
         setScore(data.score);
-        postVote.remove(comment.id);
-
-        if (data.method !== "") postVote.add(data.vote);
+        console.log(data);
+        setVoters((prev) => {
+          const newState = prev.filter(
+            (voter) => voter.user.id !== session.data?.user?.id
+          );
+          if (data.method === "") return newState;
+          else return [data.vote, ...newState];
+        });
       })
       .catch((err) => {
         console.log(err);

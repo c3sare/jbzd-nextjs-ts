@@ -54,6 +54,9 @@ export async function getLatestBlogPosts() {
                   },
                 },
               },
+              orderBy: {
+                addTime: "desc",
+              },
             },
           },
           orderBy: {
@@ -75,16 +78,20 @@ export async function getLatestBlogPosts() {
 
     return posts.map((post) => ({
       ...post,
-      votes: post.votes.filter((vote) => vote.userId !== session.user!.id),
+      method: (post.votes.find((vote) => vote.userId === session.user!.id)
+        ?.method || "") as "" | "PLUS" | "MINUS",
       score:
         post.votes.filter((item) => item.method === "PLUS").length -
         post.votes.filter((item) => item.method === "MINUS").length,
+      votes: post.votes.filter((item) => item.userId !== session.user?.id),
       children: post.children.map((child) => ({
         ...child,
+        method: (child.votes.find((vote) => vote.userId === session.user!.id)
+          ?.method || "") as "" | "PLUS" | "MINUS",
         score:
           child.votes.filter((item) => item.method === "PLUS").length -
           child.votes.filter((item) => item.method === "MINUS").length,
-        votes: child.votes.filter((vote) => vote.userId !== session.user!.id),
+        votes: child.votes.filter((item) => item.userId !== session.user?.id),
       })),
     }));
   } catch (err) {

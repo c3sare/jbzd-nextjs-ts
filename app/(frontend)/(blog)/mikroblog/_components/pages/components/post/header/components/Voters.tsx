@@ -3,7 +3,7 @@ import { AiFillQuestionCircle } from "@react-icons/all-files/ai/AiFillQuestionCi
 import clsx from "clsx";
 import VoterItem from "./VoterItem";
 import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
-import { useBlogContext } from "@/app/(frontend)/(blog)/_context/BlogContext";
+import { useSession } from "next-auth/react";
 
 type VotersProps = {
   voters: BlogPostType["votes"];
@@ -11,9 +11,7 @@ type VotersProps = {
 };
 
 const Voters: React.FC<VotersProps> = ({ voters, method }) => {
-  const {
-    data: { session },
-  } = useBlogContext();
+  const session = useSession();
   const { isVisible, toggleVisible, containerRef } = useDropdownContainer();
 
   return (
@@ -39,12 +37,12 @@ const Voters: React.FC<VotersProps> = ({ voters, method }) => {
                 Nikt jeszcze nie ocenił.
               </div>
             )}
-            {method !== "" && (
+            {method !== "" && !!session?.data?.user && (
               <VoterItem
-                key={session.id}
+                key={session.data.user.id}
                 user={{
-                  id: session.id,
-                  username: session.username,
+                  id: session.data.user.id,
+                  username: session.data.user.username,
                   vote: method,
                 }}
               />
