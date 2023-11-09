@@ -11,12 +11,10 @@ export default async function PageMainLayout({
 }) {
   const blogContextData = await getCurrentUserBlogData();
 
-  if (!blogContextData) return new Error("Internal error");
-
-  const parsedValue = JSON.parse(JSON.stringify(blogContextData));
+  if (!blogContextData) return null;
 
   return (
-    <BlogContextProvider value={parsedValue}>
+    <BlogContextProvider value={blogContextData}>
       <MikroblogHeader />
       {children}
       <Footer>
