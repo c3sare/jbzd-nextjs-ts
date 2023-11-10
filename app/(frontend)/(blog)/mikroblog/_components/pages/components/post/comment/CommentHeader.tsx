@@ -3,11 +3,11 @@ import Link from "next/link";
 import Voters from "../header/components/Voters";
 import Score from "../header/components/Score";
 import VoteButton from "../header/components/VoteButton";
-import { useBlogContext } from "@/app/(frontend)/(blog)/_context/BlogContext";
 import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type VoteType = "" | "PLUS" | "MINUS";
 
@@ -16,11 +16,9 @@ type CommentHeaderProps = {
 };
 
 const CommentHeader: React.FC<CommentHeaderProps> = ({ comment }) => {
-  const {
-    method: { postVote },
-  } = useBlogContext();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const vote = postVote.getMethod(comment.id);
+  const [vote, setVote] = useState<VoteType>(comment.method);
   const [score, setScore] = useState<number>(comment.score);
   const userProfileHref = `/mikroblog/uzytkownik/${comment.author.username}`;
 
@@ -33,9 +31,8 @@ const CommentHeader: React.FC<CommentHeaderProps> = ({ comment }) => {
       .then((res) => res.data)
       .then((data) => {
         setScore(data.score);
-        postVote.remove(comment.id);
-
-        if (data.method !== "") postVote.add(data.vote);
+        setVote(data.method);
+        router.refresh();
       })
       .catch((err) => {
         console.log(err);

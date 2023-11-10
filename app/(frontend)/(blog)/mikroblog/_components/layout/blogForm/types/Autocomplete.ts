@@ -4,5 +4,5 @@ export type Autocomplete = {
   pharse: string;
   type: "user" | "tag";
   index: number;
-  tab?: { id: string; username: string }[];
+  tab?: { id: string; name: string }[];
 } | null;

@@ -16,19 +16,20 @@ export async function POST(req: Request) {
     if (!session?.user?.id)
       return new NextResponse("No authorization", { status: 403 });
 
-    const users = await prisma.user.findMany({
+    const tags = await prisma.blogTag.findMany({
       where: {
-        username: {
+        name: {
           startsWith: pharse,
         },
       },
       select: {
         id: true,
-        username: true,
+        name: true,
       },
+      take: 10,
     });
 
-    return NextResponse.json(users);
+    return NextResponse.json(tags);
   } catch (err) {
     console.log(err);
     return new NextResponse("Internal error", { status: 500 });

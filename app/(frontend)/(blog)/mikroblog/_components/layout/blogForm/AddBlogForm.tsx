@@ -30,6 +30,7 @@ import Button from "./components/Button";
 import ErrorInfo from "./components/ErrorInfo";
 import Textarea from "./components/Textarea";
 import QuestionnaireForm from "./components/questionnaire/QuestionnaireForm";
+import BlogPostTextarea from "./components/BlogPostTextarea";
 
 const AddBlogForm = () => {
   const [isVisibleQuestionnaire, setIsVisibleQuestionnaire] =
@@ -162,10 +163,10 @@ const AddBlogForm = () => {
           <div>
             <div className="relative">
               <div className="relative">
-                <Textarea
+                <BlogPostTextarea
+                  isActive={unRolled}
                   placeholder="Dodaj nowy wpis..."
                   onFocus={() => setUnrolled(true)}
-                  isActive={unRolled}
                   id="message"
                   ref={messageRef}
                 />

@@ -8,7 +8,7 @@ import Voters from "./components/Voters";
 import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useBlogContext } from "@/app/(frontend)/(blog)/_context/BlogContext";
+import { useRouter } from "next/navigation";
 
 type BlogPostHeaderProps = {
   post: BlogPostType;
@@ -17,11 +17,9 @@ type BlogPostHeaderProps = {
 type VoteType = "" | "PLUS" | "MINUS";
 
 const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
-  const {
-    method: { postVote },
-  } = useBlogContext();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const vote = postVote.getMethod(post.id);
+  const [vote, setVote] = useState<VoteType>(post.method);
   const [score, setScore] = useState<number>(post.score);
   const userProfileHref = `/mikroblog/uzytkownik/${post.author.username}`;
 
@@ -33,10 +31,9 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
       .post(`/api/blog/post/${post.id}/vote`, { method: type })
       .then((res) => res.data)
       .then((data) => {
+        setVote(data.method);
         setScore(data.score);
-        postVote.remove(post.id);
-
-        if (data.method !== "") postVote.add(data.vote);
+        router.refresh();
       })
       .catch((err) => {
         console.log(err);

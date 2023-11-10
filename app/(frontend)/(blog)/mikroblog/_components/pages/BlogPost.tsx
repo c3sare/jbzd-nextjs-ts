@@ -49,7 +49,12 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
           <ul className="pt-4 transition-opacity duration-200 ease-in-out sm:opacity-0 group-hover:opacity-100">
             <li className="float-left leading-[20px] mr-[15px]">
               <ActionButton
-                onClick={() => setIsVisibleCommentForm(true)}
+                onClick={() => {
+                  if (commentformInputRef.current)
+                    commentformInputRef.current.focus();
+
+                  setIsVisibleCommentForm(true);
+                }}
                 icon={FaReply}
               >
                 Odpowiedz
@@ -120,6 +125,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
               setIsVisibleCommentForm(false);
               setDefaultCommentText("");
             }}
+            defaultCommentText={defaultCommentText}
           />
         )}
       </div>

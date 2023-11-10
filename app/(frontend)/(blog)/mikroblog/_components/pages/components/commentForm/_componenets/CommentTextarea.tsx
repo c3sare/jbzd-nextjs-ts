@@ -1,17 +1,12 @@
 import clsx from "clsx";
-import {
-  type MutableRefObject,
-  useState,
-  forwardRef,
-  useRef,
-  useEffect,
-} from "react";
+import { useState, forwardRef, useRef, useEffect } from "react";
 
 import { FaBold } from "@react-icons/all-files/fa/FaBold";
 import { FaItalic } from "@react-icons/all-files/fa/FaItalic";
 import { FaQuoteRight } from "@react-icons/all-files/fa/FaQuoteRight";
 
 import EditorButton from "@/app/(frontend)/(blog)/mikroblog/_components/layout/blogForm/components/EditorButton";
+import Textarea from "../../../../layout/blogForm/components/Textarea";
 
 const CommentTextarea: React.ForwardRefRenderFunction<HTMLTextAreaElement> = (
   {},
@@ -49,14 +44,11 @@ const CommentTextarea: React.ForwardRefRenderFunction<HTMLTextAreaElement> = (
   return (
     <div className="float-left relative w-full md:w-[calc(100%_-_45px)] max-h-full transition-all ease-in-out block overflow-hidden">
       <div className="relative">
-        <textarea
-          ref={(e) => {
-            if (ref)
-              (ref as MutableRefObject<HTMLTextAreaElement>).current = e!;
-            messageRef.current = e;
-          }}
+        <Textarea
+          id="message"
           placeholder="Napisz coś od siebie..."
           onFocus={() => setIsExpanded(true)}
+          ref={messageRef}
           className={clsx(
             "placeholder:text-zinc-500 placeholder:text-[12px] resize-none overflow-hidden ml-[5px] leading-[24px] float-none transition-all duration-200 text-[16px] bg-black p-[10px] w-full text-white outline-none",
             isExpanded ? "h-[100px]" : "h-[48px]"

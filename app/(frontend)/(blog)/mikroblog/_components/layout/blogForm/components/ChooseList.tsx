@@ -25,15 +25,20 @@ const ChooseList: React.FC<ChooseListProps> = ({
   const [currentOption, setCurrentOption] = useState<number>(0);
 
   const handleSelectOption = useCallback(
-    (item: { id: string; username: string }) => {
+    (item: { id: string; name: string }) => {
       if (textAreaRef.current) {
         const beforeText = textAreaRef.current.value.slice(
           0,
           autocomplete!.index
         );
         const afterText = textAreaRef.current.value.slice(autocomplete!.index);
-        const searchVal = "@" + autocomplete!.pharse;
-        const replaceToVal = "@[" + item.username + "]";
+        const searchVal =
+          (autocomplete!.type === "user" ? "@" : "#") + autocomplete!.pharse;
+        const replaceToVal =
+          autocomplete!.type === "user"
+            ? "@[" + item.name + "]"
+            : "#" + item.name;
+        console.log({ searchVal, replaceToVal });
         const replaceVal = beforeText
           .split(" ")
           .reverse()
@@ -52,7 +57,8 @@ const ChooseList: React.FC<ChooseListProps> = ({
 
   useEffect(() => {
     const handleArrowNavigation = (e: KeyboardEvent) => {
-      if (!autocomplete?.tab || autocomplete.tab.length <= 1) return;
+      if (!isFocused) return;
+      if (!autocomplete?.tab || autocomplete.tab.length < 1) return;
 
       if (e.key === "ArrowUp") {
         setCurrentOption((prev) => {
@@ -65,8 +71,10 @@ const ChooseList: React.FC<ChooseListProps> = ({
           else return prev + 1;
         });
       } else if (e.key === "Enter") {
-        const selectedUser = autocomplete?.tab[currentOption];
-        if (selectedUser) handleSelectOption(selectedUser);
+        console.log("entered");
+        const selectedItem = autocomplete?.tab[currentOption];
+        console.log(selectedItem);
+        if (selectedItem) handleSelectOption(selectedItem);
       }
     };
 
@@ -98,7 +106,7 @@ const ChooseList: React.FC<ChooseListProps> = ({
             key={item.id}
             onClick={() => handleSelectOption(item)}
           >
-            {item.username}
+            {item.name}
           </li>
         ))}
       </ul>

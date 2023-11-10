@@ -26,9 +26,15 @@ export async function POST(req: Request) {
         id: true,
         username: true,
       },
+      take: 10,
     });
 
-    return NextResponse.json(users);
+    return NextResponse.json(
+      users.map((user) => ({
+        id: user.id,
+        name: user.username,
+      }))
+    );
   } catch (err) {
     console.log(err);
     return new NextResponse("Internal error", { status: 500 });

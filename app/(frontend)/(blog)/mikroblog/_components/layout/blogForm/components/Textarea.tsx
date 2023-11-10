@@ -1,11 +1,11 @@
 import useZodFormContext from "@/hooks/useZodFormContext";
 import { getCaretPosition } from "@/utils/getCaretPosition";
 import axios from "axios";
-import clsx from "clsx";
 import {
   ButtonHTMLAttributes,
   ChangeEvent,
   ForwardedRef,
+  HTMLAttributes,
   MutableRefObject,
   forwardRef,
   useEffect,
@@ -24,10 +24,11 @@ type TextareaProps<T extends FieldValues> = {
   placeholder: string;
   onFocus?: ButtonHTMLAttributes<HTMLTextAreaElement>["onFocus"];
   isActive?: boolean;
+  className?: HTMLAttributes<HTMLTextAreaElement>["className"];
 };
 
 const Textarea = <T extends FieldValues>(
-  { id, placeholder, onFocus, isActive }: TextareaProps<T>,
+  { id, placeholder, onFocus, className }: TextareaProps<T>,
   ref: ForwardedRef<HTMLTextAreaElement>
 ) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -38,6 +39,7 @@ const Textarea = <T extends FieldValues>(
 
   useEffect(() => {
     const handleHideAutocomplete = (e: KeyboardEvent) => {
+      if (!isFocused) return;
       if (e.key === "Escape") setAutocomplete(null);
     };
     if (autocomplete) {
@@ -48,7 +50,9 @@ const Textarea = <T extends FieldValues>(
 
     return () =>
       window.removeEventListener("keydown", handleHideAutocomplete, true);
-  }, [autocomplete]);
+  }, [autocomplete, isFocused]);
+
+  useEffect(() => {});
 
   const getList = (type: "user" | "tag", pharse: string) => {
     const endpoint = `/api/blog/${type}/autocomplete`;
@@ -63,6 +67,7 @@ const Textarea = <T extends FieldValues>(
               if (prev !== null) {
                 const newState = { ...prev };
                 newState.tab = data;
+                newState.type = type;
 
                 return newState;
               }
@@ -142,14 +147,7 @@ const Textarea = <T extends FieldValues>(
           )
             e.preventDefault();
         }}
-        className={clsx(
-          "mb-[-3px] float-none bg-black p-[10px] w-full text-white",
-          "resize-none overflow-hidden leading-[24px] text-[18px]",
-          "placeholder:text-zinc-500 outline-none",
-          isActive ? "h-[100px]" : "h-[48px]",
-          "border-l-2",
-          isActive ? "border-l-black" : "border-l-[#94b424]"
-        )}
+        className={className}
         {...registerReturn}
         onBlur={(e) => {
           registerReturn.onBlur(e);

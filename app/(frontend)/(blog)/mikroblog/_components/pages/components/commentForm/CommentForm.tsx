@@ -11,17 +11,22 @@ import useZodForm from "@/hooks/useZodForm";
 
 import Form from "@/components/forms/ZodForm";
 import BlogCommentSchema from "@/validators/BlogCommentSchema";
+import Textarea from "../../../layout/blogForm/components/Textarea";
 
 type CommentFormProps = {
   onClose: () => void;
+  defaultCommentText: string;
 };
 
 const CommentForm: React.ForwardRefRenderFunction<
   HTMLTextAreaElement,
   CommentFormProps
-> = ({ onClose }, ref) => {
+> = ({ onClose, defaultCommentText }, ref) => {
   const formHook = useZodForm({
     schema: BlogCommentSchema,
+    defaultValues: {
+      message: defaultCommentText,
+    },
   });
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const session = useSession();
@@ -42,7 +47,7 @@ const CommentForm: React.ForwardRefRenderFunction<
           alt="Avatar"
         />
       </span>
-      <CommentTextarea ref={ref} />
+      <CommentTextarea />
       <ul className="flex relative top-2 left-[5px] mb-2 md:ml-[30px]">
         <li className="w-[50px] h-[50px] m-1 leading-0 relative border-2 border-[#6e7578] rounded-[5px]">
           <img

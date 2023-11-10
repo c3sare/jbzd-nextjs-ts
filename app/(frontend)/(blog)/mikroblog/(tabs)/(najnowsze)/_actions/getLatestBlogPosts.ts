@@ -1,6 +1,8 @@
 import { getSession } from "@/actions/getSession";
 import prisma from "@/libs/prismadb";
 
+type TVote = "" | "PLUS" | "MINUS";
+
 export async function getLatestBlogPosts() {
   try {
     const session = await getSession();
@@ -79,12 +81,16 @@ export async function getLatestBlogPosts() {
       score:
         post.votes.filter((item) => item.method === "PLUS").length -
         post.votes.filter((item) => item.method === "MINUS").length,
+      method: (post.votes.find((vote) => vote.userId === session.user!.id)
+        ?.method || "") as TVote,
       children: post.children.map((child) => ({
         ...child,
         score:
           child.votes.filter((item) => item.method === "PLUS").length -
           child.votes.filter((item) => item.method === "MINUS").length,
         votes: child.votes.filter((vote) => vote.userId !== session.user!.id),
+        method: (child.votes.find((vote) => vote.userId === session.user!.id)
+          ?.method || "") as TVote,
       })),
     }));
   } catch (err) {
