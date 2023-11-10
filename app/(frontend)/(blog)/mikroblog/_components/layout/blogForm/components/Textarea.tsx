@@ -86,7 +86,10 @@ const Textarea = <T extends FieldValues>(
     style.removeProperty("height");
     style.height = scrollHeight + "px";
     if (selectionStart === selectionEnd) {
-      const val = value.slice(0, selectionStart);
+      let val = value.slice(0, selectionStart);
+      const spaceIndex = val.lastIndexOf(" ") === -1 ? 0 : val.lastIndexOf(" ");
+      val = val.slice(spaceIndex);
+      console.log(val);
       const indexOfAt =
         val.lastIndexOf("@") > -1 ? val.lastIndexOf("@") : undefined;
       const indexOfHash =
@@ -102,7 +105,7 @@ const Textarea = <T extends FieldValues>(
           if (usernameRegex.test(currentMark) || tagRegex.test(currentMark)) {
             const { x, y } = getCaretPosition(
               e.target,
-              indexOfAt! || indexOfHash!
+              (indexOfAt! || indexOfHash!) + 1
             );
             if (timeout.current !== null) clearTimeout(timeout.current);
             timeout.current = null;

@@ -71,9 +71,7 @@ const ChooseList: React.FC<ChooseListProps> = ({
           else return prev + 1;
         });
       } else if (e.key === "Enter") {
-        console.log("entered");
         const selectedItem = autocomplete?.tab[currentOption];
-        console.log(selectedItem);
         if (selectedItem) handleSelectOption(selectedItem);
       }
     };
@@ -91,8 +89,8 @@ const ChooseList: React.FC<ChooseListProps> = ({
     <div
       className="text-white absolute bg-[#4a4a4a] text-[12px] min-w-[140px] max-w-[180px] max-h-[200px] overflow-y-auto z-[999]"
       style={{
-        top: autocomplete.y + 40 + "px",
-        left: autocomplete.x + 20 + "px",
+        top: autocomplete.y + 35 + "px",
+        left: autocomplete.x + 10 + "px",
       }}
     >
       <ul>
