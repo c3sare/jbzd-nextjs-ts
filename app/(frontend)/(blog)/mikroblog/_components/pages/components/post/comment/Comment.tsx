@@ -11,12 +11,14 @@ import ActionButton from "../ActionButton";
 import Rank from "../Rank";
 import CommentHeader from "./CommentHeader";
 import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
+import MessageBox from "../MessageBox";
 
 type CommentProps = {
   comment: BlogPostType["children"][number];
+  handleReplyComment: (defaultValue: string) => void;
 };
 
-const Comment: React.FC<CommentProps> = ({ comment }) => {
+const Comment: React.FC<CommentProps> = ({ comment, handleReplyComment }) => {
   const [isExpandedPostOptions, setIsExpandedPostOptions] =
     useState<boolean>(false);
 
@@ -26,7 +28,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
         <div className="w-[30px] mt-[17px] h-[30px] mr-[15px] relative float-left min-w-auto">
           <Link href="/mikroblog/uzytkownik/c3sare">
             <Image
-              src="/images/avatars/default.jpg"
+              src={comment.author.image || "/images/avatars/default.jpg"}
               alt="Avatar"
               width={30}
               height={30}
@@ -38,19 +40,17 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
         <div className="w-[calc(100%_-_45px)] relative flex flex-col">
           <CommentHeader comment={comment} />
           <div className="p-[0_0_35px] text-left clear-both relative bg-[#313131]">
-            <span className="overflow-hidden">
-              <p className="break-words text-[13px] text-[#ddd] mb-[10px] leading-[17px]">
-                <span className="overflow-hidden">
-                  <span className="block">
-                    Wino to nie kohol. Wino to dzieci w starożytnym Rzymie piły
-                    przed szkołą na śniadanie.
-                  </span>
-                </span>
-              </p>
-            </span>
+            <MessageBox message={comment.text} images={comment.files} />
             <ul className="transition-opacity duration-200 ease-in-out sm:opacity-0 group-hover:opacity-100">
               <li className="float-left leading-[20px] mr-[15px]">
-                <ActionButton icon={FaReply}>Odpowiedz</ActionButton>
+                <ActionButton
+                  onClick={() =>
+                    handleReplyComment(`@[${comment.author.username}]`)
+                  }
+                  icon={FaReply}
+                >
+                  Odpowiedz
+                </ActionButton>
               </li>
               <li
                 className={clsx(

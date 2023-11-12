@@ -28,7 +28,13 @@ export async function getLatestBlogPosts() {
             },
           },
         },
-        author: true,
+        author: {
+          select: {
+            id: true,
+            username: true,
+            image: true,
+          },
+        },
         votes: {
           include: {
             user: {
@@ -45,7 +51,13 @@ export async function getLatestBlogPosts() {
         },
         children: {
           include: {
-            author: true,
+            author: {
+              select: {
+                id: true,
+                username: true,
+                image: true,
+              },
+            },
             votes: {
               include: {
                 user: {

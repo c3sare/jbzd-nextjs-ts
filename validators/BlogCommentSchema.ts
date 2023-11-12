@@ -7,7 +7,6 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/jpg",
   "image/png",
   "image/gif",
-  "video/mp4",
 ];
 
 const BlogCommentSchema = z.object({
@@ -60,8 +59,7 @@ const BlogCommentSchema = z.object({
               return true;
             },
             {
-              message:
-                "Obsługiwane rozszerzenia to .jpg, .jpeg, .png .gif .mp4",
+              message: "Obsługiwane rozszerzenia to .jpg, .jpeg, .png .gif",
             }
           ),
       })

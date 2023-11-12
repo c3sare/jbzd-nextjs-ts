@@ -100,6 +100,10 @@ const Post: React.FC<PostProps> = ({
           src={post.author?.image || "/images/avatars/default.jpg"}
           alt={post.author?.username || "Avatar"}
           width={40}
+          placeholder="blur"
+          blurDataURL={`/api/blur/${encodeURIComponent(
+            post.author?.image || "/images/avatars/default.jpg"
+          )}`}
           height={40}
         />
       </Link>

@@ -41,7 +41,7 @@ const SurveyAnswer: React.FC<SurveyAnswerProps> = ({
     <li key={answer.id} className="w-full mb-[8px] group/survey relative">
       <button
         onClick={onClick}
-        className="p-[5px_10px] w-full flex items-center justify-between bg-[#1f1f1f] relative"
+        className="p-[5px_10px] w-full flex items-center justify-between bg-[#1f1f1f] relative disabled:opacity-30"
         disabled={disabled}
       >
         <span

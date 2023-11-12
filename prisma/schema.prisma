@@ -389,6 +389,7 @@ model BlogPost {
   addTime       DateTime            @default(now())
   files         BlogPostFile[]
   text          String
+  slug          String
   tagIds        String[]            @db.ObjectId
   tags          BlogTag[]           @relation(fields: [tagIds], references: [id])
   observedByIds String[]            @db.ObjectId

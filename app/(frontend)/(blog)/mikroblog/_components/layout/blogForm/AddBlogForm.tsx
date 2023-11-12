@@ -28,11 +28,13 @@ import useZodForm from "@/hooks/useZodForm";
 import LabelCheckbox from "./components/LabelCheckbox";
 import Button from "./components/Button";
 import ErrorInfo from "./components/ErrorInfo";
-import Textarea from "./components/Textarea";
 import QuestionnaireForm from "./components/questionnaire/QuestionnaireForm";
 import BlogPostTextarea from "./components/BlogPostTextarea";
+import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
+import { useRouter } from "next/navigation";
 
 const AddBlogForm = () => {
+  const router = useRouter();
   const [isVisibleQuestionnaire, setIsVisibleQuestionnaire] =
     useState<boolean>(false);
   const formHook = useZodForm({
@@ -138,6 +140,8 @@ const AddBlogForm = () => {
       .then((res) => res.data)
       .then((data) => {
         resetForm();
+        router.refresh();
+        // router.push(`/mikroblog/${data.id}/${}`)
       })
       .catch((err) => {
         toast.error("Wystąpił błąd!");
@@ -153,7 +157,7 @@ const AddBlogForm = () => {
   const questionnaire = formHook.watch("questionnaire");
 
   return (
-    <>
+    <div className="w-full relative">
       <Form
         className="my-[25px] relative"
         formHook={formHook}
@@ -283,7 +287,12 @@ const AddBlogForm = () => {
           </li>
         ))}
       </ul>
-    </>
+      {formHook.isLoading && (
+        <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,_0,_0,_.5)] flex items-center justify-center">
+          <BiLoaderAlt size={60} className="animate-spin text-zinc-400" />
+        </div>
+      )}
+    </div>
   );
 };
 

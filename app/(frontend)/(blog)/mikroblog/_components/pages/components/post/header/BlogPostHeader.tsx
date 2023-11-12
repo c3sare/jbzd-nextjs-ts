@@ -21,7 +21,7 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [vote, setVote] = useState<VoteType>(post.method);
   const [score, setScore] = useState<number>(post.score);
-  const userProfileHref = `/mikroblog/uzytkownik/${post.author.username}`;
+  const userProfileHref = `/mikroblog/uzytkownik/${post.author.id}/${post.author.username}`;
 
   const time = getTimeFromLastMessage(new Date(post.addTime));
 
@@ -51,7 +51,7 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
         {post.author.username}
       </Link>
       <time className="text-[12px] font-semibold text-[#6e7578] relative bottom-[-2px]">
-        <Link href={userProfileHref}>{time}</Link>
+        <Link href={`/mikroblog/post/${post.id}/${post.slug}`}>{time}</Link>
       </time>
       <div className="flex items-center justify-center float-right">
         <Voters method={vote} voters={post.votes} />

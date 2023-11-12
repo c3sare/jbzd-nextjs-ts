@@ -1,29 +1,40 @@
+import { getSession } from "@/actions/getSession";
 import formDataToObject from "@/utils/formDataToObject";
-import BlogPostSchema from "@/validators/BlogPostSchema";
+import BlogCommentSchema from "@/validators/BlogCommentSchema";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/libs/prismadb";
-import uploadMemFile from "@/utils/uploadMemFile";
-import { auth } from "@/auth";
 import { Prisma } from "@prisma/client";
+import uploadMemFile from "@/utils/uploadMemFile";
 import createSlugFromTitle from "@/utils/createSlugFromTitle";
+
+type BlogPostParams = {
+  params: {
+    postId: string;
+  };
+};
 
 const tagRegex = /#([a-zA-Z0-9]){3,32}/gim;
 
-export async function PUT(req: NextRequest) {
+export async function PUT(
+  request: NextRequest,
+  { params: { postId } }: BlogPostParams
+) {
+  if (!postId) return new NextResponse("No postId", { status: 400 });
+
   try {
-    const session = await auth();
+    const session = await getSession();
 
     if (!session?.user?.id) return new NextResponse("No auth", { status: 403 });
 
-    const formData = await req.formData();
-    const data = formDataToObject(formData);
+    const formData = await request.formData();
 
-    const { message, files, adultContent, questionnaire } =
-      BlogPostSchema.parse(data);
+    const { message, files } = BlogCommentSchema.parse(
+      formDataToObject(formData)
+    );
 
     let blogPostCreate: Prisma.BlogPostCreateInput = {
       text: message,
-      adultContent,
+      adultContent: false,
       slug: createSlugFromTitle(message),
       author: {
         connect: {
@@ -45,31 +56,15 @@ export async function PUT(req: NextRequest) {
         })
       );
 
-    if (questionnaire) {
-      const { question, answers, markOption, availableTime } = questionnaire;
-      blogPostCreate.questionnaire = {
-        create: {
-          title: question,
-          answers: answers.map((answer, i) => ({
-            id: i + 1,
-            title: answer.value,
-          })),
-          markOption,
+    const comment = await prisma.blogPost.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        children: {
+          create: blogPostCreate,
         },
-      };
-
-      if (availableTime !== "") {
-        const days = Number(availableTime.slice(0, 1));
-
-        const date = new Date();
-        date.setDate(date.getDate() + days);
-
-        blogPostCreate.questionnaire.create!.availableTo = date;
-      }
-    }
-
-    const blogPost = await prisma.blogPost.create({
-      data: blogPostCreate,
+      },
     });
 
     const tags = message.match(tagRegex);
@@ -88,14 +83,14 @@ export async function PUT(req: NextRequest) {
               name,
               posts: {
                 connect: {
-                  id: blogPost.id,
+                  id: comment.id,
                 },
               },
             },
             update: {
               posts: {
                 connect: {
-                  id: blogPost.id,
+                  id: comment.id,
                 },
               },
             },
@@ -104,7 +99,7 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    return NextResponse.json(blogPost);
+    return NextResponse.json(comment);
   } catch (err) {
     console.log(err);
     return new NextResponse("Internal error", { status: 500 });

@@ -7,6 +7,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import formatDistance from "date-fns/formatDistance";
 import { pl } from "date-fns/locale";
+import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
 
 type SurveyProps = {
   questionnaire: NonNullable<BlogPostType["questionnaire"]>;
@@ -17,6 +18,7 @@ const Survey: React.FC<SurveyProps> = ({
   questionnaire,
   markedOptions = [],
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [voteCount, setVoteCount] = useState<number>(
     questionnaire.votes.length
   );
@@ -30,6 +32,7 @@ const Survey: React.FC<SurveyProps> = ({
   );
 
   const handleOnClickAnswer = (id: number) => {
+    setIsLoading(true);
     axios
       .post(`/api/blog/survey/${questionnaire.id}/vote`, { id })
       .then((res) => res.data)
@@ -51,7 +54,8 @@ const Survey: React.FC<SurveyProps> = ({
       .catch((err) => {
         console.log(err);
         toast.error("Wystąpił problem!");
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const time = questionnaire.availableTo;
@@ -61,7 +65,7 @@ const Survey: React.FC<SurveyProps> = ({
   const isEndedSurvey = isAvailableTo ? new Date() > time : false;
 
   return (
-    <div className="text-white w-full mb-[25px]">
+    <div className="text-white w-full mb-[25px] relative">
       <h3 className="block mb-[5px] text-[1.17em] font-bold">
         {questionnaire.title}
       </h3>
@@ -73,7 +77,7 @@ const Survey: React.FC<SurveyProps> = ({
             markOption={questionnaire.markOption}
             voteCount={voteCount}
             onClick={() => handleOnClickAnswer(answer.id)}
-            disabled={isEndedSurvey}
+            disabled={isEndedSurvey || isLoading}
           />
         ))}
       </ul>

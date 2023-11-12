@@ -38,7 +38,6 @@ const ChooseList: React.FC<ChooseListProps> = ({
           autocomplete!.type === "user"
             ? "@[" + item.name + "]"
             : "#" + item.name;
-        console.log({ searchVal, replaceToVal });
         const replaceVal = beforeText
           .split(" ")
           .reverse()
@@ -47,7 +46,9 @@ const ChooseList: React.FC<ChooseListProps> = ({
           .split(" ")
           .reverse()
           .join(" ");
-        textAreaRef.current.value = replaceVal + afterText;
+        textAreaRef.current.value = replaceVal + " " + afterText;
+        textAreaRef.current.selectionStart = replaceVal.length + 1;
+        textAreaRef.current.selectionEnd = replaceVal.length + 1;
 
         setAutocomplete(null);
       }
@@ -71,6 +72,7 @@ const ChooseList: React.FC<ChooseListProps> = ({
           else return prev + 1;
         });
       } else if (e.key === "Enter") {
+        e.preventDefault();
         const selectedItem = autocomplete?.tab[currentOption];
         if (selectedItem) handleSelectOption(selectedItem);
       }

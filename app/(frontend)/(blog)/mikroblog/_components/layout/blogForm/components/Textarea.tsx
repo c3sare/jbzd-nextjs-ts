@@ -52,7 +52,10 @@ const Textarea = <T extends FieldValues>(
       window.removeEventListener("keydown", handleHideAutocomplete, true);
   }, [autocomplete, isFocused]);
 
-  useEffect(() => {});
+  useEffect(() => {
+    const scrollY = textAreaRef.current!.getBoundingClientRect().top;
+    window.scrollTo(0, scrollY);
+  }, []);
 
   const getList = (type: "user" | "tag", pharse: string) => {
     const endpoint = `/api/blog/${type}/autocomplete`;
@@ -86,10 +89,13 @@ const Textarea = <T extends FieldValues>(
     style.removeProperty("height");
     style.height = scrollHeight + "px";
     if (selectionStart === selectionEnd) {
-      let val = value.slice(0, selectionStart);
-      const spaceIndex = val.lastIndexOf(" ") === -1 ? 0 : val.lastIndexOf(" ");
-      val = val.slice(spaceIndex);
-      console.log(val);
+      const startingValue = value.slice(0, selectionStart);
+      let val = startingValue;
+      const spaceIndex =
+        val.lastIndexOf(" ") === -1 ? 0 : val.lastIndexOf(" ") + 1;
+      const enterIndex =
+        val.lastIndexOf("\n") === -1 ? 0 : val.lastIndexOf("\n") + 1;
+      val = val.slice(Math.max(spaceIndex, enterIndex));
       const indexOfAt =
         val.lastIndexOf("@") > -1 ? val.lastIndexOf("@") : undefined;
       const indexOfHash =
@@ -101,11 +107,14 @@ const Textarea = <T extends FieldValues>(
         const indexOfSpace = currentMark.lastIndexOf(" ");
         const indexOfEnter = currentMark.lastIndexOf("\n");
 
+        const valIndexOfAt = startingValue.lastIndexOf("@");
+        const valIndexOfHash = startingValue.lastIndexOf("#");
+
         if (indexOfSpace === -1 && indexOfEnter === -1) {
           if (usernameRegex.test(currentMark) || tagRegex.test(currentMark)) {
             const { x, y } = getCaretPosition(
               e.target,
-              (indexOfAt! || indexOfHash!) + 1
+              Math.max(valIndexOfAt, valIndexOfHash) + 1
             );
             if (timeout.current !== null) clearTimeout(timeout.current);
             timeout.current = null;
