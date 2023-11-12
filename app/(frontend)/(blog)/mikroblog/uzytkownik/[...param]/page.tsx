@@ -133,7 +133,7 @@ const UserBlogPage: React.FC<UserBlogPageProps> = async ({
   }));
 
   return (
-    <div className="w-full">
+    <div className="w-full md:w-2/3 relative min-h-[1px] px-[15px] ">
       <h1 className="text-white text-[2em] my-[0.67em] font-bold">
         Użytkownik: {user.username}
       </h1>

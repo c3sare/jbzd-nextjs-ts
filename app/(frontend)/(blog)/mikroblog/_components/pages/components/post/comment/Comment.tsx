@@ -12,6 +12,8 @@ import Rank from "../Rank";
 import CommentHeader from "./CommentHeader";
 import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
 import MessageBox from "../MessageBox";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 type CommentProps = {
   comment: BlogPostType["children"][number];
@@ -19,8 +21,25 @@ type CommentProps = {
 };
 
 const Comment: React.FC<CommentProps> = ({ comment, handleReplyComment }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isExpandedPostOptions, setIsExpandedPostOptions] =
     useState<boolean>(false);
+
+  const handleOnClickReport = () => {
+    setIsLoading(true);
+    axios
+      .post(`/api/blog/post/${comment.id}/report`)
+      .then((res) => res.data)
+      .then((data) => {
+        if (data.id) toast.success("Dziękujemy");
+        else toast.error(data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Wystąpił błąd");
+      })
+      .finally(() => setIsLoading(false));
+  };
 
   return (
     <li className="w-full group">
@@ -44,6 +63,7 @@ const Comment: React.FC<CommentProps> = ({ comment, handleReplyComment }) => {
             <ul className="transition-opacity duration-200 ease-in-out sm:opacity-0 group-hover:opacity-100">
               <li className="float-left leading-[20px] mr-[15px]">
                 <ActionButton
+                  disabled={isLoading}
                   onClick={() =>
                     handleReplyComment(`@[${comment.author.username}]`)
                   }
@@ -58,7 +78,13 @@ const Comment: React.FC<CommentProps> = ({ comment, handleReplyComment }) => {
                   !isExpandedPostOptions && "hidden md:block"
                 )}
               >
-                <ActionButton icon={IoMdWarning}>Zgłoś</ActionButton>
+                <ActionButton
+                  onClick={handleOnClickReport}
+                  disabled={isLoading}
+                  icon={IoMdWarning}
+                >
+                  Zgłoś
+                </ActionButton>
               </li>
               {!isExpandedPostOptions && (
                 <li className="float-left leading-[20px] mr-[15px] md:hidden">

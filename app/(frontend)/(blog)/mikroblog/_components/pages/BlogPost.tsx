@@ -20,6 +20,8 @@ import Survey from "./components/post/survey/Survey";
 import MoreCommentsBtn from "./components/post/comment/MoreCommentsBtn";
 import CommentForm from "./components/commentForm/CommentForm";
 import { getMoreComments } from "./_actions/getMoreComments";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 type BlogPostProps = {
   post: BlogPostType;
@@ -32,6 +34,7 @@ type CommentFormInputRefType = {
 };
 
 const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [defaultCommentText, setDefaultCommentText] = useState<string>("");
   const [isVisibleCommentForm, setIsVisibleCommentForm] =
     useState<boolean>(false);
@@ -61,6 +64,22 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
     }
   };
 
+  const handleOnClickReport = () => {
+    setIsLoading(true);
+    axios
+      .post(`/api/blog/post/${post.id}/report`)
+      .then((res) => res.data)
+      .then((data) => {
+        if (data.id) toast.success("Dziękujemy");
+        else toast.error(data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Wystąpił błąd");
+      })
+      .finally(() => setIsLoading(false));
+  };
+
   return (
     <div className="relative mb-[25px] flex">
       <AvatarBox
@@ -81,6 +100,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
           <ul className="pt-4 transition-opacity duration-200 ease-in-out sm:opacity-0 group-hover:opacity-100">
             <li className="float-left leading-[20px] mr-[15px]">
               <ActionButton
+                disabled={isLoading}
                 onClick={() => {
                   if (commentformInputRef.current)
                     commentformInputRef.current.focus();
@@ -94,6 +114,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
             </li>
             <li className="float-left leading-[20px] mr-[15px]">
               <ActionButton
+                disabled={isLoading}
                 href={`/mikroblog/post/${post.id}/${post.slug}`}
                 icon={IoLink}
               >
@@ -114,7 +135,9 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
                 !isExpandedPostOptions && "hidden md:block"
               )}
             >
-              <ActionButton icon={IoIosEye}>Obserwuj</ActionButton>
+              <ActionButton disabled={isLoading} icon={IoIosEye}>
+                Obserwuj
+              </ActionButton>
             </li>
             <li
               className={clsx(
@@ -122,7 +145,13 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
                 !isExpandedPostOptions && "hidden md:block"
               )}
             >
-              <ActionButton icon={IoMdWarning}>Zgłoś</ActionButton>
+              <ActionButton
+                disabled={isLoading}
+                onClick={handleOnClickReport}
+                icon={IoMdWarning}
+              >
+                Zgłoś
+              </ActionButton>
             </li>
             {!isExpandedPostOptions && (
               <li className="float-left leading-[20px] mr-[15px] md:hidden">

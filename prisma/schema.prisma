@@ -414,6 +414,8 @@ model ReportedBlogPost {
   post     BlogPost @relation(fields: [postId], references: [id])
   authorId String   @db.ObjectId
   author   User     @relation(fields: [authorId], references: [id])
+
+  @@unique([postId, authorId])
 }
 
 model CommentVotePlus {
