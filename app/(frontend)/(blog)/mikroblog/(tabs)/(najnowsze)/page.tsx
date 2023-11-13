@@ -6,13 +6,7 @@ const NewestBlogsPage = async () => {
 
   if (!posts) return null;
 
-  return (
-    <>
-      {posts.map((post) => (
-        <BlogPost key={post.id} post={post} />
-      ))}
-    </>
-  );
+  return posts.map((post) => <BlogPost key={post.id} post={post} />);
 };
 
 export default NewestBlogsPage;

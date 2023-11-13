@@ -365,21 +365,23 @@ model Questionnaire {
 }
 
 model ObservedBlogPost {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
-  postId String   @db.ObjectId
-  post   BlogPost @relation(fields: [postId], references: [id])
-  userId String   @db.ObjectId
-  user   User     @relation(fields: [userId], references: [id])
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  addTime DateTime @default(now())
+  postId  String   @db.ObjectId
+  post    BlogPost @relation(fields: [postId], references: [id])
+  userId  String   @db.ObjectId
+  user    User     @relation(fields: [userId], references: [id])
 
   @@unique([postId, userId])
 }
 
 model FavouriteBlogPost {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
-  postId String   @db.ObjectId
-  post   BlogPost @relation(fields: [postId], references: [id])
-  userId String   @db.ObjectId
-  user   User     @relation(fields: [userId], references: [id])
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  addTime DateTime @default(now())
+  postId  String   @db.ObjectId
+  post    BlogPost @relation(fields: [postId], references: [id])
+  userId  String   @db.ObjectId
+  user    User     @relation(fields: [userId], references: [id])
 
   @@unique([postId, userId])
 }

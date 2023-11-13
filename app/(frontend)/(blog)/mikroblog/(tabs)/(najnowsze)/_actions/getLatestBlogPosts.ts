@@ -1,7 +1,25 @@
 import { getSession } from "@/actions/getSession";
 import prisma from "@/libs/prismadb";
+import { getIncludePostData } from "../../../_utils/getIncludePostData";
 
 type TVote = "" | "PLUS" | "MINUS";
+
+export const getLatestBlogPostsQuery = async (userId: string) => {
+  return await prisma.blogPost.findMany({
+    where: {
+      NOT: {
+        parentId: {
+          isSet: true,
+        },
+      },
+    },
+    include: getIncludePostData(userId),
+    orderBy: {
+      addTime: "desc",
+    },
+    take: 10,
+  });
+};
 
 export async function getLatestBlogPosts() {
   try {
@@ -9,83 +27,7 @@ export async function getLatestBlogPosts() {
 
     if (!session?.user?.id) return [];
 
-    const posts = await prisma.blogPost.findMany({
-      where: {
-        NOT: {
-          parentId: {
-            isSet: true,
-          },
-        },
-      },
-      include: {
-        questionnaire: {
-          include: {
-            votes: {
-              select: {
-                id: true,
-                answerId: true,
-              },
-            },
-          },
-        },
-        author: {
-          select: {
-            id: true,
-            username: true,
-            image: true,
-          },
-        },
-        votes: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                image: true,
-                username: true,
-              },
-            },
-          },
-          orderBy: {
-            addTime: "desc",
-          },
-        },
-        children: {
-          include: {
-            author: {
-              select: {
-                id: true,
-                username: true,
-                image: true,
-              },
-            },
-            votes: {
-              include: {
-                user: {
-                  select: {
-                    id: true,
-                    image: true,
-                    username: true,
-                  },
-                },
-              },
-            },
-          },
-          orderBy: {
-            addTime: "asc",
-          },
-          take: 3,
-        },
-        _count: {
-          select: {
-            children: true,
-          },
-        },
-      },
-      orderBy: {
-        addTime: "desc",
-      },
-      take: 10,
-    });
+    const posts = await getLatestBlogPostsQuery(session.user.id);
 
     return posts.map((post) => ({
       ...post,
@@ -95,6 +37,8 @@ export async function getLatestBlogPosts() {
         post.votes.filter((item) => item.method === "MINUS").length,
       method: (post.votes.find((vote) => vote.userId === session.user!.id)
         ?.method || "") as TVote,
+      isFavourite: post._count.favouriteBy === 1,
+      isObserved: post._count.observedBy === 1,
       children: post.children.map((child) => ({
         ...child,
         score:

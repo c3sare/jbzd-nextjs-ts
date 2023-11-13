@@ -56,13 +56,13 @@ export async function PUT(
         })
       );
 
-    const comment = await prisma.blogPost.update({
-      where: {
-        id: postId,
-      },
+    const comment = await prisma.blogPost.create({
       data: {
-        children: {
-          create: blogPostCreate,
+        ...blogPostCreate,
+        parent: {
+          connect: {
+            id: postId,
+          },
         },
       },
     });

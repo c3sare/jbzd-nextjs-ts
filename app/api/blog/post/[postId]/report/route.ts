@@ -18,18 +18,26 @@ export async function POST(
     if (!session?.user?.id)
       return new NextResponse("No auth!", { status: 403 });
 
-    try {
-      const report = await prisma.reportedBlogPost.create({
-        data: {
+    const isReported = await prisma.reportedBlogPost.findUnique({
+      where: {
+        postId_authorId: {
           postId,
           authorId: session.user.id,
         },
-      });
+      },
+    });
 
-      return NextResponse.json(report);
-    } catch (err) {
+    if (isReported)
       return NextResponse.json({ message: "Już raportowałeś ten wpis" });
-    }
+
+    const report = await prisma.reportedBlogPost.create({
+      data: {
+        postId,
+        authorId: session.user.id,
+      },
+    });
+
+    return NextResponse.json(report);
   } catch (err) {
     console.log(err);
     return new NextResponse("Internal error", { status: 500 });

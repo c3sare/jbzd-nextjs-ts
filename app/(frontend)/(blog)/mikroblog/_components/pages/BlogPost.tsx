@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useImperativeHandle, MutableRefObject } from "react";
+import { useState, useRef, MutableRefObject } from "react";
 
 import { FaReply } from "@react-icons/all-files/fa/FaReply";
 import { IoLink } from "@react-icons/all-files/io5/IoLink";
@@ -22,6 +22,7 @@ import CommentForm from "./components/commentForm/CommentForm";
 import { getMoreComments } from "./_actions/getMoreComments";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type BlogPostProps = {
   post: BlogPostType;
@@ -34,7 +35,10 @@ type CommentFormInputRefType = {
 };
 
 const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isFavourite, setIsFavourite] = useState<boolean>(post.isFavourite);
+  const [isObserved, setIsObserved] = useState<boolean>(post.isObserved);
   const [defaultCommentText, setDefaultCommentText] = useState<string>("");
   const [isVisibleCommentForm, setIsVisibleCommentForm] =
     useState<boolean>(false);
@@ -44,7 +48,6 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
   const commentformInputRef = useRef<CommentFormInputRefType | null>(null);
 
   const handleReplyComment = (defaultValue: string) => {
-    console.log("reply");
     if (isVisibleCommentForm) {
       const currentMessage = commentformInputRef.current?.getCurrentValue();
       if (currentMessage?.indexOf(defaultValue) === -1)
@@ -76,6 +79,38 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
       .catch((err) => {
         console.log(err);
         toast.error("Wystąpił błąd");
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  const handleToggleFavourite = () => {
+    setIsLoading(true);
+    axios
+      .post(`/api/blog/post/${post.id}/favourite`)
+      .then((res) => res.data)
+      .then((data) => {
+        setIsFavourite(data.isFavourite);
+        router.refresh();
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Coś poszło nie tak.");
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  const handleToggleObserved = () => {
+    setIsLoading(true);
+    axios
+      .post(`/api/blog/post/${post.id}/observe`)
+      .then((res) => res.data)
+      .then((data) => {
+        setIsObserved(data.isObserved);
+        router.refresh();
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Coś poszło nie tak.");
       })
       .finally(() => setIsLoading(false));
   };
@@ -127,7 +162,9 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
                 !isExpandedPostOptions && "hidden md:block"
               )}
             >
-              <ActionButton icon={IoMdStar}>Dodaj do ulubionych</ActionButton>
+              <ActionButton onClick={handleToggleFavourite} icon={IoMdStar}>
+                {isFavourite ? "Usuń z" : "Dodaj do"} ulubionych
+              </ActionButton>
             </li>
             <li
               className={clsx(
@@ -135,8 +172,12 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
                 !isExpandedPostOptions && "hidden md:block"
               )}
             >
-              <ActionButton disabled={isLoading} icon={IoIosEye}>
-                Obserwuj
+              <ActionButton
+                onClick={handleToggleObserved}
+                disabled={isLoading}
+                icon={IoIosEye}
+              >
+                {isObserved ? "Przestań obserwować" : "Obserwuj"}
               </ActionButton>
             </li>
             <li
@@ -171,11 +212,12 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
               <div>
                 <ul className="px-[7.5px] w-full">
                   {[...post.children, ...comments].map((comment) => (
-                    <Comment
-                      handleReplyComment={handleReplyComment}
-                      key={comment.id}
-                      comment={comment}
-                    />
+                    <li key={comment.id} className="w-full group">
+                      <Comment
+                        handleReplyComment={handleReplyComment}
+                        comment={comment}
+                      />
+                    </li>
                   ))}
                   {post._count.children > 3 &&
                     comments.length + 3 < post._count.children && (
