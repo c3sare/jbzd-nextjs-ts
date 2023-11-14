@@ -1,7 +1,9 @@
-const EmptyBoxElement = () => {
+import { PropsWithChildren } from "react";
+
+const EmptyBoxElement: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <li className="italic text-[#b6babb] float-left text-[11px] mr-[15px]">
-      Brak tagów obserwowanych
+      {children ?? "Brak tagów obserwowanych"}
     </li>
   );
 };

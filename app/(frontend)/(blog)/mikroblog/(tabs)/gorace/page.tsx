@@ -43,7 +43,9 @@ const ActiveBlogsPage: React.FC<ActiveBlogsPageProps> = async ({
       ...getIncludePostData(session.user.id),
     },
     orderBy: {
-      addTime: "desc",
+      votes: {
+        _count: "desc",
+      },
     },
   });
 

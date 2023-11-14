@@ -1,8 +1,9 @@
 import TagLink from "../../TagLink";
 import Box from "../Box";
 import EmptyBoxElement from "../EmptyBoxElement";
-import LinkBoxElement from "../LinkBoxElement";
 import prisma from "@/libs/prismadb";
+import FollowedTagList from "../tagManagment/FollowedTagList";
+import BlockedTagList from "../tagManagment/BlockedTagList";
 
 const UserInfoTab: React.FC = async () => {
   const tags = await prisma.blogTag.findMany({
@@ -36,12 +37,8 @@ const UserInfoTab: React.FC = async () => {
           />
         ))}
       </Box>
-      <Box title="Obserwowane tagi">
-        <EmptyBoxElement />
-      </Box>
-      <Box title="Czarna lista tagów">
-        <EmptyBoxElement />
-      </Box>
+      <FollowedTagList />
+      <BlockedTagList />
     </>
   );
 };

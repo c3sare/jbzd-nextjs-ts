@@ -1,7 +1,7 @@
 import { getSession } from "@/actions/getSession";
 import prisma from "@/libs/prismadb";
 
-export async function getCurrentUserBlogData() {
+export async function getTagActions() {
   try {
     const session = await getSession();
 
@@ -9,27 +9,27 @@ export async function getCurrentUserBlogData() {
 
     if (!userId) return null;
 
-    const observedPosts = await prisma.observedBlogPost.findMany({
-      where: {
-        userId,
-      },
-    });
-
-    const votedPosts = await prisma.blogPostVote.findMany({
-      where: {
-        userId,
-      },
-    });
-
     const actionedTags = await prisma.actionedBlogTag.findMany({
       where: {
         userId,
       },
+      include: {
+        tag: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            _count: {
+              select: {
+                posts: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     return {
-      observedPosts,
-      votedPosts,
       actionedTags,
       session: session.user!,
     };

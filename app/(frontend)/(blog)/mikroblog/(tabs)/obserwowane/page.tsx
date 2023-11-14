@@ -19,6 +19,9 @@ const ObservedBlogsPage = async () => {
         include: getIncludePostData(session.user.id),
       },
     },
+    orderBy: {
+      addTime: "desc",
+    },
   });
 
   const posts = transformPosts(

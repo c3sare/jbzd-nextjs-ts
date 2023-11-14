@@ -1,10 +1,6 @@
 "use client";
 
-import type {
-  ActionedBlogTag,
-  BlogPostVote,
-  ObservedBlogPost,
-} from "@prisma/client";
+import type { ActionedBlogTag } from "@prisma/client";
 import type { Session } from "next-auth";
 import {
   type PropsWithChildren,
@@ -13,25 +9,25 @@ import {
   useState,
 } from "react";
 
+export type ActionedBlogTagWithTag = ActionedBlogTag & {
+  tag: {
+    id: string;
+    name: string;
+    slug: string;
+    _count: {
+      posts: number;
+    };
+  };
+};
+
 type BlogContextType = {
   data: {
-    observedPosts: ObservedBlogPost[];
-    votedPosts: BlogPostVote[];
-    actionedTags: ActionedBlogTag[];
+    actionedTags: ActionedBlogTagWithTag[];
     session: Required<Session>["user"];
   };
   method: {
-    observedPost: {
-      add: (post: ObservedBlogPost) => void;
-      remove: (id: string) => void;
-    };
-    postVote: {
-      add: (vote: BlogPostVote) => void;
-      remove: (postId: string) => void;
-      getMethod: (postId: string) => "" | "PLUS" | "MINUS";
-    };
     actionedTag: {
-      add: (actionedTag: ActionedBlogTag) => void;
+      add: (actionedTag: ActionedBlogTagWithTag) => void;
       remove: (id: string) => void;
     };
   };
@@ -53,34 +49,8 @@ export const BlogContextProvider: React.FC<
   const [data, setData] = useState<BlogContextType["data"]>(value);
 
   const method = {
-    observedPost: {
-      add: (post: ObservedBlogPost) =>
-        setData((prev) => ({
-          ...prev,
-          observedPosts: [post, ...prev.observedPosts],
-        })),
-      remove: (id: string) =>
-        setData((prev) => ({
-          ...prev,
-          observedPosts: prev.observedPosts.filter((item) => item.id !== id),
-        })),
-    },
-    postVote: {
-      add: (vote: BlogPostVote) =>
-        setData((prev) => ({
-          ...prev,
-          votedPosts: [vote, ...prev.votedPosts],
-        })),
-      remove: (postId: string) =>
-        setData((prev) => ({
-          ...prev,
-          votedPosts: prev.votedPosts.filter((item) => item.postId !== postId),
-        })),
-      getMethod: (postId: string) =>
-        data.votedPosts.find((vote) => vote.postId === postId)?.method || "",
-    },
     actionedTag: {
-      add: (actionedTag: ActionedBlogTag) =>
+      add: (actionedTag: ActionedBlogTagWithTag) =>
         setData((prev) => ({
           ...prev,
           actionedTags: [actionedTag, ...prev.actionedTags],

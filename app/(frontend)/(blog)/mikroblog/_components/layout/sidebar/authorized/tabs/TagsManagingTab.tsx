@@ -1,15 +1,11 @@
-import Box from "../Box";
-import EmptyBoxElement from "../EmptyBoxElement";
+import BlockedTagList from "../tagManagment/BlockedTagList";
+import FollowedTagList from "../tagManagment/FollowedTagList";
 
 const TagsManagingTab: React.FC = () => {
   return (
     <>
-      <Box title="Obserwowane tagi:">
-        <EmptyBoxElement />
-      </Box>
-      <Box title="Czarna lista tagów:">
-        <EmptyBoxElement />
-      </Box>
+      <FollowedTagList editable />
+      <BlockedTagList editable />
     </>
   );
 };

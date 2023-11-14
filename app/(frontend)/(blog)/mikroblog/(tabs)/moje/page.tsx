@@ -24,6 +24,9 @@ const OwnBlogsPage = async () => {
           },
         },
         include: getIncludePostData(session.user.id),
+        orderBy: {
+          addTime: "desc",
+        },
       },
     },
   });
