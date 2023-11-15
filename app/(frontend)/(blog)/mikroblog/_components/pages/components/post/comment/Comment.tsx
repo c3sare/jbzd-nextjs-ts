@@ -10,10 +10,10 @@ import { IoIosMore } from "@react-icons/all-files/io/IoIosMore";
 import ActionButton from "../ActionButton";
 import Rank from "../Rank";
 import CommentHeader from "./CommentHeader";
-import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
 import MessageBox from "../MessageBox";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/_types/BlogPost";
 
 type CommentProps = {
   comment: BlogPostType["children"][number];

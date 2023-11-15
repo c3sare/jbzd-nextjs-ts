@@ -1,9 +1,6 @@
-import { getSession } from "@/actions/getSession";
-import prisma from "@/libs/prismadb";
 import { notFound } from "next/navigation";
 import BlogPost from "../../_components/pages/BlogPost";
-import { getIncludePostData } from "../../_utils/getIncludePostData";
-import { transformPosts } from "../../_utils/transformPosts";
+import { getPosts } from "../../(tabs)/_actions/getPosts";
 
 type UserBlogPageProps = {
   params: {
@@ -19,43 +16,20 @@ const UserBlogPage: React.FC<UserBlogPageProps> = async ({
 
   if (!id || !username) return notFound();
 
-  const session = await getSession();
-
-  if (!session?.user?.id) return notFound();
-
-  const user = await prisma.user.findUnique({
+  const posts = await getPosts({
     where: {
-      id,
-      username,
-    },
-    select: {
-      id: true,
-      username: true,
-      image: true,
-      blogPosts: {
-        where: {
-          NOT: {
-            parentId: {
-              isSet: true,
-            },
-          },
-        },
-        include: getIncludePostData(session.user.id),
-        orderBy: {
-          addTime: "desc",
-        },
+      author: {
+        username,
       },
     },
   });
 
-  if (!user) return notFound();
-
-  const posts = transformPosts(user.blogPosts, session.user.id);
+  if (!posts) return notFound();
 
   return (
     <div className="w-full md:w-2/3 relative min-h-[1px] px-[15px] ">
       <h1 className="text-white text-[2em] my-[0.67em] font-bold">
-        Użytkownik: {user.username}
+        Użytkownik: {username}
       </h1>
       {posts.map((post) => (
         <BlogPost key={post.id} post={post} />

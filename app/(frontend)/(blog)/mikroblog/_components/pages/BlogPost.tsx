@@ -15,7 +15,6 @@ import AvatarBox from "./components/post/AvatarBox";
 import BlogPostHeader from "./components/post/header/BlogPostHeader";
 import Comment from "./components/post/comment/Comment";
 import clsx from "clsx";
-import { BlogPostType } from "../../(tabs)/(najnowsze)/_types/BlogPost";
 import Survey from "./components/post/survey/Survey";
 import MoreCommentsBtn from "./components/post/comment/MoreCommentsBtn";
 import CommentForm from "./components/commentForm/CommentForm";
@@ -23,6 +22,7 @@ import { getMoreComments } from "./_actions/getMoreComments";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { BlogPostType } from "../../(tabs)/_types/BlogPost";
 
 type BlogPostProps = {
   post: BlogPostType;

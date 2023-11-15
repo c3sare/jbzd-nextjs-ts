@@ -7,12 +7,15 @@ import TagLink from "../../TagLink";
 import TagListEditElement from "./TagListEditElement";
 import { useState } from "react";
 import { deleteTagAction } from "./_actions/deleteTagAction";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 type BlockedTagListProps = {
   editable?: boolean;
 };
 
 const BlockedTagList: React.FC<BlockedTagListProps> = ({ editable }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>();
   const {
     data: { actionedTags },
@@ -23,9 +26,18 @@ const BlockedTagList: React.FC<BlockedTagListProps> = ({ editable }) => {
 
   const handleDeleteAction = async (id: string) => {
     setIsLoading(true);
-    const data = await deleteTagAction(id);
-    actionedTag.remove(data.id);
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const data = await deleteTagAction(id);
+      actionedTag.remove(data.id);
+      setIsLoading(false);
+      router.refresh();
+    } catch (err) {
+      console.log(err);
+      toast.error("Wystąpił błąd");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

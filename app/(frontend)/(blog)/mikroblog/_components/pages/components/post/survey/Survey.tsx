@@ -1,6 +1,6 @@
 "use client";
 
-import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
+import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/_types/BlogPost";
 import { useState } from "react";
 import SurveyAnswer from "./_components/SurveyAnswer";
 import axios from "axios";

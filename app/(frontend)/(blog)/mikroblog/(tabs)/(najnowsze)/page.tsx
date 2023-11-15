@@ -1,10 +1,8 @@
 import BlogPost from "../../_components/pages/BlogPost";
-import { getLatestBlogPosts } from "./_actions/getLatestBlogPosts";
+import { getPosts } from "../_actions/getPosts";
 
 const NewestBlogsPage = async () => {
-  const posts = await getLatestBlogPosts();
-
-  if (!posts) return null;
+  const posts = await getPosts({});
 
   return posts.map((post) => <BlogPost key={post.id} post={post} />);
 };

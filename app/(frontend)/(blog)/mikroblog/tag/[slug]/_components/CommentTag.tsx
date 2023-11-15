@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { BlogPostType } from "../../../(tabs)/(najnowsze)/_types/BlogPost";
 import AvatarBox from "../../../_components/pages/components/post/AvatarBox";
 import Comment from "../../../_components/pages/components/post/comment/Comment";
-import { useSession } from "next-auth/react";
 import { MutableRefObject, useRef, useState } from "react";
 import CommentForm from "../../../_components/pages/components/commentForm/CommentForm";
+import { BlogPostType } from "../../../(tabs)/_types/BlogPost";
 
 export type CommentTypeTag = BlogPostType["children"][number] & {
   parent: BlogPostType;

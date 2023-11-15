@@ -3,7 +3,7 @@ import Link from "next/link";
 import Voters from "../header/components/Voters";
 import Score from "../header/components/Score";
 import VoteButton from "../header/components/VoteButton";
-import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
+import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/_types/BlogPost";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";

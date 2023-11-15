@@ -5,7 +5,7 @@ import getTimeFromLastMessage from "@/app/(frontend)/(restSite)/wiadomosci-prywa
 import VoteButton from "./components/VoteButton";
 import Score from "./components/Score";
 import Voters from "./components/Voters";
-import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
+import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/_types/BlogPost";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";

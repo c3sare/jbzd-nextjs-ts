@@ -69,9 +69,7 @@ export default function transformText(str: string, assetList: AssetList) {
       (item) =>
         [
           item,
-          `<a id="tag" href="/mikroblog/tag/${item
-            .slice(1)
-            .toLowerCase()}">${item}</a>`,
+          `<a id="tag" href="${item.slice(1).toLowerCase()}">${item}</a>`,
         ] as [string, string]
     ),
   ];

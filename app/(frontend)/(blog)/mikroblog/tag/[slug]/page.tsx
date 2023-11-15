@@ -3,9 +3,9 @@ import { notFound } from "next/navigation";
 import prisma from "@/libs/prismadb";
 import BlogPost from "../../_components/pages/BlogPost";
 import { getIncludePostData } from "../../_utils/getIncludePostData";
-import { transformPosts } from "../../_utils/transformPosts";
 import CommentTag, { CommentTypeTag } from "./_components/CommentTag";
-import { BlogPostType } from "../../(tabs)/(najnowsze)/_types/BlogPost";
+import { BlogPostType } from "../../(tabs)/_types/BlogPost";
+import { transformPosts } from "../../(tabs)/_actions/getPosts";
 
 type Params = {
   params: {

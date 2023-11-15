@@ -70,11 +70,11 @@ export async function PUT(
     const tags = message.match(tagRegex);
 
     if (tags) {
-      await Promise.all(
-        tags.map(async (tag) => {
+      await prisma.$transaction(
+        tags.map((tag) => {
           const name = tag.slice(1);
           const slug = createSlugFromTitle(name);
-          return await prisma.blogTag.upsert({
+          return prisma.blogTag.upsert({
             where: {
               slug,
             },

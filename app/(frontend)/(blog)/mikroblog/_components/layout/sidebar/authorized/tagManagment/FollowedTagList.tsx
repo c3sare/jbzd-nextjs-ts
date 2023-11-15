@@ -4,16 +4,18 @@ import { useBlogContext } from "@/app/(frontend)/(blog)/_context/BlogContext";
 import Box from "../Box";
 import EmptyBoxElement from "../EmptyBoxElement";
 import TagLink from "../../TagLink";
-import axios from "axios";
 import { useState } from "react";
 import TagListEditElement from "./TagListEditElement";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { deleteTagAction } from "./_actions/deleteTagAction";
 
 type FollowedTagListProps = {
   editable?: boolean;
 };
 
 const FollowedTagList: React.FC<FollowedTagListProps> = ({ editable }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     data: { actionedTags },
@@ -22,19 +24,20 @@ const FollowedTagList: React.FC<FollowedTagListProps> = ({ editable }) => {
 
   const followedTags = actionedTags.filter((item) => item.method === "FOLLOW");
 
-  const handleDeleteAction = (id: string) => {
+  const handleDeleteAction = async (id: string) => {
     setIsLoading(true);
-    axios
-      .delete(`/api/blog/tag/action/${id}`)
-      .then((res) => res.data)
-      .then((data) => {
-        actionedTag.remove(data.id);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Wystąpił błąd");
-      })
-      .finally(() => setIsLoading(false));
+    try {
+      setIsLoading(true);
+      const data = await deleteTagAction(id);
+      actionedTag.remove(data.id);
+      setIsLoading(false);
+      router.refresh();
+    } catch (err) {
+      console.log(err);
+      toast.error("Wystąpił błąd");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

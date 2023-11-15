@@ -6,6 +6,7 @@ type TagButtonProps = {
   children?: React.ReactNode;
   variant?: "red" | "black";
   isActive?: boolean;
+  disabled?: boolean;
 };
 
 const TagButton: React.FC<TagButtonProps> = ({
@@ -13,6 +14,7 @@ const TagButton: React.FC<TagButtonProps> = ({
   children,
   variant = "black",
   isActive,
+  disabled,
 }) => {
   const bgColor = {
     black: "bg-black",
@@ -21,10 +23,12 @@ const TagButton: React.FC<TagButtonProps> = ({
 
   return (
     <button
+      disabled={disabled}
       onClick={onClick}
       className={clsx(
         bgColor[variant],
-        "w-[calc(50%_-_10px)] mx-[5px] block text-[14px] rounded-[3px] text-white py-[10px]"
+        "w-[calc(50%_-_10px)] mx-[5px] block text-[14px] rounded-[3px] text-white py-[10px]",
+        isActive && "opacity-50"
       )}
     >
       {children}

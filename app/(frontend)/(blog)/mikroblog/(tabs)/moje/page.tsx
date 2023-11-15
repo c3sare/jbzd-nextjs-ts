@@ -1,39 +1,18 @@
 import { getSession } from "@/actions/getSession";
-import { notFound } from "next/navigation";
-import prisma from "@/libs/prismadb";
 import BlogPost from "../../_components/pages/BlogPost";
-import { getIncludePostData } from "../../_utils/getIncludePostData";
-import { transformPosts } from "../../_utils/transformPosts";
+import { getPosts } from "../_actions/getPosts";
 
 const OwnBlogsPage = async () => {
   const session = await getSession();
 
-  if (!session?.user) return notFound();
+  if (!session?.user) return [];
 
-  const user = await prisma.user.findUnique({
+  const posts = await getPosts({
     where: {
-      id: session.user.id,
-    },
-    include: {
-      blogPosts: {
-        where: {
-          NOT: {
-            parentId: {
-              isSet: true,
-            },
-          },
-        },
-        include: getIncludePostData(session.user.id),
-        orderBy: {
-          addTime: "desc",
-        },
-      },
+      authorId: session.user.id,
+      NOT: undefined,
     },
   });
-
-  if (!user) return notFound();
-
-  const posts = transformPosts(user.blogPosts, session.user.id);
 
   return posts.map((post) => <BlogPost key={post.id} post={post} />);
 };

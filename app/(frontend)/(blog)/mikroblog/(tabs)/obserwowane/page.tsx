@@ -1,33 +1,32 @@
 import { getSession } from "@/actions/getSession";
 import BlogPost from "../../_components/pages/BlogPost";
-import prisma from "@/libs/prismadb";
 import { notFound } from "next/navigation";
-import { getIncludePostData } from "../../_utils/getIncludePostData";
-import { transformPosts } from "../../_utils/transformPosts";
+import { getPosts } from "../_actions/getPosts";
+import prisma from "@/libs/prismadb";
 
 const ObservedBlogsPage = async () => {
   const session = await getSession();
 
   if (!session?.user) return notFound();
 
-  const observed = await prisma.observedBlogPost.findMany({
+  const observedBlogPosts = await prisma.observedBlogPost.findMany({
     where: {
       userId: session.user.id,
     },
-    include: {
-      post: {
-        include: getIncludePostData(session.user.id),
-      },
-    },
-    orderBy: {
-      addTime: "desc",
-    },
   });
 
-  const posts = transformPosts(
-    observed.map((item) => item.post),
-    session.user.id
-  );
+  const observedBlogPostIds = observedBlogPosts.map((post) => post.postId);
+
+  console.log(observedBlogPostIds);
+
+  const posts = await getPosts({
+    where: {
+      id: {
+        in: observedBlogPostIds,
+      },
+      NOT: undefined,
+    },
+  });
 
   return posts.map((post) => <BlogPost key={post.id} post={post} />);
 };

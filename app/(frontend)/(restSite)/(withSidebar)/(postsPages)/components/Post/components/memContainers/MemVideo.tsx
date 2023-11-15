@@ -1,6 +1,8 @@
 import "plyr-react/plyr.css";
+import dynamic from "next/dynamic";
 
-import Plyr from "plyr-react";
+const Plyr = dynamic(() => import("plyr-react"), { ssr: false });
+
 import { memo, useEffect, useMemo, useRef } from "react";
 
 type MemVideoProps = {

@@ -2,7 +2,7 @@ import useDropdownContainer from "@/hooks/useDropdownContainer";
 import { AiFillQuestionCircle } from "@react-icons/all-files/ai/AiFillQuestionCircle";
 import clsx from "clsx";
 import VoterItem from "./VoterItem";
-import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/(najnowsze)/_types/BlogPost";
+import { BlogPostType } from "@/app/(frontend)/(blog)/mikroblog/(tabs)/_types/BlogPost";
 import { useSession } from "next-auth/react";
 
 type VotersProps = {

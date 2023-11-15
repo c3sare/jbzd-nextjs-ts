@@ -2,10 +2,8 @@ import { notFound } from "next/navigation";
 import BlogPost from "../../_components/pages/BlogPost";
 import prisma from "@/libs/prismadb";
 import { getSession } from "@/actions/getSession";
-import { transformPosts } from "../../_utils/transformPosts";
 import { getIncludePostData } from "../../_utils/getIncludePostData";
-
-type TVote = "" | "PLUS" | "MINUS";
+import { transformPosts } from "../../(tabs)/_actions/getPosts";
 
 type BlogPostPageProps = {
   params: {

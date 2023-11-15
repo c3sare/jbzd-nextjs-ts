@@ -24,7 +24,12 @@ const options: HTMLReactParserOptions = {
     if (node.name === "img" && node.attribs) {
       const props = attributesToProps(node.attribs);
       if (!props.src) return null;
-      return <ImageLightBox src={props.src} alt={props.alt || "obrazek"} />;
+      return (
+        <ImageLightBox
+          src={props.src as string}
+          alt={(props.alt as string) || "obrazek"}
+        />
+      );
     }
     if (node.name === "q") {
       return <Quote>{domToReact(node.children, options)}</Quote>;

@@ -29,6 +29,7 @@ type BlogContextType = {
     actionedTag: {
       add: (actionedTag: ActionedBlogTagWithTag) => void;
       remove: (id: string) => void;
+      update: (id: string, method: "BLOCK" | "FOLLOW") => void;
     };
   };
 };
@@ -59,6 +60,18 @@ export const BlogContextProvider: React.FC<
         setData((prev) => ({
           ...prev,
           actionedTags: prev.actionedTags.filter((item) => item.id !== id),
+        })),
+      update: (id: string, method: "FOLLOW" | "BLOCK") =>
+        setData((prev) => ({
+          ...prev,
+          actionedTags: prev.actionedTags.map((tag) => {
+            if (tag.id === id) {
+              return {
+                ...tag,
+                method,
+              };
+            } else return tag;
+          }),
         })),
     },
   };

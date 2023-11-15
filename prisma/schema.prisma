@@ -313,6 +313,8 @@ model ActionedBlogTag {
   tagId  String     @db.ObjectId
   tag    BlogTag    @relation(fields: [tagId], references: [id])
   method ActionType
+
+  @@unique([userId, tagId])
 }
 
 enum VoteMethod {

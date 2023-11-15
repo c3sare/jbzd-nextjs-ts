@@ -2,32 +2,29 @@ import { getSession } from "@/actions/getSession";
 import { notFound } from "next/navigation";
 import prisma from "@/libs/prismadb";
 import BlogPost from "../_components/pages/BlogPost";
-import { getIncludePostData } from "../_utils/getIncludePostData";
-import { transformPosts } from "../_utils/transformPosts";
+import { getPosts } from "../(tabs)/_actions/getPosts";
 
 const FavouritePage = async () => {
   const session = await getSession();
 
   if (!session?.user) return notFound();
 
-  const favourites = await prisma.favouriteBlogPost.findMany({
+  const favouritePosts = await prisma.favouriteBlogPost.findMany({
     where: {
       userId: session.user.id,
     },
-    include: {
-      post: {
-        include: getIncludePostData(session.user.id),
-      },
-    },
-    orderBy: {
-      addTime: "desc",
-    },
   });
 
-  const posts = transformPosts(
-    favourites.map((item) => item.post),
-    session.user.id
-  );
+  const favouritePostIds = favouritePosts.map((fav) => fav.postId);
+
+  const posts = await getPosts({
+    where: {
+      NOT: undefined,
+      id: {
+        in: favouritePostIds,
+      },
+    },
+  });
 
   return (
     <div className="w-full md:w-2/3 relative min-h-[1px] px-[15px] ">
