@@ -1,8 +1,8 @@
 import { getSession } from "@/actions/getSession";
 import { notFound } from "next/navigation";
 import prisma from "@/libs/prismadb";
-import BlogPost from "../_components/pages/BlogPost";
 import { getPosts } from "../(tabs)/_actions/getPosts";
+import BlogPostInfiniteScroll from "../_components/BlogPostInfiniteScroll";
 
 const FavouritePage = async () => {
   const session = await getSession();
@@ -26,12 +26,27 @@ const FavouritePage = async () => {
     },
   });
 
+  async function getPostsFunc(cursor: string | undefined) {
+    "use server";
+    const posts = await getPosts({
+      where: {
+        NOT: undefined,
+        id: {
+          in: favouritePostIds,
+        },
+      },
+      skip: 1,
+      cursor: {
+        id: cursor,
+      },
+    });
+    return posts;
+  }
+
   return (
     <div className="w-full md:w-2/3 relative min-h-[1px] px-[15px] ">
       <h1 className="text-white text-[2em] my-[0.67em] font-bold">Ulubione</h1>
-      {posts.map((post) => (
-        <BlogPost key={post.id} post={post} />
-      ))}
+      <BlogPostInfiniteScroll initalPosts={posts} getPostsFunc={getPostsFunc} />
     </div>
   );
 };

@@ -7,6 +7,9 @@ import EmptyBoxItem from "./EmptyBoxItem";
 import BoxItem from "./BoxItem";
 import MenuLink from "./MenuLink";
 import { getSession } from "@/actions/getSession";
+import MikroblogSidebar from "../mikroblog/_components/layout/sidebar/authorized/MikroblogSidebar";
+import UserInfoTab from "../mikroblog/_components/layout/sidebar/tabs/UserInfoTab";
+import TagsManagingTab from "../mikroblog/_components/layout/sidebar/tabs/TagsManagingTab";
 
 const MikroblogMobileMenu = async () => {
   const session = await getSession();
@@ -54,26 +57,10 @@ const MikroblogMobileMenu = async () => {
             </div>
           </div>
           <ButtonShowHideActions>
-            <div className="py-[15px] px-[25px] pt-0">
-              <div className="flex flex-col">
-                <Box title="Polecane tagi:">
-                  {[...Array(10)].map((_item, i) => (
-                    <BoxItem
-                      key={i}
-                      name="plech"
-                      count={9999}
-                      href="/mikroblog/tag/plech"
-                    />
-                  ))}
-                </Box>
-                <Box title="Obserwowane tagi">
-                  <EmptyBoxItem />
-                </Box>
-                <Box title="Czarna lista tagów">
-                  <EmptyBoxItem />
-                </Box>
-              </div>
-            </div>
+            <MikroblogSidebar>
+              <UserInfoTab />
+              <TagsManagingTab />
+            </MikroblogSidebar>
           </ButtonShowHideActions>
         </div>
       )}

@@ -3,6 +3,7 @@ import BlogPost from "../../_components/pages/BlogPost";
 import { notFound } from "next/navigation";
 import { getPosts } from "../_actions/getPosts";
 import prisma from "@/libs/prismadb";
+import BlogPostInfiniteScroll from "../../_components/BlogPostInfiniteScroll";
 
 const ObservedBlogsPage = async () => {
   const session = await getSession();
@@ -17,8 +18,6 @@ const ObservedBlogsPage = async () => {
 
   const observedBlogPostIds = observedBlogPosts.map((post) => post.postId);
 
-  console.log(observedBlogPostIds);
-
   const posts = await getPosts({
     where: {
       id: {
@@ -28,7 +27,27 @@ const ObservedBlogsPage = async () => {
     },
   });
 
-  return posts.map((post) => <BlogPost key={post.id} post={post} />);
+  async function getPostsFunc(cursor: string | undefined) {
+    "use server";
+    const posts = await getPosts({
+      where: {
+        id: {
+          in: observedBlogPostIds,
+        },
+        NOT: undefined,
+      },
+      skip: 1,
+      cursor: {
+        id: cursor,
+      },
+    });
+
+    return posts;
+  }
+
+  return (
+    <BlogPostInfiniteScroll getPostsFunc={getPostsFunc} initalPosts={posts} />
+  );
 };
 
 export default ObservedBlogsPage;
