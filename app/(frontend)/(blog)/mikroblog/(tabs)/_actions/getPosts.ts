@@ -5,7 +5,9 @@ import { Prisma } from "@prisma/client";
 
 type GetPostsArgs = {
   where?: Prisma.BlogPostWhereInput;
-  orderBy?: Prisma.BlogPostOrderByWithRelationInput;
+  orderBy?:
+    | Prisma.BlogPostOrderByWithRelationInput
+    | Prisma.BlogPostOrderByWithRelationInput[];
   take?: number;
   skip?: number;
   cursor?: Prisma.BlogPostWhereUniqueInput;
@@ -38,7 +40,19 @@ async function getPostsDB(
       },
       ...where,
     },
-    include: getIncludePostData(userId),
+    include: {
+      ...getIncludePostData(userId),
+      parent: {
+        select: {
+          authorId: true,
+          author: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      },
+    },
     orderBy: orderBy || {
       addTime: "desc",
     },
@@ -52,7 +66,7 @@ async function getPostsDB(
 
 type TVote = "" | "PLUS" | "MINUS";
 
-type Post = Awaited<ReturnType<typeof getPostsDB>>[number];
+type Post = Omit<Awaited<ReturnType<typeof getPostsDB>>[number], "parent">;
 
 export function transformPosts(posts: Post[], userId: string) {
   return posts.map((post) => ({

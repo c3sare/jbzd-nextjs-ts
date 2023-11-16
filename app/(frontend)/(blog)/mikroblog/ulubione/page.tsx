@@ -1,45 +1,18 @@
 import { getSession } from "@/actions/getSession";
 import { notFound } from "next/navigation";
-import prisma from "@/libs/prismadb";
-import { getPosts } from "../(tabs)/_actions/getPosts";
 import BlogPostInfiniteScroll from "../_components/BlogPostInfiniteScroll";
+import { getFavouritePosts } from "./_actions/getFavouritePosts";
 
 const FavouritePage = async () => {
   const session = await getSession();
 
   if (!session?.user) return notFound();
 
-  const favouritePosts = await prisma.favouriteBlogPost.findMany({
-    where: {
-      userId: session.user.id,
-    },
-  });
-
-  const favouritePostIds = favouritePosts.map((fav) => fav.postId);
-
-  const posts = await getPosts({
-    where: {
-      NOT: undefined,
-      id: {
-        in: favouritePostIds,
-      },
-    },
-  });
+  const posts = await getFavouritePosts(session!.user!.id);
 
   async function getPostsFunc(cursor: string | undefined) {
     "use server";
-    const posts = await getPosts({
-      where: {
-        NOT: undefined,
-        id: {
-          in: favouritePostIds,
-        },
-      },
-      skip: 1,
-      cursor: {
-        id: cursor,
-      },
-    });
+    const posts = await getFavouritePosts(session!.user!.id, cursor);
     return posts;
   }
 

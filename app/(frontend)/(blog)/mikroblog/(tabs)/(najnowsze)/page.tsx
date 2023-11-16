@@ -17,7 +17,11 @@ const NewestBlogsPage = async () => {
   }
 
   return (
-    <BlogPostInfiteScroll getPostsFunc={getPostsFunc} initalPosts={posts} />
+    <BlogPostInfiteScroll
+      getPostsFunc={getPostsFunc}
+      isEnd={posts.length < 10}
+      initalPosts={posts}
+    />
   );
 };
 

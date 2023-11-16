@@ -4,7 +4,8 @@ import type { FocusEventHandler } from "react";
 import axios from "axios";
 import { useState } from "react";
 import { useWatch } from "react-hook-form";
-import YouTube from "react-youtube";
+import dynamic from "next/dynamic";
+const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 type MemYoutubeProps<T extends FieldValues> = {
   setData: (val: string) => void;
@@ -60,7 +61,10 @@ function MemYoutube<T extends FieldValues>({
         </div>
       ) : (
         <>
-          <YouTube opts={{ width: "100%", height: "310px" }} videoId={data} />
+          <ReactPlayer
+            url={`https://youtube.com/watch?v=${data}`}
+            style={{ width: "600px", maxWidth: "100%" }}
+          />
           <button
             type="button"
             className="absolute bottom-[15px] right-[15px] bg-[#505050] text-white text-[13px] rounded-[3px] leading-[34px] px-[15px] cursor-pointer z-[3] shadow-md"

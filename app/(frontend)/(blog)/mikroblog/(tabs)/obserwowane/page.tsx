@@ -4,43 +4,18 @@ import { notFound } from "next/navigation";
 import { getPosts } from "../_actions/getPosts";
 import prisma from "@/libs/prismadb";
 import BlogPostInfiniteScroll from "../../_components/BlogPostInfiniteScroll";
+import { getObservedPosts } from "./_actions/getObservedPosts";
 
 const ObservedBlogsPage = async () => {
   const session = await getSession();
 
   if (!session?.user) return notFound();
 
-  const observedBlogPosts = await prisma.observedBlogPost.findMany({
-    where: {
-      userId: session.user.id,
-    },
-  });
-
-  const observedBlogPostIds = observedBlogPosts.map((post) => post.postId);
-
-  const posts = await getPosts({
-    where: {
-      id: {
-        in: observedBlogPostIds,
-      },
-      NOT: undefined,
-    },
-  });
+  const posts = await getObservedPosts(session.user.id);
 
   async function getPostsFunc(cursor: string | undefined) {
     "use server";
-    const posts = await getPosts({
-      where: {
-        id: {
-          in: observedBlogPostIds,
-        },
-        NOT: undefined,
-      },
-      skip: 1,
-      cursor: {
-        id: cursor,
-      },
-    });
+    const posts = await getObservedPosts(session!.user!.id, cursor);
 
     return posts;
   }

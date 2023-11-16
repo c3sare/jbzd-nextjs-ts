@@ -1,9 +1,5 @@
-import "plyr-react/plyr.css";
-import dynamic from "next/dynamic";
-
-const Plyr = dynamic(() => import("plyr-react"), { ssr: false });
-
-import { memo, useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { HiDownload } from "@react-icons/all-files/hi/HiDownload";
 
 type MemVideoProps = {
   src: string;
@@ -11,65 +7,41 @@ type MemVideoProps = {
 };
 
 const MemVideo: React.FC<MemVideoProps> = ({ src, gif }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  src =
+  const gifRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    if (gifRef.current && gif) gifRef.current.play();
+  }, [src, gif]);
+
+  const url =
     `https://res.cloudinary.com/${
       process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
     }/${gif ? "image" : "video"}/upload/` + src;
-  const plyr = useMemo(
-    () => (
-      <Plyr
-        source={{
-          type: "video",
-          sources: [
-            {
-              src,
-              type: "video/mp4",
-            },
-          ],
-        }}
-        options={{
-          controls: gif
-            ? []
-            : [
-                "play-large",
-                "play",
-                "progress",
-                "current-time",
-                "mute",
-                "volume",
-                "settings",
-                "pip",
-                "fullscreen",
-              ],
-          autoplay: gif,
-          loop: { active: gif || false },
-          hideControls: !gif,
-          disableContextMenu: false,
-        }}
-        playsInline={false}
-        loop={gif}
-        autoPlay={gif}
-      />
-    ),
-    [src, gif]
-  );
-
-  useEffect(() => {
-    if (ref.current !== null) {
-      const a = `<a class="plyr__controls__item plyr__control" href="${src}" target="_blank" download="" data-plyr="download" aria-pressed="false"><svg aria-hidden="true" focusable="false"><use xlink:href="#plyr-download"></use></svg><span class="plyr__sr-only">Download</span></a>`;
-      const plyrControls =
-        ref.current.querySelector(".plyr__controls")?.innerHTML;
-      ref.current.querySelector(".plyr__controls")!.innerHTML =
-        plyrControls + a;
-    }
-  }, [src]);
 
   return (
-    <div ref={ref} className="w-[600px] max-w-full">
-      {plyr}
-    </div>
+    <>
+      <video
+        style={{ width: "600px", maxWidth: "100%", height: "auto" }}
+        autoPlay={gif}
+        playsInline={gif}
+        loop={gif}
+        muted={gif}
+        src={url}
+        controls={!gif}
+        ref={gifRef}
+      />
+      {gif && (
+        <a
+          href={url}
+          download
+          target="_blank"
+          className="absolute bottom-[15px] right-[15px] flex items-center justify-center w-[32px] h-[32px] bg-transparent hover:bg-[#de2127] transition-colors rounded-md"
+        >
+          <HiDownload size={23} />
+        </a>
+      )}
+    </>
   );
 };
 
-export default memo(MemVideo);
+export default MemVideo;

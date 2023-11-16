@@ -1,11 +1,8 @@
 import { getSession } from "@/actions/getSession";
 import { notFound } from "next/navigation";
 import prisma from "@/libs/prismadb";
-import BlogPost from "../../_components/pages/BlogPost";
-import { getIncludePostData } from "../../_utils/getIncludePostData";
-import CommentTag, { CommentTypeTag } from "./_components/CommentTag";
-import { BlogPostType } from "../../(tabs)/_types/BlogPost";
-import { transformPosts } from "../../(tabs)/_actions/getPosts";
+import { getTagPosts } from "./_actions/getTagPosts";
+import BlogPostInfiniteScroll from "../../_components/BlogPostInfiniteScroll";
 
 type Params = {
   params: {
@@ -24,56 +21,25 @@ const TagPage = async ({ params: { slug } }: Params) => {
     where: {
       slug,
     },
-    include: {
-      posts: {
-        include: {
-          ...getIncludePostData(session.user.id),
-          parent: {
-            include: {
-              author: {
-                select: {
-                  id: true,
-                  username: true,
-                  image: true,
-                },
-              },
-            },
-          },
-        },
-        orderBy: {
-          addTime: "desc",
-        },
-      },
-    },
   });
 
   if (!tag) return notFound();
 
-  const posts = transformPosts(tag.posts, session.user.id);
+  const posts = await getTagPosts({ slug });
 
-  type TagPosts = typeof posts;
+  async function getPostsFunc(cursor?: string) {
+    "use server";
+    const tagPosts = await getTagPosts({ slug, cursor });
 
-  type TagPost = TagPosts[number] & {
-    parent?: BlogPostType;
-  };
-
-  const tagPosts: TagPost[] = posts;
+    return tagPosts;
+  }
 
   return (
     <div className="w-full md:w-2/3 relative min-h-[1px] px-[15px] ">
       <h1 className="text-white text-[2em] my-[0.67em] font-bold">
         Tag: {tag.name}
       </h1>
-      {tagPosts.map((post) =>
-        post?.parent ? (
-          <CommentTag
-            key={post.id}
-            comment={post as unknown as CommentTypeTag}
-          />
-        ) : (
-          <BlogPost key={post.id} post={post} />
-        )
-      )}
+      <BlogPostInfiniteScroll initalPosts={posts} getPostsFunc={getPostsFunc} />
     </div>
   );
 };

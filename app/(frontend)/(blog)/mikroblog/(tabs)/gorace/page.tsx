@@ -14,14 +14,17 @@ const ActiveBlogsPage: React.FC<ActiveBlogsPageProps> = async ({
   const posts = await getPosts({
     where: {
       addTime: {
-        gte: getSelectedDate(searchParams.time),
+        lte: getSelectedDate(searchParams.time),
       },
     },
-    orderBy: {
-      votes: {
-        _count: "desc",
+    orderBy: [
+      {
+        votes: {
+          _count: "desc",
+        },
       },
-    },
+      { addTime: "desc" },
+    ],
   });
 
   async function getPostsFunc(cursor: string | undefined) {
@@ -29,14 +32,17 @@ const ActiveBlogsPage: React.FC<ActiveBlogsPageProps> = async ({
     const posts = await getPosts({
       where: {
         addTime: {
-          gte: getSelectedDate(searchParams.time),
+          lte: getSelectedDate(searchParams.time),
         },
       },
-      orderBy: {
-        votes: {
-          _count: "desc",
+      orderBy: [
+        {
+          votes: {
+            _count: "desc",
+          },
         },
-      },
+        { addTime: "desc" },
+      ],
       skip: 1,
       cursor: {
         id: cursor,
@@ -47,7 +53,11 @@ const ActiveBlogsPage: React.FC<ActiveBlogsPageProps> = async ({
   }
 
   return (
-    <BlogPostInfiniteScroll getPostsFunc={getPostsFunc} initalPosts={posts} />
+    <BlogPostInfiniteScroll
+      isEnd={posts.length < 10}
+      getPostsFunc={getPostsFunc}
+      initalPosts={posts}
+    />
   );
 };
 

@@ -2,14 +2,11 @@ import Image from "next/image";
 import rankBg from "@/public/images/ranks.png";
 import UserInfoBoxLink from "../mikroblog/_components/layout/sidebar/authorized/UserInfoBoxLink";
 import ButtonShowHideActions from "./ButtonShowHideActions";
-import Box from "./Box";
-import EmptyBoxItem from "./EmptyBoxItem";
-import BoxItem from "./BoxItem";
 import MenuLink from "./MenuLink";
 import { getSession } from "@/actions/getSession";
 import MikroblogSidebar from "../mikroblog/_components/layout/sidebar/authorized/MikroblogSidebar";
-import UserInfoTab from "../mikroblog/_components/layout/sidebar/tabs/UserInfoTab";
-import TagsManagingTab from "../mikroblog/_components/layout/sidebar/tabs/TagsManagingTab";
+import UserInfoTab from "../mikroblog/_components/layout/sidebar/authorized/tabs/UserInfoTab";
+import TagsManagingTab from "../mikroblog/_components/layout/sidebar/authorized/tabs/TagsManagingTab";
 
 const MikroblogMobileMenu = async () => {
   const session = await getSession();
@@ -43,7 +40,7 @@ const MikroblogMobileMenu = async () => {
                 />
                 {username}
               </h2>
-              <ul className="text-white mx-auto">
+              <ul className="mx-auto text-white">
                 <UserInfoBoxLink href={`/uzytkownik/${username}`}>
                   Mój profil
                 </UserInfoBoxLink>
