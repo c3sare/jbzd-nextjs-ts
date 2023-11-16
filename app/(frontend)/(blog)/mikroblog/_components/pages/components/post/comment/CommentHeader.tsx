@@ -49,7 +49,7 @@ const CommentHeader: React.FC<CommentHeaderProps> = ({ comment }) => {
       >
         {comment.author.username}
       </Link>
-      <time className="text-[12px] font-semibold text-[#6e7578] relative bottom-[-2px]">
+      <time className="hidden sm:block text-[12px] font-semibold text-[#6e7578] relative bottom-[-2px]">
         {time}
       </time>
       <div className="flex items-center justify-end ml-auto">

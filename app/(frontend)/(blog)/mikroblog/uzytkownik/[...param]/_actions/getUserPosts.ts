@@ -8,11 +8,12 @@ type GetUserPostsProps = {
 export async function getUserPosts({ cursor, userId }: GetUserPostsProps) {
   const posts = await getPosts({
     where: {
-      NOT: undefined,
-      authorId: userId,
-      parentId: {
-        isSet: false,
+      NOT: {
+        parentId: {
+          isSet: true,
+        },
       },
+      authorId: userId,
     },
     skip: cursor ? 1 : undefined,
     cursor: cursor

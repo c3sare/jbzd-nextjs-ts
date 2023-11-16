@@ -16,6 +16,11 @@ const ActiveBlogsPage: React.FC<ActiveBlogsPageProps> = async ({
       addTime: {
         lte: getSelectedDate(searchParams.time),
       },
+      NOT: {
+        parentId: {
+          isSet: true,
+        },
+      },
     },
     orderBy: [
       {

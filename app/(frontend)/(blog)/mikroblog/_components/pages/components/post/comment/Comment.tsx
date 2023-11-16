@@ -55,7 +55,7 @@ const Comment: React.FC<CommentProps> = ({ comment, handleReplyComment }) => {
         </Link>
         <Rank className="scale-[.7] absolute right-[-10px] bottom-[-15px]" />
       </div>
-      <div className="w-[calc(100%_-_45px)] relative flex flex-col">
+      <div className="w-full sm:w-[calc(100%_-_45px)] relative flex flex-col">
         <CommentHeader comment={comment} />
         <div className="p-[0_0_35px] text-left clear-both relative bg-[#313131]">
           <MessageBox message={comment.text} images={comment.files} />

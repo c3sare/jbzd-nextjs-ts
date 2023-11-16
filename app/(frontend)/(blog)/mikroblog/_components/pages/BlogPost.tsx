@@ -124,7 +124,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
       />
       <div className="w-full md:w-[calc(100%_-_70px)] relative">
         <BlogPostHeader post={post} />
-        <div className="clear-both relative p-[15px_15px_25px] bg-[#313131] group">
+        <div className="clear-both relative p-[15px_15px_25px] bg-[#313131] group flex flex-col justify-between">
           {!!post.questionnaire && (
             <Survey questionnaire={post.questionnaire} />
           )}

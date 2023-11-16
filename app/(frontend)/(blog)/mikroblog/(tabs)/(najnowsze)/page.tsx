@@ -2,7 +2,15 @@ import { getPosts } from "../_actions/getPosts";
 import BlogPostInfiteScroll from "../../_components/BlogPostInfiniteScroll";
 
 const NewestBlogsPage = async () => {
-  const posts = await getPosts({});
+  const posts = await getPosts({
+    where: {
+      NOT: {
+        parentId: {
+          isSet: true,
+        },
+      },
+    },
+  });
 
   async function getPostsFunc(cursor: string | undefined) {
     "use server";

@@ -6,6 +6,13 @@ export async function getObservedPosts(userId: string, cursor?: string) {
   const observed = await prisma.observedBlogPost.findMany({
     where: {
       userId,
+      post: {
+        NOT: {
+          parentId: {
+            isSet: true,
+          },
+        },
+      },
     },
     include: {
       post: {

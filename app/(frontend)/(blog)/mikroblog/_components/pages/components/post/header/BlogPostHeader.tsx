@@ -43,14 +43,14 @@ const BlogPostHeader: React.FC<BlogPostHeaderProps> = ({ post }) => {
   };
 
   return (
-    <div className="bg-[#1f1f1f] p-[13px_7px_13px_15px] leading-[24px]">
+    <div className="bg-[#1f1f1f] px-2 py-4 sm:p-[13px_7px_13px_15px] leading-[24px] flex justify-between items-center flex-wrap">
       <Link
         className="min-w-[50px] mr-[20px] relative text-[18px] font-semibold text-white"
         href={userProfileHref}
       >
         {post.author.username}
       </Link>
-      <time className="text-[12px] font-semibold text-[#6e7578] relative bottom-[-2px]">
+      <time className="hidden md:block text-[12px] font-semibold text-[#6e7578] relative bottom-[-2px]">
         <Link href={`/mikroblog/post/${post.id}/${post.slug}`}>{time}</Link>
       </time>
       <div className="flex items-center justify-center float-right">

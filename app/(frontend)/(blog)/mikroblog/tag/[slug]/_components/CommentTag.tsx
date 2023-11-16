@@ -33,14 +33,14 @@ const CommentTag: React.FC<CommentTagProps> = ({ comment }) => {
   };
 
   return (
-    <div className="relative mb-[25px] flex">
+    <div className="relative mb-[25px] w-full flex">
       <AvatarBox
         userId={comment.parent.authorId}
         username={comment.parent.author.username!}
         avatar={comment.parent.author.image!}
       />
-      <div className="w-[calc(100%_-_70px)] relative flex-col">
-        <div className="text-center p-[15px_15px_25px] bg-[#313131] relative">
+      <div className="w-full md:w-[calc(100%_-_70px)] relative flex-col">
+        <div className="text-center p-[15px_15px_25px] bg-[#313131] relative w-full">
           <Link
             className="flex items-center justify-center text-[20px] text-white flex-col"
             href={`/mikroblog/post/${comment.parent.id}/${comment.parent.slug}`}
