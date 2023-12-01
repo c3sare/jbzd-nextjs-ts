@@ -2,6 +2,7 @@
 
 import { getSession } from "@/actions/getSession";
 import prisma from "@/libs/prismadb";
+import { revalidatePath } from "next/cache";
 
 export default async function setFavouritePost(postId: string) {
   const session = await getSession();
@@ -67,6 +68,8 @@ export default async function setFavouritePost(postId: string) {
         },
       });
     }
+
+    revalidatePath("/", "layout");
 
     return { isFavourite: !Boolean(favouriteIsExist) };
   } catch (err: any) {

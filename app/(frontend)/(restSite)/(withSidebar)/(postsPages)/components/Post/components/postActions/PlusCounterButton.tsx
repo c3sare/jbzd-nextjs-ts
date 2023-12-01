@@ -5,7 +5,6 @@ import clsx from "clsx";
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import setPostVote from "../../actions/setPostVote";
-import { useRouter } from "next/navigation";
 
 type PlusCounterButtonProps = {
   pluses: number;
@@ -18,7 +17,6 @@ const PlusCounterButton: React.FC<PlusCounterButtonProps> = ({
   isPlused,
   postId,
 }) => {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [plusCount, setPlusCount] = useState<number>(pluses);
   const [plused, setPlused] = useState<boolean>(isPlused);
@@ -30,12 +28,11 @@ const PlusCounterButton: React.FC<PlusCounterButtonProps> = ({
     if (typeof res?.count === "number") {
       setPlusCount(res.count);
       setPlused(res.isPlused);
-      router.refresh();
     } else {
       toast.error(res.message);
     }
     setIsLoading(false);
-  }, [postId, router]);
+  }, [postId]);
 
   return (
     <div className="w-full md:w-auto">

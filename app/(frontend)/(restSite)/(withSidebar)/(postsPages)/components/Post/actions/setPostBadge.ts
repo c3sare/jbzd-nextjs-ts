@@ -3,6 +3,7 @@
 import addNotification from "@/actions/addNotification";
 import { getSession } from "@/actions/getSession";
 import prisma from "@/libs/prismadb";
+import { revalidatePath } from "next/cache";
 
 const badgeTypes = ["ROCK", "SILVER", "GOLD"] as const;
 
@@ -103,6 +104,8 @@ export default async function setPostBadge(postId: string, type: BadgeType) {
           type: selectedType,
         },
       });
+
+      revalidatePath("/", "layout");
 
       return {
         result: "OK",

@@ -3,6 +3,7 @@
 import { getSession } from "@/actions/getSession";
 import prisma from "@/libs/prismadb";
 import { TagAction } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 export default async function setTagAction(
   id: string,
@@ -56,6 +57,8 @@ export default async function setTagAction(
       });
       currentMethod = tagAction.method;
     }
+
+    revalidatePath("/", "layout");
 
     return { method: currentMethod };
   } catch (err: any) {

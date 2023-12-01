@@ -2,6 +2,7 @@
 
 import { getSession } from "@/actions/getSession";
 import prisma from "@/libs/prismadb";
+import { revalidatePath } from "next/cache";
 
 export default async function setPostVote(postId: string) {
   const session = await getSession();
@@ -73,6 +74,8 @@ export default async function setPostVote(postId: string) {
         postId,
       },
     });
+
+    revalidatePath("/", "layout");
 
     return { isPlused: !Boolean(voteIsExist), count };
   } catch (err: any) {
