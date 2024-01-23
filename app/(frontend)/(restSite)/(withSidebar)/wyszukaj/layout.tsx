@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, Suspense } from "react";
 import Form from "@/components/header/components/search/components/Form";
 
 const SearchLayout: React.FC<PropsWithChildren> = ({ children }) => {
@@ -8,7 +8,9 @@ const SearchLayout: React.FC<PropsWithChildren> = ({ children }) => {
         Szukaj
       </h1>
       <div className="w-full h-[120px] relative bg-[#1f1f1f] p-2">
-        <Form />
+        <Suspense>
+          <Form />
+        </Suspense>
       </div>
       {children}
     </>

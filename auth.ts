@@ -19,10 +19,10 @@ export const {
   handlers: { GET, POST },
 } = NextAuth({
   adapter: PrismaAdapter(prisma),
+  ...authConfig,
   session: {
     strategy: "jwt",
   },
-  ...authConfig,
   providers: [
     Facebook,
     Google,
@@ -58,12 +58,12 @@ export const {
     jwt: async ({ token, user, account }) => {
       if (user && account) {
         token.provider = account.provider;
-        token.userId = account.userId || user.id;
+        token.userId = account.userId || user.id!;
       }
 
       return token;
     },
-    session: async ({ session, token }) => {
+    session: async ({ session, token }: any) => {
       if (!session.user?.email) return session;
 
       const dbUser = await prisma.user.findUnique({

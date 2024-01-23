@@ -30,12 +30,12 @@ const AnswerItem: React.FC<AnswerItemProps> = ({ index, remove, move, id }) => {
   const [{ handlerId }, drop] = useDrop<
     DragItem,
     void,
-    { handlerId: Identifier | null }
+    { handlerId: Identifier }
   >({
     accept: ItemTypes.CARD,
     collect(monitor) {
       return {
-        handlerId: monitor.getHandlerId(),
+        handlerId: monitor.getHandlerId()!,
       };
     },
     hover(item: DragItem, monitor) {
