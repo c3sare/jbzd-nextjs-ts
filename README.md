@@ -34,7 +34,7 @@ MongoDB database
 ### Cloning the repository
 
 ```shell
-git clone https://github.com/AntonioErdeljac/next13-discord-clone.git
+git clone https://github.com/c3sare/jbzd-nextjs-ts
 ```
 
 ### Install packages
