@@ -63,7 +63,9 @@ function MemVideo<T extends FieldValues>({
         <div
           onClick={handleOpenFileExplorer}
           className="flex h-[300px] w-full z-[2] flex-col items-center justify-center text-white text-[13px] gap-[10px] cursor-pointer"
-          ref={drop}
+          ref={(ref) => {
+            drop(ref);
+          }}
         >
           <input
             type="file"

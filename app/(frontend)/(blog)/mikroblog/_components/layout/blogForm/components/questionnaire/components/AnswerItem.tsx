@@ -101,7 +101,12 @@ const AnswerItem: React.FC<AnswerItemProps> = ({ index, remove, move, id }) => {
   drag(drop(ref));
 
   return (
-    <div className="mb-[4px] w-full" ref={preview}>
+    <div
+      className="mb-[4px] w-full"
+      ref={(ref) => {
+        preview(ref);
+      }}
+    >
       <div className="mb-[10px] w-full flex items-center">
         <span
           className="flex justify-center items-center w-[calc(8%_-_6px)] cursor-move text-[#6d7578] h-[43px] leading-[34px] text-center text-[18px] mx-[3px]"

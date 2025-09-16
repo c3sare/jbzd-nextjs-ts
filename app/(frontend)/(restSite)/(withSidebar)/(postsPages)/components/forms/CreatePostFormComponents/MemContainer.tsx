@@ -105,7 +105,12 @@ const MemContainer: React.FC<MemContainerProps> = ({
   drag(drop(ref));
 
   return (
-    <div className="w-full" ref={preview}>
+    <div
+      className="w-full"
+      ref={(ref) => {
+        preview(ref);
+      }}
+    >
       <div className="relative w-full my-[15px]">
         {children}
         <MoveButton ref={ref} />

@@ -27,7 +27,7 @@ const Form = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: async () => {
-      const search = isSearchPage ? searchParams.get("pharse") : "" || "";
+      const search = isSearchPage ? searchParams.get("pharse") : "";
       const datatype =
         dataTypes.includes(params.datatype as string) && isSearchPage
           ? params.datatype
