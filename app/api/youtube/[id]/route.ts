@@ -2,15 +2,13 @@ import { getSession } from "@/actions/getSession";
 import { NextResponse } from "next/server";
 
 type RequestParams = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-export async function POST(
-  request: Request,
-  { params: { id } }: RequestParams
-) {
+export async function POST(request: Request, { params }: RequestParams) {
+  const { id } = await params;
   const session = await getSession();
 
   if (!session?.user?.email)

@@ -18,8 +18,17 @@ export const dynamic = "force-dynamic";
 
 export const revalidate = 0;
 
-export default async function NextHomePage(props: CategoryPageProps) {
-  const posts = await getCategoryPagePosts(props);
+type PageType = {
+  params: Promise<CategoryPageProps["params"]>;
+  searchParams: Promise<CategoryPageProps["searchParams"]>;
+};
+
+export default async function NextHomePage(props: PageType) {
+  const [params, searchParams] = await Promise.all([
+    props.params,
+    props.searchParams,
+  ]);
+  const posts = await getCategoryPagePosts({ params, searchParams });
 
   if (!posts) return notFound();
 
@@ -40,7 +49,7 @@ export default async function NextHomePage(props: CategoryPageProps) {
       >
         <Link href={`/`}>Strona główna</Link>
         {posts.page > 1 ? (
-          <Link href={`/${props.params.category}`}>{posts.categoryName}</Link>
+          <Link href={`/${params.category}`}>{posts.categoryName}</Link>
         ) : null}
       </Breadcrumb>
       <PostsPageHeader
@@ -58,7 +67,7 @@ export default async function NextHomePage(props: CategoryPageProps) {
       <Posts posts={posts.posts} />
       {posts.pagesCount > 1 && (
         <Pagination
-          pageName={props.params.category}
+          pageName={params.category}
           currentPage={posts.page}
           allPages={posts.pagesCount}
         />

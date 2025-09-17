@@ -1,19 +1,17 @@
 import clsx from "clsx";
-import { ForwardRefRenderFunction, MouseEventHandler, forwardRef } from "react";
+import { MouseEventHandler } from "react";
 
 type ScrollThumbProps = {
   onMouseDown: MouseEventHandler<HTMLDivElement>;
+  ref?: React.Ref<HTMLDivElement>;
 };
 
-const ScrollThumb: ForwardRefRenderFunction<
-  HTMLDivElement,
-  ScrollThumbProps
-> = (props, ref) => {
+const ScrollThumb = (props: ScrollThumbProps) => {
   return (
     <div
       className="absolute top-0 left-0 w-[8px] h-[3px] text-[1px] bg-[#707070] z-[2]"
       style={{ left: "0px" }}
-      ref={ref}
+      ref={props.ref}
       onMouseDown={props.onMouseDown}
     >
       <div
@@ -26,4 +24,4 @@ const ScrollThumb: ForwardRefRenderFunction<
   );
 };
 
-export default forwardRef(ScrollThumb);
+export default ScrollThumb;

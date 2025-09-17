@@ -3,15 +3,13 @@ import { NextResponse } from "next/server";
 import prisma from "@/libs/prismadb";
 
 type RequestParams = {
-  params: {
+  params: Promise<{
     postId: string;
-  };
+  }>;
 };
 
-export async function POST(
-  request: Request,
-  { params: { postId } }: RequestParams
-) {
+export async function POST(request: Request, { params }: RequestParams) {
+  const { postId } = await params;
   const session = await getSession();
 
   if (!session?.user?.email)

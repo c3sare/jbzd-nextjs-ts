@@ -17,15 +17,16 @@ export const revalidate = 0;
 
 type UserProfileLayoutProps = {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     username: string;
-  };
+  }>;
 };
 
 export default async function UserProfileLayout({
   children,
-  params: { username },
+  params,
 }: UserProfileLayoutProps) {
+  const { username } = await params;
   const user = await getUser(username);
 
   if (!user) {

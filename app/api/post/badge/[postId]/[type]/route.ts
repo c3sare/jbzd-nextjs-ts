@@ -1,28 +1,26 @@
 import { getSession } from "@/actions/getSession";
-import { NextResponse } from "next/server";
 import prisma from "@/libs/prismadb";
 import addNotification from "@/actions/addNotification";
+import type { NextRequest } from "next/server";
 
 type BadgeType = "ROCK" | "SILVER" | "GOLD";
 
 type RequestParams = {
-  params: {
+  params: Promise<{
     postId: string;
-    type: "rock" | "silver" | "gold";
-  };
+    type: string;
+  }>;
 };
 
-export async function POST(
-  request: Request,
-  { params: { postId, type } }: RequestParams
-) {
+export async function POST(request: NextRequest, { params }: RequestParams) {
+  const { postId, type } = await params;
   const session = await getSession();
 
   if (!session?.user?.email)
-    return new NextResponse("No authorization", { status: 403 });
+    return new Response("No authorization", { status: 403 });
 
   if (!postId || !type || !["rock", "silver", "gold"].includes(type))
-    return new NextResponse("No id provided or type is invalid", {
+    return new Response("No id provided or type is invalid", {
       status: 400,
     });
 
@@ -44,7 +42,7 @@ export async function POST(
     });
 
     if (badgeIsExist) {
-      return NextResponse.json({ result: "ALREADY_EXIST" });
+      return Response.json({ result: "ALREADY_EXIST" });
     } else {
       const user = await prisma.user.findFirstOrThrow({
         where: {
@@ -57,7 +55,7 @@ export async function POST(
       });
 
       if (cost[selectedType] > user.coins)
-        return NextResponse.json({ result: "NOT_ENOUGHT_COINS" });
+        return Response.json({ result: "NOT_ENOUGHT_COINS" });
 
       const badge = await prisma.badgePost.create({
         data: {
@@ -114,7 +112,7 @@ export async function POST(
         },
       });
 
-      return NextResponse.json({
+      return Response.json({
         result: "OK",
         type: badge.type.toLowerCase(),
         count,
@@ -122,6 +120,6 @@ export async function POST(
       });
     }
   } catch (err: any) {
-    throw new NextResponse("Internal Error", { status: 500 });
+    return new Response("Internal Error", { status: 500 });
   }
 }

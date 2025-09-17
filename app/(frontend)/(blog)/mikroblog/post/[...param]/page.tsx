@@ -6,14 +6,13 @@ import { getIncludePostData } from "../../_utils/getIncludePostData";
 import { transformPosts } from "../../(tabs)/_actions/getPosts";
 
 type BlogPostPageProps = {
-  params: {
+  params: Promise<{
     param: string[];
-  };
+  }>;
 };
 
-const BlogPostPage: React.FC<BlogPostPageProps> = async ({
-  params: { param },
-}) => {
+const BlogPostPage: React.FC<BlogPostPageProps> = async ({ params }) => {
+  const { param } = await params;
   const id = param[0] as string;
   const slug = param[1] as string;
 

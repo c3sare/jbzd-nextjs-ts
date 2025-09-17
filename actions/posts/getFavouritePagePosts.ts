@@ -8,9 +8,11 @@ import parseSearchParams from "@/utils/parseSearchParams";
 import getFavouritePostsIds from "../getFavouritePostsIds";
 
 export async function getFavouritePagePosts({
-  params: { index },
+  params,
   searchParams,
 }: PageProps) {
+  const { index } = await params;
+  const searchParamst = await searchParams;
   const currentPage = Number(index?.[0] || 1) - 1;
   const isNanPage = isNaN(currentPage);
 
@@ -21,7 +23,7 @@ export async function getFavouritePagePosts({
 
     const { blockedTagsIds, followedTagsIds } = await getActionedTagsLists();
 
-    const { countOnPage } = await parseSearchParams(searchParams);
+    const { countOnPage } = await parseSearchParams(searchParamst);
 
     const favouritePostIds = await getFavouritePostsIds();
 

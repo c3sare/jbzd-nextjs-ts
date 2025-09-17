@@ -3,10 +3,10 @@ import { getSession } from "@/actions/getSession";
 import SidebarForms from "@/components/sidebar/components/SidebarForms";
 
 type LoginPageType = {
-  searchParams: {
+  searchParams: Promise<{
     error: string;
-  };
-  params: {};
+  }>;
+  params: Promise<{}>;
 };
 
 const ErrorMessagesDetails: {
@@ -33,9 +33,8 @@ const ErrorMessagesDetails: {
   Default: "Wystąpił nieznany błąd, spróbuj ponownie później.",
 };
 
-const LoginPage: React.FC<LoginPageType> = async ({
-  searchParams: { error },
-}) => {
+const LoginPage: React.FC<LoginPageType> = async ({ searchParams }) => {
+  const { error } = await searchParams;
   const session = await getSession();
 
   if (session?.user?.email) return redirect("/");

@@ -1,18 +1,15 @@
 import { notFound } from "next/navigation";
-import BlogPost from "../../_components/pages/BlogPost";
-import { getPosts } from "../../(tabs)/_actions/getPosts";
 import BlogPostInfiteScroll from "../../_components/BlogPostInfiniteScroll";
 import { getUserPosts } from "./_actions/getUserPosts";
 
 type UserBlogPageProps = {
-  params: {
+  params: Promise<{
     param: string[];
-  };
+  }>;
 };
 
-const UserBlogPage: React.FC<UserBlogPageProps> = async ({
-  params: { param },
-}) => {
+const UserBlogPage: React.FC<UserBlogPageProps> = async ({ params }) => {
+  const { param } = await params;
   const userId = param[0] as string;
   const username = param[1] as string;
 

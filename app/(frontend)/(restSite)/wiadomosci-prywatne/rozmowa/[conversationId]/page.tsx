@@ -5,14 +5,15 @@ import BackToConversationsPage from "./components/BackToConversationsPage";
 import ChatPage from "./components/ChatPage";
 
 type ConversationPageProps = {
-  params: {
+  params: Promise<{
     conversationId: string;
-  };
+  }>;
 };
 
 const ConversationPage: React.FC<ConversationPageProps> = async ({
-  params: { conversationId },
+  params,
 }) => {
+  const { conversationId } = await params;
   const session = await getSession();
   const conversation = await getMessages(conversationId);
   if (!conversation || !session?.user?.id)

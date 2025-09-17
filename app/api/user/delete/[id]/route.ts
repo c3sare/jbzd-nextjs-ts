@@ -3,15 +3,13 @@ import prisma from "@/libs/prismadb";
 import { NextResponse } from "next/server";
 
 type RequestParams = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-export async function DELETE(
-  request: Request,
-  { params: { id } }: RequestParams
-) {
+export async function DELETE(request: Request, { params }: RequestParams) {
+  const { id } = await params;
   const session = await getSession();
 
   if (!session?.user?.email)

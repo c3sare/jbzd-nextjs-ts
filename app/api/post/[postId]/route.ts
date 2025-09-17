@@ -3,16 +3,14 @@ import { getSession } from "@/actions/getSession";
 import { NextResponse } from "next/server";
 
 type RequestParams = {
-  params: {
+  params: Promise<{
     postId: string;
-  };
+  }>;
 };
 
-export async function DELETE(
-  request: Request,
-  { params: { postId } }: RequestParams
-) {
+export async function DELETE(request: Request, { params }: RequestParams) {
   try {
+    const { postId } = await params;
     const session = await getSession();
 
     if (!session?.user?.email)

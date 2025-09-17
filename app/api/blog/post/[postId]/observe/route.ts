@@ -4,15 +4,14 @@ import { ObservedBlogPost } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 type Params = {
-  params: {
+  params: Promise<{
     postId: string;
-  };
+  }>;
 };
 
-export async function POST(
-  request: NextRequest,
-  { params: { postId } }: Params
-) {
+export async function POST(request: NextRequest, { params }: Params) {
+  const { postId } = await params;
+
   if (!postId) return new NextResponse("No postId provided", { status: 400 });
 
   try {

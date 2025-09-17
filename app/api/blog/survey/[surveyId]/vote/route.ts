@@ -3,15 +3,14 @@ import prisma from "@/libs/prismadb";
 import { getSession } from "@/actions/getSession";
 
 type Params = {
-  params: {
+  params: Promise<{
     surveyId: string;
-  };
+  }>;
 };
 
-export async function POST(
-  req: NextRequest,
-  { params: { surveyId: questionnaireId } }: Params
-) {
+export async function POST(req: NextRequest, { params }: Params) {
+  const { surveyId: questionnaireId } = await params;
+
   try {
     const session = await getSession();
 

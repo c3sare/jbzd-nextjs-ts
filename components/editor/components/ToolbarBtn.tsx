@@ -8,12 +8,17 @@ type ToolbarBtnProps = {
   children?: React.ReactNode;
   title?: string;
   active?: boolean;
+  ref?: React.Ref<HTMLButtonElement>;
 };
 
-const ToolbarBtn: React.ForwardRefRenderFunction<
-  HTMLButtonElement,
-  ToolbarBtnProps
-> = ({ disabled, onClick, children, title, active }, ref) => {
+const ToolbarBtn = ({
+  disabled,
+  onClick,
+  children,
+  title,
+  active,
+  ref,
+}: ToolbarBtnProps) => {
   const activeClassName =
     "hover:bg-[hsla(0,_0%,_100%,_.25)] border-[#999] bg-[rgba(0,_0,_0,_.1)]";
   const noActiveClassName = "hover:bg-[#181818] border-transparent";
@@ -35,4 +40,4 @@ const ToolbarBtn: React.ForwardRefRenderFunction<
   );
 };
 
-export default React.forwardRef(ToolbarBtn);
+export default ToolbarBtn;

@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { forwardRef } from "react";
 
 import { FieldValues, Path } from "react-hook-form";
 
@@ -11,12 +10,16 @@ type TextareaProps<T extends FieldValues> = {
   placeholder: string;
   onFocus?: ButtonHTMLAttributes<HTMLTextAreaElement>["onFocus"];
   isActive?: boolean;
+  ref?: React.Ref<HTMLTextAreaElement>;
 };
 
-const CommentTextarea = <T extends FieldValues>(
-  { id, placeholder, onFocus, isActive }: TextareaProps<T>,
-  ref: ForwardedRef<HTMLTextAreaElement>
-) => {
+const CommentTextarea = <T extends FieldValues>({
+  id,
+  placeholder,
+  onFocus,
+  isActive,
+  ref,
+}: TextareaProps<T>) => {
   return (
     <div className="w-full relative">
       <Textarea
@@ -33,4 +36,4 @@ const CommentTextarea = <T extends FieldValues>(
   );
 };
 
-export default forwardRef(CommentTextarea);
+export default CommentTextarea;

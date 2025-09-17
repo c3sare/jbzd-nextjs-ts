@@ -12,8 +12,13 @@ export type PostsTabProps = {
   };
 };
 
-const UserProfilePage: React.FC<PostsTabProps> = async (props) => {
-  const posts = await getUserPagePosts(props);
+type PostsTabPropsx = {
+  params: Promise<PostsTabProps["params"]>;
+};
+
+const UserProfilePage: React.FC<PostsTabPropsx> = async (props) => {
+  const params = await props.params;
+  const posts = await getUserPagePosts({ params });
 
   if (!posts) return notFound();
 
@@ -21,14 +26,12 @@ const UserProfilePage: React.FC<PostsTabProps> = async (props) => {
     <div>
       <Breadcrumb currentNode="Dzidy">
         <Link href="/">Strona główna</Link>
-        <Link href={`/uzytkownik/${props.params.username}`}>
-          {props.params.username}
-        </Link>
+        <Link href={`/uzytkownik/${params.username}`}>{params.username}</Link>
       </Breadcrumb>
       <Posts posts={posts.posts} />
       {posts.pagesCount > 1 && (
         <Pagination
-          pageName={`uzytkownik/${props.params.username}`}
+          pageName={`uzytkownik/${params.username}`}
           currentPage={posts.page}
           allPages={posts.pagesCount}
         />

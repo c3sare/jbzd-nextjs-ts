@@ -9,8 +9,17 @@ export const dynamic = "force-dynamic";
 
 export const revalidate = 0;
 
-export default async function Home(props: TagPageProps) {
-  const posts = await getTagPagePosts(props);
+type PageType = {
+  params: Promise<TagPageProps["params"]>;
+  searchParams: Promise<TagPageProps["searchParams"]>;
+};
+
+export default async function Home(props: PageType) {
+  const [params, searchParams] = await Promise.all([
+    props.params,
+    props.searchParams,
+  ]);
+  const posts = await getTagPagePosts({ params, searchParams });
 
   if (!posts) return notFound();
 

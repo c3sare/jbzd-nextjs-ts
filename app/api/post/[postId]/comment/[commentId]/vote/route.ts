@@ -5,20 +5,18 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaClientOptions } from "@prisma/client/runtime/library";
 
 type RequestParams = {
-  params: {
+  params: Promise<{
     postId: string;
     commentId: string;
-  };
+  }>;
 };
 
 type VoteType = "plus" | "minus";
 
 type VoteModelType = PrismaClient<PrismaClientOptions>["commentVotePlus"];
 
-export async function POST(
-  request: Request,
-  { params: { postId, commentId } }: RequestParams
-) {
+export async function POST(request: Request, { params }: RequestParams) {
+  const { postId, commentId } = await params;
   if (!postId || !commentId)
     return new NextResponse("No id provided or type is invalid", {
       status: 400,

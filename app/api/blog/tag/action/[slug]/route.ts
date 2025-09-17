@@ -4,13 +4,14 @@ import prisma from "@/libs/prismadb";
 import { ActionedBlogTag, BlogTag, TagAction } from "@prisma/client";
 
 type Params = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
-export async function POST(request: NextRequest, { params: { slug } }: Params) {
+export async function POST(request: NextRequest, { params }: Params) {
   try {
+    const { slug } = await params;
     const { method } = await request.json();
 
     if (!method || !["BLOCK", "FOLLOW"].includes(method))

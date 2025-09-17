@@ -7,15 +7,13 @@ import parseSearchParams from "@/utils/parseSearchParams";
 import { NextRequest, NextResponse } from "next/server";
 
 type ParamsType = {
-  params: {
+  params: Promise<{
     index: string;
-  };
+  }>;
 };
 
-export async function GET(
-  request: NextRequest,
-  { params: { index } }: ParamsType
-) {
+export async function GET(request: NextRequest, { params }: ParamsType) {
+  const { index } = await params;
   const searchParams = {};
 
   try {

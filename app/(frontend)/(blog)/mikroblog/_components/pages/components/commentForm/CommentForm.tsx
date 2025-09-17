@@ -3,13 +3,7 @@
 import { v4 as uuid } from "uuid";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
 import CommentTextarea from "./_componenets/CommentTextarea";
 
 import { FaTrash } from "@react-icons/all-files/fa/FaTrash";
@@ -32,12 +26,15 @@ type CommentFormProps = {
   onClose: () => void;
   defaultCommentText: string;
   postId: string;
+  ref?: React.Ref<HTMLTextAreaElement>;
 };
 
-const CommentForm: React.ForwardRefRenderFunction<
-  HTMLTextAreaElement,
-  CommentFormProps
-> = ({ onClose, defaultCommentText, postId }, ref) => {
+const CommentForm = ({
+  onClose,
+  defaultCommentText,
+  postId,
+  ref,
+}: CommentFormProps) => {
   const router = useRouter();
   const form = useZodForm({
     schema: BlogCommentSchema,
@@ -247,4 +244,4 @@ const CommentForm: React.ForwardRefRenderFunction<
   );
 };
 
-export default forwardRef(CommentForm);
+export default CommentForm;

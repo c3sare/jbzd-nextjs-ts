@@ -9,13 +9,13 @@ import { getComments } from "@/actions/comments/getComments";
 import { getSession } from "@/actions/getSession";
 
 type MemPageProps = {
-  params: {
+  params: Promise<{
     postId: string;
     slug: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     sort?: string;
-  };
+  }>;
 };
 
 export const fetchCache = "force-no-store";
@@ -24,10 +24,9 @@ export const dynamic = "force-dynamic";
 
 export const revalidate = 0;
 
-const MemPage: React.FC<MemPageProps> = async ({
-  params: { postId, slug },
-  searchParams: { sort },
-}) => {
+const MemPage: React.FC<MemPageProps> = async ({ params, searchParams }) => {
+  const { postId, slug } = await params;
+  const { sort } = await searchParams;
   if (!postId || !slug) return notFound();
 
   const post = await getPostWithStats(postId, slug);

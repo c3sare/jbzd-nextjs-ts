@@ -3,18 +3,19 @@ import { getPosts } from "../_actions/getPosts";
 import { getSelectedDate } from "../_utils/getSelectedDate";
 
 type ActiveBlogsPageProps = {
-  searchParams: {
+  searchParams: Promise<{
     time?: string;
-  };
+  }>;
 };
 
 const ActiveBlogsPage: React.FC<ActiveBlogsPageProps> = async ({
   searchParams,
 }) => {
+  const { time } = await searchParams;
   const posts = await getPosts({
     where: {
       addTime: {
-        lte: getSelectedDate(searchParams.time),
+        lte: getSelectedDate(time),
       },
       NOT: {
         parentId: {
@@ -37,7 +38,7 @@ const ActiveBlogsPage: React.FC<ActiveBlogsPageProps> = async ({
     const posts = await getPosts({
       where: {
         addTime: {
-          lte: getSelectedDate(searchParams.time),
+          lte: getSelectedDate(time),
         },
       },
       orderBy: [

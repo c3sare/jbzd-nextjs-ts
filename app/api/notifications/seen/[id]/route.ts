@@ -3,16 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/libs/prismadb";
 
 type NotifiPostProps = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-export async function POST(
-  request: NextRequest,
-  { params: { id } }: NotifiPostProps
-) {
+export async function POST(request: NextRequest, { params }: NotifiPostProps) {
   try {
+    const { id } = await params;
     const session = await getSession();
 
     if (!session?.user?.id || !id)

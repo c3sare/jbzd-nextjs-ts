@@ -8,14 +8,15 @@ import { getPremium } from "@/actions/getPremium";
 import HeaderPremium from "../components/HeaderPremium";
 
 type FavouriteCommentsPageProps = {
-  searchParams: {
+  searchParams: Promise<{
     sort: string;
-  };
+  }>;
 };
 
 const FavouriteCommentsPage: React.FC<FavouriteCommentsPageProps> = async ({
-  searchParams: { sort },
+  searchParams,
 }) => {
+  const { sort } = await searchParams;
   const session = await getSession();
 
   if (!session?.user?.id) return notFound();

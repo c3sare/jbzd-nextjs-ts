@@ -8,17 +8,16 @@ import uploadMemFile from "@/utils/uploadMemFile";
 import createSlugFromTitle from "@/utils/createSlugFromTitle";
 
 type BlogPostParams = {
-  params: {
+  params: Promise<{
     postId: string;
-  };
+  }>;
 };
 
 const tagRegex = /#([a-zA-Z0-9]){3,32}/gim;
 
-export async function PUT(
-  request: NextRequest,
-  { params: { postId } }: BlogPostParams
-) {
+export async function PUT(request: NextRequest, { params }: BlogPostParams) {
+  const { postId } = await params;
+
   if (!postId) return new NextResponse("No postId", { status: 400 });
 
   try {

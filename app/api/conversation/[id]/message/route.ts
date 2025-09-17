@@ -5,16 +5,17 @@ import prisma from "@/libs/prismadb";
 import { pusherServer } from "@/libs/pusher";
 
 type PostMessageConversationParams = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 export async function POST(
   request: NextRequest,
-  { params: { id } }: PostMessageConversationParams
+  { params }: PostMessageConversationParams
 ) {
   try {
+    const { id } = await params;
     const session = await getSession();
 
     if (!session?.user?.id)

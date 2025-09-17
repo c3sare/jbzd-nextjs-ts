@@ -6,8 +6,6 @@ import {
   ChangeEvent,
   ForwardedRef,
   HTMLAttributes,
-  MutableRefObject,
-  forwardRef,
   useEffect,
   useRef,
   useState,
@@ -25,12 +23,16 @@ type TextareaProps<T extends FieldValues> = {
   onFocus?: ButtonHTMLAttributes<HTMLTextAreaElement>["onFocus"];
   isActive?: boolean;
   className?: HTMLAttributes<HTMLTextAreaElement>["className"];
+  ref?: React.Ref<HTMLTextAreaElement>;
 };
 
-const Textarea = <T extends FieldValues>(
-  { id, placeholder, onFocus, className }: TextareaProps<T>,
-  ref: ForwardedRef<HTMLTextAreaElement>
-) => {
+const Textarea = <T extends FieldValues>({
+  id,
+  placeholder,
+  onFocus,
+  className,
+  ref,
+}: TextareaProps<T>) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const timeout = useRef<NodeJS.Timeout | null>(null);
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -169,7 +171,8 @@ const Textarea = <T extends FieldValues>(
         ref={(e) => {
           registerReturn.ref(e);
           textAreaRef.current = e;
-          if (ref) (ref as MutableRefObject<HTMLTextAreaElement>).current = e!;
+          if (ref)
+            (ref as React.MutableRefObject<HTMLTextAreaElement>).current = e!;
         }}
       />
       {!!autocomplete && autocomplete.tab && autocomplete.tab?.length > 0 && (
@@ -184,4 +187,4 @@ const Textarea = <T extends FieldValues>(
   );
 };
 
-export default forwardRef(Textarea);
+export default Textarea;

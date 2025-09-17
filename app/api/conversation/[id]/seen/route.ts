@@ -4,13 +4,14 @@ import { getSession } from "@/actions/getSession";
 import { pusherServer } from "@/libs/pusher";
 
 type Params = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-export async function POST(request: Request, { params: { id } }: Params) {
+export async function POST(request: Request, { params }: Params) {
   try {
+    const { id } = await params;
     const session = await getSession();
 
     if (!session?.user?.id)

@@ -6,18 +6,19 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type CommentsTabProps = {
-  params: {
+  params: Promise<{
     username: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     sort?: string;
-  };
+  }>;
 };
 
 const CommentsTab: React.FC<CommentsTabProps> = async ({
-  params: { username },
-  searchParams: { sort },
+  params,
+  searchParams,
 }) => {
+  const [{ username }, { sort }] = await Promise.all([params, searchParams]);
   const comments = await getUserProfileComments(username, sort);
 
   if (!comments) {

@@ -4,15 +4,13 @@ import prisma from "@/libs/prismadb";
 import addNotification from "@/actions/addNotification";
 
 type RequestParams = {
-  params: {
+  params: Promise<{
     postId: string;
-  };
+  }>;
 };
 
-export async function POST(
-  request: Request,
-  { params: { postId } }: RequestParams
-) {
+export async function POST(request: Request, { params }: RequestParams) {
+  const { postId } = await params;
   if (!postId)
     return new NextResponse("No id provided or type is invalid", {
       status: 400,

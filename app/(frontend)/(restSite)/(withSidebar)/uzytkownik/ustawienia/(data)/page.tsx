@@ -13,7 +13,7 @@ const UserSettings = async () => {
   const avatar = await getAvatar();
 
   if (!session || !userData) {
-    return new Error("Nie jesteś zalogowany!");
+    return null;
   }
 
   const isCredentialProvider = session.user?.provider === "credentials";

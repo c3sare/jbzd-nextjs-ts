@@ -5,9 +5,10 @@ import { pusherServer } from "@/libs/pusher";
 
 export async function POST(
   req: NextRequest,
-  { params: { id } }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await getSession();
 
     if (!session?.user?.id)

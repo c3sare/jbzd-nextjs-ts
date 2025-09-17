@@ -4,16 +4,14 @@ import prisma from "@/libs/prismadb";
 import { getPremium } from "@/actions/getPremium";
 
 type RequestParams = {
-  params: {
+  params: Promise<{
     postId: string;
     commentId: string;
-  };
+  }>;
 };
 
-export async function POST(
-  request: Request,
-  { params: { postId, commentId } }: RequestParams
-) {
+export async function POST(request: Request, { params }: RequestParams) {
+  const { postId, commentId } = await params;
   if (!postId || !commentId)
     return new NextResponse("No id provided or type is invalid", {
       status: 400,

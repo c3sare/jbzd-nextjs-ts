@@ -5,12 +5,13 @@ import { getTagPosts } from "./_actions/getTagPosts";
 import BlogPostInfiniteScroll from "../../_components/BlogPostInfiniteScroll";
 
 type Params = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
-const TagPage = async ({ params: { slug } }: Params) => {
+const TagPage = async ({ params }: Params) => {
+  const { slug } = await params;
   if (!slug) return notFound();
 
   const session = await getSession();

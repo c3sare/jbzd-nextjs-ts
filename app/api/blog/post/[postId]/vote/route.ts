@@ -1,19 +1,18 @@
 import { NextResponse } from "next/server";
 import prisma from "@/libs/prismadb";
 import { getSession } from "@/actions/getSession";
-import { BlogPostVote, Prisma, User } from "@prisma/client";
+import { BlogPostVote, User } from "@prisma/client";
 
 type BlogPostVoteParams = {
-  params: {
+  params: Promise<{
     postId: string;
-  };
+  }>;
 };
 
-export async function POST(
-  req: Request,
-  { params: { postId } }: BlogPostVoteParams
-) {
+export async function POST(req: Request, { params }: BlogPostVoteParams) {
   try {
+    const { postId } = await params;
+
     const { method } = await req.json();
 
     if (!method || !["PLUS", "MINUS"].includes(method))

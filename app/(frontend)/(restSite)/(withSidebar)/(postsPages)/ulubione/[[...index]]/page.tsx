@@ -14,8 +14,17 @@ export const dynamic = "force-dynamic";
 
 export const revalidate = 0;
 
-export default async function Home(props: PageProps) {
-  const posts = await getFavouritePagePosts(props);
+type PageType = {
+  params: Promise<PageProps["params"]>;
+  searchParams: Promise<PageProps["searchParams"]>;
+};
+
+export default async function Home(props: PageType) {
+  const [params, searchParams] = await Promise.all([
+    props.params,
+    props.searchParams,
+  ]);
+  const posts = await getFavouritePagePosts({ params, searchParams });
 
   if (!posts) return notFound();
 

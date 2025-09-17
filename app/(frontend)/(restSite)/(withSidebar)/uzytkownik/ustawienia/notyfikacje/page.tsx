@@ -4,7 +4,7 @@ import NotifySettings from "./components/NotifySettings";
 const NotificationsPage = async () => {
   const data = await getNotifySettings();
 
-  if (!data) return new Error("Wystąpił błąd!");
+  if (!data) return null;
 
   return <NotifySettings data={data} />;
 };
