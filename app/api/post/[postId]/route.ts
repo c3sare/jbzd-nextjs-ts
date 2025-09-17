@@ -8,7 +8,7 @@ type RequestParams = {
   }>;
 };
 
-export async function DELETE(request: Request, { params }: RequestParams) {
+export async function DELETE(_request: Request, { params }: RequestParams) {
   try {
     const { postId } = await params;
     const session = await getSession();
@@ -28,7 +28,7 @@ export async function DELETE(request: Request, { params }: RequestParams) {
     if (!post) return new NextResponse("Can't delete post!", { status: 500 });
 
     return NextResponse.json(post);
-  } catch (err: any) {
+  } catch (err) {
     console.log(err);
     return new NextResponse("Internal Error", { status: 500 });
   }

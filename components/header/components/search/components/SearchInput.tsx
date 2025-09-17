@@ -28,7 +28,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
         rounded-[5px]
         pl-[15px]
         text-[15px]
-        outline-none
+        outline-hidden
         border
         border-transparent
         text-black`,

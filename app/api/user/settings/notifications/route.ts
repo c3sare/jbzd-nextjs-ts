@@ -20,7 +20,7 @@ export async function GET() {
     });
 
     return NextResponse.json(user.notifications);
-  } catch (err: any) {
+  } catch (err) {
     throw new NextResponse("Internal Error " + err, { status: 500 });
   }
 }
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json(user.notifications);
-  } catch (err: any) {
+  } catch (err) {
     throw new NextResponse("Internal Error " + err, { status: 500 });
   }
 }

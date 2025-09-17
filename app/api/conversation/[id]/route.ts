@@ -49,7 +49,7 @@ export async function DELETE(
     );
 
     return NextResponse.json(conversationDelete);
-  } catch (err: any) {
+  } catch (err) {
     return new NextResponse("Error: " + err, { status: 500 });
   }
 }

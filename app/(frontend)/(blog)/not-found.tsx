@@ -3,7 +3,7 @@ import notFoundImg from "@/public/images/404.png";
 
 const NotFoundPage = () => {
   return (
-    <div className="mt-[46px] flex items-stretch min-h-[calc(100vh_-_215px)] flex-wrap max-w-[1116px] px-[5px] m-[auto]">
+    <div className="mt-[46px] flex items-stretch min-h-[calc(100vh-215px)] flex-wrap max-w-[1116px] px-[5px] m-auto">
       <h1 className="text-[22px] mb-[30px] block text-white font-bold my-[0.67em]">
         Błąd
       </h1>

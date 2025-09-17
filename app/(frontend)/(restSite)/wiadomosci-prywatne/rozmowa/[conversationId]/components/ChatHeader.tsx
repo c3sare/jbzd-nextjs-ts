@@ -35,7 +35,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
           alt="Avatar"
         />
       </Link>
-      <Link href={`/uzytkownik/${username}`} className="flex-grow">
+      <Link href={`/uzytkownik/${username}`} className="grow">
         <div className="text-white font-bold mb-[7px]">{username}</div>
         <div className="text-[#777] italic text-[12px]">
           Ostatnia wiadomość: {lastTimeMessage}

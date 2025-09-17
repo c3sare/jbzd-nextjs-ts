@@ -22,11 +22,11 @@ const MenuButtonDropdown: React.FC<MenuButtonDropdownProps> = ({
         className={clsx(
           `
             absolute
-            top-[100%]
+            top-full
             right-0
             hidden
             bg-[#181818]
-            shadow-sm
+            shadow-xs
             border-t
             border-t-[#252525]
             group-hover:flex

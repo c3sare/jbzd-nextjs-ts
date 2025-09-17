@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getSession } from "@/actions/getSession";
 import CreatePostSchema from "@/validators/CreatePostSchema";
 import prisma from "@/libs/prismadb";

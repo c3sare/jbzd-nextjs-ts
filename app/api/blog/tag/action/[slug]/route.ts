@@ -1,7 +1,7 @@
 import { getSession } from "@/actions/getSession";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/libs/prismadb";
-import { ActionedBlogTag, BlogTag, TagAction } from "@prisma/client";
+import { ActionedBlogTag, BlogTag } from "@prisma/client";
 
 type Params = {
   params: Promise<{

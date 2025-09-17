@@ -38,7 +38,7 @@ export async function GET() {
     });
 
     return NextResponse.json(user);
-  } catch (err: any) {
+  } catch (err) {
     throw new NextResponse("Internal Error " + err, { status: 500 });
   }
 }

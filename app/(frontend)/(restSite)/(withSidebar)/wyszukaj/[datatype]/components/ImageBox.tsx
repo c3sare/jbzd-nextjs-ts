@@ -11,7 +11,7 @@ type ImageBoxProps = {
 const ImageBox: React.FC<ImageBoxProps> = ({ post }) => {
   return (
     <Link
-      className="basis-[calc(25%_-_10px)] h-[140px] m-[5px] relative flex justify-center items-center text-center text-[12px] italic text-white bg-[#000] p-[10px]"
+      className="basis-[calc(25%-10px)] h-[140px] m-[5px] relative flex justify-center items-center text-center text-[12px] italic text-white bg-black p-[10px]"
       href={`/obr/${post.id}/${post.slug}`}
     >
       {post.title}

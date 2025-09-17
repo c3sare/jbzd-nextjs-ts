@@ -11,7 +11,7 @@ const TabPageLayout: React.FC<PropsWithChildren> = async ({ children }) => {
   const isAuthorized = Boolean(session?.user?.id);
 
   return (
-    <div className="w-full md:w-2/3 relative min-h-[1px] px-[15px] ">
+    <div className="w-full md:w-2/3 relative min-h-px px-[15px] ">
       {isAuthorized && <AddBlogForm />}
       <BlogNavbar>
         <BlogNavbarItem href="/mikroblog">Najnowsze</BlogNavbarItem>

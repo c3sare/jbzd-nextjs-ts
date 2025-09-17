@@ -1,6 +1,5 @@
 import TagLink from "../../TagLink";
 import Box from "../Box";
-import EmptyBoxElement from "../EmptyBoxElement";
 import prisma from "@/libs/prismadb";
 import FollowedTagList from "../tagManagment/FollowedTagList";
 import BlockedTagList from "../tagManagment/BlockedTagList";

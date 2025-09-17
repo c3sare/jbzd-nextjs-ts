@@ -28,7 +28,7 @@ const BlogPostTextarea = <T extends FieldValues>({
         className={clsx(
           "mb-[-3px] float-none bg-black p-[10px] w-full text-white",
           "resize-none overflow-hidden leading-[24px] text-[18px]",
-          "placeholder:text-zinc-500 outline-none",
+          "placeholder:text-zinc-500 outline-hidden",
           isActive ? "h-[100px]" : "h-[48px]",
           "border-l-2",
           isActive ? "border-l-black" : "border-l-[#94b424]"

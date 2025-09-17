@@ -2,7 +2,7 @@ import clsx from "clsx";
 
 import { FieldValues, Path } from "react-hook-form";
 
-import { ButtonHTMLAttributes, ForwardedRef } from "react";
+import { ButtonHTMLAttributes } from "react";
 import Textarea from "../../../../layout/blogForm/components/Textarea";
 
 type TextareaProps<T extends FieldValues> = {
@@ -28,7 +28,7 @@ const CommentTextarea = <T extends FieldValues>({
         onFocus={onFocus}
         ref={ref}
         className={clsx(
-          "placeholder:text-zinc-500 placeholder:text-[12px] resize-none overflow-hidden ml-[5px] leading-[24px] float-none transition-all duration-200 text-[16px] bg-black p-[10px] w-full text-white outline-none",
+          "placeholder:text-zinc-500 placeholder:text-[12px] resize-none overflow-hidden ml-[5px] leading-[24px] float-none transition-all duration-200 text-[16px] bg-black p-[10px] w-full text-white outline-hidden",
           isActive ? "h-[100px]" : "h-[48px]"
         )}
       />

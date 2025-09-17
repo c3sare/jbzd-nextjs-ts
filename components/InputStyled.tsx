@@ -12,7 +12,7 @@ const InputStyled = (props: InputStyledProps) => {
   return (
     <input
       {...props}
-      className="block bg-[#1f1f1f] outline-none text-[#777] p-[12px_10px] w-full placeholder:text-[#777] leading-none border border-transparent disabled:opacity-80"
+      className="block bg-[#1f1f1f] outline-hidden text-[#777] p-[12px_10px] w-full placeholder:text-[#777] leading-none border border-transparent disabled:opacity-80"
     />
   );
 };

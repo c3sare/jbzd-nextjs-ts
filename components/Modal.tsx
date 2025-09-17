@@ -21,7 +21,7 @@ const Modal: React.FC<ModalProps> = ({
   return (
     <div
       className={clsx(
-        "fixed top-0 left-0 h-[100vh] w-[100vw] flex items-center justify-center z-[9999] transition-opacity",
+        "fixed top-0 left-0 h-screen w-screen flex items-center justify-center z-9999 transition-opacity",
         isClosing ? "animate-fadeout" : "animate-fadein"
       )}
     >

@@ -1,4 +1,3 @@
-import { SetStateAction } from "react";
 import { logInWithFacebook } from "./actions/logiInWithFacebook";
 
 const FacebookLoginButton: React.FC<{

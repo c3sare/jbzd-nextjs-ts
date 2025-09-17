@@ -11,7 +11,7 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { editorConfig } from "./config/editorConfig";
 import { $generateHtmlFromNodes } from "@lexical/html";
 
-function OnChangePlugin({ onChange }: { onChange: any }) {
+function OnChangePlugin({ onChange }: { onChange: (str: string) => void }) {
   const [editor] = useLexicalComposerContext();
   useEffect(() => {
     const removeUpdateListener = editor.registerUpdateListener(
@@ -31,7 +31,7 @@ function OnChangePlugin({ onChange }: { onChange: any }) {
 }
 
 const Editor = ({ setData }: { setData: (val: string) => void }) => {
-  function onChange(state: any) {
+  function onChange(state: string) {
     setData(state);
   }
 

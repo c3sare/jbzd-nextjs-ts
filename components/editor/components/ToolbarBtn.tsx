@@ -20,7 +20,7 @@ const ToolbarBtn = ({
   ref,
 }: ToolbarBtnProps) => {
   const activeClassName =
-    "hover:bg-[hsla(0,_0%,_100%,_.25)] border-[#999] bg-[rgba(0,_0,_0,_.1)]";
+    "hover:bg-[hsla(0,0%,100%,.25)] border-[#999] bg-[rgba(0,0,0,.1)]";
   const noActiveClassName = "hover:bg-[#181818] border-transparent";
 
   return (

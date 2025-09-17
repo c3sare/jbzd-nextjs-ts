@@ -10,6 +10,7 @@ import Link from "next/link";
 import Quote from "../components/Quote";
 
 const options: HTMLReactParserOptions = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   replace: (node: any) => {
     if (node.attribs && node.name === "a") {
       const props = attributesToProps(node.attribs);

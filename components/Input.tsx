@@ -41,7 +41,7 @@ function Input<T extends FieldValues>({
     `
     block
     bg-[#1f1f1f]
-    outline-none
+    outline-hidden
     text-[#777]
     p-[12px_10px]
     border

@@ -10,7 +10,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ children, onClick }) => {
     <button
       type="button"
       onClick={onClick}
-      className="bg-[#505050] text-[#f5f5f5] rounded-[5px] leading-[30px] px-[10px] font-normal text-[12px] mx-[5px] outline-none"
+      className="bg-[#505050] text-[#f5f5f5] rounded-[5px] leading-[30px] px-[10px] font-normal text-[12px] mx-[5px] outline-hidden"
     >
       {children}
     </button>

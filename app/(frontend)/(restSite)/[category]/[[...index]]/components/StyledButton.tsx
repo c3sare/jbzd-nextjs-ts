@@ -21,7 +21,7 @@ const StyledButton: React.FC<StyledButtonProps> = ({
     <button
       onClick={onClick}
       className={clsx(
-        "cursor-pointer text-white font-bold h-[34px] px-[15px] rounded-[4px] flex justify-center items-center gap-[0_10px] relative flex-[1] sm:flex-none text-[10px] sm:text-[12px]",
+        "cursor-pointer text-white font-bold h-[34px] px-[15px] rounded-[4px] flex justify-center items-center gap-[0_10px] relative flex-1 sm:flex-none text-[10px] sm:text-[12px]",
         active ? "bg-[#c03e3f]" : "bg-[#3c3c3c]"
       )}
     >

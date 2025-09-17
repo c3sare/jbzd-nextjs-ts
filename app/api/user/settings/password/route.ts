@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       username: update.username,
       email: update.email,
     });
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }

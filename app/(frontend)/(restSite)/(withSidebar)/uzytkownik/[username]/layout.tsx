@@ -60,7 +60,7 @@ export default async function UserProfileLayout({
     <>
       <div className="flex pt-[30px] flex-wrap flex-col justify-center sm:flex-row mb-5 p-[15px_15px_0]">
         <Avatar src={user.image} />
-        <div className="sm:pl-[15px] flex-[1]">
+        <div className="sm:pl-[15px] flex-1">
           <header className="font-semibold text-[28px] mb-[10px] text-center sm:text-left">
             {user.username}
           </header>

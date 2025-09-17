@@ -113,7 +113,7 @@ export async function POST(
     );
 
     return NextResponse.json(updateConversation);
-  } catch (err: any) {
+  } catch (err) {
     console.log(err);
     return new NextResponse("Internal error", { status: 500 });
   }

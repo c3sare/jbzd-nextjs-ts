@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     const previewData = await getLinkPreview(url as string);
 
     return NextResponse.json(previewData);
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }

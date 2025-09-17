@@ -17,7 +17,7 @@ const FavouritePage = async () => {
   }
 
   return (
-    <div className="w-full md:w-2/3 relative min-h-[1px] px-[15px] ">
+    <div className="w-full md:w-2/3 relative min-h-px px-[15px] ">
       <h1 className="text-white text-[2em] my-[0.67em] font-bold">Ulubione</h1>
       <BlogPostInfiniteScroll initalPosts={posts} getPostsFunc={getPostsFunc} />
     </div>

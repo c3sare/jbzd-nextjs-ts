@@ -9,6 +9,7 @@ import Quote from "./transformComponents/Quote";
 import ImageLightBox from "./transformComponents/ImageLightBox";
 
 const options: HTMLReactParserOptions = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   replace: (node: any) => {
     if (node.attribs && node.name === "a") {
       const props = attributesToProps(node.attribs);

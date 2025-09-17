@@ -107,7 +107,7 @@ const Comment: React.FC<CommentProps> = ({
             alt="Avatar"
           />
         </Link>
-        <div className="flex-[1]">
+        <div className="flex-1">
           <header className="flex flex-row items-center">
             <div className="flex">
               <div className="text-white font-bold mr-[5px] text-[12px]">

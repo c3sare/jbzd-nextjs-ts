@@ -33,7 +33,7 @@ export async function getTagActions() {
       actionedTags,
       session: session.user!,
     };
-  } catch (err) {
+  } catch {
     return null;
   }
 }

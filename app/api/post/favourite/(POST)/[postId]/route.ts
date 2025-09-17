@@ -1,7 +1,6 @@
 import { getSession } from "@/actions/getSession";
 import { NextResponse } from "next/server";
 import prisma from "@/libs/prismadb";
-import { FavouritePost } from "@prisma/client";
 
 type RequestParams = {
   params: Promise<{
@@ -25,16 +24,15 @@ export async function POST(request: Request, { params }: RequestParams) {
         authorId: session.user.id,
       },
     });
-    let favourite: FavouritePost;
 
     if (favouriteIsExist) {
-      favourite = await prisma.favouritePost.delete({
+      await prisma.favouritePost.delete({
         where: {
           id: favouriteIsExist.id,
         },
       });
     } else {
-      favourite = await prisma.favouritePost.create({
+      await prisma.favouritePost.create({
         data: {
           post: {
             connect: {
@@ -51,7 +49,7 @@ export async function POST(request: Request, { params }: RequestParams) {
     }
 
     return NextResponse.json({ isFavourite: !Boolean(favouriteIsExist) });
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }

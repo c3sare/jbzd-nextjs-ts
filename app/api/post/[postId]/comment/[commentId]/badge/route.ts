@@ -150,7 +150,7 @@ export async function POST(request: Request, { params }: RequestParams) {
     } else {
       return NextResponse.json({ alreadyExist: true });
     }
-  } catch (err: any) {
+  } catch {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

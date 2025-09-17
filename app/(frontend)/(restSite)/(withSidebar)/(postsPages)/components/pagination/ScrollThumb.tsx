@@ -9,7 +9,7 @@ type ScrollThumbProps = {
 const ScrollThumb = (props: ScrollThumbProps) => {
   return (
     <div
-      className="absolute top-0 left-0 w-[8px] h-[3px] text-[1px] bg-[#707070] z-[2]"
+      className="absolute top-0 left-0 w-[8px] h-[3px] text-[1px] bg-[#707070] z-2"
       style={{ left: "0px" }}
       ref={props.ref}
       onMouseDown={props.onMouseDown}

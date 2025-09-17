@@ -78,7 +78,7 @@ const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
   });
 
   return (
-    <div className="relative md:absolute max-w-full mx-auto flex justify-center items-center gap-[10px] top-[5px] md:top-[calc(100%_+_5px)] z-10 bg-[#3c3c3c] md:left-1/2 md:translate-x-[-50%] flex-col p-[20px]">
+    <div className="relative md:absolute max-w-full mx-auto flex justify-center items-center gap-[10px] top-[5px] md:top-[calc(100%+5px)] z-10 bg-[#3c3c3c] md:left-1/2 md:translate-x-[-50%] flex-col p-[20px]">
       <FormProvider {...form}>
         <form onSubmit={onSubmit} className="max-w-full">
           <Input

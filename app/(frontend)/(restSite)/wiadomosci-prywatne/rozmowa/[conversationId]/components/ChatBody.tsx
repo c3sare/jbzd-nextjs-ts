@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
@@ -68,7 +69,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({
 
   return (
     <div className="text-white mb-[20px]">
-      <div className="m-auto relative h-[calc(100vh_-_430px)] max-w-[calc(100%_+_20px)] touch-auto overflow-y-scroll">
+      <div className="m-auto relative h-[calc(100vh-430px)] max-w-[calc(100%+20px)] touch-auto overflow-y-scroll">
         {messages.map((message) => (
           <Message key={message.id} message={message} userId={userId} />
         ))}

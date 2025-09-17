@@ -17,7 +17,7 @@ const MenuLink: React.FC<MenuLinkProps> = ({ title, href, isActive }) => {
       <Link
         className={clsx(
           "inline-block text-[18px] overflow-hidden text-white p-[0_0_7px]",
-          "relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:bg-white",
+          "relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-white",
           isActive
             ? "after:opacity-100"
             : "hover:after:opacity-100 after:opacity-0"

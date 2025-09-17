@@ -30,7 +30,7 @@ export default async function deletePost(postId: string) {
     if (!post) return { message: "Nie można usunąć tego posta!" };
 
     return { deleted: true };
-  } catch (err: any) {
+  } catch (err) {
     console.log(err);
     return { message: "Wystąpił problem!" };
   }

@@ -46,7 +46,7 @@ function InputRadio<T extends FieldValues>({
           onChange: (e) =>
             setValue(
               id,
-              valueAsNumber ? (Number(e.target.value) as any) : e.target.value
+              valueAsNumber ? Number(e.target.value) : e.target.value
             ),
         })}
         disabled={disabled}

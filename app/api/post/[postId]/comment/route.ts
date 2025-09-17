@@ -101,7 +101,7 @@ export async function POST(request: Request, { params }: RequestParams) {
     }
 
     return NextResponse.json({ id: comment.id });
-  } catch (err: any) {
+  } catch {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

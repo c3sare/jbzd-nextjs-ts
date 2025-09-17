@@ -34,10 +34,10 @@ const IconButton: React.FC<IconButtonProps> = ({
   const className = useMemo(
     () =>
       clsx(
-        "cursor-pointer text-white font-bold h-[34px] px-[15px] rounded-[4px] flex justify-center items-center gap-[0_10px] relative flex-[1] sm:flex-none text-[10px] sm:text-[12px]",
+        "cursor-pointer text-white font-bold h-[34px] px-[15px] rounded-[4px] flex justify-center items-center gap-[0_10px] relative flex-1 sm:flex-none text-[10px] sm:text-[12px]",
         colors[variant],
         active &&
-          "after:content-normal after:absolute after:top-[calc(100%_-_2px)] after:left-0 after:w-full after:h-[7px] after:bg-[#3c3c3c]"
+          "after:content-normal after:absolute after:top-[calc(100%-2px)] after:left-0 after:w-full after:h-[7px] after:bg-[#3c3c3c]"
       ),
     [variant, active, colors]
   );

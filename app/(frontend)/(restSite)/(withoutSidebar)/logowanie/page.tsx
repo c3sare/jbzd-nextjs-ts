@@ -6,7 +6,6 @@ type LoginPageType = {
   searchParams: Promise<{
     error: string;
   }>;
-  params: Promise<{}>;
 };
 
 const ErrorMessagesDetails: {

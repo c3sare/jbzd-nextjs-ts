@@ -6,7 +6,7 @@ type MemTextProps = {
   setData: (val: string) => void;
 };
 
-function MemText({ data, setData }: MemTextProps) {
+function MemText({ setData }: MemTextProps) {
   return <Editor setData={setData} />;
 }
 

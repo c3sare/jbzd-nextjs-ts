@@ -42,10 +42,10 @@ const Tag: React.FC<TagProps> = ({ tag }) => {
       >
         #{tag.name}
       </Link>
-      <div className="hidden group-hover:flex absolute top-full left-[calc(50%_-_15px)] translate-x--1/2">
+      <div className="hidden group-hover:flex absolute top-full left-[calc(50%-15px)] translate-x--1/2">
         <div
           className={clsx(
-            "mt-[5px] w-[240px] bg-[#313131] rounded-[3px] p-[15px] flex z-[11]",
+            "mt-[5px] w-[240px] bg-[#313131] rounded-[3px] p-[15px] flex z-11",
             "before:w-0 before:h-0 before:content-normal before:block before:border-r-[5px] before:border-l-[5px] before:border-b-[5px] before:border-solid before:border-[transparent_transparent_#313131] before:absolute before:left-[10px] before:top-0"
           )}
         >

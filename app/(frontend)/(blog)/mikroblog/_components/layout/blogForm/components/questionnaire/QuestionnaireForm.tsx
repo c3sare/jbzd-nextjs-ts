@@ -35,7 +35,7 @@ const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({
   });
 
   return createPortal(
-    <div className="w-full h-full fixed top-0 left-0 bg-[rgba(0,_0,_0,_.6)] z-[9999]">
+    <div className="w-full h-full fixed top-0 left-0 bg-[rgba(0,0,0,.6)] z-9999">
       <div className="w-full">
         <div className="max-w-[750px] p-[25px] w-[98%] rounded-[5px] m-[25px_auto] bg-[#313131] text-white overflow-hidden border-2 border-[#383737]">
           <h2 className="text-center text-[26px] mb-[10px] w-full font-bold">
@@ -51,7 +51,7 @@ const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({
               <AnswersSection control={form.control} />
               <div className="max-w-[1110px] mx-auto w-full px-[15px]">
                 <div className="w-full">
-                  <label className="relative min-h-[1px] w-full text-white text-[12px] block mb-[10px] max-w-full">
+                  <label className="relative min-h-px w-full text-white text-[12px] block mb-[10px] max-w-full">
                     Opcje:
                   </label>
                   <div className="flex justify-center items-center w-full gap-[30px]">
@@ -84,13 +84,13 @@ const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({
                 <button
                   onClick={onClose}
                   type="button"
-                  className="text-white bg-[#6d7578] hover:bg-[#3c4143] border-0 transition-colors duration-200 ease-in-out uppercase text-[14px] px-[30px] py-[10px] inline-block relative min-w-[80px] text-center outline-none appearance-none font-bold"
+                  className="text-white bg-[#6d7578] hover:bg-[#3c4143] border-0 transition-colors duration-200 ease-in-out uppercase text-[14px] px-[30px] py-[10px] inline-block relative min-w-[80px] text-center outline-hidden appearance-none font-bold"
                 >
                   Anuluj
                 </button>
                 <button
                   type="submit"
-                  className="text-white bg-[#c23d3a] hover:bg-[#732423] border-0 transition-colors duration-200 ease-in-out uppercase text-[14px] px-[30px] py-[10px] inline-block relative min-w-[80px] text-center outline-none appearance-none font-bold"
+                  className="text-white bg-[#c23d3a] hover:bg-[#732423] border-0 transition-colors duration-200 ease-in-out uppercase text-[14px] px-[30px] py-[10px] inline-block relative min-w-[80px] text-center outline-hidden appearance-none font-bold"
                 >
                   Stwórz
                 </button>

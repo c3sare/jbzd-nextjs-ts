@@ -1,8 +1,5 @@
 "use client";
 
-import UserPremiumSchema, {
-  UserPremiumType,
-} from "@/validators/UserSettings/UserPremiumSchema";
 import useZodForm from "@/hooks/useZodForm";
 import LabelCheckbox from "@/components/LabelCheckbox";
 import Button from "@/components/Button";
@@ -13,12 +10,11 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { FormProvider } from "react-hook-form";
+import type { getPremium } from "@/actions/getPremium";
+import UserPremiumSchema from "@/validators/UserSettings/UserPremiumSchema";
 
 type UserPremiumFormProps = {
-  data: {
-    isPremium: boolean;
-    premium: UserPremiumType | {} | null;
-  };
+  data: Awaited<ReturnType<typeof getPremium>>;
 };
 
 const UserPremiumForm: React.FC<UserPremiumFormProps> = ({
@@ -63,7 +59,7 @@ const UserPremiumForm: React.FC<UserPremiumFormProps> = ({
           </div>
         )}
         <FormProvider {...form}>
-          <form onSubmit={onSubmit} className={clsx(!isPremium && "blur")}>
+          <form onSubmit={onSubmit} className={clsx(!isPremium && "blur-sm")}>
             <RadioSelect
               label="Wybór liczby obrazków na stronę:"
               id="picsCountOnPage"

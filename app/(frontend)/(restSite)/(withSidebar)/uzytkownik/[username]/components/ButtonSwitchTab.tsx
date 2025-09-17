@@ -22,7 +22,7 @@ const ButtonSwitchTab: React.FC<ButtonSwitchTabProps> = ({
   return (
     <Link
       className={clsx(
-        "w-[50%] flex justify-center items-center h-[40px] flex-[1] text-white rounded-[3px] text-center bg-[#1f1f1f]",
+        "w-[50%] flex justify-center items-center h-[40px] flex-1 text-white rounded-[3px] text-center bg-[#1f1f1f]",
         isActiveTab ? "bg-[#c03e3e]" : "bg-[#1f1f1f]"
       )}
       href={href}

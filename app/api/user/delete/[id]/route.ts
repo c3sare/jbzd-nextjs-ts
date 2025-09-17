@@ -8,7 +8,7 @@ type RequestParams = {
   }>;
 };
 
-export async function DELETE(request: Request, { params }: RequestParams) {
+export async function DELETE(_request: Request, { params }: RequestParams) {
   const { id } = await params;
   const session = await getSession();
 
@@ -32,7 +32,7 @@ export async function DELETE(request: Request, { params }: RequestParams) {
       email: user.email,
       username: user.username,
     });
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }

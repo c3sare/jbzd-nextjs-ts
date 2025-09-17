@@ -7,7 +7,7 @@ export const editorConfig = {
       underline: "underline",
     },
   },
-  onError(error: any) {
+  onError(error: unknown) {
     throw error;
   },
 };

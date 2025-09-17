@@ -29,7 +29,7 @@ export function DropDownItem({
 
   return (
     <button
-      className="py-2 px-4 text-[#050505] cursor-pointer leading-[16px] text-[14px] flex content-center flex-row flex-shrink-0 justify-between border-none hover:bg-[#F0F0F0]"
+      className="py-2 px-4 text-[#050505] cursor-pointer leading-[16px] text-[14px] flex content-center flex-row shrink-0 justify-between border-none hover:bg-[#F0F0F0]"
       onClick={onClick}
       ref={ref}
       title={title}

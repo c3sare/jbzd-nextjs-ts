@@ -25,7 +25,7 @@ export async function GET() {
     });
 
     return NextResponse.json(categories);
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ method: "" });
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }

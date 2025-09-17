@@ -141,7 +141,7 @@ const AddBlogForm = () => {
     axios
       .put("/api/blog", formData)
       .then((res) => res.data)
-      .then((data) => {
+      .then(() => {
         resetForm();
         router.refresh();
         // router.push(`/mikroblog/${data.id}/${}`)
@@ -286,7 +286,7 @@ const AddBlogForm = () => {
         ))}
       </ul>
       {form.formState.isLoading && (
-        <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,_0,_0,_.5)] flex items-center justify-center">
+        <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,.5)] flex items-center justify-center">
           <BiLoaderAlt size={60} className="animate-spin text-zinc-400" />
         </div>
       )}

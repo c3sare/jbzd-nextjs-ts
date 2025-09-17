@@ -27,11 +27,7 @@ const AnswerItem: React.FC<AnswerItemProps> = ({ index, remove, move, id }) => {
   const { register } = useZodFormContext();
   const ref = useRef<HTMLDivElement>(null);
 
-  const [{ handlerId }, drop] = useDrop<
-    DragItem,
-    void,
-    { handlerId: Identifier }
-  >({
+  const [, drop] = useDrop<DragItem, void, { handlerId: Identifier }>({
     accept: ItemTypes.CARD,
     collect(monitor) {
       return {
@@ -88,12 +84,12 @@ const AnswerItem: React.FC<AnswerItemProps> = ({ index, remove, move, id }) => {
     },
   });
 
-  const [{ isDragging }, drag, preview] = useDrag({
+  const [, drag, preview] = useDrag({
     type: ItemTypes.CARD,
     item: () => {
       return { id, index };
     },
-    collect: (monitor: any) => ({
+    collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
@@ -109,20 +105,20 @@ const AnswerItem: React.FC<AnswerItemProps> = ({ index, remove, move, id }) => {
     >
       <div className="mb-[10px] w-full flex items-center">
         <span
-          className="flex justify-center items-center w-[calc(8%_-_6px)] cursor-move text-[#6d7578] h-[43px] leading-[34px] text-center text-[18px] mx-[3px]"
+          className="flex justify-center items-center w-[calc(8%-6px)] cursor-move text-[#6d7578] h-[43px] leading-[34px] text-center text-[18px] mx-[3px]"
           ref={ref}
         >
           <GiHamburgerMenu />
         </span>
         <input
-          className="w-[calc(80%_-_3px)] block h-[34px] mr-[3px] leading-[48px] bg-black p-[10px] text-white focus:outline-none"
+          className="w-[calc(80%-3px)] block h-[34px] mr-[3px] leading-[48px] bg-black p-[10px] text-white focus:outline-hidden"
           type="text"
           {...register(`answers.${index}.value`)}
         />
         <button
           onClick={() => remove(index)}
           type="button"
-          className="w-[calc(12%_-_3px)] bg-[#6d7578] text-[12px] mr-0 h-[34px] leading-[34px] text-white text-center inline-block mx-[3px]"
+          className="w-[calc(12%-3px)] bg-[#6d7578] text-[12px] mr-0 h-[34px] leading-[34px] text-white text-center inline-block mx-[3px]"
         >
           Usuń
         </button>

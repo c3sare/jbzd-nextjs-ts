@@ -26,7 +26,7 @@ export async function GET() {
       city: user?.city || "",
       birthdate: user?.birthdate || null,
     });
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
       city: update?.city || "",
       birthdate: update?.birthdate || null,
     });
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }

@@ -8,7 +8,7 @@ type RequestParams = {
   }>;
 };
 
-export async function POST(request: Request, { params }: RequestParams) {
+export async function POST(_request: Request, { params }: RequestParams) {
   const { id } = await params;
   const session = await getSession();
 
@@ -67,7 +67,7 @@ export async function POST(request: Request, { params }: RequestParams) {
     });
 
     return NextResponse.json({ count });
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }

@@ -28,7 +28,7 @@ const CoinsTutorialPage = () => {
               src="/images/coins/medium_coin.png"
             />
           </div>
-          <div className="basis-[calc(100%_-_40px)] text-[15px] sm:basis-[calc(100%_-_80px)] sm:text-[18px]">
+          <div className="basis-[calc(100%-40px)] text-[15px] sm:basis-[calc(100%-80px)] sm:text-[18px]">
             Ich pula ograniczona jest saldem monet tak, by przyznawane były
             przez ciebie szczególnym treściom które uważasz za warte
             uhonorowania.
@@ -44,7 +44,7 @@ const CoinsTutorialPage = () => {
               src="/images/coins/medium_add.png"
             />
           </div>
-          <div className="basis-[calc(100%_-_40px)] text-[15px] sm:basis-[calc(100%_-_80px)] sm:text-[18px]">
+          <div className="basis-[calc(100%-40px)] text-[15px] sm:basis-[calc(100%-80px)] sm:text-[18px]">
             Użytkownik bez konta premium otrzymuje codziennie na swoje konto{" "}
             <strong>20 monet</strong>, użytkownik premium otrzymuje{" "}
             <strong>100 monet.</strong>
@@ -60,7 +60,7 @@ const CoinsTutorialPage = () => {
               src="/images/coins/medium_add.png"
             />
           </div>
-          <div className="basis-[calc(100%_-_40px)] text-[15px] sm:basis-[calc(100%_-_80px)] sm:text-[18px]">
+          <div className="basis-[calc(100%-40px)] text-[15px] sm:basis-[calc(100%-80px)] sm:text-[18px]">
             Użytkownik bez konta premium otrzymuje co tydzień na swoje konto{" "}
             <strong>200 monet</strong>, użytkownik premium otrzymuje{" "}
             <strong>2600 monet.</strong>
@@ -76,7 +76,7 @@ const CoinsTutorialPage = () => {
               src="/images/coins/medium_badges.png"
             />
           </div>
-          <div className="basis-[calc(100%_-_40px)] text-[15px] sm:basis-[calc(100%_-_80px)] sm:text-[18px]">
+          <div className="basis-[calc(100%-40px)] text-[15px] sm:basis-[calc(100%-80px)] sm:text-[18px]">
             Przy każdej treści widnieje przycisk przyznania nagrody - kliknij i
             wybierz którą odznakę chciałbyś wysłać. Monety za kupno odznaki
             pobrane zostaną automatycznie.

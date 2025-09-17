@@ -23,7 +23,7 @@ export async function GET() {
     return NextResponse.json({
       avatar: user.image,
     });
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       avatar: result.secure_url,
     });
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }

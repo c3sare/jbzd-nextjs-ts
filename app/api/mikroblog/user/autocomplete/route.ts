@@ -30,7 +30,7 @@ export async function POST(req: Request) {
       status: "success",
       users,
     });
-  } catch (err) {
+  } catch {
     return new NextResponse("Internal error", { status: 500 });
   }
 }

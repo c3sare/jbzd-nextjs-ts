@@ -46,7 +46,7 @@ const ConversationHistoryElement: React.FC<ConversationHistoryElementProps> = ({
   return (
     <article
       className={clsx(
-        "flex p-[15px_10px] whitespace-nowrap cursor-pointer border-b border-b-[#777] my-[5px] rounded-[10px] w-[calc(100%_-_20px)] border-transparent hover:bg-[#c03e3e] group/item",
+        "flex p-[15px_10px] whitespace-nowrap cursor-pointer border-b border-b-[#777] my-[5px] rounded-[10px] w-[calc(100%-20px)] border-transparent hover:bg-[#c03e3e] group/item",
         active && "bg-[#c03e3e]"
       )}
       onClick={() =>
@@ -62,7 +62,7 @@ const ConversationHistoryElement: React.FC<ConversationHistoryElementProps> = ({
           alt="Avatar"
         />
       </div>
-      <div className="flex-grow mr-[10px] max-w-[calc(100%_-_35px_-_10px_-_40px)]">
+      <div className="grow mr-[10px] max-w-[calc(100%-35px-10px-40px)]">
         <div className="text-white">{username}</div>
         <div className={clsx("italic text-[14px]", activeClassesText)}>
           <small>

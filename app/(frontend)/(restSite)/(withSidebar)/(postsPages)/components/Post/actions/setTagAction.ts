@@ -22,7 +22,7 @@ export default async function setTagAction(
     });
 
     if (isActioned) {
-      const tagAction = await prisma.tagAction.delete({
+      await prisma.tagAction.delete({
         where: {
           id: isActioned.id,
         },
@@ -61,7 +61,7 @@ export default async function setTagAction(
     revalidatePath("/", "layout");
 
     return { method: currentMethod };
-  } catch (err: any) {
+  } catch {
     return { message: "Wystąpił problem" };
   }
 }

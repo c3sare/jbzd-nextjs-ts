@@ -6,7 +6,7 @@ type TermsProps = {
 
 const Terms: React.FC<TermsProps> = ({ toggleTerms }) => {
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-[rgba(0,_0,_0,_.6)] z-[9999]">
+    <div className="fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,.6)] z-9999">
       <div className="mx-auto max-w-[750px] p-[25px] w-[98%] my-[25px] bg-[#313131] text-white border-2 border-[#383737] overflow-hidden">
         <div>
           <h2 className="text-[26px] m-[0_0_10px] font-bold">Regulamin</h2>
@@ -98,7 +98,7 @@ const Terms: React.FC<TermsProps> = ({ toggleTerms }) => {
           </div>
           <div className="text-center bg-[#1f1f1f] mx-[-25px] mb-[-25px] p-[25px] relative">
             <button
-              className="text-white bg-[#c23d3a] transition-colors duration-200 ease-in-out uppercase text-[14px] p-[10px_30px] inline-block relative min-w-[80px] text-center outline-none appearance-none font-bold hover:bg-[#732423]"
+              className="text-white bg-[#c23d3a] transition-colors duration-200 ease-in-out uppercase text-[14px] p-[10px_30px] inline-block relative min-w-[80px] text-center outline-hidden appearance-none font-bold hover:bg-[#732423]"
               onClick={toggleTerms}
             >
               Zamknij

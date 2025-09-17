@@ -26,7 +26,7 @@ export async function DELETE(_request: Request, { params }: RequestParams) {
     });
 
     return NextResponse.json(tagAction);
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }

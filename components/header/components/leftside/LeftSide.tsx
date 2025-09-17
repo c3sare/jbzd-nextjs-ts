@@ -22,7 +22,7 @@ const LeftSide = async () => {
       <RandomPostButton />
       <MenuButtonDropdown
         content={<Categories />}
-        className="w-[520px] gap-x-[1px]"
+        className="w-[520px] gap-x-px"
       >
         Działy
       </MenuButtonDropdown>

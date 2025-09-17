@@ -27,7 +27,7 @@ const Message: React.FC<MessageProps> = ({ message, userId }) => {
   const isOwnMessage = id === userId;
 
   return (
-    <div className="w-[calc(100%_-_20px)] bg-[#252525] rounded-[10px] p-[15px] flex mb-[10px] relative">
+    <div className="w-[calc(100%-20px)] bg-[#252525] rounded-[10px] p-[15px] flex mb-[10px] relative">
       <div className="min-w-[35px] mr-[10px]">
         <div className="min-w-[35px] mr-[10px]">
           <Image
@@ -39,7 +39,7 @@ const Message: React.FC<MessageProps> = ({ message, userId }) => {
           />
         </div>
       </div>
-      <div className="max-w-[550px] flex-grow">
+      <div className="max-w-[550px] grow">
         <div className="text-[#777] font-bold mb-[7px] text-[12px]">
           {username}
           {isOwnMessage ? " - Ja" : ""}

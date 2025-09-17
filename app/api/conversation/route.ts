@@ -85,7 +85,7 @@ export async function GET() {
     });
 
     return NextResponse.json(conversations);
-  } catch (err: any) {
+  } catch {
     return new NextResponse("Internal error", { status: 500 });
   }
 }

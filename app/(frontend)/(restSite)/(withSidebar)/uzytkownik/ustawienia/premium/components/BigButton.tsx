@@ -13,7 +13,7 @@ const BigButton: React.FC<BigButtonProps> = ({ href, children, className }) => {
     <Link
       href={href}
       className={clsx(
-        "inline-block p-[0_30px] rounded-[5px] font-bold text-white bg-[linear-gradient(180deg,_#94b425_0,_#8dac20_50%,_#87a61c)] z-10 leading-[40px]",
+        "inline-block p-[0_30px] rounded-[5px] font-bold text-white bg-[linear-gradient(180deg,#94b425_0,#8dac20_50%,#87a61c)] z-10 leading-[40px]",
         className
       )}
     >

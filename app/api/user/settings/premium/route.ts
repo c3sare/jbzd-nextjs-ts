@@ -33,7 +33,7 @@ export async function GET() {
       isPremium,
       premium: isPremium ? user.premium : {},
     });
-  } catch (err: any) {
+  } catch (err) {
     throw new NextResponse("Internal Error " + err, { status: 500 });
   }
 }
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ premium: user.premium });
-  } catch (err: any) {
+  } catch (err) {
     throw new NextResponse("Internal Error " + err, { status: 500 });
   }
 }

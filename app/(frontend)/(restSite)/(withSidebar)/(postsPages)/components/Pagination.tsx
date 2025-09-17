@@ -46,7 +46,7 @@ const Pagination = ({
         <Link
           href={`/${pageName}/${currentPage + 1}${query}`}
           className={clsx(
-            "flex flex-grow text-[30px] items-center justify-center h-[50px] text-white rounded-[2px] bg-[#c03e3e]",
+            "flex grow text-[30px] items-center justify-center h-[50px] text-white rounded-[2px] bg-[#c03e3e]",
             currentPage + 1 > allPages &&
               "opacity-30 grayscale pointer-events-none cursor-default"
           )}

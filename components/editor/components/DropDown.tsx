@@ -21,13 +21,6 @@ export default function DropDown({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [showDropDown, setShowDropDown] = useState(false);
 
-  const handleClose = () => {
-    setShowDropDown(false);
-    if (buttonRef && buttonRef.current) {
-      buttonRef.current.focus();
-    }
-  };
-
   useEffect(() => {
     const button = buttonRef.current;
     const dropDown = dropDownRef.current;
@@ -79,9 +72,7 @@ export default function DropDown({
       </ToolbarBtn>
       {showDropDown &&
         createPortal(
-          <DropDownItems dropDownRef={dropDownRef} onClose={handleClose}>
-            {children}
-          </DropDownItems>,
+          <DropDownItems dropDownRef={dropDownRef}>{children}</DropDownItems>,
           document.body
         )}
     </>

@@ -35,7 +35,7 @@ const UserSearchForm = () => {
         />
         {isListVisible && userList.length > 0 && (
           <div>
-            <div className="w-full left-0 top-full absolute z-[1] bg-[#1f1f1f] text-white text-[12px] border-t border-t-[#313131] rounded-[0_5px_5px_0] shadow-md">
+            <div className="w-full left-0 top-full absolute z-1 bg-[#1f1f1f] text-white text-[12px] border-t border-t-[#313131] rounded-[0_5px_5px_0] shadow-md">
               <ul className="m-0 p-[10px] list-none">
                 {userList.map((user) => (
                   <UserListElement key={user.id} user={user} />

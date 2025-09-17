@@ -32,7 +32,7 @@ const ProfileInfo = async () => {
             className="mb-1"
           />
         </Link>
-        <div className="flex-[1] ml-[5px]">
+        <div className="flex-1 ml-[5px]">
           <header className="text-white] relative bg-[#181818] p-[8px_10px] flex justify-between items-center">
             <Link href={`/uzytkownik/${user.username}`}>{user.username}</Link>
             <SignOutButton />

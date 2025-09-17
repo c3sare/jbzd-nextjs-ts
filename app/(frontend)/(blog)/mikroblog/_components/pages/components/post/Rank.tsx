@@ -10,7 +10,7 @@ const Rank: React.FC<RankProps> = ({ className }) => {
   return (
     <span
       className={clsx(
-        "z-[8] inline-block w-[28px] h-[28px] rounded-full float-left group/avatar",
+        "z-8 inline-block w-[28px] h-[28px] rounded-full float-left group/avatar",
         className
       )}
       style={{

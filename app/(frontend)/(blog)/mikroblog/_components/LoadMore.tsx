@@ -20,7 +20,7 @@ const LoadMore: React.FC<LoadMoreProps> = ({ loadMore, isEnd }) => {
   return (
     <div
       ref={loadingRef}
-      className="md:ml-[50px] w-full md:w-[calc(100%_-_50px)] text-[#666] text-[14px] text-center py-[10px]"
+      className="md:ml-[50px] w-full md:w-[calc(100%-50px)] text-[#666] text-[14px] text-center py-[10px]"
     >
       {isVisible && !isEnd ? (
         <BiLoaderAlt className="animate-spin mx-auto text-[32px]" />

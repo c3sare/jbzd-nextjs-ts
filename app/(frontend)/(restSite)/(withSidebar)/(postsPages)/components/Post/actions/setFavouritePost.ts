@@ -18,10 +18,9 @@ export default async function setFavouritePost(postId: string) {
         authorId: session.user.id,
       },
     });
-    let favourite;
 
     if (favouriteIsExist) {
-      favourite = await prisma.favouritePost.delete({
+      await prisma.favouritePost.delete({
         where: {
           id: favouriteIsExist.id,
         },
@@ -40,7 +39,7 @@ export default async function setFavouritePost(postId: string) {
         },
       });
     } else {
-      favourite = await prisma.favouritePost.create({
+      await prisma.favouritePost.create({
         data: {
           post: {
             connect: {
@@ -72,7 +71,7 @@ export default async function setFavouritePost(postId: string) {
     revalidatePath("/", "layout");
 
     return { isFavourite: !Boolean(favouriteIsExist) };
-  } catch (err: any) {
+  } catch {
     return { message: "Wystąpił problem!" };
   }
 }

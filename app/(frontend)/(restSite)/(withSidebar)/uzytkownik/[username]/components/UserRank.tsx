@@ -39,7 +39,7 @@ const UserRank: React.FC<UserRankProps> = ({
   };
 
   return (
-    <div className="w-full h-[max-content] sm:max-w-[125px] rounded-lg bg-[#1f1f1f] p-[5px_15px] mt-[10px] flex sm:block justify-between items-center flex-row">
+    <div className="w-full h-max sm:max-w-[125px] rounded-lg bg-[#1f1f1f] p-[5px_15px] mt-[10px] flex sm:block justify-between items-center flex-row">
       <div className="relative flex flex-row items-center sm:justify-between">
         <Image
           src="/images/spear.png"

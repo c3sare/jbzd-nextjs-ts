@@ -11,7 +11,7 @@ const Input = (props: InputProps) => {
     <input
       {...props}
       type={props.type || "text"}
-      className="w-full px-[10px] rounded-[5px] leading-[35px] bg-[#1f1f1f] text-[12px] text-white outline-none italic placeholder:text-[grey]"
+      className="w-full px-[10px] rounded-[5px] leading-[35px] bg-[#1f1f1f] text-[12px] text-white outline-hidden italic placeholder:text-[grey]"
     />
   );
 };

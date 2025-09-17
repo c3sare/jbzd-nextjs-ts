@@ -122,7 +122,7 @@ export default function ToolbarPlugin(): JSX.Element {
   }, [activeEditor, editor, updateToolbar]);
 
   return (
-    <div className="flex mb-[1px] p-1 align-middle bg-[#252525]">
+    <div className="flex mb-px p-1 align-middle bg-[#252525]">
       <TextColorDropDown disabled={!isEditable} onChange={onFontColorSelect} />
       <TextSizeDropDown disabled={!isEditable} onChange={onFontSizeSelect} />
       <ToolbarBtn

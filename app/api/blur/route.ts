@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
     const file = await getPlaiceholder(buffer);
     return new NextResponse(file.base64);
-  } catch (err) {
+  } catch {
     return new NextResponse("Internal error", { status: 500 });
   }
 }

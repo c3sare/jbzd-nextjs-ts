@@ -25,7 +25,7 @@ const Badge: React.FC<BadgeProps> = ({ title, count, name }) => {
             className="h-auto"
             alt={title}
           />
-          <div className="bg-black p-[4px_8px] rounded-md text-[10px] absolute bottom-[calc(100%_+_4px)] left-1/2 whitespace-nowrap translate-x-[-50%] hidden group-hover:block">
+          <div className="bg-black p-[4px_8px] rounded-md text-[10px] absolute bottom-[calc(100%+4px)] left-1/2 whitespace-nowrap translate-x-[-50%] hidden group-hover:block">
             {title}
           </div>
         </div>

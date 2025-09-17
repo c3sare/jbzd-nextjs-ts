@@ -60,7 +60,7 @@ export async function POST(
     return NextResponse.json({
       userBlockedId: updateConversation?.userBlockedId,
     });
-  } catch (err: any) {
+  } catch {
     return new NextResponse("Internal error", { status: 500 });
   }
 }

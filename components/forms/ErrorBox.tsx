@@ -6,7 +6,7 @@ type ErrorBoxProps = {
 
 const ErrorBox: React.FC<ErrorBoxProps> = ({ onClick }) => {
   return (
-    <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center flex-col bg-[rgba(0,_0_,0_,_0.5)]">
+    <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center flex-col bg-[rgba(0,0,0,0.5)]">
       <p className="pb-4">Wystąpił problem przy pobieraniu danych!</p>
       {onClick && <Button onClick={onClick}>Załaduj ponownie</Button>}
     </div>

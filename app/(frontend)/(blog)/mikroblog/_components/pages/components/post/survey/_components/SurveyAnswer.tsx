@@ -56,7 +56,7 @@ const SurveyAnswer: React.FC<SurveyAnswerProps> = ({
       </button>
       <span
         className={clsx(
-          "hidden group-hover/survey:flex items-center justify-center flex-col bg-black absolute bottom-[calc(100%_+_6px)] left-1/2 -translate-x-1/2 text-[9px] px-4 py-1",
+          "hidden group-hover/survey:flex items-center justify-center flex-col bg-black absolute bottom-[calc(100%+6px)] left-1/2 -translate-x-1/2 text-[9px] px-4 py-1",
           "after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-black after:border-t-[5px] after:border-l-[5px] after:border-r-[5px] after:border-b-0 after:border-l-transparent after:border-r-transparent after:border-b-transparent"
         )}
       >

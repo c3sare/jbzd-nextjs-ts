@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 
-import { Control, useWatch } from "react-hook-form";
+import { Control, FieldValues, useWatch } from "react-hook-form";
 
 type LinkPreviewContainerProps = {
   linkPreview: {
@@ -10,7 +10,7 @@ type LinkPreviewContainerProps = {
     description: string;
     origin: string;
   };
-  control: Control<any>;
+  control: Control<FieldValues>;
   children?: React.ReactNode;
 };
 

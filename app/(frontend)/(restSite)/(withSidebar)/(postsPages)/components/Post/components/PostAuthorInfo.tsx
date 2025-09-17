@@ -63,7 +63,7 @@ const PostAuthorInfo: React.FC<PostAuthorInfoProps> = ({
       <span className="text-[#777]"> przez </span>
       <span className="text-white md:relative group">
         {author.username}
-        <div className="absolute z-[9999999] hidden top-full left-0 md:left-[calc(50%_-_10px)] md:translate-x--1/2 group-hover:block max-w-full md:max-w-none">
+        <div className="absolute z-9999999 hidden top-full left-0 md:left-[calc(50%-10px)] md:translate-x--1/2 group-hover:block max-w-full md:max-w-none">
           <div
             className={clsx(
               "max-w-full mt-[8px] w-[310px] rounded-[3px] bg-[#313131] flex p-[15px] md:max-w-none ",
@@ -80,14 +80,14 @@ const PostAuthorInfo: React.FC<PostAuthorInfoProps> = ({
                   src={author.image || "/images/avatars/default.jpg"}
                 />
               </div>
-              <div className="flex-grow">
+              <div className="grow">
                 <div className="text-white text-[14px] font-bold mb-[5px]">
                   {author.username}
                 </div>
                 <div className="flex justify-between flex-nowrap gap-[5px] mb-[5px] w-full">
                   <div
                     className={clsx(
-                      "flex-grow bg-[#252525] leading-[38px] text-[20px] font-bold text-white items-center p-[0_8px] rounded-[4px] relative flex justify-between",
+                      "grow bg-[#252525] leading-[38px] text-[20px] font-bold text-white items-center p-[0_8px] rounded-[4px] relative flex justify-between",
                       !isOwnPost && "pr-[30px]"
                     )}
                   >
@@ -114,7 +114,7 @@ const PostAuthorInfo: React.FC<PostAuthorInfoProps> = ({
                       </button>
                     )}
                   </div>
-                  <div className="flex-grow bg-[#252525] leading-[38px] text-[20px] font-bold text-white items-center p-[0_8px] rounded-[4px] relative flex justify-between">
+                  <div className="grow bg-[#252525] leading-[38px] text-[20px] font-bold text-white items-center p-[0_8px] rounded-[4px] relative flex justify-between">
                     <span className="text-[22px]">
                       <AiFillTrophy />
                     </span>

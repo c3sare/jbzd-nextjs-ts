@@ -1,5 +1,5 @@
-import { IconType } from "@react-icons/all-files";
-import { ButtonHTMLAttributes, DOMAttributes } from "react";
+import type { IconType } from "@react-icons/all-files";
+import type { ButtonHTMLAttributes } from "react";
 
 type EditorButtonProps = {
   icon: IconType;

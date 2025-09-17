@@ -90,7 +90,7 @@ export async function POST(request: Request, { params }: Params) {
     );
 
     return new NextResponse("Success");
-  } catch (err: any) {
+  } catch {
     return new NextResponse("Internal error", { status: 500 });
   }
 }

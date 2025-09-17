@@ -7,7 +7,7 @@ type RequestParams = {
   }>;
 };
 
-export async function POST(request: Request, { params }: RequestParams) {
+export async function POST(_request: Request, { params }: RequestParams) {
   const { id } = await params;
   const session = await getSession();
 
@@ -24,7 +24,7 @@ export async function POST(request: Request, { params }: RequestParams) {
     if (youtube_data?.items?.length > 0)
       return NextResponse.json({ videoExist: true });
     else return NextResponse.json({ videoExist: false });
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }

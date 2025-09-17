@@ -15,8 +15,8 @@ const MikroblogLayout: React.FC<PropsWithChildren> = async ({ children }) => {
 
   return (
     <LightBox>
-      <div className="max-w-[1110px] mx-auto mt-[45px] pt-2 min-h-[calc(100vh_-_97px)]">
-        <div className="hidden md:block float-right w-1/3 relative min-h-[1px] sm:px-[15px]">
+      <div className="max-w-[1110px] mx-auto mt-[45px] pt-2 min-h-[calc(100vh-97px)]">
+        <div className="hidden md:block float-right w-1/3 relative min-h-px sm:px-[15px]">
           <div>
             {isAuthorized ? <Sidebar /> : <NoAuthSidebar />}
             <SidebarFooter />

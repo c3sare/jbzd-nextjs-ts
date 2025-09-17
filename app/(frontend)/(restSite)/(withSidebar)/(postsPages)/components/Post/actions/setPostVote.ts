@@ -18,10 +18,9 @@ export default async function setPostVote(postId: string) {
         authorId: session.user.id,
       },
     });
-    let vote;
 
     if (voteIsExist) {
-      vote = await prisma.postVote.delete({
+      await prisma.postVote.delete({
         where: {
           id: voteIsExist.id,
         },
@@ -40,7 +39,7 @@ export default async function setPostVote(postId: string) {
         },
       });
     } else {
-      vote = await prisma.postVote.create({
+      await prisma.postVote.create({
         data: {
           post: {
             connect: {
@@ -78,7 +77,7 @@ export default async function setPostVote(postId: string) {
     revalidatePath("/", "layout");
 
     return { isPlused: !Boolean(voteIsExist), count };
-  } catch (err: any) {
+  } catch {
     return { message: "Internal Error" };
   }
 }

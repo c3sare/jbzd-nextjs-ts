@@ -102,8 +102,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
     if (["Tab", ",", "Enter"].includes(e.key)) {
       e.preventDefault();
       if (
-        !tags.filter((tag: any) => tag.value === e.currentTarget.value)
-          .length &&
+        !tags.filter((tag) => tag.value === e.currentTarget.value).length &&
         tags.length < 10 &&
         e.currentTarget.value
       ) {
@@ -197,7 +196,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
         </div>
         <DndProvider backend={HTML5Backend}>
           {memContainers.map((mem, index) => {
-            const MemElement = memElements[mem.type] as React.FC<any>;
+            const MemElement = memElements[mem.type]!;
 
             return (
               <MemContainer
@@ -208,9 +207,10 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
                 id={mem.id}
               >
                 <MemElement
+                  data=""
                   control={control}
                   fieldName={`memContainers.${index}.data`}
-                  setData={(data: any) =>
+                  setData={(data) =>
                     setValue(`memContainers.${index}.data`, data)
                   }
                 />

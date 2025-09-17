@@ -31,7 +31,7 @@ export async function PUT(request: NextRequest, { params }: BlogPostParams) {
       formDataToObject(formData)
     );
 
-    let blogPostCreate: Prisma.BlogPostCreateInput = {
+    const blogPostCreate: Prisma.BlogPostCreateInput = {
       text: message,
       adultContent: false,
       slug: createSlugFromTitle(message),

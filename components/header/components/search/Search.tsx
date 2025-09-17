@@ -32,7 +32,7 @@ const Search = () => {
         Szukaj
       </MenuButton>
       {isOpenSearchBar && !isSearchPage && (
-        <div className="hidden md:flex absolute top-[100%] left-0 w-full h-[120px] bg-[#1f1f1f]">
+        <div className="hidden md:flex absolute top-full left-0 w-full h-[120px] bg-[#1f1f1f]">
           <Form />
         </div>
       )}

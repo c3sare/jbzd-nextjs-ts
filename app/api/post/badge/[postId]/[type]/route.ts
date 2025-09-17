@@ -119,7 +119,7 @@ export async function POST(request: NextRequest, { params }: RequestParams) {
         coins: updateCoins,
       });
     }
-  } catch (err: any) {
+  } catch {
     return new Response("Internal Error", { status: 500 });
   }
 }

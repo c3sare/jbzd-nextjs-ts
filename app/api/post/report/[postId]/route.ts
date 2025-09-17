@@ -44,7 +44,7 @@ export async function POST(request: Request, { params }: RequestParams) {
     } else {
       return NextResponse.json({ reported: false });
     }
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }

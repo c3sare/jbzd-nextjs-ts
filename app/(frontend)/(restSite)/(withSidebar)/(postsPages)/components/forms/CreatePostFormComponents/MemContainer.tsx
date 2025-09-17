@@ -31,11 +31,7 @@ const MemContainer: React.FC<MemContainerProps> = ({
   id,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [{ handlerId }, drop] = useDrop<
-    DragItem,
-    void,
-    { handlerId: Identifier | null }
-  >({
+  const [, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
     accept: ItemTypes.CARD,
     collect(monitor) {
       return {
@@ -92,12 +88,12 @@ const MemContainer: React.FC<MemContainerProps> = ({
     },
   });
 
-  const [{ isDragging }, drag, preview] = useDrag({
+  const [, drag, preview] = useDrag({
     type: ItemTypes.CARD,
     item: () => {
       return { id, index };
     },
-    collect: (monitor: any) => ({
+    collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });

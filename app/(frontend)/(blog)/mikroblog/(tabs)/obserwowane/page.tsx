@@ -1,8 +1,5 @@
 import { getSession } from "@/actions/getSession";
-import BlogPost from "../../_components/pages/BlogPost";
 import { notFound } from "next/navigation";
-import { getPosts } from "../_actions/getPosts";
-import prisma from "@/libs/prismadb";
 import BlogPostInfiniteScroll from "../../_components/BlogPostInfiniteScroll";
 import { getObservedPosts } from "./_actions/getObservedPosts";
 

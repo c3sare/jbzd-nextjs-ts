@@ -21,7 +21,7 @@ export async function PUT(req: NextRequest) {
     const { message, files, adultContent, questionnaire } =
       BlogPostSchema.parse(data);
 
-    let blogPostCreate: Prisma.BlogPostCreateInput = {
+    const blogPostCreate: Prisma.BlogPostCreateInput = {
       text: message,
       adultContent,
       slug: createSlugFromTitle(message),

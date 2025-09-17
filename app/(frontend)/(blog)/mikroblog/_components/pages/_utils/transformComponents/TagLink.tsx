@@ -55,7 +55,7 @@ const TagLink: React.FC<TagLinkProps> = ({ href, children }) => {
         <div
           className={clsx(
             "flex w-[300px] z-10 bg-[#1f1f1f] shadow-xl rounded-[3px] p-[15px] relative",
-            "before:w-0 before:h-0 before:content-normal before:block before:border-r-[7.5px] before:border-l-[7.5px] before:border-b-[10px] before:border-solid before:border-[transparent_transparent_#1f1f1f] before:absolute before:left-[15px] before:bottom-full"
+            "before:w-0 before:h-0 before:content-normal before:block before:border-r-[7.5px] before:border-l-[7.5px] before:border-b-10 before:border-solid before:border-[transparent_transparent_#1f1f1f] before:absolute before:left-[15px] before:bottom-full"
           )}
         >
           <TagButton

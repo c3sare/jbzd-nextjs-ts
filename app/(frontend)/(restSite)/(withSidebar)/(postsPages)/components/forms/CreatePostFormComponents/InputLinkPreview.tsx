@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-
 import axios from "axios";
 import { useState } from "react";
 
@@ -18,7 +16,7 @@ type LinkPreviewType = {
 const isValidUrl = (urlString: string) => {
   try {
     return Boolean(new URL(urlString));
-  } catch (e) {
+  } catch {
     return false;
   }
 };
@@ -34,7 +32,7 @@ function InputLinkPreview() {
       setLinkPreview(req.data);
       if (req.status === 200) return true;
       else return false;
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
       return false;
     }

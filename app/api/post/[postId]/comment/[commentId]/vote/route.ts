@@ -115,7 +115,7 @@ export async function POST(request: Request, { params }: RequestParams) {
         type: "",
       });
     }
-  } catch (err: any) {
+  } catch {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

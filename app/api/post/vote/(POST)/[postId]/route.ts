@@ -1,7 +1,6 @@
 import { getSession } from "@/actions/getSession";
 import { NextResponse } from "next/server";
 import prisma from "@/libs/prismadb";
-import { PostVote } from "@prisma/client";
 
 type RequestParams = {
   params: Promise<{
@@ -25,16 +24,15 @@ export async function POST(request: Request, { params }: RequestParams) {
         authorId: session.user.id,
       },
     });
-    let vote: PostVote;
 
     if (voteIsExist) {
-      vote = await prisma.postVote.delete({
+      await prisma.postVote.delete({
         where: {
           id: voteIsExist.id,
         },
       });
     } else {
-      vote = await prisma.postVote.create({
+      await prisma.postVote.create({
         data: {
           post: {
             connect: {
@@ -57,7 +55,7 @@ export async function POST(request: Request, { params }: RequestParams) {
     });
 
     return NextResponse.json({ isPlused: !Boolean(voteIsExist), count });
-  } catch (err: any) {
+  } catch {
     throw new NextResponse("Internal Error", { status: 500 });
   }
 }

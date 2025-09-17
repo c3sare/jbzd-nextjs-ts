@@ -8,6 +8,7 @@ import { PropsWithChildren, createContext, useRef, useState } from "react";
 import Image from "next/image";
 
 export const LightBoxContext = createContext(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (_images: string[], _index: number) => {}
 );
 
@@ -52,7 +53,7 @@ const LightBox: React.FC<PropsWithChildren> = ({ children }) => {
       {open && (
         <div
           ref={container}
-          className="w-full h-full fixed top-0 left-0 bg-[rgba(0,_0,_0,_.6)] z-[9999]"
+          className="w-full h-full fixed top-0 left-0 bg-[rgba(0,0,0,.6)] z-9999"
           onClick={(e) => {
             if (container.current === e.target) handleCloseLightBox();
           }}
@@ -96,7 +97,7 @@ const LightBox: React.FC<PropsWithChildren> = ({ children }) => {
           )}
           <button
             onClick={handleCloseLightBox}
-            className="absolute top-0 right-0 w-[40px] h-[40px] flex items-center justify-center hover:bg-[rgba(0,_0,_0,_.6)] transition-colors text-[18px] hover:text-[#58e8d2] group/close"
+            className="absolute top-0 right-0 w-[40px] h-[40px] flex items-center justify-center hover:bg-[rgba(0,0,0,.6)] transition-colors text-[18px] hover:text-[#58e8d2] group/close"
           >
             <AiOutlineClose className="transition-transform group-hover/close:scale-75" />
           </button>

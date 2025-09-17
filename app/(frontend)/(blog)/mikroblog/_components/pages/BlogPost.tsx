@@ -122,7 +122,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
         username={post.author.username!}
         avatar={post.author.image!}
       />
-      <div className="w-full md:w-[calc(100%_-_70px)] relative">
+      <div className="w-full md:w-[calc(100%-70px)] relative">
         <BlogPostHeader post={post} />
         <div className="clear-both relative p-[15px_15px_25px] bg-[#313131] group flex flex-col justify-between">
           {!!post.questionnaire && (

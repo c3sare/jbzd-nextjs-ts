@@ -25,7 +25,7 @@ const ScrollBar: React.FC<ScrollBarProps> = ({
   const scrollBar = useRef<HTMLDivElement>(null);
 
   const setScrollBar = useCallback(
-    (e: any) => {
+    (e: MouseEvent | React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       const scrollBarWidth = scrollBar.current!.offsetWidth;
       const thumbWidth =
         allPages > 7 ? (scrollBarWidth / allPages) * 7 : scrollBarWidth;
@@ -44,7 +44,9 @@ const ScrollBar: React.FC<ScrollBarProps> = ({
   );
 
   useEffect(() => {
-    function scrollBarSet(e: any) {
+    function scrollBarSet(
+      e: MouseEvent | React.MouseEvent<HTMLDivElement, MouseEvent>
+    ) {
       if (drag) setScrollBar(e);
     }
 
@@ -97,7 +99,7 @@ const ScrollBar: React.FC<ScrollBarProps> = ({
     <div
       className="relative w-full h-[20px] mt-[10px]"
       ref={scrollBar}
-      onClick={setScrollBar}
+      onClick={(e) => setScrollBar(e)}
     >
       <div className="w-full h-[3px] bg-[#464646] overflow-hidden" />
       <ScrollThumb
@@ -107,7 +109,7 @@ const ScrollBar: React.FC<ScrollBarProps> = ({
           setDrag(true);
         }}
       />
-      <div className="absolute top-0 left-[697.477px] w-[3px] h-[3px] overflow-hidden z-[1]" />
+      <div className="absolute top-0 left-[697.477px] w-[3px] h-[3px] overflow-hidden z-1" />
     </div>
   );
 };

@@ -64,7 +64,7 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
       className="flex p-5 flex-wrap relative bg-[#313131] md:m-[15px_0_10px_0] items-start"
     >
       {isLoading && (
-        <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,_0,_0,_.6)] flex items-center justify-center">
+        <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,.6)] flex items-center justify-center">
           <BiLoaderAlt className="animate-spin text-[36px] mx-auto" />
         </div>
       )}
@@ -78,7 +78,7 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
       <Textarea id="text" register={register} defaultValue="" />
       <button
         type="submit"
-        className="w-[52px] ml-[2px] rounded-[3px] flex items-center justify-center h-[40px] text-white border-none cursor-pointer bg-[#777] outline-none"
+        className="w-[52px] ml-[2px] rounded-[3px] flex items-center justify-center h-[40px] text-white border-none cursor-pointer bg-[#777] outline-hidden"
       >
         <IoSend size={28} />
       </button>

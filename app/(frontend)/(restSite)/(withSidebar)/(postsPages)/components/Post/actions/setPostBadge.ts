@@ -114,7 +114,7 @@ export default async function setPostBadge(postId: string, type: BadgeType) {
         coins: updateCoins,
       };
     }
-  } catch (err: any) {
+  } catch {
     return { message: "Wystąpił błąd!" };
   }
 }

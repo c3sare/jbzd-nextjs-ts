@@ -45,7 +45,7 @@ const ConversationHistory: React.FC<ConversationHistoryProps> = ({
   }, [router]);
 
   return (
-    <section className="max-w-[calc(100%_-_20px)] h-[calc(100vh_-_370px)] relative m-auto">
+    <section className="max-w-[calc(100%-20px)] h-[calc(100vh-370px)] relative m-auto">
       {history.length === 0 ? (
         <p className="text-[#8f8f8f] text-[12px] italic">
           Nie masz jeszcze żadnych rozmów

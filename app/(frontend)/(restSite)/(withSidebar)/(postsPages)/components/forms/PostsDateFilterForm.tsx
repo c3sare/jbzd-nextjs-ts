@@ -15,13 +15,7 @@ const PostsDateFilterFormSchema = z.object({
   end: z.date().optional(),
 });
 
-type PostsDateFilterFormProps = {
-  onClose: () => void;
-};
-
-const PostsDateFilterForm: React.FC<PostsDateFilterFormProps> = ({
-  onClose,
-}) => {
+const PostsDateFilterForm = () => {
   const pathname = usePathname();
   const router = useRouter();
   const params = useArraySearchParams();
@@ -77,7 +71,7 @@ const PostsDateFilterForm: React.FC<PostsDateFilterFormProps> = ({
   const dateTo = watch("end");
 
   return (
-    <div className="relative md:absolute w-[660px] max-w-full mx-auto flex justify-center items-center gap-[10px] top-[5px] md:top-[calc(100%_+_5px)] z-10 bg-[#3c3c3c] md:left-0 flex-col p-[20px]">
+    <div className="relative md:absolute w-[660px] max-w-full mx-auto flex justify-center items-center gap-[10px] top-[5px] md:top-[calc(100%+5px)] z-10 bg-[#3c3c3c] md:left-0 flex-col p-[20px]">
       <div className="flex w-full gap-[10px] flex-wrap sm:flex-nowrap">
         <PresetButton preset="">Nowe</PresetButton>
         <PresetButton preset="6h">6h</PresetButton>

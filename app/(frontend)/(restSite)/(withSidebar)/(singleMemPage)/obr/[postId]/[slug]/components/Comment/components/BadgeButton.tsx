@@ -78,7 +78,7 @@ const BadgeButton: React.FC<BadgeButtonProps> = ({
         Nagroda
       </CommentButton>
       {isVisible && (
-        <div className="absolute bottom-full left-0 w-full min-w-[51px] flex flex-col bg-[#313131] py-[5px] gap-[10px] z-[10] shadow-xl">
+        <div className="absolute bottom-full left-0 w-full min-w-[51px] flex flex-col bg-[#313131] py-[5px] gap-[10px] z-10 shadow-xl">
           <BadgeActionButton
             src="/images/likes/gold.png"
             name="Złota dzida"

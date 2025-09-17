@@ -43,7 +43,7 @@ const PostsPageHeader: React.FC<PostsPageHeaderProps> = ({
   const componentsToSwitch = [
     null,
     <CreatePostForm key={1} onClose={closeForms} categories={categories} />,
-    <PostsDateFilterForm key={2} onClose={closeForms} />,
+    <PostsDateFilterForm key={2} />,
     <PostsTypeFilterForm isPremium={isPremium} key={3} onClose={closeForms} />,
   ];
 

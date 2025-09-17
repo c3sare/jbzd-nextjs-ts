@@ -89,7 +89,7 @@ const ChooseList: React.FC<ChooseListProps> = ({
 
   return (
     <div
-      className="text-white absolute bg-[#4a4a4a] text-[12px] min-w-[140px] max-w-[180px] max-h-[200px] overflow-y-auto z-[999]"
+      className="text-white absolute bg-[#4a4a4a] text-[12px] min-w-[140px] max-w-[180px] max-h-[200px] overflow-y-auto z-999"
       style={{
         top: autocomplete.y + 35 + "px",
         left: autocomplete.x + 10 + "px",

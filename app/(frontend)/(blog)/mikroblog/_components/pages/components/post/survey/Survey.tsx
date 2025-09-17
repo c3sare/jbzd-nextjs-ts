@@ -7,7 +7,6 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import formatDistance from "date-fns/formatDistance";
 import { pl } from "date-fns/locale";
-import { BiLoaderAlt } from "@react-icons/all-files/bi/BiLoaderAlt";
 
 type SurveyProps = {
   questionnaire: NonNullable<BlogPostType["questionnaire"]>;
@@ -43,7 +42,7 @@ const Survey: React.FC<SurveyProps> = ({
           return newState.map((item) => ({
             ...item,
             votes: votes.filter(
-              (voteitem: any) => voteitem.answerId === item.id
+              (voteitem: { answerId: number }) => voteitem.answerId === item.id
             ).length,
             isMarked: markedIds.includes(item.id),
           }));

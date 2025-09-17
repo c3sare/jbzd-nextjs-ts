@@ -39,7 +39,7 @@ const CommentTag: React.FC<CommentTagProps> = ({ comment }) => {
         username={comment.parent.author.username!}
         avatar={comment.parent.author.image!}
       />
-      <div className="w-full md:w-[calc(100%_-_70px)] relative flex-col">
+      <div className="w-full md:w-[calc(100%-70px)] relative flex-col">
         <div className="text-center p-[15px_15px_25px] bg-[#313131] relative w-full">
           <Link
             className="flex items-center justify-center text-[20px] text-white flex-col"

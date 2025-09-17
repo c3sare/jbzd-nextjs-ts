@@ -27,7 +27,7 @@ const TagButton: React.FC<TagButtonProps> = ({
       onClick={onClick}
       className={clsx(
         bgColor[variant],
-        "w-[calc(50%_-_10px)] mx-[5px] block text-[14px] rounded-[3px] text-white py-[10px]",
+        "w-[calc(50%-10px)] mx-[5px] block text-[14px] rounded-[3px] text-white py-[10px]",
         isActive && "opacity-50"
       )}
     >

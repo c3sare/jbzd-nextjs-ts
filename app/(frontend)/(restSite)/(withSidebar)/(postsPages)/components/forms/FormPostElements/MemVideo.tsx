@@ -34,12 +34,12 @@ function MemVideo<T extends FieldValues>({
     [setData]
   );
 
-  const [{ canDrop, isOver }, drop] = useDrop(
+  const [, drop] = useDrop(
     () => ({
       accept: [NativeTypes.FILE],
-      drop(item: { files: any }) {
+      drop(item: { files: File[] }) {
         if (onDrop) {
-          onDrop(item.files[0]);
+          onDrop(item.files[0]!);
         }
       },
       canDrop() {
@@ -62,7 +62,7 @@ function MemVideo<T extends FieldValues>({
       {data === null ? (
         <div
           onClick={handleOpenFileExplorer}
-          className="flex h-[300px] w-full z-[2] flex-col items-center justify-center text-white text-[13px] gap-[10px] cursor-pointer"
+          className="flex h-[300px] w-full z-2 flex-col items-center justify-center text-white text-[13px] gap-[10px] cursor-pointer"
           ref={(ref) => {
             drop(ref);
           }}
@@ -96,7 +96,7 @@ function MemVideo<T extends FieldValues>({
           />
           <button
             type="button"
-            className="absolute bottom-[15px] right-[15px] bg-[#505050] text-white text-[13px] rounded-[3px] leading-[34px] px-[15px] cursor-pointer z-[3] shadow-md"
+            className="absolute bottom-[15px] right-[15px] bg-[#505050] text-white text-[13px] rounded-[3px] leading-[34px] px-[15px] cursor-pointer z-3 shadow-md"
             onClick={() => setData(null)}
           >
             Zmień

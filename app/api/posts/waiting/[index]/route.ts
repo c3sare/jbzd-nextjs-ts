@@ -24,7 +24,7 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
     const { addTime, memContainers, title, countOnPage } =
       await parseSearchParams(searchParams);
 
-    let findParams: any = {
+    const findParams = {
       accepted: {
         isSet: false,
       },
@@ -41,6 +41,7 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
 
     const pagesCount = Math.ceil(postsCount / countOnPage);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let posts: any = await prisma.postStats.findMany({
       where: {
         ...findParams,
@@ -69,7 +70,7 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
       page: Number(index),
       pagesCount,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.log(error);
     return new NextResponse("Internal Error", { status: 500 });
   }

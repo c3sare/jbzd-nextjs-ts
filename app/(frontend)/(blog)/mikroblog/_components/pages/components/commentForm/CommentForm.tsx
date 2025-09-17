@@ -56,6 +56,7 @@ const CommentForm = ({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const session = useSession();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useImperativeHandle<HTMLTextAreaElement, any>(
     ref,
     () => {
@@ -117,7 +118,7 @@ const CommentForm = ({
     axios
       .put(`/api/blog/post/${postId}`, formData)
       .then((res) => res.data)
-      .then((data) => {
+      .then(() => {
         resetForm();
         router.refresh();
       })
@@ -141,7 +142,7 @@ const CommentForm = ({
             alt="Avatar"
           />
         </span>
-        <div className="float-left relative w-full md:w-[calc(100%_-_45px)] max-h-full transition-all ease-in-out block overflow-hidden">
+        <div className="float-left relative w-full md:w-[calc(100%-45px)] max-h-full transition-all ease-in-out block overflow-hidden">
           <CommentTextarea
             placeholder="Dodaj nowy wpis..."
             id="message"
@@ -150,7 +151,7 @@ const CommentForm = ({
             onFocus={() => setIsActive(true)}
           />
           {isActive && (
-            <div className="w-[calc(100%_-_5px)] ml-[5px] relative mb-[65px] left-0 bottom-0 bg-black p-[10px]">
+            <div className="w-[calc(100%-5px)] ml-[5px] relative mb-[65px] left-0 bottom-0 bg-black p-[10px]">
               <ul className="block w-full text-left">
                 <EditorButton
                   onClick={(e) => handleSetTextFormat(e, "***", "***")}
@@ -195,7 +196,7 @@ const CommentForm = ({
         </ul>
         <div className="flex flex-wrap w-full md:flex-nowrap md:ml-[30px]">
           <div
-            className="w-full md:w-[calc(100%_-_200px)] top-0 my-2 ml-[5px] h-[33px] bg-none leading-[33px] overflow-hidden relative clear-both cursor-pointer"
+            className="w-full md:w-[calc(100%-200px)] top-0 my-2 ml-[5px] h-[33px] bg-none leading-[33px] overflow-hidden relative clear-both cursor-pointer"
             onClick={() => {
               if (fileInputRef.current) fileInputRef.current.click();
             }}
@@ -209,7 +210,7 @@ const CommentForm = ({
               multiple
               ref={fileInputRef}
               onChange={handleAddFile}
-              className="w-[100px] hidden relative z-[9] cursor-pointer h-[30px] ml-[5px] leading-[48px] bg-black p-[10px] text-white text-[16px]"
+              className="w-[100px] hidden relative z-9 cursor-pointer h-[30px] ml-[5px] leading-[48px] bg-black p-[10px] text-white text-[16px]"
             />
             <button
               type="button"
@@ -235,7 +236,7 @@ const CommentForm = ({
           </div>
         </div>
         {form.formState.isLoading && (
-          <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,_0,_0,_.5)] flex items-center justify-center">
+          <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,.5)] flex items-center justify-center">
             <BiLoaderAlt size={60} className="animate-spin text-zinc-400" />
           </div>
         )}

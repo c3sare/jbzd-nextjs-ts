@@ -62,7 +62,7 @@ const AuthorInfo: React.FC<AuthorInfoProps> = ({
   return (
     <span className="text-white md:relative group">
       {author.username}
-      <div className="absolute z-[9999999] hidden top-5 md:top-full left-0 md:left-[calc(50%_-_10px)] md:translate-x--1/2 group-hover:block max-w-none">
+      <div className="absolute z-9999999 hidden top-5 md:top-full left-0 md:left-[calc(50%-10px)] md:translate-x--1/2 group-hover:block max-w-none">
         <div className="max-w-none mt-[8px] w-[310px] rounded-[3px] bg-[#313131] flex md:before:w-0 md:before:h-0 md:before:content-normal md:before:block md:before:border-r-[5px] md:before:border-l-[5px] md:before:border-b-[5px] md:before:border-solid md:before:border-[transparent_transparent_#313131] md:before:absolute md:before:left-[10px] md:before:top-[3px] p-[15px]">
           <div className="w-full flex flex-nowrap gap-[10px]">
             <div className="w-[45px] flex items-center">
@@ -74,14 +74,14 @@ const AuthorInfo: React.FC<AuthorInfoProps> = ({
                 src={author.image || "/images/avatars/default.jpg"}
               />
             </div>
-            <div className="flex-grow">
+            <div className="grow">
               <div className="text-white text-[14px] font-bold mb-[5px]">
                 {author.username}
               </div>
               <div className="flex justify-between flex-nowrap gap-[5px] mb-[5px] w-full">
                 <div
                   className={clsx(
-                    "flex-grow bg-[#252525] leading-[38px] text-[20px] font-bold text-white items-center p-[0_8px] rounded-[4px] relative flex justify-between",
+                    "grow bg-[#252525] leading-[38px] text-[20px] font-bold text-white items-center p-[0_8px] rounded-[4px] relative flex justify-between",
                     !isOwnPost && "pr-[30px]"
                   )}
                 >
@@ -108,7 +108,7 @@ const AuthorInfo: React.FC<AuthorInfoProps> = ({
                     </button>
                   )}
                 </div>
-                <div className="flex-grow bg-[#252525] leading-[38px] text-[20px] font-bold text-white items-center p-[0_8px] rounded-[4px] relative flex justify-between">
+                <div className="grow bg-[#252525] leading-[38px] text-[20px] font-bold text-white items-center p-[0_8px] rounded-[4px] relative flex justify-between">
                   <span className="text-[22px]">
                     <AiFillTrophy />
                   </span>

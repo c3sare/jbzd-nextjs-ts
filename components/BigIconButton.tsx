@@ -15,7 +15,7 @@ const BigIconButton: React.FC<BigIconButtonProps> = ({
     <button
       onClick={onClick}
       type="button"
-      className="h-[70px] text-[13px] flex-grow-[1] basis-0 min-w-0 flex rounded-[3px] bg-[#505050] hover:bg-[#777] justify-center items-center flex-col gap-[5px] text-white cursor-pointer"
+      className="h-[70px] text-[13px] flex-grow-1 basis-0 min-w-0 flex rounded-[3px] bg-[#505050] hover:bg-[#777] justify-center items-center flex-col gap-[5px] text-white cursor-pointer"
     >
       <span className="text-[24px]">{icon}</span>
       <span>{children}</span>

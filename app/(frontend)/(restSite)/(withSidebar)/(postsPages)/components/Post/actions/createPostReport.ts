@@ -37,7 +37,7 @@ export default async function createPostReport(postId: string) {
     } else {
       return { reported: false };
     }
-  } catch (err: any) {
+  } catch {
     return { message: "Wystąpił błąd!" };
   }
 }

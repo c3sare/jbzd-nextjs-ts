@@ -41,13 +41,13 @@ const AddMessageForm: React.FC<AddMessageFormProps> = ({
             ? "Wątek zablokowany, nie możesz pisać."
             : "Wpisz wiadomość..."
         }
-        className="resize-none h-[58px] overflow-hidden w-full p-[10px] rounded-[5px] bg-[#1f1f1f] text-white mr-[10px] max-w-[calc(100%_-_57px_-_10px)] min-w-[calc(100%_-_57px_-_10px)] min-h-[40px] leading-normal outline-none placeholder:text-[grey] placeholder:italic"
+        className="resize-none h-[58px] overflow-hidden w-full p-[10px] rounded-[5px] bg-[#1f1f1f] text-white mr-[10px] max-w-[calc(100%-57px-10px)] min-w-[calc(100%-57px-10px)] min-h-[40px] leading-normal outline-hidden placeholder:text-[grey] placeholder:italic"
         {...register("body")}
       />
       <button
         disabled={isLoading || isBlocked}
         type="submit"
-        className="flex items-center justify-center w-[57px] h-[57px] bg-[#c03e3e] rounded-[5px] text-white text-[24px] outline-none"
+        className="flex items-center justify-center w-[57px] h-[57px] bg-[#c03e3e] rounded-[5px] text-white text-[24px] outline-hidden"
       >
         <IoSendSharp />
       </button>

@@ -14,9 +14,9 @@ type MemYoutubeProps<T extends FieldValues> = {
 };
 
 function youtube_parser(url: string) {
-  var regExp =
+  const regExp =
     /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-  var match = url.match(regExp);
+  const match = url.match(regExp);
   return match && match[7]!.length === 11 ? match[7] : false;
 }
 
@@ -67,7 +67,7 @@ function MemYoutube<T extends FieldValues>({
           />
           <button
             type="button"
-            className="absolute bottom-[15px] right-[15px] bg-[#505050] text-white text-[13px] rounded-[3px] leading-[34px] px-[15px] cursor-pointer z-[3] shadow-md"
+            className="absolute bottom-[15px] right-[15px] bg-[#505050] text-white text-[13px] rounded-[3px] leading-[34px] px-[15px] cursor-pointer z-3 shadow-md"
             onClick={() => setData("")}
           >
             Zmień

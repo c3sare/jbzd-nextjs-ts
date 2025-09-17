@@ -64,7 +64,7 @@ export async function POST(request: Request, { params }: RequestParams) {
       });
       return NextResponse.json({ isFavourite: !Boolean(favComment) });
     }
-  } catch (err: any) {
+  } catch {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
