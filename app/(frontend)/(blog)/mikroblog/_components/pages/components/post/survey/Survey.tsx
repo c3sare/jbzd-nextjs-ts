@@ -5,7 +5,7 @@ import { useState } from "react";
 import SurveyAnswer from "./_components/SurveyAnswer";
 import axios from "axios";
 import toast from "react-hot-toast";
-import formatDistance from "date-fns/formatDistance";
+import { formatDistance } from "date-fns";
 import { pl } from "date-fns/locale";
 
 type SurveyProps = {
