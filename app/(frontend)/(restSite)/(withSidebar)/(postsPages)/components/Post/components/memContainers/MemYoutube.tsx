@@ -8,7 +8,7 @@ type MemYoutubeProps = {
 const MemYoutube: React.FC<MemYoutubeProps> = ({ videoId }) => {
   return (
     <ReactPlayer
-      url={`https://youtube.com/watch?v=${videoId}`}
+      src={`https://youtube.com/watch?v=${videoId}`}
       style={{ width: "600px", maxWidth: "100%" }}
     />
   );

@@ -1,4 +1,3 @@
-import ZodForm from "@/components/forms/ZodForm";
 import PasswordResetSchema from "@/validators/Sidebar/PasswordRemind/PasswordResetSchema";
 import useZodForm from "@/hooks/useZodForm";
 import { Dispatch, SetStateAction } from "react";
@@ -6,6 +5,7 @@ import Input from "@/components/Input";
 import Button from "@/components/Button";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { FormProvider } from "react-hook-form";
 
 type PasswordResetForm = {
   setIndexOfCurrentForm: Dispatch<SetStateAction<number>>;
@@ -16,14 +16,14 @@ const PasswordResetForm: React.FC<PasswordResetForm> = ({
   setIndexOfCurrentForm,
   email,
 }) => {
-  const formHook = useZodForm({
+  const form = useZodForm({
     schema: PasswordResetSchema,
     defaultValues: {
       email,
     },
   });
 
-  const { handleSubmit, setIsLoading } = formHook;
+  const { handleSubmit } = form;
 
   const onSubmit = handleSubmit((data) => {
     axios
@@ -36,20 +36,23 @@ const PasswordResetForm: React.FC<PasswordResetForm> = ({
       .catch((err) => {
         console.log(err);
         toast.error("Wystąpił problem przy zmianie hasła!");
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   });
 
   return (
-    <ZodForm formHook={formHook} onSubmit={onSubmit}>
-      <Input hidden id="email" />
-      <Input id="token" placeholder="TOKEN" />
-      <Input type="password" id="password" placeholder="Nowe Hasło" />
-      <Input type="password" id="repassword" placeholder="Powtórz Nowe Hasło" />
-      <Button type="submit">Zmień hasło</Button>
-    </ZodForm>
+    <FormProvider {...form}>
+      <form onSubmit={onSubmit}>
+        <Input hidden id="email" />
+        <Input id="token" placeholder="TOKEN" />
+        <Input type="password" id="password" placeholder="Nowe Hasło" />
+        <Input
+          type="password"
+          id="repassword"
+          placeholder="Powtórz Nowe Hasło"
+        />
+        <Button type="submit">Zmień hasło</Button>
+      </form>
+    </FormProvider>
   );
 };
 

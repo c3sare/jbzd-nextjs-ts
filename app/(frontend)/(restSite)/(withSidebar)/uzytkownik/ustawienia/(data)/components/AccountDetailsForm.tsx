@@ -8,10 +8,10 @@ import AccountDetailsSchema, {
 } from "@/validators/UserSettings/AccountDetailsSchema";
 import useZodForm from "@/hooks/useZodForm";
 import Heading from "../../components/Heading";
-import ZodForm from "@/components/forms/ZodForm";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { FormProvider } from "react-hook-form";
 
 type AccountDetailsFormProps = {
   userData: AccountDetailsType;
@@ -21,15 +21,14 @@ const AccountDetailsForm: React.FC<AccountDetailsFormProps> = ({
   userData,
 }) => {
   const router = useRouter();
-  const formHook = useZodForm({
+  const form = useZodForm({
     schema: AccountDetailsSchema,
     defaultValues: userData,
   });
 
-  const { setIsLoading, handleSubmit } = formHook;
+  const { handleSubmit } = form;
 
   const onSubmit = handleSubmit((data) => {
-    setIsLoading(true);
     axios
       .post("/api/user/settings/data", data)
       .then((res) => res.data)
@@ -40,14 +39,13 @@ const AccountDetailsForm: React.FC<AccountDetailsFormProps> = ({
       .catch((err) => {
         console.log(err);
         toast.error("Wystąpił problem!");
-      })
-      .finally(() => setIsLoading(false));
+      });
   });
 
   return (
-    <>
+    <FormProvider {...form}>
       <Heading>Dane konta</Heading>
-      <ZodForm formHook={formHook} onSubmit={onSubmit}>
+      <form onSubmit={onSubmit}>
         <Input id="name" placeholder="Imię" />
         <Select id="gender" valueAsNumber>
           <option value={0}>Mężczyzna</option>
@@ -59,8 +57,8 @@ const AccountDetailsForm: React.FC<AccountDetailsFormProps> = ({
         <Input id="city" placeholder="Miasto" />
         <Input type="date" id="birthdate" placeholder="Data urodzenia" />
         <Button type="submit">Zapisz</Button>
-      </ZodForm>
-    </>
+      </form>
+    </FormProvider>
   );
 };
 

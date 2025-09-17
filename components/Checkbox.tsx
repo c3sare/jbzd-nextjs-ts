@@ -12,8 +12,7 @@ type CheckboxProps<T extends FieldValues> = {
 
 function Checkbox<T extends FieldValues>({ id, children }: CheckboxProps<T>) {
   const {
-    formState: { errors },
-    isLoading: disabled,
+    formState: { errors, isLoading: disabled },
     register,
   } = useZodFormContext();
 

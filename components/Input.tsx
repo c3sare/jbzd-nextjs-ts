@@ -29,8 +29,7 @@ function Input<T extends FieldValues>({
   const {
     register,
     watch,
-    formState: { errors },
-    isLoading: disabled,
+    formState: { errors, isLoading: disabled },
     setValue,
   } = useZodFormContext<T>();
 

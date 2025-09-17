@@ -8,7 +8,7 @@ import { format } from "date-fns";
 import useArraySearchParams from "@/hooks/useArraySearchParams";
 import useZodForm from "@/hooks/useZodForm";
 import { z } from "zod";
-import Form from "@/components/forms/ZodForm";
+import { FormProvider } from "react-hook-form";
 
 const PostsDateFilterFormSchema = z.object({
   start: z.date().optional(),
@@ -25,7 +25,7 @@ const PostsDateFilterForm: React.FC<PostsDateFilterFormProps> = ({
   const pathname = usePathname();
   const router = useRouter();
   const params = useArraySearchParams();
-  const formHook = useZodForm({
+  const form = useZodForm({
     schema: PostsDateFilterFormSchema,
     defaultValues: (() => {
       const from = params.find((item) => item.param === "from")?.value;
@@ -38,7 +38,7 @@ const PostsDateFilterForm: React.FC<PostsDateFilterFormProps> = ({
     })(),
   });
 
-  const { handleSubmit, watch } = formHook;
+  const { handleSubmit, watch } = form;
 
   const onSubmit = handleSubmit((data) => {
     const filteredParams = params.filter(
@@ -86,43 +86,44 @@ const PostsDateFilterForm: React.FC<PostsDateFilterFormProps> = ({
         <PresetButton preset="48h">48h</PresetButton>
         <PresetButton preset="7d">7d</PresetButton>
       </div>
-      <Form
-        className="flex gap-[4px] flex-col relative w-full"
-        formHook={formHook}
-        onSubmit={onSubmit}
-      >
-        <div className="flex gap-[20px] items-center justify-center my-2 flex-wrap w-full">
-          <div className="flex-[0_0_100%] text-white font-bold text-center text-[12px]">
-            Dowolny zakres dat:
+      <FormProvider {...form}>
+        <form
+          className="flex gap-[4px] flex-col relative w-full"
+          onSubmit={onSubmit}
+        >
+          <div className="flex gap-[20px] items-center justify-center my-2 flex-wrap w-full">
+            <div className="flex-[0_0_100%] text-white font-bold text-center text-[12px]">
+              Dowolny zakres dat:
+            </div>
+            <DayPicker id="start" title="Od:" maxDate={dateTo || new Date()} />
+            <DayPicker
+              id="end"
+              title="Do:"
+              minDate={dateFrom}
+              maxDate={new Date()}
+            />
           </div>
-          <DayPicker id="start" title="Od:" maxDate={dateTo || new Date()} />
-          <DayPicker
-            id="end"
-            title="Do:"
-            minDate={dateFrom}
-            maxDate={new Date()}
-          />
-        </div>
-        <div className="flex w-full gap-[0_10px]">
-          <Button
-            disabled={!dateFrom || !dateTo}
-            className="w-[70%]"
-            buttonClassName="font-bold"
-            type="submit"
-          >
-            Filtruj
-          </Button>
-          <Button
-            className="w-[30%]"
-            buttonClassName="font-bold"
-            bgColorClassName="bg-[#2d2d2d]"
-            disabled={!isFiltered}
-            onClick={handleReset}
-          >
-            Reset
-          </Button>
-        </div>
-      </Form>
+          <div className="flex w-full gap-[0_10px]">
+            <Button
+              disabled={!dateFrom || !dateTo}
+              className="w-[70%]"
+              buttonClassName="font-bold"
+              type="submit"
+            >
+              Filtruj
+            </Button>
+            <Button
+              className="w-[30%]"
+              buttonClassName="font-bold"
+              bgColorClassName="bg-[#2d2d2d]"
+              disabled={!isFiltered}
+              onClick={handleReset}
+            >
+              Reset
+            </Button>
+          </div>
+        </form>
+      </FormProvider>
     </div>
   );
 };

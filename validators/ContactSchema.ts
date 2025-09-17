@@ -20,7 +20,7 @@ const ContactSchema = z.object({
     .max(25, TOO_LONG_VALUE)
     .regex(namePattern, INCORRECT_FIELD_VALUE)
     .optional(),
-  email: z.string().email(INCORRECT_FIELD_VALUE),
+  email: z.email(INCORRECT_FIELD_VALUE),
   phone: z
     .string()
     .trim()

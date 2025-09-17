@@ -21,7 +21,7 @@ const AccountDetailsSchema = z.object({
     .max(25, TOO_LONG_VALUE)
     .regex(namePattern, INCORRECT_FIELD_VALUE)
     .optional(),
-  birthdate: z.string().datetime({ offset: true }).nullable(),
+  birthdate: z.iso.datetime({ offset: true }).nullable(),
 });
 
 export default AccountDetailsSchema;

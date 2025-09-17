@@ -6,20 +6,11 @@ const EMPTY_FIELD = "Pole nie może być puste!";
 
 const PasswordResetSchema = z
   .object({
-    email: z
-      .string({ required_error: "Uzupełnij adres e-mail!" })
-      .email("E-mail jest nieprawidłowy!"),
+    email: z.email("E-mail jest nieprawidłowy!"),
     token: z.string(),
-    password: z
-      .string({
-        required_error: EMPTY_FIELD,
-      })
-      .min(8, TOO_SHORT_PWD)
-      .max(32, TOO_LONG_PWD),
+    password: z.string(EMPTY_FIELD).min(8, TOO_SHORT_PWD).max(32, TOO_LONG_PWD),
     repassword: z
-      .string({
-        required_error: EMPTY_FIELD,
-      })
+      .string(EMPTY_FIELD)
       .min(8, TOO_SHORT_PWD)
       .max(32, TOO_LONG_PWD),
   })

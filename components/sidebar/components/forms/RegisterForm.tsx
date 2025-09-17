@@ -4,12 +4,12 @@ import Input from "@/components/Input";
 import Button from "@/components/Button";
 import Checkbox from "@/components/Checkbox";
 import Link from "next/link";
-import ZodForm from "@/components/forms/ZodForm";
 import useZodForm from "@/hooks/useZodForm";
 import RegisterSchema from "@/validators/Sidebar/RegisterSchema";
 import { Dispatch, SetStateAction } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { FormProvider } from "react-hook-form";
 
 type RegisterFormProps = {
   children?: React.ReactNode;
@@ -20,13 +20,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
   children,
   setIndexOfCurrentForm,
 }) => {
-  const formHook = useZodForm({
+  const form = useZodForm({
     schema: RegisterSchema,
   });
-  const { handleSubmit, setIsLoading } = formHook;
+  const { handleSubmit } = form;
 
   const onSubmit = handleSubmit((data) => {
-    setIsLoading(true);
     axios
       .post("/api/register", data)
       .then((res) => res.data)
@@ -37,15 +36,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
       .catch((err) => {
         console.log(err);
         toast.error("Wystąpił błąd!");
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   });
 
   return (
-    <>
-      <ZodForm formHook={formHook} onSubmit={onSubmit}>
+    <FormProvider {...form}>
+      <form onSubmit={onSubmit}>
         <Input id="username" placeholder="Nazwa użytkownika" />
         <Input id="email" placeholder="Email" />
         <Input id="password" type="password" placeholder="Hasło" />
@@ -54,9 +50,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           Akceptuję <Link href="/regulamin">regulamin</Link>
         </Checkbox>
         <Button type="submit">Zarejestruj</Button>
-      </ZodForm>
+      </form>
       {children}
-    </>
+    </FormProvider>
   );
 };
 

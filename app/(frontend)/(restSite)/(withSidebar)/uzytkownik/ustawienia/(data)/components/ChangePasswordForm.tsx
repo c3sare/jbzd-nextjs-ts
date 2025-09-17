@@ -5,19 +5,18 @@ import Heading from "../../components/Heading";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import ChangePasswordSchema from "@/validators/UserSettings/ChangePasswordSchema";
-import ZodForm from "@/components/forms/ZodForm";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { FormProvider } from "react-hook-form";
 
 const ChangePasswordForm = () => {
-  const formHook = useZodForm({
+  const form = useZodForm({
     schema: ChangePasswordSchema,
   });
 
-  const { handleSubmit, setIsLoading, reset } = formHook;
+  const { handleSubmit, reset } = form;
 
   const onSubmit = handleSubmit((data) => {
-    setIsLoading(true);
     axios
       .post("/api/user/settings/password", data)
       .then((res) => res.data)
@@ -28,14 +27,13 @@ const ChangePasswordForm = () => {
       .catch((err) => {
         console.log(err);
         toast.error("Wystąpił błąd!");
-      })
-      .finally(() => setIsLoading(false));
+      });
   });
 
   return (
-    <>
+    <FormProvider {...form}>
       <Heading>Zmiana hasła</Heading>
-      <ZodForm formHook={formHook} onSubmit={onSubmit}>
+      <form onSubmit={onSubmit}>
         <Input
           placeholder="Aktualne hasło"
           type="password"
@@ -48,8 +46,8 @@ const ChangePasswordForm = () => {
           id="reNewPassword"
         />
         <Button type="submit">Zmień hasło</Button>
-      </ZodForm>
-    </>
+      </form>
+    </FormProvider>
   );
 };
 

@@ -22,8 +22,8 @@ function RadioSelect<T extends FieldValues>({
   const {
     register,
     watch,
-    isLoading: disabled,
     setValue,
+    formState: { isLoading: disabled },
   } = useZodFormContext<T>();
   const currentValue = watch(id);
 

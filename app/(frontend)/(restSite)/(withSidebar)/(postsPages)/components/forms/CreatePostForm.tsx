@@ -7,7 +7,7 @@ import type { CreatePostType } from "@/validators/CreatePostSchema";
 import clsx from "clsx";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useFieldArray } from "react-hook-form";
+import { FormProvider, useFieldArray } from "react-hook-form";
 import React, { useMemo, useRef } from "react";
 
 import { BiImage } from "@react-icons/all-files/bi/BiImage";
@@ -39,7 +39,6 @@ import LoadingForm from "./LoadingForm";
 import { usePathname, useRouter } from "next/navigation";
 import { createPost } from "@/actions/serverActions/createPost";
 import useZodForm from "@/hooks/useZodForm";
-import Form from "@/components/forms/ZodForm";
 import Input from "@/components/Input";
 
 type CategoryWithChildrenType = CategoryType & {
@@ -65,7 +64,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
   const pathname = usePathname();
   const router = useRouter();
   const tagInput = useRef<HTMLInputElement>(null);
-  const formHook = useZodForm({
+  const form = useZodForm({
     schema: CreatePostSchema,
     mode: "all",
     shouldUnregister: true,
@@ -84,7 +83,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
     move: moveMem,
   } = useFieldArray({
     name: "memContainers",
-    control: formHook.control,
+    control: form.control,
   });
   const {
     fields: tags,
@@ -92,7 +91,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
     remove: removeTag,
   } = useFieldArray({
     name: "tags",
-    control: formHook.control,
+    control: form.control,
   });
 
   const onChangeTagInput = (e: FormEvent<HTMLInputElement>) => {
@@ -151,15 +150,13 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
   };
 
   const {
-    isLoading,
-    setIsLoading,
     formState: { errors },
     watch,
     handleSubmit,
     control,
     setValue,
     register,
-  } = formHook;
+  } = form;
 
   const isActiveLinking = watch("linking.isActive");
   const currentCategory = watch("category");
@@ -176,137 +173,119 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
   );
 
   const onSubmit = async (data: CreatePostType) => {
-    setIsLoading(true);
     const formData = objectToFormData(data);
     const res = await createPost(formData);
     if (res.type === "success") {
       toast.success(res.message);
       if (pathname === "/oczekujace") router.refresh();
       else router.push("/oczekujace");
-    } else {
-      setIsLoading(false);
     }
   };
 
   return (
-    <Form
-      className="my-[20px] md:mx-0 mx-auto bg-[#313131] p-[10px] relative text-left max-w-[600px]"
-      formHook={formHook}
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <div className="w-full mb-[20px]">
-        <Header>Wpisz tytuł</Header>
-        <Input placeholder="Wpisz tytuł" id="title" />
-        {errors.title && (
-          <ErrorMessageBox>{errors.title.message}</ErrorMessageBox>
-        )}
-      </div>
-      <DndProvider backend={HTML5Backend}>
-        {memContainers.map((mem, index) => {
-          const MemElement = memElements[mem.type] as React.FC<any>;
-
-          return (
-            <MemContainer
-              key={mem.id}
-              handleRemoveMem={() => removeMem(index)}
-              move={moveMem}
-              index={index}
-              id={mem.id}
-            >
-              <MemElement
-                control={control}
-                fieldName={`memContainers.${index}.data`}
-                setData={(data: any) =>
-                  setValue(`memContainers.${index}.data`, data)
-                }
-              />
-              {errors.memContainers?.[index] && (
-                <ErrorMessageBox>
-                  {errors.memContainers?.[index]?.message as string}
-                </ErrorMessageBox>
-              )}
-            </MemContainer>
-          );
-        })}
-      </DndProvider>
-      <div className="w-full mb-[20px]">
-        <Header>
-          {memContainers.length > 0
-            ? "Czy chcesz dodać coś jeszcze?"
-            : "Co chcesz dodać?"}
-        </Header>
-        <div className="flex w-full gap-[5px] justify-between">
-          <BigIconButton
-            onClick={(e) => handleAddMemContainer(e, "IMAGE")}
-            icon={<BiImage />}
-          >
-            Obrazek/Gif
-          </BigIconButton>
-          <BigIconButton
-            onClick={(e) => handleAddMemContainer(e, "TEXT")}
-            icon={<AiFillFileText />}
-          >
-            Tekst
-          </BigIconButton>
-          <BigIconButton
-            onClick={(e) => handleAddMemContainer(e, "VIDEO")}
-            icon={<FaVideo />}
-          >
-            Video MP4
-          </BigIconButton>
-          <BigIconButton
-            onClick={(e) => handleAddMemContainer(e, "YOUTUBE")}
-            icon={<AiFillYoutube />}
-          >
-            Youtube
-          </BigIconButton>
+    <FormProvider {...form}>
+      <form
+        className="my-[20px] md:mx-0 mx-auto bg-[#313131] p-[10px] relative text-left max-w-[600px]"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="w-full mb-[20px]">
+          <Header>Wpisz tytuł</Header>
+          <Input placeholder="Wpisz tytuł" id="title" />
+          {errors.title && (
+            <ErrorMessageBox>{errors.title.message}</ErrorMessageBox>
+          )}
         </div>
-        {errors.memContainers && (
-          <ErrorMessageBox>{errors.memContainers.message}</ErrorMessageBox>
-        )}
-      </div>
-      <div className="w-full mb-[20px] relative">
-        {categories.length > 0 && (
-          <>
-            <Header>
-              <span>Dział:</span>
-              {currentCategory && (
-                <>
-                  <span className="text-white p-[3px_9px] rounded-[3px] inline-block text-[12px] cursor-pointer bg-[#c03e3e] font-bold">
-                    {category?.name}
-                  </span>
-                  <button
-                    type="button"
-                    className="text-[#6e7578] text-[11px] cursor-pointer"
-                    onClick={() => setValue("category", "")}
-                  >
-                    wyczyść
-                  </button>
-                </>
-              )}
-            </Header>
-            <div className={clsx(currentCategory && "hidden")}>
-              <Information>
-                Wybór działu jest obowiązkowy, subdział wybieramy tylko jeśli
-                jest taka możliwość.
-              </Information>
-              <div className="flex gap-[5px] flex-wrap items-center">
-                {categories.map((category) => (
-                  <Category
-                    key={category.id}
-                    name={category.name}
-                    fieldName="category"
-                    slug={category.slug}
-                  />
-                ))}
-              </div>
-            </div>
-            {currentCategory &&
-              category?.children &&
-              category.children.length > 0 && (
+        <DndProvider backend={HTML5Backend}>
+          {memContainers.map((mem, index) => {
+            const MemElement = memElements[mem.type] as React.FC<any>;
+
+            return (
+              <MemContainer
+                key={mem.id}
+                handleRemoveMem={() => removeMem(index)}
+                move={moveMem}
+                index={index}
+                id={mem.id}
+              >
+                <MemElement
+                  control={control}
+                  fieldName={`memContainers.${index}.data`}
+                  setData={(data: any) =>
+                    setValue(`memContainers.${index}.data`, data)
+                  }
+                />
+                {errors.memContainers?.[index] && (
+                  <ErrorMessageBox>
+                    {errors.memContainers?.[index]?.message as string}
+                  </ErrorMessageBox>
+                )}
+              </MemContainer>
+            );
+          })}
+        </DndProvider>
+        <div className="w-full mb-[20px]">
+          <Header>
+            {memContainers.length > 0
+              ? "Czy chcesz dodać coś jeszcze?"
+              : "Co chcesz dodać?"}
+          </Header>
+          <div className="flex w-full gap-[5px] justify-between">
+            <BigIconButton
+              onClick={(e) => handleAddMemContainer(e, "IMAGE")}
+              icon={<BiImage />}
+            >
+              Obrazek/Gif
+            </BigIconButton>
+            <BigIconButton
+              onClick={(e) => handleAddMemContainer(e, "TEXT")}
+              icon={<AiFillFileText />}
+            >
+              Tekst
+            </BigIconButton>
+            <BigIconButton
+              onClick={(e) => handleAddMemContainer(e, "VIDEO")}
+              icon={<FaVideo />}
+            >
+              Video MP4
+            </BigIconButton>
+            <BigIconButton
+              onClick={(e) => handleAddMemContainer(e, "YOUTUBE")}
+              icon={<AiFillYoutube />}
+            >
+              Youtube
+            </BigIconButton>
+          </div>
+          {errors.memContainers && (
+            <ErrorMessageBox>{errors.memContainers.message}</ErrorMessageBox>
+          )}
+        </div>
+        <div className="w-full mb-[20px] relative">
+          {categories.length > 0 && (
+            <>
+              <Header>
+                <span>Dział:</span>
+                {currentCategory && (
+                  <>
+                    <span className="text-white p-[3px_9px] rounded-[3px] inline-block text-[12px] cursor-pointer bg-[#c03e3e] font-bold">
+                      {category?.name}
+                    </span>
+                    <button
+                      type="button"
+                      className="text-[#6e7578] text-[11px] cursor-pointer"
+                      onClick={() => setValue("category", "")}
+                    >
+                      wyczyść
+                    </button>
+                  </>
+                )}
+              </Header>
+              <div className={clsx(currentCategory && "hidden")}>
+                <Information>
+                  Wybór działu jest obowiązkowy, subdział wybieramy tylko jeśli
+                  jest taka możliwość.
+                </Information>
                 <div className="flex gap-[5px] flex-wrap items-center">
-                  <span>Poddział: </span>
-                  {category.children.map((category) => (
+                  {categories.map((category) => (
                     <Category
                       key={category.id}
                       name={category.name}
@@ -315,74 +294,92 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({
                     />
                   ))}
                 </div>
-              )}
-            <Information>
-              Poddział dodajemy jeśli jest taka możliwość
-            </Information>
-          </>
-        )}
-        {errors.category && (
-          <ErrorMessageBox>{errors.category.message}</ErrorMessageBox>
-        )}
-      </div>
-      <div className="w-full mb-[20px]">
-        <Header>Dodaj tagi</Header>
-        <Information>Aby dodać kolejny tag należy dodać przecinek.</Information>
-        <div className="w-full">
-          <InputStyled
-            ref={tagInput}
-            placeholder="Wpisz tagi ..."
-            onKeyDown={onPressKeyTagInput}
-            onChange={onChangeTagInput}
-          />
+              </div>
+              {currentCategory &&
+                category?.children &&
+                category.children.length > 0 && (
+                  <div className="flex gap-[5px] flex-wrap items-center">
+                    <span>Poddział: </span>
+                    {category.children.map((category) => (
+                      <Category
+                        key={category.id}
+                        name={category.name}
+                        fieldName="category"
+                        slug={category.slug}
+                      />
+                    ))}
+                  </div>
+                )}
+              <Information>
+                Poddział dodajemy jeśli jest taka możliwość
+              </Information>
+            </>
+          )}
+          {errors.category && (
+            <ErrorMessageBox>{errors.category.message}</ErrorMessageBox>
+          )}
         </div>
-        {tags.length > 0 && (
-          <ul className="flex items-center flex-wrap w-full leading-[1em] m-0 p-0 list-none pt-[8px]">
-            {tags.map((tag, i) => {
-              const { name: fieldName } = register(`tags.${i}.value`);
+        <div className="w-full mb-[20px]">
+          <Header>Dodaj tagi</Header>
+          <Information>
+            Aby dodać kolejny tag należy dodać przecinek.
+          </Information>
+          <div className="w-full">
+            <InputStyled
+              ref={tagInput}
+              placeholder="Wpisz tagi ..."
+              onKeyDown={onPressKeyTagInput}
+              onChange={onChangeTagInput}
+            />
+          </div>
+          {tags.length > 0 && (
+            <ul className="flex items-center flex-wrap w-full leading-[1em] m-0 p-0 list-none pt-[8px]">
+              {tags.map((tag, i) => {
+                const { name: fieldName } = register(`tags.${i}.value`);
 
-              return (
-                <Tag
-                  key={tag.id}
-                  name={tag.value}
-                  onDelete={() => removeTag(i)}
-                  fieldName={fieldName}
-                />
-              );
-            })}
-          </ul>
-        )}
-      </div>
-      <div className="mb-[20px] relative">
-        <TextSwitchButton
-          text="Pokaż linkowanie"
-          activeText="Schowaj linkowanie"
-          id="linking.isActive"
-        />
-        {isActiveLinking && (
-          <>
-            <InputLinkPreview />
-            {errors.linking && (
-              <ErrorMessageBox>{errors.linking.message}</ErrorMessageBox>
-            )}
-          </>
-        )}
-      </div>
-      <div className="mb-[20px] flex justify-center gap-2">
-        <Button className="w-[160px]" type="submit">
-          Dodaj
-        </Button>
-        <Button
-          className="w-[160px]"
-          bgColorClassName="bg-[#616161]"
-          onClick={onClose}
-          type="button"
-        >
-          Anuluj
-        </Button>
-      </div>
-      {isLoading && <LoadingForm />}
-    </Form>
+                return (
+                  <Tag
+                    key={tag.id}
+                    name={tag.value}
+                    onDelete={() => removeTag(i)}
+                    fieldName={fieldName}
+                  />
+                );
+              })}
+            </ul>
+          )}
+        </div>
+        <div className="mb-[20px] relative">
+          <TextSwitchButton
+            text="Pokaż linkowanie"
+            activeText="Schowaj linkowanie"
+            id="linking.isActive"
+          />
+          {isActiveLinking && (
+            <>
+              <InputLinkPreview />
+              {errors.linking && (
+                <ErrorMessageBox>{errors.linking.message}</ErrorMessageBox>
+              )}
+            </>
+          )}
+        </div>
+        <div className="mb-[20px] flex justify-center gap-2">
+          <Button className="w-[160px]" type="submit">
+            Dodaj
+          </Button>
+          <Button
+            className="w-[160px]"
+            bgColorClassName="bg-[#616161]"
+            onClick={onClose}
+            type="button"
+          >
+            Anuluj
+          </Button>
+        </div>
+        {form.formState.isLoading && <LoadingForm />}
+      </form>
+    </FormProvider>
   );
 };
 

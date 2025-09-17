@@ -12,7 +12,10 @@ function Select<T extends FieldValues>({
   children,
   valueAsNumber,
 }: SelectProps<T>) {
-  const { register, isLoading: disabled } = useZodFormContext<T>();
+  const {
+    register,
+    formState: { isLoading: disabled },
+  } = useZodFormContext<T>();
 
   return (
     <div className="w-full my-[5px]">

@@ -4,7 +4,12 @@
 
 import { v4 as uuid } from "uuid";
 import React, { useRef, useState } from "react";
-import { FieldValue, FieldValues, useFieldArray } from "react-hook-form";
+import {
+  FieldValue,
+  FieldValues,
+  FormProvider,
+  useFieldArray,
+} from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -23,7 +28,6 @@ import QuestionnaireSchema from "@/validators/QuestionnaireSchema";
 import BlogPostSchema from "@/validators/BlogPostSchema";
 
 import EditorButton from "./components/EditorButton";
-import Form from "@/components/forms/ZodForm";
 import useZodForm from "@/hooks/useZodForm";
 import LabelCheckbox from "./components/LabelCheckbox";
 import Button from "./components/Button";
@@ -37,7 +41,7 @@ const AddBlogForm = () => {
   const router = useRouter();
   const [isVisibleQuestionnaire, setIsVisibleQuestionnaire] =
     useState<boolean>(false);
-  const formHook = useZodForm({
+  const form = useZodForm({
     schema: BlogPostSchema,
     defaultValues: {
       adultContent: false,
@@ -48,7 +52,7 @@ const AddBlogForm = () => {
     append,
     remove,
   } = useFieldArray({
-    control: formHook.control,
+    control: form.control,
     name: "files",
   });
   const [unRolled, setUnrolled] = useState<boolean>(false);
@@ -56,11 +60,11 @@ const AddBlogForm = () => {
   const filesRef = useRef<HTMLInputElement | null>(null);
 
   const errors = (
-    Object.keys(formHook.formState.errors) as FieldValue<FieldValues>[]
+    Object.keys(form.formState.errors) as FieldValue<FieldValues>[]
   )
     .map(
       (field: keyof z.infer<typeof BlogPostSchema>) =>
-        formHook.formState.errors?.[field]?.message
+        form.formState.errors?.[field]?.message
     )
     .filter((item) => item);
 
@@ -125,15 +129,14 @@ const AddBlogForm = () => {
   };
 
   const resetForm = () =>
-    formHook.reset({
+    form.reset({
       questionnaire: undefined,
       message: "",
       adultContent: false,
       files: [],
     });
 
-  const onSubmit = formHook.handleSubmit((data) => {
-    formHook.setIsLoading(true);
+  const onSubmit = form.handleSubmit((data) => {
     const formData = objectToFormData(data);
     axios
       .put("/api/blog", formData)
@@ -146,92 +149,89 @@ const AddBlogForm = () => {
       .catch((err) => {
         toast.error("Wystąpił błąd!");
         console.log(err);
-      })
-      .finally(() => formHook.setIsLoading(false));
+      });
   });
 
   const setQuestionnaire = (data: z.infer<typeof QuestionnaireSchema>) => {
-    formHook.setValue("questionnaire", data);
+    form.setValue("questionnaire", data);
   };
 
-  const questionnaire = formHook.watch("questionnaire");
+  const questionnaire = form.watch("questionnaire");
 
   return (
     <div className="w-full relative">
-      <Form
-        className="my-[25px] relative"
-        formHook={formHook}
-        onSubmit={onSubmit}
-      >
-        <div className="block w-full max-h-full transition-all ease-in-out">
-          <div>
-            <div className="relative">
+      <FormProvider {...form}>
+        <form className="my-[25px] relative" onSubmit={onSubmit}>
+          <div className="block w-full max-h-full transition-all ease-in-out">
+            <div>
               <div className="relative">
-                <BlogPostTextarea
-                  isActive={unRolled}
-                  placeholder="Dodaj nowy wpis..."
-                  onFocus={() => setUnrolled(true)}
-                  id="message"
-                  ref={messageRef}
-                />
-                {errors.map((error, i) => (
-                  <ErrorInfo key={i}>{error}</ErrorInfo>
-                ))}
-                <input
-                  className="hidden"
-                  id="files"
-                  type="file"
-                  accept="image/png, image/jpg, image/gif, video/mp4"
-                  multiple
-                  ref={filesRef}
-                  onChange={handleAddFile}
-                />
-                {unRolled && (
-                  <div className="w-full relative mb-[10px] bg-black p-[10px]">
-                    <ul className="flex items-center w-full text-left">
-                      <EditorButton
-                        onClick={(e) => handleSetTextFormat(e, "***", "***")}
-                        icon={FaBold}
-                        title="Pogrubienie"
-                      />
-                      <EditorButton
-                        onClick={(e) => handleSetTextFormat(e, "__", "__")}
-                        icon={FaItalic}
-                        title="Pochylenie"
-                      />
-                      <EditorButton
-                        onClick={(e) =>
-                          handleSetTextFormat(e, "```\n", "\n```")
-                        }
-                        icon={FaQuoteRight}
-                        title="Cytat"
-                      />
-                      <EditorButton
-                        onClick={() => {
-                          if (filesRef.current) filesRef.current.click();
-                        }}
-                        icon={FaImage}
-                        title="Dodaj obrazek/film"
-                      />
-                      <EditorButton
-                        onClick={() => setIsVisibleQuestionnaire(true)}
-                        icon={FaChartBar}
-                        title="Ankieta"
-                      />
-                      <li className="inline-block float-right mr-[10px] ml-auto">
-                        <LabelCheckbox label="+18" id="adultContent" />
-                      </li>
-                      <li className="inline-block float-right">
-                        <Button type="submit">Opublikuj</Button>
-                      </li>
-                    </ul>
-                  </div>
-                )}
+                <div className="relative">
+                  <BlogPostTextarea
+                    isActive={unRolled}
+                    placeholder="Dodaj nowy wpis..."
+                    onFocus={() => setUnrolled(true)}
+                    id="message"
+                    ref={messageRef}
+                  />
+                  {errors.map((error, i) => (
+                    <ErrorInfo key={i}>{error}</ErrorInfo>
+                  ))}
+                  <input
+                    className="hidden"
+                    id="files"
+                    type="file"
+                    accept="image/png, image/jpg, image/gif, video/mp4"
+                    multiple
+                    ref={filesRef}
+                    onChange={handleAddFile}
+                  />
+                  {unRolled && (
+                    <div className="w-full relative mb-[10px] bg-black p-[10px]">
+                      <ul className="flex items-center w-full text-left">
+                        <EditorButton
+                          onClick={(e) => handleSetTextFormat(e, "***", "***")}
+                          icon={FaBold}
+                          title="Pogrubienie"
+                        />
+                        <EditorButton
+                          onClick={(e) => handleSetTextFormat(e, "__", "__")}
+                          icon={FaItalic}
+                          title="Pochylenie"
+                        />
+                        <EditorButton
+                          onClick={(e) =>
+                            handleSetTextFormat(e, "```\n", "\n```")
+                          }
+                          icon={FaQuoteRight}
+                          title="Cytat"
+                        />
+                        <EditorButton
+                          onClick={() => {
+                            if (filesRef.current) filesRef.current.click();
+                          }}
+                          icon={FaImage}
+                          title="Dodaj obrazek/film"
+                        />
+                        <EditorButton
+                          onClick={() => setIsVisibleQuestionnaire(true)}
+                          icon={FaChartBar}
+                          title="Ankieta"
+                        />
+                        <li className="inline-block float-right mr-[10px] ml-auto">
+                          <LabelCheckbox label="+18" id="adultContent" />
+                        </li>
+                        <li className="inline-block float-right">
+                          <Button type="submit">Opublikuj</Button>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </Form>
+        </form>
+      </FormProvider>
       {isVisibleQuestionnaire && (
         <QuestionnaireForm
           setData={setQuestionnaire}
@@ -243,9 +243,7 @@ const AddBlogForm = () => {
         <div className="mb-[8px] ml-[5px]">
           <div className="text-white bg-black inline-flex items-center justify-center p-[10px] gap-2 text-[12px]">
             Post z ankietą: {questionnaire.question}
-            <button
-              onClick={() => formHook.setValue("questionnaire", undefined)}
-            >
+            <button onClick={() => form.setValue("questionnaire", undefined)}>
               <ImCross />
             </button>
           </div>
@@ -287,7 +285,7 @@ const AddBlogForm = () => {
           </li>
         ))}
       </ul>
-      {formHook.isLoading && (
+      {form.formState.isLoading && (
         <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,_0,_0,_.5)] flex items-center justify-center">
           <BiLoaderAlt size={60} className="animate-spin text-zinc-400" />
         </div>

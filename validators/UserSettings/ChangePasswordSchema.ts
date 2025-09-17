@@ -6,22 +6,12 @@ const EMPTY_FIELD = "Pole nie może być puste!";
 
 const ChangePasswordSchema = z
   .object({
-    currentPassword: z
-      .string({
-        required_error: EMPTY_FIELD,
-      })
-      .min(8, TOO_SHORT_PWD),
+    currentPassword: z.string(EMPTY_FIELD).min(8, TOO_SHORT_PWD),
     newPassword: z
-      .string({
-        required_error: EMPTY_FIELD,
-      })
+      .string(EMPTY_FIELD)
       .min(8, TOO_SHORT_PWD)
       .max(32, TOO_LONG_PWD),
-    reNewPassword: z
-      .string({
-        required_error: EMPTY_FIELD,
-      })
-      .min(8, TOO_SHORT_PWD),
+    reNewPassword: z.string(EMPTY_FIELD).min(8, TOO_SHORT_PWD),
   })
   .refine((data) => data.newPassword === data.reNewPassword, {
     message: "Hasła muszą być identyczne!",

@@ -7,16 +7,16 @@ const INVALID_NAME_OR_EMAIL = "Nieprawidłowa nazwa użytkownika lub e-mail!";
 
 const LoginSchema = z.object({
   login: z
-    .string({ required_error: REQUIRED_FIELD })
+    .string(REQUIRED_FIELD)
     .min(8, TOO_SHORT_VALUE)
     .max(20, TOO_LONG_VALUE)
     .regex(
       /^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/,
       INVALID_NAME_OR_EMAIL
     )
-    .or(z.string().email(INVALID_NAME_OR_EMAIL)),
+    .or(z.email(INVALID_NAME_OR_EMAIL)),
   password: z
-    .string({ required_error: REQUIRED_FIELD })
+    .string(REQUIRED_FIELD)
     .min(8, TOO_SHORT_VALUE)
     .max(20, TOO_LONG_VALUE),
 });

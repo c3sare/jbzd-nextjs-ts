@@ -1,9 +1,7 @@
 import { z } from "zod";
 
 const GetTokenSchema = z.object({
-  email: z
-    .string({ required_error: "Uzupełnij adres e-mail!" })
-    .email("E-mail jest nieprawidłowy!"),
+  email: z.email("E-mail jest nieprawidłowy!"),
 });
 
 export default GetTokenSchema;

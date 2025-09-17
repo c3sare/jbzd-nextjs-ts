@@ -1,22 +1,32 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { UseFormProps, useForm } from "react-hook-form";
-import { TypeOf, ZodSchema, z } from "zod";
+import { useMemo } from "react";
+import { FieldValues, useForm, UseFormProps } from "react-hook-form";
+import * as z from "zod";
 
-type ZodFormHookProps<Z extends ZodSchema> = {
-  schema: Z;
-} & Omit<UseFormProps<TypeOf<Z>>, "resolver">;
+type PropsType<TFormValues extends FieldValues> = Omit<
+  UseFormProps<TFormValues>,
+  "resolver"
+> & {
+  schema: z.ZodType<TFormValues, TFormValues>;
+};
 
-export default function useZodForm<Z extends ZodSchema>({
+const useZodForm = <TFormValues extends FieldValues>({
   schema,
-  ...rest
-}: ZodFormHookProps<Z>) {
-  const formHook = useForm<z.infer<typeof schema>>({
-    ...rest,
+  ...props
+}: PropsType<TFormValues>) => {
+  const form = useForm<TFormValues>({
     resolver: zodResolver(schema),
+    ...props,
   });
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
 
-  return { ...formHook, isLoading, setIsLoading, isError, setIsError };
-}
+  const { isDirty, isLoading, isSubmitting, isValidating } = form.formState;
+
+  const disabledSubmit = useMemo(
+    () => !isDirty || isLoading || isSubmitting || isValidating,
+    [isDirty, isLoading, isSubmitting, isValidating]
+  );
+
+  return { ...form, disabledSubmit };
+};
+
+export default useZodForm;

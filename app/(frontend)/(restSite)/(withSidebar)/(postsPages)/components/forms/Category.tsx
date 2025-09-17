@@ -1,9 +1,4 @@
-import type {
-  FieldValues,
-  Path,
-  UseFormRegister,
-  UseFormWatch,
-} from "react-hook-form";
+import type { FieldValues, Path } from "react-hook-form";
 
 import clsx from "clsx";
 import useZodFormContext from "@/hooks/useZodFormContext";

@@ -1,11 +1,6 @@
 import clsx from "clsx";
 import { HTMLAttributes } from "react";
-import {
-  FieldValues,
-  Path,
-  UseFormRegister,
-  UseFormWatch,
-} from "react-hook-form";
+import { FieldValues, Path } from "react-hook-form";
 import { IoMdCheckboxOutline } from "@react-icons/all-files/io/IoMdCheckboxOutline";
 import { IoMdSquareOutline } from "@react-icons/all-files/io/IoMdSquareOutline";
 import useZodFormContext from "@/hooks/useZodFormContext";
@@ -23,7 +18,11 @@ function LabelCheckbox<T extends FieldValues>({
   className = "mb-[25px]",
   variant = "primary",
 }: LabelCheckboxProps<T>) {
-  const { watch, register, isLoading: disabled } = useZodFormContext();
+  const {
+    watch,
+    register,
+    formState: { isLoading: disabled },
+  } = useZodFormContext();
   const isChecked = watch(id);
 
   const color = {

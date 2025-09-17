@@ -31,7 +31,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <div className={clsx(className ? className : "flex justify-end my-2")}>
       <button
-        disabled={hookForm?.isLoading || disabled}
+        disabled={hookForm?.formState.isLoading || disabled}
         onClick={onClick}
         type={type || "button"}
         className={clsx(
@@ -42,7 +42,7 @@ const Button: React.FC<ButtonProps> = ({
       >
         <span className="relative">
           {children}
-          {(hookForm?.isLoading || isLoadingComponent) && (
+          {(hookForm?.formState.isLoading || isLoadingComponent) && (
             <div className="absolute left-[calc(100%_+_8px)] top-[50%] translate-y-[-50%]">
               <AiOutlineLoading className="animate-spin" />
             </div>

@@ -62,7 +62,7 @@ function MemYoutube<T extends FieldValues>({
       ) : (
         <>
           <ReactPlayer
-            url={`https://youtube.com/watch?v=${data}`}
+            src={`https://youtube.com/watch?v=${data}`}
             style={{ width: "600px", maxWidth: "100%" }}
           />
           <button

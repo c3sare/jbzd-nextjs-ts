@@ -24,22 +24,18 @@ const isValidUrl = (urlString: string) => {
 };
 
 function InputLinkPreview() {
-  const { control, setIsLoading, register, getValues, setValue } =
-    useZodFormContext();
+  const { control, register, getValues, setValue } = useZodFormContext();
   const acceptedImageType = ["image/jpeg", "image/png", "image/gif"];
   const [linkPreview, setLinkPreview] = useState<LinkPreviewType | null>(null);
 
   const getLinkInformation = async (url: string) => {
     try {
-      setIsLoading(true);
       const req = await axios.post("/api/sitepreview", { url });
       setLinkPreview(req.data);
-      setIsLoading(false);
       if (req.status === 200) return true;
       else return false;
     } catch (error: any) {
       console.log(error);
-      setIsLoading(false);
       return false;
     }
   };

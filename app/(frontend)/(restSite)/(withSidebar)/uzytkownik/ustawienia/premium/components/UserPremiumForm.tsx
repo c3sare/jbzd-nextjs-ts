@@ -1,6 +1,5 @@
 "use client";
 
-import ZodForm from "@/components/forms/ZodForm";
 import UserPremiumSchema, {
   UserPremiumType,
 } from "@/validators/UserSettings/UserPremiumSchema";
@@ -13,6 +12,7 @@ import BigButton from "./BigButton";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { FormProvider } from "react-hook-form";
 
 type UserPremiumFormProps = {
   data: {
@@ -25,15 +25,14 @@ const UserPremiumForm: React.FC<UserPremiumFormProps> = ({
   data: { isPremium, premium },
 }) => {
   const router = useRouter();
-  const formHook = useZodForm({
+  const form = useZodForm({
     schema: UserPremiumSchema,
     defaultValues: premium!,
   });
 
-  const { handleSubmit, setIsLoading } = formHook;
+  const { handleSubmit } = form;
 
   const onSubmit = handleSubmit((data) => {
-    setIsLoading(true);
     axios
       .post("/api/user/settings/premium", data)
       .then((res) => res.data)
@@ -44,8 +43,7 @@ const UserPremiumForm: React.FC<UserPremiumFormProps> = ({
       .catch((err) => {
         console.log(err);
         toast.error("Wystąpił błąd!");
-      })
-      .finally(() => setIsLoading(false));
+      });
   });
 
   return (
@@ -64,57 +62,55 @@ const UserPremiumForm: React.FC<UserPremiumFormProps> = ({
             </BigButton>
           </div>
         )}
-        <ZodForm
-          formHook={formHook}
-          onSubmit={onSubmit}
-          className={clsx(!isPremium && "blur")}
-        >
-          <RadioSelect
-            label="Wybór liczby obrazków na stronę:"
-            id="picsCountOnPage"
-            options={[
-              {
-                label: "8",
-                value: 8,
-              },
-              {
-                label: "16",
-                value: 16,
-              },
-              {
-                label: "32",
-                value: 32,
-              },
-            ]}
-            valueAsNumber
-          />
-          <LabelCheckbox
-            id="adminPostsOff"
-            label="Wyłączenie postów administracji"
-          />
-          <LabelCheckbox
-            id="commentsPicsGifsOff"
-            label="Wyłączenie obrazków/gifów z komentarzy"
-          />
-          <LabelCheckbox
-            id="hideNegativeComments"
-            label="Ukrywanie zminusowanych komenatrzy"
-          />
-          <LabelCheckbox id="hideAds" label="Wyłącz reklamy" />
-          <LabelCheckbox
-            id="hideProfile"
-            label="Ukrycie profilu (nie można do niego wejść)"
-          />
-          <LabelCheckbox
-            id="hidePremiumIcon"
-            label="Ukrycie ikonki premium przy nicku (działa z opóźnieniem kilku minutowym!)"
-          />
-          <LabelCheckbox
-            id="hideLowReputationComments"
-            label="Ukrywanie komenatrzy użytkowników o niskiej reputacji"
-          />
-          <Button type="submit">Zapisz</Button>
-        </ZodForm>
+        <FormProvider {...form}>
+          <form onSubmit={onSubmit} className={clsx(!isPremium && "blur")}>
+            <RadioSelect
+              label="Wybór liczby obrazków na stronę:"
+              id="picsCountOnPage"
+              options={[
+                {
+                  label: "8",
+                  value: 8,
+                },
+                {
+                  label: "16",
+                  value: 16,
+                },
+                {
+                  label: "32",
+                  value: 32,
+                },
+              ]}
+              valueAsNumber
+            />
+            <LabelCheckbox
+              id="adminPostsOff"
+              label="Wyłączenie postów administracji"
+            />
+            <LabelCheckbox
+              id="commentsPicsGifsOff"
+              label="Wyłączenie obrazków/gifów z komentarzy"
+            />
+            <LabelCheckbox
+              id="hideNegativeComments"
+              label="Ukrywanie zminusowanych komenatrzy"
+            />
+            <LabelCheckbox id="hideAds" label="Wyłącz reklamy" />
+            <LabelCheckbox
+              id="hideProfile"
+              label="Ukrycie profilu (nie można do niego wejść)"
+            />
+            <LabelCheckbox
+              id="hidePremiumIcon"
+              label="Ukrycie ikonki premium przy nicku (działa z opóźnieniem kilku minutowym!)"
+            />
+            <LabelCheckbox
+              id="hideLowReputationComments"
+              label="Ukrywanie komenatrzy użytkowników o niskiej reputacji"
+            />
+            <Button type="submit">Zapisz</Button>
+          </form>
+        </FormProvider>
       </div>
     </div>
   );

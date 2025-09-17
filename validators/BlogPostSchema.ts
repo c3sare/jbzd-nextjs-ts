@@ -13,10 +13,7 @@ const ACCEPTED_IMAGE_TYPES = [
 
 const BlogPostSchema = z.object({
   message: z
-    .string({
-      invalid_type_error: "Nieprawidłowo uzupełnione pole!",
-      required_error: "Pole opis jest wymagane.",
-    })
+    .string("Nieprawidłowo uzupełnione pole!")
     .trim()
     .max(500, "Wpis jest za długi!")
     .min(1, "Pole opis jest wymagane."),
@@ -24,8 +21,8 @@ const BlogPostSchema = z.object({
   files: z
     .array(
       z.object({
-        type: z.nativeEnum(FileType),
-        uuid: z.string().uuid(),
+        type: z.enum(FileType),
+        uuid: z.uuid(),
         value: z
           .any()
           .refine(

@@ -3,9 +3,9 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { usePathname, useRouter } from "next/navigation";
 import useArraySearchParams from "@/hooks/useArraySearchParams";
-import Form from "@/components/forms/ZodForm";
 import useZodForm from "@/hooks/useZodForm";
 import { z } from "zod";
+import { FormProvider } from "react-hook-form";
 
 type PostsTypeFilterFormProps = {
   isPremium: boolean;
@@ -26,7 +26,7 @@ const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
   const router = useRouter();
   const pathname = usePathname();
   const params = useArraySearchParams();
-  const formHook = useZodForm({
+  const form = useZodForm({
     schema: PostsTypeFilterFormSchema,
     defaultValues: (() => {
       const pharse =
@@ -48,7 +48,7 @@ const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
     })(),
   });
 
-  const { handleSubmit } = formHook;
+  const { handleSubmit } = form;
 
   const onSubmit = handleSubmit((data) => {
     const filteredParams = params.filter(
@@ -79,40 +79,44 @@ const PostsTypeFilterForm: React.FC<PostsTypeFilterFormProps> = ({
 
   return (
     <div className="relative md:absolute max-w-full mx-auto flex justify-center items-center gap-[10px] top-[5px] md:top-[calc(100%_+_5px)] z-10 bg-[#3c3c3c] md:left-1/2 md:translate-x-[-50%] flex-col p-[20px]">
-      <Form onSubmit={onSubmit} className="max-w-full" formHook={formHook}>
-        <Input
-          id="pharse"
-          disabled={!isPremium}
-          placeholder={isPremium ? "Wyszukaj..." : "Opcja dostępna dla Premium"}
-        />
-        <div className="flex flex-wrap items-center justify-center gap-4 my-2">
-          <LabelCheckbox
-            id="video"
-            label="Video"
-            variant="secondary"
-            className="m-0"
+      <FormProvider {...form}>
+        <form onSubmit={onSubmit} className="max-w-full">
+          <Input
+            id="pharse"
+            disabled={!isPremium}
+            placeholder={
+              isPremium ? "Wyszukaj..." : "Opcja dostępna dla Premium"
+            }
           />
-          <LabelCheckbox
-            id="gif"
-            label="Gify"
-            variant="secondary"
-            className="m-0"
-          />
-          <LabelCheckbox
-            id="image"
-            label="Obrazki"
-            variant="secondary"
-            className="m-0"
-          />
-          <LabelCheckbox
-            id="text"
-            label="Tekst"
-            variant="secondary"
-            className="m-0"
-          />
-        </div>
-        <Button type="submit">Filtruj</Button>
-      </Form>
+          <div className="flex flex-wrap items-center justify-center gap-4 my-2">
+            <LabelCheckbox
+              id="video"
+              label="Video"
+              variant="secondary"
+              className="m-0"
+            />
+            <LabelCheckbox
+              id="gif"
+              label="Gify"
+              variant="secondary"
+              className="m-0"
+            />
+            <LabelCheckbox
+              id="image"
+              label="Obrazki"
+              variant="secondary"
+              className="m-0"
+            />
+            <LabelCheckbox
+              id="text"
+              label="Tekst"
+              variant="secondary"
+              className="m-0"
+            />
+          </div>
+          <Button type="submit">Filtruj</Button>
+        </form>
+      </FormProvider>
     </div>
   );
 };

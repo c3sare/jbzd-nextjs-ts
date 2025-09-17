@@ -3,7 +3,7 @@ import { z } from "zod";
 
 const QuestionnaireSchema = z.object({
   question: z
-    .string({ required_error: "Pole pytanie jest wymagane!" })
+    .string("Pole pytanie jest wymagane!")
     .trim()
     .min(3, "Pole musi się składać z min. 3 znaków!")
     .max(80, "Pole nie może się składać z więcej niż 80 znaków!"),
@@ -18,7 +18,7 @@ const QuestionnaireSchema = z.object({
     .array()
     .min(2, "Wprowadź przynajmniej 2 odpowiedzi!")
     .max(20, "Nie może być więcej niż 20 odpowiedzi!"),
-  markOption: z.nativeEnum(MarkOption),
+  markOption: z.enum(MarkOption),
   availableTime: z.enum(["", "1d", "3d", "7d"]),
 });
 

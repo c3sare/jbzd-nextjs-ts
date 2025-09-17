@@ -14,7 +14,7 @@ const memTypes = ["IMAGE", "VIDEO", "TEXT", "YOUTUBE"] as const;
 const CreatePostSchema = z
   .object({
     title: z
-      .string({ required_error: "Pole tytuł jest wymagane." })
+      .string("Pole tytuł jest wymagane.")
       .trim()
       .min(1, "Pole dział jest wymagane."),
     tags: z.array(
@@ -23,7 +23,7 @@ const CreatePostSchema = z
       })
     ),
     category: z
-      .string({ required_error: "Pole dział jest wymagane." })
+      .string("Pole dział jest wymagane.")
       .min(1, "Pole dział jest wymagane."),
     memContainers: z
       .array(
@@ -116,7 +116,7 @@ const CreatePostSchema = z
     linking: z.object({
       isActive: z.boolean().refine((val) => typeof val === "boolean"),
       url: z
-        .string({ required_error: "Pole link jest wymagane!" })
+        .string("Pole link jest wymagane!")
         .refine((val) => {
           try {
             return Boolean(new URL(val));
