@@ -1,6 +1,5 @@
 import type { Message as MessageType } from "@prisma/client";
-import format from "date-fns/format";
-import parseISO from "date-fns/parseISO";
+import { format, parseISO } from "date-fns";
 import Image from "next/image";
 
 type MessageProps = {

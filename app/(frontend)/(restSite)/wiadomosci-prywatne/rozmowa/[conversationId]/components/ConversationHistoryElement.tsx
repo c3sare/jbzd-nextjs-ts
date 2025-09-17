@@ -2,8 +2,7 @@
 
 import Conversation from "@/app/(frontend)/(restSite)/wiadomosci-prywatne/types/Conversation";
 import clsx from "clsx";
-import { format } from "date-fns";
-import parseISO from "date-fns/parseISO";
+import { format, parseISO } from "date-fns";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 

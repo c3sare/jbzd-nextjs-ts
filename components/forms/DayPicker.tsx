@@ -1,5 +1,5 @@
 import { FieldValues, Path } from "react-hook-form";
-import pl from "date-fns/locale/pl";
+import { pl } from "date-fns/locale";
 import { DayPicker as DatePicker } from "react-day-picker";
 import "@/styles/DayPicker.css";
 import useZodFormContext from "@/hooks/useZodFormContext";

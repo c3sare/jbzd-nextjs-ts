@@ -4,7 +4,7 @@ import { UserProfile } from "@prisma/client";
 import { AiFillFlag } from "@react-icons/all-files/ai/AiFillFlag";
 import { AiFillPicture } from "@react-icons/all-files/ai/AiFillPicture";
 import { FaComment } from "@react-icons/all-files/fa/FaComment";
-import format from "date-fns/format";
+import { format } from "date-fns";
 
 type UserStatsProps = {
   user: UserProfile;

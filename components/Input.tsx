@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { FieldValues, Path, PathValue } from "react-hook-form";
 import ErrorInputBox from "./ErrorInputBox";
 import { formatISO, parseISO } from "date-fns";
-import pl from "date-fns/locale/pl";
+import { pl } from "date-fns/locale";
 import DatePicker, { registerLocale } from "react-datepicker";
 import { useMemo } from "react";
 import useZodFormContext from "@/hooks/useZodFormContext";
